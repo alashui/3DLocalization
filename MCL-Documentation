@@ -73,7 +73,6 @@
   
 % ===== Section 2, Our Implementation ==== %
   \section{Our Implementation}
-  \emph{This section will provide an overview of our implementation of the MCL algorithm.} \\ 
   
 % === Subsection - Differences from Previous Implementations === %
   \subsection{Differences from Previous Implementations}
@@ -96,7 +95,6 @@
   
 %=== Subsection - Pre-Computation === %
   \subsection{Pre-Computation}
-  \emph{This section outlines what our group had to compute before any localization attempts could take place.}
   
   We decided that our environment would be the 2nd floor of the Sprague building at Harvey Mudd College. This environment is conveient because it
   happens to be where our group works. This is a large space consisting of 7-8 semi-connected rooms, with lots of chairs, computers, and other items 

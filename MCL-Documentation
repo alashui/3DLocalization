@@ -25,7 +25,7 @@
   
 % ==    1.1 Paper Abstract   == %
   \subsection{Abstract}  
-  The Monte Carlo Localization (MCL) algorithm have been used in the past\footnote{ Dieter Fox, Wolfram Burgardy, Frank Dellaert, Sebastian Thrun,
+  The Monte Carlo Localization (MCL) algorithm has been used in the past\footnote{ Dieter Fox, Wolfram Burgardy, Frank Dellaert, Sebastian Thrun,
   Carnegie Mellon University, University of Bonn.} to successfully localize robots using 2D maps of an environment
   and range sensor data that is updated in real-time. Our research group is attempting to implement the Monte Carlo Localization algorithms 
   using a 3D model of the environment and a feed of images from a robot in that environment. This entails the use of various computer vision algorithms 
@@ -69,21 +69,48 @@
   a command is sent from the program. Also, matching features between sensors on the actor and places in the map is easier said than done. 
   
   \end{Process Overview}
-  
+  \newpage
   
 % ===== Section 2, Our Implementation ==== %
-  
-  \newpage
   \section{Our Implementation}
-  This section will provide an overview of our implementation of the MCL algorithm. \\
-  Our implementation of the MCL algorithm is different from ones done before in a few ways. 
+  \emph{This section will provide an overview of our implementation of the MCL algorithm.} \\ 
+  
+% === Subsection - Differences from Previous Implementations === %
+  \subsection{Differences from Previous Implementations}
+  Our implementation of the MCL algorithm is different from ones done before in a few ways.
   
   \begin{enumerate}
   \item We are using a full scale 3 dimensional model of a space
   as our map. This model was made with the help of the Matterport 3D Imaging Camera \footnote{See section 3, \emph{Building the 3D Model}.}.
   \item The majority of the MCL examples we have seen on the internet use range-sensor data and 2 dimensional maps to do the feature comparison
   and weighting. We have decided to try a pure computer-vision based approach. 
+  \item We will be pre-computing the features from thousands of different perspectives within our 3D model for quick data access when creating particles.
+  This is different than approaches that have previously been taken, where they take a particles position and compute the expected sensor data in real-time
+  for comparison against the incoming sensor data feed from the actor.
+  \item We hope to have our systems work with any robots that implement a specific ROS interface. This will require that the robots can publish
+  image data at a certain rate and that they can accept pre-defined movement commands from our program\footnote{Further information about the 
+  \emph{ROS interface} described later in the paper}
   \end{enumerate}
+  
+  \end{Differences from Previous Implementations}
+  
+%=== Subsection - Pre-Computation === %
+  \subsection{Pre-Computation}
+  \emph{This section outlines what our group had to compute before any localization attempts could take place.}\\
+  We decided that our environment would be the 2nd floor of the Sprague building at Harvey Mudd College. This environment is conveient because it
+  happens to be where our group works. This is a large space consisting of 7-8 semi-connected rooms, with lots of chairs, computers, and other items 
+  that complicate the topography of our space. 
+  
+  \begin{enumerate}
+  \item We began by taking our Matterport camera and taking 42 separate scans of the floor from different locations. The Matterport software automatically merges
+  these different scans into one entire map. \textbf{ PUT IMAGE OF 3D MAP HERE } The map that we ended up with was quite detailed with both polygon and texture
+  data, but ultimately some areas were obstructed and so it was not perfect. 
+  \item The obstructed areas of our map were marked with an odd color and exluded from any feature matching algorithms as to minimize the false-positive
+  matches that would result from holes in our map giving the particles a view of items that should be obstructed.
+  \item
+  \end{enumerate}
+  
+  \end{Pre-Computation}
   
 
 \end{document}

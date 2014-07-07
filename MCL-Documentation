@@ -96,18 +96,21 @@
   
 %=== Subsection - Pre-Computation === %
   \subsection{Pre-Computation}
-  \emph{This section outlines what our group had to compute before any localization attempts could take place.}\\
+  \emph{This section outlines what our group had to compute before any localization attempts could take place.}
+  
   We decided that our environment would be the 2nd floor of the Sprague building at Harvey Mudd College. This environment is conveient because it
   happens to be where our group works. This is a large space consisting of 7-8 semi-connected rooms, with lots of chairs, computers, and other items 
   that complicate the topography of our space. 
   
   \begin{enumerate}
-  \item We began by taking our Matterport camera and taking 42 separate scans of the floor from different locations. The Matterport software automatically merges
-  these different scans into one entire map. \textbf{ PUT IMAGE OF 3D MAP HERE } The map that we ended up with was quite detailed with both polygon and texture
-  data, but ultimately some areas were obstructed and so it was not perfect. 
+  \item We began by taking our Matterport camera and taking 42 separate scans of the floor from different locations. 
+  The Matterport software automatically merges these different scans into one entire map. \textbf{ PUT IMAGE OF 3D MAP HERE } 
+  The map that we ended up with was quite detailed with both polygon and texture data, but ultimately some areas were obstructed and so it was not perfect. 
   \item The obstructed areas of our map were marked with an odd color and exluded from any feature matching algorithms as to minimize the false-positive
   matches that would result from holes in our map giving the particles a view of items that should be obstructed.
-  \item
+  \item Images from thousands of different perspectives within our 3D model are generated. An effort is made to only generate images 
+  from \emph{meaningful} perspectives, such as excluding images from within walls or staring straight towards the ceiling. 
+  \item 
   \end{enumerate}
   
   \end{Pre-Computation}

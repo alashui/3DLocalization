@@ -1,0 +1,84 @@
+\documentclass[a4paper,11pt]{article}
+\usepackage{amsmath}
+\usepackage{fancyhdr}
+\usepackage{graphicx}
+\usepackage[top=.6in, bottom=.8in, left=.8in, right=.8in]{geometry}
+%==== Insert cool image between title and authors ====%
+\title{Using 3D Models and Computer Vision Algorithms to \\ Implement Monte Carlo Localization}
+\author{ \\[7in]  John Allard, Alex Rich \\ 2014 Summer Computer Science REU, Harvey Mudd College}
+\date{July 6th, 2014}
+
+\begin{document}
+
+% ==== Title Page ==== %
+  \maketitle   
+  \newpage  
+  
+% ==== Table Of Contents ==== %
+  \tableofcontents
+  \newpage
+  
+  
+% ==== Section 1, Introduction ==== %
+  \section{Introduction} 
+  
+% ==    1.1 Paper Abstract   == %
+  \subsection{Abstract}  
+  The Monte Carlo Localization (MCL) algorithm have been used in the past\footnote{ Dieter Fox, Wolfram Burgardy, Frank Dellaert, Sebastian Thrun,
+  Carnegie Mellon University, University of Bonn.} to successfully localize robots using 2D maps of an environment
+  and range sensor data that is updated in real-time. Our research group is attempting to implement the Monte Carlo Localization algorithms 
+  using a 3D model of the environment and a feed of images from a robot in that environment. This entails the use of various computer vision algorithms 
+  to find and compare features between the image feed and our 3D model of the environment. This paper will outline the overall processes that our research group
+  undertakes to accomplish this task and an analysis of our resulting program. 
+  \end{Abstract}
+  
+% ==   1.2 Process Overview  == %
+  \subsection{Process Overview}
+  The overall process of having an actor\footnote{Any device that has sensors and can move around an environment} 
+  localize itself in an environment via the MCL algorithm is comprised of many steps. A simplified outline of these
+  steps can be stated as follows.\\
+  
+  Pre-Localization Attempt :
+  
+  \begin{enumerate}
+  \item One needs to build a map of the environment. This can be a 2D 'birds-eye-view' map, a 3D map created with a 
+  laser range sensing camera, or any other type of map that allows you to query it for data about its features. 
+  \item Some way must be devised to compare the incoming sensor data from the actor to the expected sensor readings from 
+  different points in the map. %This can be done in many different ways, such as comparing range data from sonar or laser
+  %sensors, or as our research group is doing, using image feature data.
+  \end{enumerate}
+  
+  During Localization Attempt :
+  
+  \begin{enumerate}
+  \item An actor is let loose in the environment, and a large amount of guesses as to where the robot could be are randomly generated. 
+  These 'guesses' are called particles, and each particle is a data structure that contains information about
+  its position in the environment and what sensor data the program would expect to read if an actor was at that place in the map. 
+  \item The program then compares the current sensor readings from the robot to the expected sensor readings for each particle,
+  and assigns a weight to each particle based on how strongly the sensor readings correspond to one another.
+  \item  Low weights are thrown out, and a small amount of new randonly generated particles are added to the program.
+  \item The robot is then moved to a new point in the environment via some movement commands from the program. Each particle that 
+  still exists has its position updated according to the movement commands sent from the program. The expected sensor readings for the particle
+  are also updated to correspond to the new position in the environment. 
+  \item The process of moving the robot to a new position, comparing sensor readings from the robot to those of the various particles, assigning weights,
+  and culling low weights is repeated until the particles converge on a single location. 
+  \end{enumerate}
+  
+  The actual process is much more complicated than this, as it takes into account the error in the robots actual motion compared to its expected motion after
+  a command is sent from the program. Also, matching features between sensors on the actor and places in the map is easier said than done. 
+  
+  \end{Process Overview}
+  
+  
+% ===== Section 2, Our Implementation ==== %
+  
+  \newpage
+  \section{Our Implementation}
+  This section will provide an overview of our implementation of the MCL algorithm. \\
+  Our implementation of the MCL algorithm is different from ones done before in a few ways. First, we are using a full scale 3 dimensional model of a space
+  as our map. This model was made with the help of the Matterport 3D Imaging Camera \footnote{See section 3, \emph{Building the 3D Model}.}. Second, the 
+  majority of the MCL examples we have seen on the internet use range-sensor data and 2 dimensional maps to do the feature comparison and weighting. We 
+  have decided to try a pure computer-vision based approach. 
+  
+
+\end{document}

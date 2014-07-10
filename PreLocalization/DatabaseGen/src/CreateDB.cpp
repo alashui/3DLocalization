@@ -128,9 +128,10 @@ int main(int argc, char** argv)
 
 	// Path to Images:
 	string dir = "../../../Data/RenderedImages/" + modelDir;
-	string bwdir = "../../../Data/FeatureData/" + modelDir + "/bwimages";
-	string gsdir = "../../../Data/FeatureData/" + modelDir + "/gsimages";
-	string kdir = "../../../Data/FeatureData/" + modelDir + "/descriptors";
+    string pathToFeatures = "../../../Data/FeatureData";
+	string bwdir = modelDir + "/bwimages";
+	string gsdir = modelDir + "/gsimages";
+	string kdir = modelDir + "/descriptors";
 
     TickMeter tm;
     tm.reset();
@@ -197,6 +198,13 @@ int main(int argc, char** argv)
         Mat m = imread(imfn);
         imagemap[ID] = m;
     }
+
+    boost::filesystem::current_path(pathToFeatures);
+
+    boost::filesystem::path newmdir(modelDir);
+    if (!fs::exists(newmdir))
+        if (boost::filesystem::create_directory(newmdir))
+            cout << "Created New Folder: " << modelDir << endl;
 
     boost::filesystem::path newbwdir(bwdir);
     if (!fs::exists(newbwdir))

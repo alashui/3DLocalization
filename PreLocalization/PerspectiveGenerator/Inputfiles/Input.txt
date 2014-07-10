@@ -1,0 +1,8 @@
+../OBJ_Data/2ndFloorSprague/
+14db49e526f340dfba81c4a2da23c716.obj
+../GeneratedImages/
+.jpg
+-3.25 6.5 0.4 1 0 0 
+-3.25 6.5 0.4 0 1 0 
+-3.25 6.5 0.4 -1 0 0 
+-3.25 6.5 0.4 0 -1 0 

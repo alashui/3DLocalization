@@ -47,8 +47,25 @@ int main(int argc, char **argv)
     glutInitContextFlags (GLUT_COMPATIBILITY_PROFILE );
 
     glutInitWindowPosition(100,100);
+
+
+    if(argc == 2)
+        IO::generatePoints(argv[1]);
+    else
+        std::cout << "Wrong number of command line arguments\n" << std::endl;
+//  Init GLEW
+    //glewExperimental = GL_TRUE;
+
     glutInitWindowSize(width, height);
     glutCreateWindow("OBJParser Demo");
+    
+    glewInit();
+    if (glewIsSupported("GL_VERSION_3_3"))
+        printf("Ready for OpenGL 3.3\n");
+    else {
+        printf("OpenGL 3.3 not supported\n");
+        return(1);
+    }
         
 
 //  Callback Registration
@@ -62,31 +79,12 @@ int main(int argc, char **argv)
     glutMotionFunc(IO::processMouseMotion);
     glutMouseWheelFunc ( IO::mouseWheel ) ;
 
-
-    if(argc == 2)
-        IO::generatePoints(argv[1]);
-    else
-        std::cout << "Wrong number of command line arguments\n" << std::endl;
-//  Init GLEW
-    //glewExperimental = GL_TRUE;
-    glewInit();
-    if (glewIsSupported("GL_VERSION_3_3"))
-        printf("Ready for OpenGL 3.3\n");
-    else {
-        printf("OpenGL 3.3 not supported\n");
-        return(1);
-    }
-
     //  Init the app (load model and textures) and OpenGL
     if (!init())
     {
         printf("Could not Load the Model\n");
         return 0;
     }
-   // printf ("Vendor: %s\n", glGetString (GL_VENDOR));
-   // printf ("Renderer: %s\n", glGetString (GL_RENDERER));
-   // printf ("Version: %s\n", glGetString (GL_VERSION));
-   // printf ("GLSL: %s\n", glGetString (GL_SHADING_LANGUAGE_VERSION));
 
 
     // return from main loop

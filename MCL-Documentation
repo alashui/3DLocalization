@@ -8,7 +8,9 @@
 \author{ \\[7in]  John Allard, Alex Rich \\ 2014 Summer Computer Science REU, Harvey Mudd College}
 \date{July 6th, 2014}
 
+
 \begin{document}
+
 
 % ==== Title Page ==== %
   \maketitle   
@@ -25,51 +27,32 @@
   \section{Introduction} 
   
 % ==    1.1 Paper Abstract   == %
-  \subsection{Abstract}  
-  The Monte Carlo Localization (MCL) algorithm has been used in the past\footnote{ Dieter Fox, Wolfram Burgardy, Frank Dellaert, Sebastian Thrun,
-  Carnegie Mellon University, University of Bonn.} to successfully localize robots using 2D maps of an environment
-  and range sensor data that is updated in real-time. Our research group is attempting to implement the Monte Carlo Localization algorithms 
-  using a 3D model of the environment and a feed of images from a robot in that environment. This entails the use of various computer vision algorithms 
-  to find and compare features between the image feed and our 3D model of the environment. This paper will outline the overall processes that our research group
-  undertakes to accomplish this task and an analysis of our resulting program. 
-  \end{Abstract}
+  \begin{abstract}  
+  The Monte Carlo Localization (MCL) algorithm has been used in the past\footnote{ Dieter Fox, et al. Carnegie Mellon University, University of Bonn.} to successfully localize robots using 2D maps of an environment and a stream of range  sensor information. Our research group is attempting to implement the Monte Carlo Localization algorithms  using a 3D model of the environment and a feed of images from a robot in that environment. This entails the use of various computer vision algorithms to find and compare features between the image feed and our 3D model. This paper will outline the overall processes that our research group has undertaken to accomplish this task and an analysis of our resulting program. 
+  \end{abstract}
   
 % ==   1.2 Process Overview  == %
   \subsection{MCL Process Overview}
-  The overall process of having an actor\footnote{Any device that has sensors and can move around an environment} 
-  localize itself in an environment via the MCL algorithm is comprised of many steps. A simplified outline of these
-  steps can be stated as follows.\\
+  \emph{This section is for those unfamiliar with the Monte Carlo Localization algorithm.}\\ The overall process of having an actor\footnote{Any device that has sensors and can move around an environment} localize itself in an environment via the MCL algorithm is comprised of many steps. A simplified outline of these steps can be stated as follows.\\
   
   Pre-Localization Attempt :
   
   \begin{enumerate}
-  \item One needs to build a map of the environment. This can be a 2D 'birds-eye-view' map, a 3D map created with a 
-  laser range sensing camera, or any other type of map that allows you to query it for data about its features. 
-  \item Some way must be devised to compare the incoming sensor data from the actor to the expected sensor readings from 
-  different points in the map. %This can be done in many different ways, such as comparing range data from sonar or laser
-  %sensors, or as our research group is doing, using image feature data.
+  \item A map of the environment needs to be imported or constructed.% This can be a 2D top-down map, a 3D map created with a 
+  %laser range sensing camera, or any other type of map that contains  
+  \item Some set of quantifable features about the map must be chosen, this enables a comparison between sensor readings from the actor and expected sensor readings from different places in the map.
   \end{enumerate}
   
   During Localization Attempt :
   
   \begin{enumerate}
-  \item An actor is let loose in the environment, and a large amount of guesses as to where the robot could be are randomly generated. 
-  These 'guesses' are called particles, and each particle is a data structure that contains information about
-  its position in the environment and what sensor data the program would expect to read if an actor was at that place in the map. 
-  \item The program then compares the current sensor readings from the robot to the expected sensor readings for each particle,
-  and assigns a weight to each particle based on how strongly the sensor readings correspond to one another.
-  \item  Low weights are thrown out, and a small amount of new randonly generated particles are added to the program.
-  \item The robot is then moved to a new point in the environment via some movement commands from the program. Each particle that 
-  still exists has its position updated according to the movement commands sent from the program. The expected sensor readings for the particle
-  are also updated to correspond to the new position in the environment. 
-  \item The process of moving the robot to a new position, comparing sensor readings from the robot to those of the various particles, assigning weights,
-  and culling low weights is repeated until the particles converge on a single location. 
-  \end{enumerate}
+  \item An actor is let loose in the environment, and a large amount of guesses as to where it could be are randomly generated according to some distribution\footnote{This distribution depends on the users previous knowledge of the actors location.}. These 'guesses' are called particles, and each particle is a data structure that contains information about its current perspective in the environment and the sensor data it would expect to read from that perspective.
+  \item The program compares the current sensor readings from the robot to the expected sensor readings for each particle, and assigns a weight to each particle based on how strongly the readings correspond to one another.
+  \item Particles with low weights are thrown out, and a small amount of randomly generated particles are added to the program.
+  \item The robot is moved to a new point in the environment via some movement commands from the program. Each particle that still exists has its perspective updated according to the same commands. The expected sensor readings for each particle is also updated to correspond to the its perspective of the environment. 
+  \item The process of comparing sensor readings from the robot to those of the various particles, assigning weights, culling low weights, and moving to a different location in the map is repeated until the particles converge on a single location (In theory, at least).
+  \end{enumerate} 
   
-  The actual process is much more complicated than this, as it takes into account the error in the robots actual motion compared to its expected motion after
-  a command is sent from the program. Also, matching features between sensors on the actor and places in the map is easier said than done. 
-  
-  \end{Process Overview}
   \newpage
   
 %==========================================%
@@ -82,70 +65,65 @@
   Our implementation of the MCL algorithm is different from ones done before in a few ways.
   
   \begin{enumerate}
-  \item We are using a full scale 3 dimensional model of a space
-  as our map. This model was made with the help of the Matterport 3D Imaging Camera \footnote{See section 3, \emph{Building the 3D Model}.}.
-  \item The majority of the MCL examples we have seen on the internet use range-sensor data and 2 dimensional maps to do the feature comparison
-  and weighting. We have decided to try a pure computer-vision based approach. 
-  \item We will be pre-computing the features from thousands of different perspectives within our 3D model for quick data access when creating particles.
-  This is different than approaches that have previously been taken, where they take a particles position and compute the expected sensor data in real-time
-  for comparison against the incoming sensor data feed from the actor.
-  \item We hope to have our systems work with any robots that implement a specific ROS interface. This will require that the robots can publish
-  image data at a certain rate and that they can accept pre-defined movement commands from our program\footnote{Further information about the 
-  \emph{ROS interface} described later in the paper}
+  \item We are using a full scale 3 dimensional model of a space as our map. This model was made with the help of the Matterport 3D Imaging Camera \footnote{See section 3, \emph{Building the 3D Model}.}.
+  \item The majority of the MCL examples we have seen on the internet use range-sensor data and 2 dimensional maps to do the feature comparison and weighting. We have decided to try a pure computer-vision based approach. 
+  \item We will be pre-computing the features from thousands of different perspectives within our 3D model for quick data access when creating particles. This is different than approaches that have previously been taken, where they take a particles position and compute the expected sensor data in real-time for comparison against the incoming sensor data feed from the actor.
+  \item We hope to have our systems work with any robots that implement a specific ROS\footnote{\emph{ROS} - Robot Operating System } interface. This will require that the robots can publish image data at a certain rate and that they can accept pre-defined movement commands from our program.
   \end{enumerate}
   
-  \end{Differences from Previous Implementations}
   
 %=== Subsection 2.2 - Pre-Computation === %
   \subsection{Pre-Computation}
   
-  We decided that our environment would be the 2nd floor of the Sprague building at Harvey Mudd College. This environment is conveient because it
-  happens to be where our group works. This is a large space consisting of 7-8 semi-connected rooms, with lots of chairs, computers, and other items 
-  that complicate the topography of our space. 
+  We decided that our environment would be the 2nd floor of the Sprague building at Harvey Mudd College. This environment is conveient because it happens to be where our group works. This is a large space consisting of 7-8 semi-connected rooms, with lots of chairs, computers, and other items that complicate the topography of our space. 
   
   \begin{enumerate}
-  \item We began by using our Matterport camera to take 42 separate scans of the floor from different locations. 
-  The Matterport software automatically merges these different scans into one entire map. \textbf{ PUT IMAGE OF 3D MAP HERE } 
-  The map that we ended up with was quite detailed with both polygon and texture data, but ultimately some areas were obstructed and so it was not perfect. 
-  \item The obstructed areas of our map were marked with an odd color and exluded from any feature matching algorithms as to minimize the false-positive
-  matches that would result from holes in our map giving the particles a view of items that should be obstructed.
-  \item Images from thousands of different perspectives within our 3D model are generated. An effort is made to only generate images 
-  from \emph{meaningful} perspectives, such as excluding images from within walls or staring straight towards the ceiling. 
+  \item We began by using our Matterport camera to take 42 separate scans of the floor from different locations. The Matterport software automatically merges these different scans into one entire map. The map that we ended up with was quite detailed with both polygon and texture data, but ultimately some areas were obstructed and so it was not perfect. 
+  \item The obstructed areas of our map were marked with an odd color and exluded from any feature matching algorithms as to minimize the false-positive matches that would result from holes in our map giving the particles a view of items that should be obstructed.
+  \item Images from thousands of different perspectives within our 3D model are generated. An effort is made to only generate images from \emph{meaningful} perspectives, such as excluding images from within walls or staring straight towards the ceiling. 
+  \item Many different types of features\footnote{Detected with SURF, SIFT, ORB, Harris, or other feature detection algorithms} are computed for each image that was generated in step 3. This allows us to simply look up the features for a specific particle instead of having to compute them in real-time.
   \item 
   \end{enumerate}
   
-  \end{Pre-Computation} % end subsection 2.2
   
-  \end{Our Implementation} % end section 2
-
 %=== Subsection 2.3 - During Localization ===%
   \subsection{During Localization}
+  \item
+  \item
   
-  \end{During Localization}
- 
+
+
+
+
 %=====================================%
 %===== Section 3, 3D Map Building ====%
 %=====================================%
   \section{Building the 3D Map}
-  
-  \end{Building the 3D Map}
+
+
+
 
 %=======================================================%
 %===== Section 4, Computing Features from the Map ===== %
 %=======================================================%
   \section{Computing Features from the Map}
-  
-  \end{Bomputing Features from the Mapuilding the 3D Map}
+
+
+
 
 %========================================%
 %===== Section 5, MCL Implementation ====% 
 %========================================%
   \section{MCL Implementation}
-  
-  \end{MCL Implementation}
-  
+   
   
 
+
+
+
   
+
+
+
 
 \end{document}

@@ -10,9 +10,11 @@
 
 #include "cvaux.h"
 
-#include <pcl/io/pcd_io.h>
+// #include <pcl/io/pcd_io.h>
 
-#include "boost/filesystem.hpp"   
+#include "boost/filesystem.hpp"  
+// #include <boost/lexical_cast.hpp>
+
 
 #include <iostream>
 #include <fstream>
@@ -21,8 +23,8 @@
 #include <algorithm>
 #include <iterator>
 
-#include "../../averageImage.h"
-#include "../../Similarity.h"
+#include "AverageImage.h"
+#include "Similarity.h"
 
 using namespace cv;
 using namespace std;
@@ -52,9 +54,7 @@ void get_all(const fs::path& root, vector<fs::path>& ret)
         while(it != endit)
         {
             if (fs::is_regular_file(*it))
-            {
                 ret.push_back(it->path().filename());
-            }
             ++it;
         }
     }
@@ -116,87 +116,66 @@ void removeBad(vector<KeyPoint> kps, Mat& img, vector<KeyPoint> unique_points, i
 
 int main(int argc, char** argv)
 {
+	// Number of divisions for Gray Scale and Above Below Images
+	int divs = 50;
+
+	if (argc != 2)
+	{
+		printPrompt(argv[0]);
+		return -1;
+	}
+	string modelDir = argv[1];
+
+	// Path to Images:
+	string dir = "../../../Data/RenderedImages/" + modelDir;
+	string bwdir = "../../../Data/FeatureData/" + modelDir + "/bwimages";
+	string gsdir = "../../../Data/FeatureData/" + modelDir + "/gsimages";
+	string kdir = "../../../Data/FeatureData/" + modelDir + "/descriptors";
+
     TickMeter tm;
     tm.reset();
     tm.start();
-    if( argc < 2 )
-    {
-        printPrompt( argv[0] );
-        return -1;
-    }
 
     initModule_nonfree();
 
-    // Get Input Data
-    ifstream file(argv[1]);
-    if ( !file.is_open() )
-        return false;
-    
-    string str;
-
-        // Number of divisions
-    getline( file, str ); getline( file, str );
-    float divs = atoi(str.c_str());
-        // Image extension
-    getline( file, str ); getline( file, str );
-    string delimiter =str.c_str();
-        // Image extension
-    getline( file, str ); getline( file, str );
-    string extension =str.c_str();
-        // Directory to look for photos
-    getline( file, str ); getline( file, str );
-    string dir =str.c_str();
-        // Directory to save BW images (abov ebelwo)
-    getline( file, str ); getline( file, str );
-    string bwdir =str.c_str();
-        // Directory to save GS images (avg pixel sum)
-    getline( file, str ); getline( file, str );
-    string gsdir =str.c_str();
-        // Directory to save descriptors
-    getline( file, str ); getline( file, str );
-    string kdir =str.c_str();
-
-    file.close();
-    // Done Getting Input Data
-
     map<vector<float>, Mat> imagemap;
-
     vector<KeyPoint> Keypoints;
     Mat Descriptors;
 
-    int minHessian = 800;
-
     SurfFeatureDetector SurfDetector (3000, 6, 2, true, true);
-    SiftFeatureDetector SiftDetector (minHessian);
+    SiftFeatureDetector SiftDetector (800);
 
     SurfDescriptorExtractor SurfExtractor;
     SiftDescriptorExtractor SiftExtractor;
 
     // Load Images
-
     // First look into the folder to get a list of filenames
     vector<fs::path> ret;
     const char * pstr = dir.c_str();
     fs::path p(pstr);
     get_all(pstr, ret);
 
-    cout << "Attempting to load " << ret.size() << " images." << endl;
+    cout << "Attempting to load " << ret.size() << " images for the " + modelDir + " model." << endl;
+
+    string delimiter = "_";
 
     for (int i = 0; i < ret.size(); i++)
     {
         // Load Image via filename
         string fn = ret[i].string();
-        vector<string> tokens;
         
         if (fn[0] != delimiter.c_str()[0]){
-            cout << "\033[1;33m  Extraneous file found: " << fn << "\033[0m" << endl; //]]
+            cout << "\033[1;33mExtraneous file found: " << fn << "\033[0m" << endl; //]]
             continue;
         }
 
-        // Remove initial delimier
+        // Remove initial delimiter
         fn = fn.substr(1,fn.length());
+
         size_t pos = 0;
         string token;
+        vector<string> tokens;
+
         while ((pos = fn.find(delimiter)) != std::string::npos) 
         {
             token = fn.substr(0, pos);
@@ -219,6 +198,21 @@ int main(int argc, char** argv)
         imagemap[ID] = m;
     }
 
+    boost::filesystem::path newbwdir(bwdir);
+    if (!fs::exists(newbwdir))
+        if (boost::filesystem::create_directory(newbwdir))
+            cout << "Created New Folder: " << bwdir << endl;
+
+    boost::filesystem::path newgsdir(gsdir);
+    if (!fs::exists(newgsdir))
+        if (boost::filesystem::create_directory(newgsdir))
+            cout << "Created New Folder: " << gsdir << endl;
+
+    boost::filesystem::path newkdir(kdir);
+    if (!fs::exists(newkdir))
+        if (boost::filesystem::create_directory(newkdir))
+            cout << "Created New Folder: " << kdir << endl;
+
     tm.stop();
     float load = tm.getTimeSec();
     tm.reset();
@@ -237,12 +231,23 @@ int main(int argc, char** argv)
         // Create image name and storagename
         string imfn = "/" + delimiter;
         string kpfn = "/" + delimiter;
+
+        int a = 10;
+stringstream ss;
+ss << a;
+string str = ss.str();
+
+
         for (int j = 0; j < 6; j++)
         {
-            imfn += boost::to_string(i->first[j]) + delimiter;
-            kpfn += boost::to_string(i->first[j]) + delimiter;
+            stringstream ss;
+            ss << i->first[j];
+            string num = ss.str();
+            imfn += num + delimiter;
+            kpfn += num + delimiter;
         }
-        imfn += extension;
+
+        imfn += ".jpg";
         kpfn += ".yml";
 
         FileStorage store(kdir + kpfn, cv::FileStorage::WRITE);
@@ -271,7 +276,7 @@ int main(int argc, char** argv)
 
         count++;
 
-        if ((count * 100) % (total) == 0)
+        if ((count * 100 / total) % 5 == 0)
         {
             cout << 100 * count / total << " percent done. Estimated Time Remaining: " << (x-s)/60.0 << " minutes. ";
             cout << "Total skipped so far: " << skipped << "." << endl;
@@ -283,8 +288,8 @@ int main(int argc, char** argv)
 
     cout << "\nLoading took " << load << " seconds for " << imagemap.size() << " images (" 
         << (int) imagemap.size()/load << " images per second)." << endl;
-    cout << "Analysis took " << analysis << " seconds (" << (int) imagemap.size()/analysis << " images per second)." << endl; 
-    cout << "Skipped " << skipped << " keypoints, leaving " << unique_points.size() << " unique points." << endl;
-    
-    return 0;
+cout << "Analysis took " << analysis << " seconds (" << (int) imagemap.size()/analysis << " images per second)." << endl; 
+cout << "Skipped " << skipped << " keypoints, leaving " << unique_points.size() << " unique points." << endl;
+
+return 0;
 }

@@ -6,7 +6,7 @@
 \usepackage{graphicx}
 \usepackage[top=.6in, bottom=.8in, left=.8in, right=.8in]{geometry}
 \title{3D Localization Program \\ Official Code Documentation}
-\author{ \\[7in]  John Allard, Alex Rich \\ 2014 Summer Computer Science REU, Harvey Mudd College}
+\author{ \\[6.5in]  John Allard, Alex Rich \\ 2014 Summer Computer Science REU, Harvey Mudd College}
 \date{July 10th, 2014}
 
 
@@ -14,20 +14,21 @@
 
 % Title Page %
   \maketitle
+  
   \newpage
 
 % Table of Contents (autogen)
     \tableofcontents
     \newpage
-
-    % Introduction to the program, abstract, keep it short %
+    
+     % Introduction to the program, abstract, keep it short %
     \begin{abstract}
     This is the official documentation for a series of interconnected programs written at Harvey Mudd during the summer of 2014 by John Allard and Alex Rich. The purpose of these programs is to successfully localize an actor in an environment using a preloaded 3D map, precomputed computer-vision related feature data, and a live image feed from an actor in the environment. The program starts with a large amount of guesses as to where the actor could be, and uses particle filtering to converge the particles upon the correct location in the environment. Read the research paper associated with this project for more information on the mathematics and other technicalities behind Monte Carlo Localization.
     \end{abstract}
 
     % === Section 1, Introduction === %
     \section{Introduction}
-    Accomplishing the task of successfully locating an actor in an environment using CV-derived features and a 3D model requires many individual steps. The success of the localization attempt depends strongly on the computation and data storage that is done before any attempt is made. With this in mind, we dicided to subdivide the task of localizing an actor into a three separate programs that must be run individually. Two of them are done before the localization attempt and are only needed to be ran once for each map that an actor is attempting to localize itself in. The 3rd program is the actual localization code that matches features to figure out where the actor is in the given map.
+    Accomplishing the task of successfully locating an actor in an environment using CV-derived features and a 3D model requires many individual steps. The success of the localization attempt depends strongly on the computation and data storage that is done before any attempt is made. With this in mind, we dicided to subdivide the task of localizing an actor into three separate programs that must be run individually. Two of them are done before the localization attempt and are only needed to be ran once for each map that an actor is attempting to localize itself in. The 3rd program is the actual localization code that matches features to figure out where the actor is in the given map.
 
         % == Subsection 1.1, prelocalization == %
         \subsection{Pre-Localization}
@@ -36,7 +37,7 @@
         \item PerspectiveGenerator
             \begin{enumerate}
             \item Takes a 3d model and a list of points within that model.
-            \item Renders images from every point listed and saves them in a directory for feature processing. Works with .obj files. __TODO__ == Figure out if it works with .3ds and .dae files. == __TODO__
+            \item Renders images from every point listed and saves them in a directory for feature processing. Works with .obj files. TODO Figure out if it works with .3ds and .dae files. TODO
             \end{enumerate}
         \item DatabaseGenerator
             \begin{enumerate}
@@ -48,14 +49,14 @@
   
         \subsection{During Localization}
         \begin{enumerate}
-        \item 3DLocalization __TODO__ Think of a better name __TODO__
+        \item 3DLocalization TODO Think of a better name TODO
             \begin{enumerate}
             \item This program handles the live process of communicating with the robot, generating particles, weighing particles, and pursuing the general goal of localization.
             \item This is also the most important program and will have the most effort put into it as far as code documentation and good coding practices go.
             \item There are too many things to talk about to go into detail here, go to the section for this program later on in this document.
             \end{enumerate}
         \end{enumerate}
-
+        \newpage
 
 %==== Section 2, Perspective Generator === %
     \section{Perspective Generator}
@@ -63,15 +64,7 @@
         \subsection{Overview}
         \begin{enumerate}
         \item General Purpose - The general purpose of this program is to convert a 3D model into a processable library of images that are rendered from different points in the model. This serves the purpose of allowing us to use existing 2D-Image feature detection algorithms (like Sped-Up Robust Feature Detection, or Scale Invariant Feature Detection) to match a 2D image feed from an actor to a point in a 3D model.
-        \item Dependencies
-            \begin{enumerate}
-            \item CMAKE 2.8 min.
-            \item OpenCV
-            \item Boost 1.46
-            \item OpenGL 3.3
-            \item GLEW Libraries
-            \item GLUT Libraries
-            \end{enumerate}
+        \item Dependencies - OpenGL 3.3, GLEW, GLUT, BOOST 1.46, OpenCV.
         \end{enumerate}
 
         \subsection{Errors and Successes}

@@ -44,9 +44,24 @@ namespace MCL
 		std::cout  << " \033[1;31" <<" Error #" << error_log.size() << " " << ss << std::endl;
 	}
 
+	// @Function - getErrorLog
+	// @Input    - None 
+	// @Output   - Returns a vector of strings filled with every single error message that has been passed to ErrorIO during the course of the program.
 	std::vector<std::string> getErrorLog()
 	{
 		return error_log;
+	}
+
+	// @Function - PrintErrorLog
+	// @Input    - Nothing
+	// @Output   - Nothing returned, outputs every single error message inside of the error_log vector to the screen in a specific format.
+	void PrintErrorLog() const
+	{
+		std::cout << " \033[1;31" <<" Printing Error Log. " << error_log.size() << " Total Errors." << std::endl;
+		for(int i = 0; i < error_log.size(); i++)
+		{
+			std::cout << " \033[1;31" <<" Error #" << i << " " << error_log[i] << std::endl;
+		}
 	}
 
 }

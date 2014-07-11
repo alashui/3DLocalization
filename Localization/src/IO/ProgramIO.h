@@ -45,6 +45,11 @@ namespace MCL
 	// @Output   - Returns a vector of strings filled with every single error message that has been passed to ErrorIO during the course of the program.
 	std::vector<std::string> GetErrorLog();
 
+	// @Function - PrintErrorLog
+	// @Input    - Nothing
+	// @Output   - Nothing returned, outputs every single error message inside of the error_log vector to the screen in a specific format.
+	void PrintErrorLog() const;
+
 
 }
 

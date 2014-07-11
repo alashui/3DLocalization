@@ -16,6 +16,9 @@
 
 namespace 3DL_io
 {
+	// vector of strings that contain all of the error messages passed to the ErrorIO function. Declared here and defined in the .cpp file to
+	// avoid multiple inclusions.
+	extern std::vector<std::string> error_log;
 
 	// @Function - DebugIO
 	// @Input    - SS object containing the output message
@@ -36,6 +39,11 @@ namespace 3DL_io
 	//			  and make it extremely obvious when an error has occured. In the future we might want to add an extra argument to allow the user to
 	//			  log an error code with this message.
 	void ErrorIO(std::stringstream);
+
+	// @Function - getErrorLog
+	// @Input    - None 
+	// @Output   - Returns a vector of strings filled with every single error message that has been passed to ErrorIO during the course of the program.
+	std::vector<std::string> GetErrorLog();
 
 
 }

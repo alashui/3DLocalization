@@ -59,7 +59,10 @@ namespace MCL
 			return 
 		}
 		else
-			throw std::logic_error("Invalid Index in GetPerspective Call")
+		{
+			MCL::ErrorIO(new std::string(" Invalid Index Argument in GetPerspective Function Call"));
+			throw std::logic_error("Invalid Index in GetPerspective Call");
+		}
 	}
 
 	float Particle::getWeight() const

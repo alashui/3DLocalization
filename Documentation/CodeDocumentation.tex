@@ -27,27 +27,69 @@
 
     % === Section 1, Introduction === %
     \section{Introduction}
-    Accomplishing the task of successfully locating an actor in an environment using CV-derived features and a 3D model requires many individual steps. The success of the localization attempt depends strongly on the computation and data storage that is done before any attempt is made. With this in mind, we dicided to subdivide the task of localizing an actor into a three separate programs that must be run individually. Two of them are done before the localization attempt and are only needed to be run once for each map that an actor is attempting to localize itself in. The 3rd program is the actual localization code that matches features to figure out where the actor is in the given map.
+    Accomplishing the task of successfully locating an actor in an environment using CV-derived features and a 3D model requires many individual steps. The success of the localization attempt depends strongly on the computation and data storage that is done before any attempt is made. With this in mind, we dicided to subdivide the task of localizing an actor into a three separate programs that must be run individually. Two of them are done before the localization attempt and are only needed to be ran once for each map that an actor is attempting to localize itself in. The 3rd program is the actual localization code that matches features to figure out where the actor is in the given map.
 
-    % == Subsection 1.1, prelocalization == %
-    \subsection{Pre-Localization}
+        % == Subsection 1.1, prelocalization == %
+        \subsection{Pre-Localization}
 
-    \begin{enumerate}
-    \item PerspectiveGenerator
         \begin{enumerate}
-        \item Takes a 3d model and a list of points within that model.
-        \item Renders images from every point listed and saves them in a directory for feature processing. Works with .obj files. __TODO__ == Figure out if it works with .3ds and .dae files. == __TODO__
+        \item PerspectiveGenerator
+            \begin{enumerate}
+            \item Takes a 3d model and a list of points within that model.
+            \item Renders images from every point listed and saves them in a directory for feature processing. Works with .obj files. __TODO__ == Figure out if it works with .3ds and .dae files. == __TODO__
+            \end{enumerate}
+        \item DatabaseGenerator
+            \begin{enumerate}
+            \item Generates a database of computer-vision related feature data.
+            \item This feature data can range from greyscale image, black and white image, SURF/SIFT/ORB feature data and descriptors, or even images that are contrast tuned.
+            \item This program does the majority of the work and is the reason this Localization program can run efficiently in real time, it computes mounds of data and writes it all to file for future use.
+            \end{enumerate}
         \end{enumerate}
-    \item DatabaseGenerator
+  
+        \subsection{During Localization}
         \begin{enumerate}
-        \item Generates a database of computer-vision related feature data.
-        \item This feature data can range from greyscale image, black and white image, SURF/SIFT/ORB feature data and descriptors, or even images that are contrast tuned.
-        \item This program does the majority of the work and is the reason this Localization program can run efficiently in real time, it computes mounds of data and writes it all to file for future use.
+        \item 3DLocalization __TODO__ Think of a better name __TODO__
+            \begin{enumerate}
+            \item This program handles the live process of communicating with the robot, generating particles, weighing particles, and pursuing the general goal of localization.
+            \item This is also the most important program and will have the most effort put into it as far as code documentation and good coding practices go.
+            \item There are too many things to talk about to go into detail here, go to the section for this program later on in this document.
+            \end{enumerate}
         \end{enumerate}
-    \end{enumerate}
+
+
+%==== Section 2, Perspective Generator === %
+    \section{Perspective Generator}
+
+        \subsection{Overview}
+        \begin{enumerate}
+        \item General Purpose - The general purpose of this program is to convert a 3D model into a processable library of images that are rendered from different points in the model. This serves the purpose of allowing us to use existing 2D-Image feature detection algorithms (like Sped-Up Robust Feature Detection, or Scale Invariant Feature Detection) to match a 2D image feed from an actor to a point in a 3D model.
+        \item Dependencies
+            \begin{enumerate}
+            \item CMAKE 2.8 min.
+            \item OpenCV
+            \item Boost 1.46
+            \item OpenGL 3.3
+            \item GLEW Libraries
+            \item GLUT Libraries
+            \end{enumerate}
+        \end{enumerate}
+
+        \subsection{Errors and Successes}
+        \begin{enumerate}
+        \item 
+        \end{enumerate}
+
+        \subsection{Files}
+
+        
+
+
+
+%==== Section 3, Database Generator === %
+    \section{Database Generator}
+
   
-    \subsection{During Localization}
-  
+
   
 
 

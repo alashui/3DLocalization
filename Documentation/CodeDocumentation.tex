@@ -5,7 +5,7 @@
 \usepackage{fancyhdr}
 \usepackage{graphicx}
 \usepackage[top=.6in, bottom=.8in, left=.8in, right=.8in]{geometry}
-\title{3D Localization Program Code Documentation}
+\title{3D Localization Program \\ Official Code Documentation}
 \author{ \\[7in]  John Allard, Alex Rich \\ 2014 Summer Computer Science REU, Harvey Mudd College}
 \date{July 10th, 2014}
 
@@ -13,16 +13,27 @@
 \begin{document}
 
 % Title Page %
-	\maketitle
-	\newpage
+  \maketitle
+  \newpage
 
 % Table of Contents (autogen)
     \tableofcontents
     \newpage
 
 % Introduction to the program, abstract, keep it short %
-	\section{Introduction}
-	
+  \begin{abstract}
+  This is the official documentation for a series of interconnected programs written at Harvey Mudd during the summer of 2014 by John Allard and Alex Rich. The purpose of these programs is to successfully localize an actor in an environment using a preloaded 3D map, precomputed computer-vision related feature data, and a live image feed from an actor in the environment. The program starts with a large amount of guesses as to where the actor could be, and uses particle filtering to converge the particles upon the correct location in the environment. Read the research paper associated with this project for more information on the mathematics and other technicalities behind Monte Carlo Localization.
+  \end{abstract}
+
+  \section{Introduction}
+  This program will consist of 3 subprograms, each one vital to the successful location of an actor in a 3D environment. The programs are broken up into 2 main parts.
+  \begin{enumerate}
+  \item Pre-Localization - Before the user attempts to localize the robot in an environment using the Monte Carlo algorithm.
+  \item Localization - During the localization attemp.
+  \end{enumerate}
+
+  \subsection{Pre-Localization}
+
 
 
 

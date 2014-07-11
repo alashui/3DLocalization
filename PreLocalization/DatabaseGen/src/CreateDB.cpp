@@ -24,6 +24,8 @@
 #include "../../averageImage.h"
 #include "../../Similarity.h"
 
+// WOOOHOO
+
 using namespace cv;
 using namespace std;
 namespace fs = ::boost::filesystem;

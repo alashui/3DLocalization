@@ -19,4 +19,4 @@ For each model, a directory is created for all features computed. When `PreLocal
 #### /RenderedImages
 
 When the user generates images from a model inside of the */ModelData* directory using the PerspectiveGenerator program, a new directory under the same name is created here to store those generated images. 
-Do not change the names of the images stored in here, as they contain the perspective information for that information.
+Do not change the names of the images stored in here, as they contain the perspective information for that image.

@@ -115,7 +115,7 @@ namespace IO
 
         std::string filename;
         std::stringstream ss;
-        ss << "Input.txt"; // name of points file is the name of the model directory + input.txt
+        ss << "CurrentPoints.txt"; // name of points file is the name of the model directory + input.txt
         filename = ss.str();ss.str("");
 
         std::ofstream file1;

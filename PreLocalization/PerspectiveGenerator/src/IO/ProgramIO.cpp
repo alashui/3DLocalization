@@ -11,20 +11,17 @@ float beta = 0.0f;
 
 namespace IO
 {
+
     // @Input - path to the input file relative to the build folder of this project
     // @Output - bool letting the program know if everything succeeded okay
     bool parseInputFile(const char * name)
     {
         double values[6] = {0, 0, 0, 0, 0, 0}; // contains the x, y, z and perspective coordinated
-        double rotation[3] = {0, 0, 0};
         
         std::ifstream file(name);
 
         if (!file.is_open())
             return false;
-
-        std::string str;
-
 
         // get the camxyz and lookat values.
         while(!file.eof())
@@ -113,14 +110,18 @@ namespace IO
         miny = values[2]; maxy = values[3];
         z = values[4]; dif = values[5];
 
+        std::cout << "Input File Successfully Parsed. Generating Perspectives. " <<  std::endl;
+
         std::string filename;
         std::stringstream ss;
-        ss << "CurrentPoints.txt"; // name of points file is the name of the model directory + input.txt
+        ss << "CurrentPoints.txt"; // internally generated file to be used by other parts of this program
         filename = ss.str();ss.str("");
 
         std::ofstream file1;
         file1.open(filename.c_str());
 
+        // Go through the bounding box given by the user and generated distinct points at each grid intersection.
+        // Skip the ones predefined to be inside walls or other undesirable areas.
         double x = minx;
         double y = miny;
         for(int i = 0; i <= (maxx-minx)/dif; i++)
@@ -155,9 +156,13 @@ namespace IO
             x = minx+i*dif;
         }
         file1.close();
-        std::cout << "done making input file \n\n" << filename <<  std::endl;
 
-        parseInputFile(filename.c_str());
+        if(!parseInputFile(filename.c_str()))
+        {
+            std::cout << "Error Generating Output Points for Rendering. Please check directory names, or report a bug \n" <<
+            "at https://github.com/jhallard/3DLocalization" << std::endl;
+            return false;
+        }
 
         return true;
     }
@@ -202,6 +207,7 @@ namespace IO
     }
 
 
+    // Load textures from the texture files associated with the .obj/.3ds file. Map these textures onto the polygons.
     int LoadGLTextures()
     {
         ILboolean success;

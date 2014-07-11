@@ -1,13 +1,7 @@
-path to OBJ/MTL folder
-OBJ file name
-rotation{alpha, beta, r}
-cam{x, y, z, tx, ty, tz}
-cam{x, y, z, tx, ty, tz}
-cam{x, y, z, tx, ty, tz}
-cam{x, y, z, tx, ty, tz}
-cam{x, y, z, tx, ty, tz}
-cam{x, y, z, tx, ty, tz}
-cam{x, y, z, tx, ty, tz}
-cam{x, y, z, tx, ty, tz}
-cam{x, y, z, tx, ty, tz}
-cam{x, y, z, tx, ty, tz}
+Name of Directory with 3d model data inside of the /Data/ModelData/ directory.
+Name of the .obj/.3ds/.dae file that contains the vertex and polygon information inside of the above directory
+minx maxx miny maxy z delta
+
+//_____________Explanation________________//
+Line 3 is six floating point numbers separated by spaces that tell the program the plane it should taken images from.
+The minx/maxx miny/maxy represent the outer bounds of a rectangle around your map. The z value is the height that all of these images should be taken from. Delta is the spacing of the grid, the distance along either the x or y axis to the next iamge rendering point

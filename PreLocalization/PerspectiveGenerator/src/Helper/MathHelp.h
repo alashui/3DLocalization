@@ -1,5 +1,3 @@
-#pragma once
-
 #ifndef MATHHELP_H_
 #define MATHHELP_H_
 
@@ -59,10 +57,10 @@ extern const aiScene* scene;
 extern float scaleFactor;
 
 // Shader Names
-extern char *vertexfile;// = "../src/Shaders/VertexShader.vert";//../src/Shaders/VertexShader.vert";
-extern char *fragmentfile;// = "../src/Shaders/FragmentationShader.frag";//../src/Shaders/FragmentationShader.frag";    
+extern char *vertexfile;
+extern char *fragmentfile;
 
-extern std::map<std::string, GLuint> textureIdMap;// = new std::map<std::string, GLuint>();
+extern std::map<std::string, GLuint> textureIdMap;
 
 extern std::vector<struct Helper::MyMesh> myMeshes;
 

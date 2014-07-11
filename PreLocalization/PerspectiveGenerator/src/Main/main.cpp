@@ -50,18 +50,24 @@ int main(int argc, char **argv)
 
 
     if(argc == 2)
-        IO::generatePoints(argv[1]);
+    {
+        if(!IO::generatePoints(argv[1]))
+        {
+            std::cout << "Error Generating Images. Check Input File for Errors or report on Github. \n" << std::endl;
+        }
+    }
     else
-        std::cout << "Wrong number of command line arguments\n" << std::endl;
-//  Init GLEW
-    //glewExperimental = GL_TRUE;
+    {
+        std::cout << "You need to pass in a file of Input value.\n" << 
+        "See /PerspectiveGenerator/ProgramDesign/InputFileFormat.txt for help" << std::endl;
+    }
 
     glutInitWindowSize(width, height);
-    glutCreateWindow("OBJParser Demo");
+    glutCreateWindow("PerspectiveGenerator");
     
     glewInit();
     if (glewIsSupported("GL_VERSION_3_3"))
-        printf("Ready for OpenGL 3.3\n");
+        printf("OpenGL Version 3.3 detected\n");
     else {
         printf("OpenGL 3.3 not supported\n");
         return(1);
@@ -82,15 +88,14 @@ int main(int argc, char **argv)
     //  Init the app (load model and textures) and OpenGL
     if (!init())
     {
-        printf("Could not Load the Model\n");
+        printf("Could not Load the Model Correctly. Exiting.\n");
         return 0;
     }
 
 
     // return from main loop
     glutSetOption(GLUT_ACTION_ON_WINDOW_CLOSE, GLUT_ACTION_GLUTMAINLOOP_RETURNS);
-
-    //glutTimerFunc(1600, timer, 1);
+;
     glutMainLoop();
 
     // cleaning up
@@ -110,7 +115,7 @@ int init()
 {
     if (!IO::Import3DFromFile())
     {
-        std::cout << "Failed 3d model import\n\n"<< std::endl; 
+        std::cout << "Failed 3d model import\n"<< std::endl; 
         return(0);
     }
     IO::LoadGLTextures();

@@ -10,9 +10,11 @@
 
 #include "cvaux.h"
 
-#include <pcl/io/pcd_io.h>
+// #include <pcl/io/pcd_io.h>
 
-#include "boost/filesystem.hpp"   
+#include "boost/filesystem.hpp"  
+// #include <boost/lexical_cast.hpp>
+
 
 #include <iostream>
 #include <fstream>
@@ -52,9 +54,7 @@ void get_all(const fs::path& root, vector<fs::path>& ret)
         while(it != endit)
         {
             if (fs::is_regular_file(*it))
-            {
                 ret.push_back(it->path().filename());
-            }
             ++it;
         }
     }
@@ -232,11 +232,19 @@ int main(int argc, char** argv)
         string imfn = "/" + delimiter;
         string kpfn = "/" + delimiter;
 
+        int a = 10;
+stringstream ss;
+ss << a;
+string str = ss.str();
+
 
         for (int j = 0; j < 6; j++)
         {
-            imfn += boost::lexical_cast<string>(i->first[j]) + delimiter
-            kpfn += boost::lexical_cast<string>(i->first[j]) + delimiter;
+            stringstream ss;
+            ss << i->first[j];
+            string num = ss.str();
+            imfn += num + delimiter;
+            kpfn += num + delimiter;
         }
 
         imfn += ".jpg";

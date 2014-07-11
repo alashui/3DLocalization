@@ -34,7 +34,7 @@ The general purpose of this program is to take in 3D model and a file stating wh
 This program makes extensive use of OpenGL and some common OpenGL libraries. It also uses OpenCV to do the image writing.
 * OpenGL 3.3 minimum.
 * CMake 2.8 minimum
-* Boost 1.4 minimum
+* Boost 1.46 minimum
 * GLEW
 * GLUT
 * OpenCV 
@@ -45,8 +45,30 @@ This program makes extensive use of OpenGL and some common OpenGL libraries. It 
 
     Version 1.0. July 10th, 2014.
 
-
 ###Overview
 
+Takes a folder of images as input, outputs folders containing computed features for each folder.
+
+####Process
+
+   * First run the Perspective Generator. This will create the directory of images.
+   * Now run CreateDB:
+        `./CreateDB ModelName`
+   * What it does:
+      * Reads images from directory in `Data/RenderedImages`
+      * Computes various features, including
+         * SURF Descriptors
+         * SIFT Descriptors
+         * Average Pixel Sum images of size 50x50
+         * Above/Below images of same size
+      * Save images to corresponding folder.
+         * Both descriptors are saved in .yml files.
+         * Images are stored to `gsimages` and `bwimages`
+
+####Dependencies
+* CMake 2.8
+* Boost 1.46
+* OpenCV
 
 
+By John Allard and Alex Rich at HMC

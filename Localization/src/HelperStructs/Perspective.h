@@ -1,5 +1,4 @@
 // Perspective.h
-
 #include <cstdlib>
 
 struct perspective

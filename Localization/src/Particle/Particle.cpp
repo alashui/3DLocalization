@@ -56,7 +56,7 @@ namespace MCL
 		if(index >= 0 && index < 6)
 		{
 			std::vector<float> temp = perspective.ToVector();
-			return 
+			return temp[index];
 		}
 		else
 		{

@@ -6,21 +6,26 @@
 *
 **/
 
-#ifndef THREEDL_BOOTUP_H_
-#define THREEDL_BOOTUP_H_
+#ifndef MCL_BOOTUP_H_
+#define MCL_BOOTUP_H_
 
-#include "boost/filesystem.hpp"   
+#include "boost/filesystem.hpp"
+
 #include "opencv2/core/core.hpp"
 #include "opencv2/highgui/highgui.hpp"
+
 #include "../HelperStructs/Perspective.h"
 #include "../HelperStructs/Characterizer.h"
+
+#include "../Particle/Particle.h"
 
 
 using namespace cv;
 using namespace std;
+
 namespace fs = ::boost::filesystem;
 
-namespace DL_boot 
+namespace MCL
 {
     void GetAll(const fs::path& root, vector<fs::path>& ret);
     int LoadCharacterizers(string dirName, vector<Perspective> perspectives, map<Perspective, Characterizer, ComparePerspectives> masterMap);
@@ -31,7 +36,7 @@ namespace DL_boot
         LoadCharacterizers(dirName, perspectives, masterMap);
         ThreeDL_Robot::init();
         Particles::GenerateInitialParticles(perspectives, particles);
-        
+
         return perspectives.size();
     }
 

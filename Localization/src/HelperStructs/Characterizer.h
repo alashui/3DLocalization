@@ -6,10 +6,14 @@
 using namespace cv;
 using namespace std;
 
-struct Characterizer {
-    Mat image;
-    Mat bw;
-    Mat gs;
-    Mat surfs;
-    Mat sifts;
-};
+namespace MCL {
+
+    struct Characterizer {
+        Mat image;
+        Mat bw;
+        Mat gs;
+        Mat surfs;
+        Mat sifts;
+    };
+
+}

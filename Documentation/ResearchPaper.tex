@@ -49,8 +49,9 @@
   \begin{enumerate}
   \item An actor is let loose in the environment, and a large amount of guesses as to where it could be are randomly generated according to some distribution\footnote{The uniformity of this distribution depends on the users previous knowledge of the actors location.}. These 'guesses' are called particles, and each particle is a data structure that contains information about its own current perspective in the environment and the sensor data it would expect to read from that perspective.
   \item The program compares the current sensor readings from the actor to the expected sensor readings for each particle, and assigns a weight to each particle based on how strongly the readings correspond to one another.
-  \item Particles with low weights are thrown out, and some amount of randomly generated particles are added to the program. These new particles help prevent the actor from converging on a false-positive location in the environment.
-  \item The actor is moved to a new point in the environment via some movement commands from the program. Each particle that still exists has its perspective updated according to the same commands. The expected sensor readings for each particle are also updated to correspond to its new perspective of the environment.
+  \item A distribution is created according to the grouping and weighting of particles in the program. The more heavily weighted a particle is, the higher probability it has to be sampled from our distribution.
+  \item A new set of particles are sampled from this distibution, and a few particles are thrown into the mix from a uniform distribution. After this step the total number of particles in the program is the same as in the last step.
+  \item The actor is moved to a new point in the environment via some movement commands from the program. Each particle has its perspective updated according to the same commands, plus some statistical error based off of the uncertainty in the robots actual movements compared to the movement commands. The expected sensor readings for each particle are also updated to correspond to its new perspective of the environment.
   \item Steps 2-4 are repeated until the particles converge on a given perspective within the map. 
   \end{enumerate} 
   

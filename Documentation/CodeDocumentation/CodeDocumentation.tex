@@ -4,6 +4,8 @@
 \usepackage{amsmath}
 \usepackage{fancyhdr}
 \usepackage{graphicx}
+\newcommand{\itab}[1]{\hspace{0em}\rlap{#1}}
+\newcommand{\tab}[1]{\hspace{.2\textwidth}\rlap{#1}}
 \usepackage[top=.6in, bottom=.8in, left=.8in, right=.8in]{geometry}
 \title{3D Localization Project \\ Official Code Documentation}
 \author{ \\[6.5in]  John Allard, Alex Rich \\ 2014 Summer Computer Science REU, Harvey Mudd College}
@@ -80,6 +82,26 @@
         \item The program will only work on more modern OpenGL version. Go to consol and type \texttt{glxinfo | grep "OpenGL version"} to find out which version is currently running on your computer. If it is not 3.3 exactly, this program might not run correctly. It would be useful to fix this but it's too lengthy of a process to concentrate on currently.
         \item The 3D models are not normalized or scaled to proper real world scale. So 0.1 distance in the model might be 3 or 4 foot change in real life. So the program needs to have the \texttt{scale} variable adjusting according to each new model that the user tries to use.
         \end{enumerate}
+        
+        \subsection{Program Flow}
+	\begin{enumerate}
+	 \item Before you can run the program, you must first build it by going into the \texttt{PerspectiveGenerator/build/} directory and entering \texttt{cmake ..} then \texttt{make}.
+	 This will generate the \texttt{PerspectiveGenerator} executable inside the \texttt{PerspectiveGenerator/build/} folder. 
+	 \item Put a folder containing your 3D model, \texttt{.mtl} files, and texture files into the \texttt{3DLocalizer/Data/ModelData/} directory. 
+	 \item You will then need to hand type an input file for the program. This file must contain the following, line by line.
+	  \begin{itemize}
+	  \item Name of the folder containing your 3D model file.
+	  \item Name of the 3D model file inside the above folder.
+	  \item Bounding box for your 3D model in the following format : \\ \texttt{xmin xmax ymin ymax z gridDensity}. All are floating point numbers. The z height must be constant.
+	  The gridDensity value determines the spacing between consecutive image renderings.
+	  \end{itemize}
+	\item From the \texttt{PerspectiveGenerator/build/} folder, call the \texttt{PerspectiveGenerator} executable and pass in the name of the input file as an argument.
+	\item The program will take 10 seconds or so to load, when it does you will see a window with a rendering from a single point in the map. 
+	\item Click anywhere on the screen and the program will automatically go through all points generated inside your map and render images to the \texttt{/Data/RenderedImages/} folder
+	under the same name of your folder containing the model data.
+	\item When the program stops scrolling through the images (at about 20-25 per second), you can close the program.
+	\end{enumerate}
+
 
         \subsection{Directory Tree}
         \begin{itemize}
@@ -114,13 +136,13 @@
                 \end{itemize}
             \item \texttt{View/}
                 \begin{itemize}
-                \item \texttt{View.h}
-                \item \texttt{View.cpp}
+                \item \texttt{View.h} - This file declares all functions related to the view matrix for the program. The view matrix determines the properties of the camera, like the field of view, near and far points, etc.
+                \item \texttt{View.cpp} - Contains the definitions of all global variables and functions declared in \texttt{View.h}. 
                 \end{itemize}
             \end{itemize}%end src directory
         \item \texttt{/Localization/Inputfiles/}
 	    \begin{itemize} 
-            \item \texttt{PointGenInput.txt} - A sample input file for the program. 
+            \item \texttt{PointGenInput.txt} - A sample input file for the program. This file only works with the Sprague2ndFloor \texttt{.obj} file and is only left here as a concrete example of the InputFile formatting for this program.
             \end{itemize}
         \item \texttt{/Localization/ProgramDesign/}
             \begin{itemize}
@@ -148,6 +170,10 @@
         \item Above Below Image: Take the average intensity of the Average Pixel Sum Image. If a pixel in that image is lighter, make it white. If it's darker, make it black. This image is the same size as the Pixel Sum Image but is binary.
         \item Feature Descriptors: SURF and SIFT descriptors for extracted keypoints in each image.
       \end{itemize}
+    \end{enumerate}
+  \subsection{Program Flow}
+    \begin{enumerate}
+     \item 
     \end{enumerate}
   \subsection{Directory Tree}
     \begin{itemize}
@@ -178,15 +204,27 @@
 
   %=== Subsection 4.1, 3DLocalization Overview ===%
   \subsection{Localization Program Overview}
-  
-    \begin{enumerate}
-     \item Description
-    \end{enumerate}
+  As described earlier, this program is the one that actually uses the Monte Carlo Localization (MCL) algorithm and computer-vision derived feature data to localize an actor in an environment.
+  As also was described earlier, this program can only be ran after all of the pre-localization requirements have been met\footnote{For more information on these, see sections 2 and 3.}.
+  \\ An abstract description of this program would be the following :
+  \\ \texttt{1.) Load data necessary to localize the actor and generate guesses about the actors position.} 
+  \\ \texttt{2.) Loop through the MCL algorithm until your guesses converge on a location}
 
+  The coding goal of this program was to use practices that are generally accepted to be good\footnote{Practices like Object Oriented Programming, no jump points, proper naming conventions, and inline code documentation}.
+  This means abstracting the problem of localizing a robot into a series of classes and a series of independent functions. We also had to make decisions about adding a GUI
+  to the program, or which libraries we wanted to use for callback functionality. Our solutions to the problems will be documented and illustrated in the following sections.
+  
+   %=== Subsection 4.2, Directory Tree ===%
+  \subsection{Directory Tree}
   
   
-   %=== Subsection 4.1, 3DLocalization Overview ===%
-  \subsection{File Structure}
+     %=== Subsection 4.3, Classes ===%
+  \subsection{Classes}
+  
+  
+       %=== Subsection 4.4, Errors and Issues ===%
+  \subsection{Errors and Issues}
+  
   
 
 

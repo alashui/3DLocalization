@@ -29,7 +29,7 @@ SET(OBJ-Parser_HEADERS ${OBJ-Parser_HDRS} src/Shaders/ShaderFunctions.h src/View
 #########################################################
 # Include Files
 #########################################################
-add_executable(OpenGL-OBJ-Parser ${OBJ-Parser_SOURCES} ${OBJ-Parser_HEADERS_MOC} ${OBJ-Parser_FORMS_HEADERS} )
+add_executable(PerspectiveGenerator ${OBJ-Parser_SOURCES} ${OBJ-Parser_HEADERS_MOC} ${OBJ-Parser_FORMS_HEADERS} )
 
 ########################################################
 # Linking & stuff

@@ -1,5 +1,8 @@
 /**
-* Blah
+* 
+* @File ActiveParticles.cpp
+* @Author Alex Rich and John Allard. Summer 2014.
+* @Info Operations on active particles and particle generations.
 *
 **/
 
@@ -14,23 +17,60 @@ namespace MCL
 	Perspective ActiveParticles::makeGuess()
 	{
 		// First Determine Location
-		int avgx = 0;
-		int avgy = 0;
-		int avgz = 0;
+		float avgx = 0.0;
+		float avgy = 0.0;
+		float avgz = 0.0;
 
-		for (int i = 0; i < this->numParticles(); i++)
+		int totalPs = this->numParticles();
+
+		float maxx = 0.0;
+		float maxy = 0.0;
+		float maxz = 0.0;
+		float minx = 1000.0;
+		float miny = 1000.0;
+		float minz = 1000.0;
+
+		for (int i = 0; i < totalPs; i++)
 		{
 			Particle p(this->pList[i]);
-			avgx += p.getWeight() * p.getPerspective(0);
-			avgy += p.getWeight() * p.getPerspective(1);
-			avgz += p.getWeight() * p.getPerspective(2);
-		}
-		avgx = avgx / (this->avgWeight * this->numParticles);
-		avgy = avgy / (this->avgWeight * this->numParticles);
-		avgz = avgz / (this->avgWeight * this->numParticles);
+			float x = p.getPerspective(0);
+			float y = p.getPerspective(1);
+			float z = p.getPerspective(2);
+			float w = p.getWeight();
+			avgx += w * x;
+			avgy += w * y;
+			avgz += w * z;
 
-		
-		
+			maxx = x > maxx ? x : maxx;
+			minx = x < minx ? x : minx;
+			maxy = y > maxy ? y : maxy;
+			miny = y < miny ? y : miny;
+			maxz = z > maxz ? z : maxz;
+			minz = z < minz ? z : minz;
+		}
+
+		avgx = avgx / (this->avgWeight * totalPs);
+		avgy = avgy / (this->avgWeight * totalPs);
+		avgz = avgz / (this->avgWeight * totalPs);
+
+		float dx = (maxx - avgx) > (avgx - minx) ? (maxx - avgx) : (avgx - minx);
+		float dy = (maxy - avgy) > (avgy - miny) ? (maxy - avgy) : (avgy - miny);
+		float dz = (maxz - avgz) > (avgz - minz) ? (maxz - avgz) : (avgz - minz);
+
+		float dist = sqrt(dx * dx + dy * dy + dz * dz);
+
+		Particle myP(Perspective(avgx, avgy, avgz, 0, 0, 0));
+
+		// How do you average directions? 
+
+		for (int i = 0; i < totalPs; i++)
+		{
+			if (myP.Distance(pList[i]) < dist)
+			{
+				// TODO Count this point
+			}
+		}
+
 		return;
 	}
 		

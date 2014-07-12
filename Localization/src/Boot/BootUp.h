@@ -34,8 +34,8 @@ namespace MCL
                 map<Perspective, Characterizer, ComparePerspectives> masterMap)
     {
         LoadCharacterizers(dirName, perspectives, masterMap);
-        ThreeDL_Robot::init();
-        Particles::GenerateInitialParticles(perspectives, particles);
+        MCL::Robot_init();
+        // Particles::GenerateInitialParticles(perspectives, particles);
 
         return perspectives.size();
     }

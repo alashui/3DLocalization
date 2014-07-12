@@ -56,6 +56,8 @@ namespace MCL
 
 		bool setWeight(float);
 
+		float Distance(Particle);
+
 	//********-----------------------------------------------*******//
 	//*****-- Public Definitions, Constants, and other Fields--*****//
 	//********-----------------------------------------------*******//

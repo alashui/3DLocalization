@@ -81,6 +81,14 @@ namespace MCL
 			return false;
 	}
 
+	float Particle::Distance(Particle p)
+	{
+		float dx = p.getPerspective(0) - this->getPerspective(0);
+		float dy = p.getPerspective(1) - this->getPerspective(1);
+		float dz = p.getPerspective(2) - this->getPerspective(2);
+		
+		return sqrt(dx * dx + dy * dy + dz * dz);
+	}
 
 
 }

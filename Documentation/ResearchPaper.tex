@@ -23,7 +23,7 @@
  
   % ==  Paper Abstract   == %
   \begin{abstract}  
-  The Monte Carlo Localization (MCL) algorithm has been used in the past\footnote{ Dieter Fox, et al. Carnegie Mellon University, University of Bonn.} to successfully localize robots using 2D maps of an environment and a stream of range  sensor information. Our research group is attempting to implement the Monte Carlo Localization algorithms  using a 3D model of the environment and a feed of images from a robot in that environment. This entails the use of various computer vision algorithms to find and compare features between the image feed and our 3D model. This paper will outline the overall processes that our research group has undertaken to accomplish this task and an analysis of our resulting program. 
+  The Monte Carlo Localization (MCL) algorithm has been used in the past\footnote{ Dieter Fox, et al. Carnegie Mellon University, University of Bonn.} to successfully localize robots using 2D maps of an environment and a stream of range  sensor information. Our research group is attempting to implement the Monte Carlo Localization algorithm using a 3D model of the environment and a feed of images from a robot in that environment. This entails the use of various computer vision algorithms to find and compare features between the image feed and our 3D model. This paper will outline the overall processes that our research group has undertaken to accomplish this task and an analysis of our resulting program. 
   \end{abstract}
   
 %====================================%
@@ -41,7 +41,7 @@
   \item A map of the environment needs to be imported or constructed. This can be a 2D top-down map, a 3D map created with a 
   laser range sensing camera, or any other type of map associates distinguishable features with spacial coordinates.
   \item Some set of quantifable features about the map must be chosen. This enables a comparison between sensor readings from the actor and expected sensor readings from different places in the map.
-  \item These features about the map are computed from many different reference points and are stored for use during the localization attempt.
+  \item This step is optional.  Features from the map are computed from many different reference points and are stored for use during the localization attempt. This limits the possible particle locations compared to generating feature data at run-time, but it reduces the computational resources needed significantly and allows one to simply look up the data in a map or container. Pre-computing features also significantly reduces the complexity of the localization source code.
   \end{enumerate}
   
   During Localization Attempt :

@@ -69,6 +69,11 @@
 
         \subsection{Errors and Successes}
         \begin{enumerate}
+        \item Very Important : The .vert and .frag Shader files must have the same name before the extension. This took me like 2-3 days to figure out and I did not see it anywhere inside the documentation for OpenGL.
+        \item The program will only work on more modern OpenGL version. Go to consol and type 
+        \begin{verbatim}glxinfo | grep "OpenGL version" \end{verbatim} 
+        to find out which version is currently running on your computer. If it is not 3.3 exactly, this program might not run correctly. It would be useful to fix this but it's too lengthy of a process to concentrate on currently.
+        \item The 3D models are not normalized or scaled to proper real world scale. So 0.1 distance in the model might be 3 or 4 foot change in real life. So the program needs to have the \texttt{scale} variable adjusting according to each new model that the user tries to use.
         \item 
         \end{enumerate}
 

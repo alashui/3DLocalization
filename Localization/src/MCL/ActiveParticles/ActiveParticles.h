@@ -28,24 +28,26 @@ namespace MCL
 		ActiveParticles();
 		~ActiveParticles();
 
-		int generateDistribution();
-		void generateParticles(int amount);
+		int generateDistribution(int wantedSize = defaultDistributionSize);
+		void generateParticles(int amount = pList.size());
 		Perspective analyzeList();
 		int move(float x, float y, float theta);
 
-		vector<Particle> getParticleList();
+		vector<Particle> getParticleList() const;
 		void setParticleList(vector<Particle>);
 
-		vector<Perspective> getWeightHistory();
+		vector<Perspective> getWeightHistory() const;
 
-		vector<Perspective> getGuessHistory();
+		vector<Perspective> getGuessHistory() const;
 
-		vector<Perspective> getDistribution();
+		vector<Perspective> getDistribution() const;
 		void setDistribution(vector<Perspective>);
 
-		Perspective getGuess();
-		int getAvgWeight();
-		int getGeneration();
+		Perspective getGuess() const;
+		int getAvgWeight() const;
+		int getGeneration() const;
+		int numParticles() const;
 
+		const int defaultDistrbutionSize;
 	};
 }

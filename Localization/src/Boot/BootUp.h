@@ -6,8 +6,8 @@
 *
 **/
 
-#ifndef DL_BOOTUP_H_
-#define DL_BOOTUP_H_
+#ifndef THREEDL_BOOTUP_H_
+#define THREEDL_BOOTUP_H_
 
 #include "boost/filesystem.hpp"   
 #include "opencv2/core/core.hpp"
@@ -22,26 +22,20 @@ namespace fs = ::boost::filesystem;
 
 namespace DL_boot 
 {
-    // return the filenames of all files that have the specified extension
-    // in the specified directory and all subdirectories
-    void GetAll(const fs::path& root, vector<fs::path>& ret)
-    {  
-        if (!fs::exists(root)) return;
+    void GetAll(const fs::path& root, vector<fs::path>& ret);
+    int LoadCharacterizers(string dirName, vector<Perspective> perspectives, map<Perspective, Characterizer, ComparePerspectives> masterMap);
 
-        if (fs::is_directory(root))
-        {
-            fs::recursive_directory_iterator it(root);
-            fs::recursive_directory_iterator endit;
-            while(it != endit)
-            {
-                if (fs::is_regular_file(*it))
-                    ret.push_back(it->path().filename());
-                ++it;
-            }
-        }
+    int BootUp(string dirName, vector<Perspective> perspectives, vector<Particle> particles,
+                map<Perspective, Characterizer, ComparePerspectives> masterMap)
+    {
+        LoadCharacterizers(dirName, perspectives, masterMap);
+        ThreeDL_Robot::init();
+        Particles::GenerateInitialParticles(perspectives, particles);
+        
+        return perspectives.size();
     }
 
-    int LoadCharacterizers(string dirName, vector<Perspective> perspectives, map<Perspective, Characterizer, comparePerspectives> masterMap)
+    int LoadCharacterizers(string dirName, vector<Perspective> perspectives, map<Perspective, Characterizer, ComparePerspectives> masterMap)
     {
         string pathToData = "../../../Data";
         string toFeatures = pathToData + "/FeatureData/" + dirName;
@@ -105,6 +99,8 @@ namespace DL_boot
 
             Perspective P(ID);
 
+            perspectives.push_back(P);
+
             // Add it to our map
             masterMap[P] = tmp;
 
@@ -151,7 +147,26 @@ namespace DL_boot
                 return -1;
             }
         }
-        return masterMap.size();
+        return perspectives.size();
+    }
+
+    // return the filenames of all files that have the specified extension
+    // in the specified directory and all subdirectories
+    void GetAll(const fs::path& root, vector<fs::path>& ret)
+    {  
+        if (!fs::exists(root)) return;
+
+        if (fs::is_directory(root))
+        {
+            fs::recursive_directory_iterator it(root);
+            fs::recursive_directory_iterator endit;
+            while(it != endit)
+            {
+                if (fs::is_regular_file(*it))
+                    ret.push_back(it->path().filename());
+                ++it;
+            }
+        }
     }
 }
 

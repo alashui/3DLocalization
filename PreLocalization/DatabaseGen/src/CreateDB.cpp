@@ -240,12 +240,6 @@ int main(int argc, char** argv)
         string imfn = "/" + delimiter;
         string kpfn = "/" + delimiter;
 
-        int a = 10;
-stringstream ss;
-ss << a;
-string str = ss.str();
-
-
         for (int j = 0; j < 6; j++)
         {
             stringstream ss;

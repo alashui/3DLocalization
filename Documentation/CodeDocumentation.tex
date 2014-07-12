@@ -79,7 +79,21 @@
 
 
 %==== Section 3, Database Generator === %
-    \section{Database Generator}
+\section{Database Generator}
+\begin{enumerate}
+    \item Purpose - Creates a directory full of feature data to accompany each photo created by the Perspective Generator. 
+    \item Features include:
+    \begin{enumerate}
+        \item Average Pixel Sum Image: Take original image, split into divisions, then for each grid square, take the average pixel intensity. This grayscale image is small, around 50x50.
+        \item Above Below Image: Take the average intensity of the Average Pixel Sum Image. If a pixel in that image is lighter, make it white. If it's darker, make it black. This image is the same size as the Pixel Sum Image but is binary.
+        \item Feature Descriptors: SURF and SIFT descriptors for extracted keypoints in each image.
+    \end{enumerate}
+    \item Issues:
+    \begin{enumerate}
+        \item Needs some way to better filter keypoints.
+        \item Needs to accept more diverse features.
+    \end{enumerate}
+\end{enumerate}
 
   
 

@@ -6,7 +6,7 @@
 using namespace cv;
 using namespace std;
 
-struct characterizer {
+struct Characterizer {
     Mat image;
     Mat bw;
     Mat gs;

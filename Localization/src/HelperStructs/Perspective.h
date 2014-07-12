@@ -1,14 +1,14 @@
 // Perspective.h
 #include <cstdlib>
 
-struct perspective
+struct Perspective
 {
     float x;
     float y;
     float z;
-    float thetax;
-    float thetay;
-    float thetaz;
+    float dx;
+    float dy;
+    float dz;
 
     perspective(vector<float> v)
     {

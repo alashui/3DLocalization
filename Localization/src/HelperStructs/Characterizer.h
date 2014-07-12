@@ -12,4 +12,4 @@ struct Characterizer {
     Mat gs;
     Mat surfs;
     Mat sifts;
-}
+};

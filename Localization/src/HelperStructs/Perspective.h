@@ -1,5 +1,6 @@
 // Perspective.h
 #include <cstdlib>
+#include <vector>
 
 struct Perspective
 {
@@ -10,13 +11,10 @@ struct Perspective
     float dy;
     float dz;
 
-    perspective(vector<float> v)
-    {
-    	x = v[0];
-    	y = v[1];
-    	z = v[2];
-    	thetax = v[3];
-    	thetay = v[4];
-    	thetaz = v[5];
-    }
-}
+    Perspective(std::vector<float> v) : x(v[0]), y(v[1]), z(v[2]), dx(v[3]), dy(v[4]), dz(v[5]) { }
+};
+
+class comparePerspecives { // simple comparison function
+   public:
+      bool operator()(const Perspective& a,const Perspective& b) const { return (a.x- b.x)>0; } // returns x>y
+};

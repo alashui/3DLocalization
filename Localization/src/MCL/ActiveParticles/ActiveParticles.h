@@ -25,12 +25,27 @@ namespace MCL
 		float computeAvgWeight();
 
 	public:
-		ActiveParticles(arguments);
+		ActiveParticles();
 		~ActiveParticles();
 
-		void generateDistribution();
-		generateParticles(int amount);
+		int generateDistribution();
+		void generateParticles(int amount);
 		Perspective analyzeList();
-		move(float x, float y, float theta);
+		int move(float x, float y, float theta);
+
+		vector<Particle> getParticleList();
+		void setParticleList(vector<Particle>);
+
+		vector<Perspective> getWeightHistory();
+
+		vector<Perspective> getGuessHistory();
+
+		vector<Perspective> getDistribution();
+		void setDistribution(vector<Perspective>);
+
+		Perspective getGuess();
+		int getAvgWeight();
+		int getGeneration();
+
 	};
 }

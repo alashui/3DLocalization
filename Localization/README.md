@@ -1,7 +1,5 @@
-3D Robotic Localization
-========================
-
-## Using OpenCV and the Monte Carlo Localization algorithm.
+3D Robotic Localization Using CV and MCL.
+=====
 
 
 #### Overview

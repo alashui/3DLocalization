@@ -6,177 +6,183 @@
 *
 **/
 
+#ifndef MCL_ACTIVEPARTICLES_CPP_
+#define MCL_ACTIVEPARTICLES_CPP_
+
 #include "ActiveParticles.h"
 #include <boost/random/mersenne_twister.hpp>
 
 namespace MCL
 {
 
-	ActiveParticles::ActiveParticles() : generation(0), defaultDistributionSize(800) {}
-	
-	Perspective ActiveParticles::makeGuess()
-	{
-		// First Determine Location
-		float avgx = 0.0;
-		float avgy = 0.0;
-		float avgz = 0.0;
+    ActiveParticles::ActiveParticles() : generation(0), defaultDistributionSize(800) {}
+    
+    Perspective ActiveParticles::makeGuess()
+    {
+        // First Determine Location
+        float avgx = 0.0;
+        float avgy = 0.0;
+        float avgz = 0.0;
 
-		int totalPs = this->numParticles();
+        int totalPs = this->numParticles();
 
-		float maxx = 0.0;
-		float maxy = 0.0;
-		float maxz = 0.0;
-		float minx = 1000.0;
-		float miny = 1000.0;
-		float minz = 1000.0;
+        float maxx = 0.0;
+        float maxy = 0.0;
+        float maxz = 0.0;
+        float minx = 1000.0;
+        float miny = 1000.0;
+        float minz = 1000.0;
 
-		for (int i = 0; i < totalPs; i++)
-		{
-			Particle p(this->pList[i]);
-			float x = p.getPerspective(0);
-			float y = p.getPerspective(1);
-			float z = p.getPerspective(2);
-			float w = p.getWeight();
-			avgx += w * x;
-			avgy += w * y;
-			avgz += w * z;
+        for (int i = 0; i < totalPs; i++)
+        {
+            Particle p(this->pList[i]);
+            float x = p.getPerspective(0);
+            float y = p.getPerspective(1);
+            float z = p.getPerspective(2);
+            float w = p.getWeight();
+            avgx += w * x;
+            avgy += w * y;
+            avgz += w * z;
 
-			maxx = x > maxx ? x : maxx;
-			minx = x < minx ? x : minx;
-			maxy = y > maxy ? y : maxy;
-			miny = y < miny ? y : miny;
-			maxz = z > maxz ? z : maxz;
-			minz = z < minz ? z : minz;
-		}
+            maxx = x > maxx ? x : maxx;
+            minx = x < minx ? x : minx;
+            maxy = y > maxy ? y : maxy;
+            miny = y < miny ? y : miny;
+            maxz = z > maxz ? z : maxz;
+            minz = z < minz ? z : minz;
+        }
 
-		avgx = avgx / (this->avgWeight * totalPs);
-		avgy = avgy / (this->avgWeight * totalPs);
-		avgz = avgz / (this->avgWeight * totalPs);
+        avgx = avgx / (this->avgWeight * totalPs);
+        avgy = avgy / (this->avgWeight * totalPs);
+        avgz = avgz / (this->avgWeight * totalPs);
 
-		float dx = (maxx - avgx) > (avgx - minx) ? (maxx - avgx) : (avgx - minx);
-		float dy = (maxy - avgy) > (avgy - miny) ? (maxy - avgy) : (avgy - miny);
-		float dz = (maxz - avgz) > (avgz - minz) ? (maxz - avgz) : (avgz - minz);
+        float dx = (maxx - avgx) > (avgx - minx) ? (maxx - avgx) : (avgx - minx);
+        float dy = (maxy - avgy) > (avgy - miny) ? (maxy - avgy) : (avgy - miny);
+        float dz = (maxz - avgz) > (avgz - minz) ? (maxz - avgz) : (avgz - minz);
 
-		float dist = sqrt(dx * dx + dy * dy + dz * dz);
+        float dist = sqrt(dx * dx + dy * dy + dz * dz);
 
-		Particle myP(Perspective(avgx, avgy, avgz, 0, 0, 0));
+        Particle myP(Perspective(avgx, avgy, avgz, 0, 0, 0));
 
-		// How do you average directions? 
+        // How do you average directions? 
 
-		for (int i = 0; i < totalPs; i++)
-		{
-			if (myP.Distance(pList[i]) < dist)
-			{
-				// TODO Count this point
-			}
-		}
+        for (int i = 0; i < totalPs; i++)
+        {
+            if (myP.Distance(pList[i]) < dist)
+            {
+                // TODO Count this point
+            }
+        }
 
-		return;
-	}
-		
-	float ActiveParticles::computeAvgWeight()
-	{
-		float total = 0;
+        return;
+    }
 
-		for (int i = 0; i < this->pList; i++)
-		{
-			total += this->pList[i].getWeight();
-		}
-		float avg = total/this->pList.size();
-		this->weightHistory.push_back(avg);
-		return avg;
-	}
+    float ActiveParticles::computeAvgWeight()
+    {
+        float total = 0;
 
-	int ActiveParticles::generateDistribution(int wantedSize)
-	{
-		// Randomly generate a distribution based on 
-		// the weights of all elements in pList
-		int totalWeight = this->getAvgWeight() * this->numParticles();
+        for (int i = 0; i < this->pList; i++)
+        {
+            total += this->pList[i].getWeight();
+        }
+        float avg = total/this->pList.size();
+        this->weightHistory.push_back(avg);
+        return avg;
+    }
 
-		this->distribution.clear();
+    int ActiveParticles::generateDistribution(int wantedSize)
+    {
+        // Randomly generate a distribution based on 
+        // the weights of all elements in pList
+        int totalWeight = this->getAvgWeight() * this->numParticles();
 
-		for (int i = 0; i < this->pList.size(); i++)
-		{
-			int num = (this->weight * wantedSize) / totalWeight;
-			for (; num > 0; num--)
-				this->distribution.push_back(this->pList[i].getPerspective());
-		}
-		return 0;
-	}
+        this->distribution.clear();
 
-	void ActiveParticles::generateParticles(int amount)
-	{
-		this->pList.clear();
-		boost::random::uniform_int_distribution<> dist(0, this->distribution.size() - 1);
+        for (int i = 0; i < this->pList.size(); i++)
+        {
+            int num = (this->weight * wantedSize) / totalWeight;
+            for (; num > 0; num--)
+                this->distribution.push_back(this->pList[i].getPerspective());
+        }
+        return 0;
+    }
 
-		for (int i = 0; i < amount; i++)
-		{
-			int rndIdx = dist(time(0));
-			Perspective P = this->distribution[rndIdx];
-			pList.push_back(Particle(P));
-		}
-	}
-		
-	Perspective ActiveParticles::analyzeList()
-	{
-		this->computeAvgWeight();
-		this->generation++;
-		return this->makeGuess();
-	}
+    void ActiveParticles::generateParticles(int amount)
+    {
+        this->pList.clear();
+        boost::random::uniform_int_distribution<> dist(0, this->distribution.size() - 1);
 
-	int ActiveParticles::move(float x, float y, float theta)
-	{
-		// TODO
-		return 0;
-	}
+        for (int i = 0; i < amount; i++)
+        {
+            int rndIdx = dist(time(0));
+            Perspective P = this->distribution[rndIdx];
+            pList.push_back(Particle(P));
+        }
+    }
 
-	vector<Particle> ActiveParticles::getParticleList()
-	{
-		return this->pList;
-	}
+    Perspective ActiveParticles::analyzeList()
+    {
+        this->computeAvgWeight();
+        this->generation++;
+        return this->makeGuess();
+    }
 
-	void ActiveParticles::setParticleList(vector<Particle> pl)
-	{
-		this->pList = pl;
-	}
+    int ActiveParticles::move(float x, float y, float theta)
+    {
+        // TODO
+        return 0;
+    }
 
-	vector<Perspective> ActiveParticles::getWeightHistory()
-	{
-		return this->weightHistory;
-	}
+    vector<Particle> ActiveParticles::getParticleList()
+    {
+        return this->pList;
+    }
 
-	vector<Perspective> ActiveParticles::getGuessHistory()
-	{
-		return this->guessHistory;
-	}
+    void ActiveParticles::setParticleList(vector<Particle> pl)
+    {
+        this->pList = pl;
+    }
 
-	vector<Perspective> ActiveParticles::getDistribution()
-	{
-		return this->distribution;
-	}
-	
-	void ActiveParticles::setDistribution(vector<Perspective> dist)
-	{
-		this->distribution = dist;
-	}
+    vector<Perspective> ActiveParticles::getWeightHistory()
+    {
+        return this->weightHistory;
+    }
 
-	Perspective ActiveParticles::getGuess()
-	{
-		return this->guessHistory.back();
-	}
-	
-	int ActiveParticles::getAvgWeight()
-	{
-		return this->weightHistory.back();
-	}
-	
-	int ActiveParticles::getGeneration()
-	{
-		return this->generation;
-	}
+    vector<Perspective> ActiveParticles::getGuessHistory()
+    {
+        return this->guessHistory;
+    }
 
-	int ActiveParticles::numParticles()
-	
-{		return this->pList.size();
-	}
+    vector<Perspective> ActiveParticles::getDistribution()
+    {
+        return this->distribution;
+    }
+    
+    void ActiveParticles::setDistribution(vector<Perspective> dist)
+    {
+        this->distribution = dist;
+    }
+
+    Perspective ActiveParticles::getGuess()
+    {
+        return this->guessHistory.back();
+    }
+    
+    int ActiveParticles::getAvgWeight()
+    {
+        return this->weightHistory.back();
+    }
+    
+    int ActiveParticles::getGeneration()
+    {
+        return this->generation;
+    }
+
+    int ActiveParticles::numParticles()
+    
+    {       
+        return this->pList.size();
+    }
 }
+
+#endif

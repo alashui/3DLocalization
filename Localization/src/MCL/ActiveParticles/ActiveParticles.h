@@ -1,8 +1,8 @@
 /**
 *
-*	@File ActiveParticles.h
-*
-*
+*   @File ActiveParticles.h
+*   @Author Alex Rich and John Allard. Summer 2014
+*   @Info Header for Active Particles
 *
 **/
 
@@ -11,43 +11,43 @@
 
 namespace MCL
 {
-	class ActiveParticles
-	{
+    class ActiveParticles
+    {
 
-	private:
-		vector<Particle> pList;
-		unsigned generation;
-		vector<float> weightHistory;
-		vector<Perspective> guessHistory;
-		vector<Perspective> distribution;
+    private:
+        vector<Particle> pList;
+        unsigned generation;
+        vector<float> weightHistory;
+        vector<Perspective> guessHistory;
+        vector<Perspective> distribution;
 
-		Perspective makeGuess();
-		float computeAvgWeight();
+        Perspective makeGuess();
+        float computeAvgWeight();
 
-	public:
-		ActiveParticles();
-		~ActiveParticles();
+    public:
+        ActiveParticles();
+        ~ActiveParticles();
 
-		int generateDistribution(int wantedSize = defaultDistributionSize);
-		void generateParticles(int amount = pList.size());
-		Perspective analyzeList();
-		int move(float x, float y, float theta);
+        int generateDistribution(int wantedSize = defaultDistributionSize);
+        void generateParticles(int amount = pList.size());
+        Perspective analyzeList();
+        int move(float x, float y, float theta);
 
-		vector<Particle> getParticleList() const;
-		void setParticleList(vector<Particle>);
+        vector<Particle> getParticleList() const;
+        void setParticleList(vector<Particle>);
 
-		vector<Perspective> getWeightHistory() const;
+        vector<Perspective> getWeightHistory() const;
 
-		vector<Perspective> getGuessHistory() const;
+        vector<Perspective> getGuessHistory() const;
 
-		vector<Perspective> getDistribution() const;
-		void setDistribution(vector<Perspective>);
+        vector<Perspective> getDistribution() const;
+        void setDistribution(vector<Perspective>);
 
-		Perspective getGuess() const;
-		int getAvgWeight() const;
-		int getGeneration() const;
-		int numParticles() const;
+        Perspective getGuess() const;
+        int getAvgWeight() const;
+        int getGeneration() const;
+        int numParticles() const;
 
-		const int defaultDistrbutionSize;
-	};
+        const int defaultDistrbutionSize;
+    };
 }

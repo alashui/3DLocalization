@@ -80,7 +80,10 @@
   \item Define how tight of a grid we would like to impose over this plane.
   \item Go to each grid location and take images from 8 different perspectives, rotating from 0 to 360 degrees counting by 45 degree intervals.
   \item Name the images according to their location in the map and store them for later use.
-  
+  \end{enumerate}
+
+  What this process allows us to do is turn our 3D model into a catalogued database of 2D images from a large amount of places within our model. This allows us to use existing computer vision related algorithms (like SURF, SIFT, ORB, etc) to do the matching and weighing between places in our 3D model and the incoming image feed from the actor in the environment. 
+  Once the database of images was computed, the next step was computing another database of computer-vision derived features from these images.
 
 
 
@@ -89,6 +92,17 @@
 %===== Section 3, Computing Features from the Map ===== %
 %=======================================================%
   \section{Computing Features from the Map}
+  Having a database of images rendered from different locations in our map is only half of the battle. The next step is to go through each image and compute a large set of general feature data about each picture. The purpose of doing the during the pre-localization phase is that it will save us a large amount of computation from occuring during run-time. Computing and cataloging this data now will allow us to load it into a map during the boot phase of the localization process and simply look it up when needed at run-time.
+
+  \subsection{Types of Features}
+  % Talk about SIFT, SURF, B&W, greyscale, etc. types of features that are computed from the map.
+
+  \subsection{Feature and Descriptor Computation}
+  % Talk about the general process of going through the pictures and comnputing the necessary data.
+  
+  \subsection{Storing the Features}
+  %Talk about how we store the features (whats a yml file, how are they names, etc.)
+
 
 
 

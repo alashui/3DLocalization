@@ -9,6 +9,17 @@
 #ifndef MCL_ACTIVEPARTICLES_H_
 #define MCL_ACTIVEPARTICLES_H_
 
+#include "../../Helpers/Globals/Globals.h"
+#include "../../Helpers/Perspective.h"
+#include "../../Particle/Particle.h"
+#include <boost/random/mersenne_twister.hpp>
+
+#include <vector>
+#include <stdlib>
+// #include "../../Helpers/Characterize.h"
+
+using namespace std;
+
 namespace MCL
 {
     class ActiveParticles

@@ -6,11 +6,7 @@
 *
 **/
 
-#ifndef MCL_ACTIVEPARTICLES_CPP_
-#define MCL_ACTIVEPARTICLES_CPP_
-
 #include "ActiveParticles.h"
-#include <boost/random/mersenne_twister.hpp>
 
 namespace MCL
 {
@@ -155,9 +151,9 @@ namespace MCL
                     {
                         if (perspectives[j].x == newx && perspectives[j].y == newy && perspectives[j].z == newz)
                         {
-                            myV[3] = perspectives[j - 1].x;
-                            myV[4] = perspectives[j - 1].y;
-                            myV[5] = perspectives[j - 1].z;
+                            myV[3] = perspectives[j + 1].x;
+                            myV[4] = perspectives[j + 1].y;
+                            myV[5] = perspectives[j + 1].z;
                             break;
                         }
                     }
@@ -171,16 +167,16 @@ namespace MCL
                     {
                         if (perspectives[j].x == newx && perspectives[j].y == newy && perspectives[j].z == newz)
                         {
-                            myV[3] = perspectives[j + 1].x;
-                            myV[4] = perspectives[j + 1].y;
-                            myV[5] = perspectives[j + 1].z;
+                            myV[3] = perspectives[j - 1].x;
+                            myV[4] = perspectives[j - 1].y;
+                            myV[5] = perspectives[j - 1].z;
                             break;
                         }
                     }
                 }
             }
             Perspective P = Perspective(myV);
-            if (find(particles.begin(), particles.end(), P) != particles.end())
+            if (find(perspectives.begin(), perspectives.end(), P) != perspectives.end())
                 newPList.push_back(Particle(Perspective(myV)));
         }
         return 0;
@@ -237,5 +233,3 @@ namespace MCL
         return this->pList.size();
     }
 }
-
-#endif

@@ -258,10 +258,12 @@ namespace Render
                     p->z = pixels[index++];
                 }
             }
+
             std::stringstream ss;
             ss << generatedImagesDirectory << modelDirectoryName << "_" << camera[0] << "_" << camera[1] << "_" << camera[2] << "_" << 
             translation[0] << "_" <<  translation[1] << "_" <<  translation[2] << "_" << fileExt;
             std::string z = ss.str();
+            std::cout << "\n" << z << std::endl;
             cv::imwrite(z, image);
             imageNum++;
             delete [] pixels;

@@ -1,4 +1,5 @@
 #include "ProgramIO.h"
+#include "boost/filesystem.hpp"
 
 
 Assimp::Importer importer;
@@ -93,9 +94,20 @@ namespace IO
         getline( file, str);
         modelDirectoryName = str;
 
+
         // get the name of the obj file
         getline( file, str);
         modelname = str;
+
+        boost::filesystem::path old_path(boost::filesystem::current_path());
+        boost::filesystem::current_path(generatedImagesDirectory);
+        boost::filesystem::path ndir(modelDirectoryName);
+
+        if(!boost::filesystem::exists(ndir))
+            if(boost::filesystem::create_directory(ndir));
+                std::cout << "New rendered images directory created";
+
+        boost::filesystem::current_path(old_path);
 
         int count = 0;
         int j = 0;
@@ -119,6 +131,7 @@ namespace IO
         miny = values[2]; maxy = values[3];
         z = values[4]; dif = values[5];
         theta = values[6];
+        std::cout << "\n Theta = " << theta << std::endl;
         int ntheta = (int) theta;
 
         if(ntheta < 0)
@@ -138,6 +151,8 @@ namespace IO
             ntheta = 60;
         else
             ntheta = 90;
+
+        std::cout << "\n Theta = " << ntheta << std::endl;
 
 
         std::cout << "Input File Successfully Parsed. Generating Perspectives. " <<  std::endl;
@@ -168,7 +183,7 @@ namespace IO
                 int currentangle = 0;
                 for(int i = 0; i < (360/ntheta); i++)
                 {
-                    double tempangle = (double)currentangle*3.14159/360.0;
+                    double tempangle = (double)currentangle*3.14159/180.0;
                     ss << x << " " << y << " " << z << " " <<  round(cos(tempangle)) << " " << round(sin(tempangle)) << " " << 0 << " " << "\n";
                     file1 << ss.str();ss.str("");
                     currentangle+=ntheta;

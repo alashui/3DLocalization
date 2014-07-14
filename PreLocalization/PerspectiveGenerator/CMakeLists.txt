@@ -5,13 +5,14 @@ project (OBJ-Parser)
 #########################################################
 # FIND OPENGL
 #########################################################
+set(Boost_USE_STATIC_LIBS off)
+set(Boost_USE_MULTITHREADED ON)
+set(Boost_USE_STATIC_LIBS_RUNTIME OFF)
 find_package(OpenGL REQUIRED)
-#find_package( catkin REQUIRED COMPONENTS roscpp )
 find_package( OpenCV REQUIRED )
-find_package( Boost REQUIRED )
+find_package(Boost 1.46.1 COMPONENTS filesystem system)
 
-include_directories(${OpenGL_INCLUDE_DIRS})
-#include_directories(${OpenCV_INCLUDE_DIRS})
+include_directories(${Boost_INCLUDE_DIRS} ${OpenGL_INCLUDE_DIRS})
 include_directories(${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_CURRENT_BINARY_DIR})
 
 link_directories(${OpenGL_LIBRARY_DIRS})
@@ -34,5 +35,5 @@ add_executable(PerspectiveGenerator ${OBJ-Parser_SOURCES} ${OBJ-Parser_HEADERS_M
 ########################################################
 # Linking & stuff
 #########################################################
-target_link_libraries(PerspectiveGenerator GL GLU IL GLEW glut X11 pthread opencv_imgproc opencv_highgui opencv_core ${OpenCV_LIBRARIES} ${catkin_LIBRARIES} ${QT_LIBRARIES} /usr/local/lib/libassimp.so /opt/ros/hydro/lib/libcv_bridge.so /usr/lib/libopencv_core.so.2.3.1 )
+target_link_libraries(PerspectiveGenerator GL GLU IL GLEW glut X11 pthread opencv_imgproc opencv_highgui opencv_core ${Boost_LIBRARIES} ${OpenCV_LIBRARIES} ${catkin_LIBRARIES} ${QT_LIBRARIES} /usr/local/lib/libassimp.so /opt/ros/hydro/lib/libcv_bridge.so /usr/lib/libopencv_core.so.2.3.1 )
 

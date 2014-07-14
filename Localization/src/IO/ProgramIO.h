@@ -48,7 +48,7 @@ namespace MCL
 	// @Function - PrintErrorLog
 	// @Input    - Nothing
 	// @Output   - Nothing returned, outputs every single error message inside of the error_log vector to the screen in a specific format.
-	void PrintErrorLog() const;
+	void PrintErrorLog();
 
 
 }

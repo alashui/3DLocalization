@@ -55,7 +55,7 @@ namespace MCL
 	// @Function - PrintErrorLog
 	// @Input    - Nothing
 	// @Output   - Nothing returned, outputs every single error message inside of the error_log vector to the screen in a specific format.
-	void PrintErrorLog() const
+	void PrintErrorLog()
 	{
 		std::cout << " \033[1;31" <<" Printing Error Log. " << error_log.size() << " Total Errors." << std::endl;
 		for(int i = 0; i < error_log.size(); i++)

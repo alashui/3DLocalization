@@ -1,0 +1,21 @@
+\contentsline {section}{\numberline {1}Introduction}{3}
+\contentsline {subsection}{\numberline {1.1}License and Info}{3}
+\contentsline {subsection}{\numberline {1.2}Pre-Localization}{3}
+\contentsline {subsection}{\numberline {1.3}During Localization}{3}
+\contentsline {section}{\numberline {2}Perspective Generator}{5}
+\contentsline {subsection}{\numberline {2.1}Overview}{5}
+\contentsline {subsection}{\numberline {2.2}Program Flow}{5}
+\contentsline {subsection}{\numberline {2.3}Directory Tree}{5}
+\contentsline {subsection}{\numberline {2.4}Issues and Fixes}{6}
+\contentsline {section}{\numberline {3}Database Generator}{7}
+\contentsline {subsection}{\numberline {3.1}Overview}{7}
+\contentsline {subsection}{\numberline {3.2}Program Flow}{7}
+\contentsline {subsection}{\numberline {3.3}Directory Tree}{7}
+\contentsline {subsection}{\numberline {3.4}Issues and Fixes}{7}
+\contentsline {section}{\numberline {4}3D Localization}{8}
+\contentsline {subsection}{\numberline {4.1}Localization Program Overview}{8}
+\contentsline {subsection}{\numberline {4.2}Program Flow}{8}
+\contentsline {subsection}{\numberline {4.3}Building the Program}{8}
+\contentsline {subsection}{\numberline {4.4}Directory Tree}{8}
+\contentsline {subsection}{\numberline {4.5}Classes}{9}
+\contentsline {subsection}{\numberline {4.6}Errors and Issues}{9}

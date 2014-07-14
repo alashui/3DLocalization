@@ -10,6 +10,9 @@
 #ifndef MCL_PARTICLE_H_
 #define MCL_PARTICLE_H_
 
+#include "../HelperStructs/Perspective.h"
+#include "../IO/ProgramIO.cpp"
+
 namespace MCL
 {
 
@@ -20,9 +23,9 @@ namespace MCL
 	//********---------------------********//
 	//*****-- Private Member Fields --*****//
 	//********---------------------********//
-		MCL::Perspective perspective;
+		MCL::Perspective perspective;         // the current perspective associated with the particle
 
-		float weight;
+		float weight;                         // the weighting assigned to the particle based on its match with the actors image.
 
 	//********------------------------********//
 	//*****-- Private Member Functions --*****//
@@ -35,35 +38,35 @@ namespace MCL
 	//**********------------**********//
 
 		//====Constructor====//
-		Particle();
+		Particle();                              // Default constructor, initializes members to default values.
 
-		Particle(Perspective);
-
-		Particle(Perspective, float)
+ 		Particle(Perspective);                   // Initialize with a perspective abject.
+ 
+		Particle(Perspective, float);             // Initialize with a perspective and a weight.
 
 		//====Destructor====//
-		~Particle();
-
+		~Particle();                             // Place holder for a destructor, not needed right now.
+ 
 
 		//====Get and Set====//
 		bool SetPerspective(Perspective);
 
-		MCL::Perspective getPerspective() const;
+		MCL::Perspective getPerspective() const; // Get the perspective associated with this particle
 
-		float getPerspective(int) const;  // Throws std::logic_error if argument is < 0 or > 5
+		float getPerspective(int) const;         // Throws std::logic_error if argument is < 0 or > 5
 
-		float getWeight() const;
+		float getWeight() const;                 // Get the current weight associated with this particle
 
-		bool setWeight(float);
+		bool setWeight(float);                   // Set the weighting for the particle
 
-		float Distance(Particle);
+		float Distance(Particle);                // Get the Euclidean distance from one particle to this one
 
 	//********-----------------------------------------------*******//
 	//*****-- Public Definitions, Constants, and other Fields--*****//
 	//********-----------------------------------------------*******//
-		const float weightmin;
-		const float weightmax;
-		const float defaultweight;
+		const float weightmin;                   // minimum weight that can be assigned to a particle
+		const float weightmax;					 // maximum weight that can be assigned to a particle
+		const float defaultweight;               // default weight for a particle (current 10, out of 100)
 	};
 
 }

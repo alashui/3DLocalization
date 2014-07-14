@@ -106,8 +106,8 @@
 	  \begin{itemize}
 	  \item Name of the folder containing your 3D model file.
 	  \item Name of the 3D model file inside the above folder.
-	  \item Bounding box for your 3D model in the following format : \\ \texttt{xmin xmax ymin ymax z gridDensity}. All are floating point numbers. 
-	  The z height must be constant.The gridDensity value determines the spacing between consecutive image renderings.
+	  \item Bounding box for your 3D model in the following format : \\ \texttt{xmin xmax ymin ymax z gridDensity dtheta}. All are floating point numbers. 
+	  The z height must be constant.The gridDensity value determines the spacing between consecutive image renderings. the dTheta detemines the angle we rotate by when generated images from a single point with different perspectives.
 	  \end{itemize}
 	\item From the \texttt{/PerspectiveGenerator/build/} folder, call the \texttt{./PerspectiveGenerator} executable and pass in the name of the input file as an argument.
 	\item The program will take 10 seconds or so to load, when it does you will see a window with a rendering from a single point in the map. 

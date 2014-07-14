@@ -105,7 +105,16 @@ namespace IO
 
         if(!boost::filesystem::exists(ndir))
             if(boost::filesystem::create_directory(ndir));
-                std::cout << "New rendered images directory created";
+                std::cout << "New Rendered Images Directory Created : "  << ndir << std::endl;
+
+        boost::filesystem::current_path(old_path);
+
+        boost::filesystem::current_path(generatedInputDirectory);
+        boost::filesystem::path ndir2(modelDirectoryName);
+
+        if(!boost::filesystem::exists(ndir2))
+            if(boost::filesystem::create_directory(ndir2));
+                std::cout << "New Generated Input Directory Created :" << ndir2 << std::endl;
 
         boost::filesystem::current_path(old_path);
 
@@ -131,7 +140,6 @@ namespace IO
         miny = values[2]; maxy = values[3];
         z = values[4]; dif = values[5];
         theta = values[6];
-        std::cout << "\n Theta = " << theta << std::endl;
         int ntheta = (int) theta;
 
         if(ntheta < 0)
@@ -152,7 +160,16 @@ namespace IO
         else
             ntheta = 90;
 
-        std::cout << "\n Theta = " << ntheta << std::endl;
+        std::ofstream generatedInputfile;
+        std::stringstream sss;
+        sss << generatedInputDirectory << modelDirectoryName << "InputInfo.txt";
+        generatedInputfile.open(sss.str().c_str());
+
+        generatedInputfile << dif << "\n";
+        generatedInputfile << theta << "\n";
+
+        generatedInputfile.close();
+
 
 
         std::cout << "Input File Successfully Parsed. Generating Perspectives. " <<  std::endl;
@@ -401,6 +418,10 @@ namespace IO
             translation[0] = temp[3];
             translation[1] = temp[4];
             translation[2] = temp[5];
+        }
+        else
+        {
+            std::cout << "need 6 values, didn't get 6" << std::endl;
         }
 
         std::cout << "#" << currentPerspective << " [" << camera[0] << " " << camera[1] << " " << camera[2] << "]" << std::endl;

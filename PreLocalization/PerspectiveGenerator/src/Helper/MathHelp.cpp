@@ -54,6 +54,7 @@ int perspectiveCount = 0;
 bool start = false;
 int imageNum = 0;
 std::string generatedImagesDirectory = "../../../Data/RenderedImages/";
+std::string generatedInputDirectory = "../../../Data/InputData/";
 std::string fileExt = ".jpg";
 std::string modelname;
 std::string modelDirectoryName;

@@ -207,7 +207,6 @@ namespace Render
 
         View::setCamera(camera[0], camera[1], camera[2],translation[0], translation[1], translation[2]);
 
-        step += .02;
         // set the model matrix to the identity Matrix
         MathHelp::setIdentityMatrix(modelMatrix,4);
 

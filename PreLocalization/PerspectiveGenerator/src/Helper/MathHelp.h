@@ -89,6 +89,7 @@ extern int perspectiveCount;
 extern bool start;
 extern int imageNum;
 extern std::string generatedImagesDirectory;
+extern std::string generatedInputDirectory;
 extern std::string fileExt;
 extern std::string modelname;
 extern std::string modelDirectoryName;

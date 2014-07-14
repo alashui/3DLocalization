@@ -6,6 +6,7 @@
 #include <cstdlib>
 #include <vector>
 #include <cmath>
+#include <string>
 
 namespace MCL
 {
@@ -28,60 +29,6 @@ namespace MCL
             return p;
         }
 
-        std::vector<int> Direction(string LorR);
-        {
-            std::vector<int> v;
-            v.push_back((int) dx);
-            v.push_back((int) dy);
-            v.push_back((int) dz);
-
-            bool left = (LorR == "LEFT");
-            switch(v)
-            {
-                case vec3(1, 0, 0):
-                    if (left)
-                        return vec3(1, 1, 0);
-                    else
-                        return vec3(1, -1, 0);
-                case vec3(1, 1, 0):
-                    if (left)
-                        return vec3(0, 1, 0);
-                    else
-                        return vec3(1, 0, 0);
-                case vec3(0, 1, 0):
-                    if (left)
-                        return vec3(-1, 1, 0);
-                    else
-                        return vec3(1, 1, 0);
-                case vec3(-1, 1, 0):
-                    if (left)
-                        return vec3(-1, 0, 0);
-                    else
-                        return vec3(0, 1, 0);
-                case vec3(-1, 0, 0):
-                    if (left)
-                        return vec3(-1, -1, 0);
-                    else
-                        return vec3(-1, 1, 0);
-                case vec3(1, 0, 0):
-                    if (left)
-                        return vec3(1, 1, 0);
-                    else
-                        return vec3(1, -1, 0);
-                case vec3(1, 0, 0):
-                    if (left)
-                        return vec3(1, 1, 0);
-                    else
-                        return vec3(1, -1, 0);
-                case vec3(1, 0, 0):
-                    if (left)
-                        return vec3(1, 1, 0);
-                    else
-                        return vec3(1, -1, 0);
-            }
-            return v;
-        }
-
         inline bool operator==(const Perspective& a) {
             float eps = 0.00001;
             std::vector<float> v1 = this->ToVector();
@@ -98,14 +45,6 @@ namespace MCL
           bool operator()(const Perspective& a,const Perspective& b) const { return (a.x- b.x)>0; } // returns x>y
     };
 
-    std::vector<int> vec3(int x, int y, int z)
-    {
-        std::vector<int> v;
-        v.push_back(x);
-        v.push_back(y);
-        v.push_back(z);
-        return v;
-    }
 }
 
 #endif

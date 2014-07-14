@@ -13,6 +13,9 @@ namespace MCL
 {
 	// vector of strings that contain all of the error messages passed to the ErrorIO function
 	std::vector<std::string> error_log;
+	const std::string red = "\033[1;31m";
+	const std::string yellow = "\033[1;33m";
+	const std::string reset = "\033[0m";
 
 	// @Function - DebugIO
 	// @Input    - SS object containing the output message
@@ -21,7 +24,7 @@ namespace MCL
 	// 			  with inline debugging output messages.
 	void DebugIO(std::string ss)
 	{
-		std::cout << "\033[1;33" << ss << std::endl;
+		std::cout << yellow << ss << reset << std::endl;
 	}
 
 	// @Function - UserIO
@@ -41,7 +44,7 @@ namespace MCL
 	void ErrorIO(std::string ss)
 	{
 		error_log.push_back(ss);
-		std::cout  << " \033[1;31" <<" Error #" << error_log.size() << " " << ss << std::endl;
+		std::cout  << red <<" Error #" << error_log.size() << " " << ss << reset << std::endl;
 	}
 
 	// @Function - getErrorLog
@@ -57,10 +60,10 @@ namespace MCL
 	// @Output   - Nothing returned, outputs every single error message inside of the error_log vector to the screen in a specific format.
 	void PrintErrorLog()
 	{
-		std::cout << " \033[1;31" <<" Printing Error Log. " << error_log.size() << " Total Errors." << std::endl;
+		std::cout << red <<" Printing Error Log. " << error_log.size() << " Total Errors." << reset << std::endl;
 		for(int i = 0; i < error_log.size(); i++)
 		{
-			std::cout << " \033[1;31" <<" Error #" << i << " " << error_log[i] << std::endl;
+			std::cout << red <<" Error #" << i << " " << error_log[i] << reset <<std::endl;
 		}
 	}
 

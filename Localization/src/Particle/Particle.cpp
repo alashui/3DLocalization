@@ -12,7 +12,7 @@
 namespace MCL
 {
 
-	Particle::Particle() :
+	MCL::Particle::Particle() :
 	weightmin(0), weightmax(100), defaultweight(10), perspective()
 	{
 		weight = defaultweight;
@@ -60,8 +60,9 @@ namespace MCL
 		}
 		else
 		{
-			MCL::ErrorIO( std::string(" Invalid Index Argument in GetPerspective Function Call"));
-			throw logic_error("Invalid Index in GetPerspective Call");
+			std::string temp = "Invalid Index Argument in GetPerspective Function Call";
+			MCL::ErrorIO(temp);
+			throw std::logic_error(temp);
 		}
 	}
 
@@ -70,7 +71,7 @@ namespace MCL
 		return this->weight;
 	}
 
-	bool Particle::setWeight(float)
+	bool Particle::setWeight(float w)
 	{
 		if(w >= weightmin && w <= weightmax)
 		{

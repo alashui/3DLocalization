@@ -11,6 +11,7 @@
 #include <fstream>
 #include <sstream>
 #include <fstream>
+#include <cmath>
 
 
 // Create an instance of the Importer class
@@ -36,6 +37,9 @@ namespace IO
     bool parseInputFile(const char *);
 
     bool generatePoints(char *);
+
+    // round a floating point number to two decimal places
+    float round(float x);
     
 
     // Finds and loads the .obj file that contains the 3D model data.

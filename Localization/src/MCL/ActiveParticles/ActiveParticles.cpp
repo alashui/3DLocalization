@@ -138,7 +138,7 @@ namespace MCL
         for (int i = 0; i < pList.size(); i++)
         {
             Particle myP = pList[i];
-            vector myV = myP.getPerspective().ToVector();
+            vector<float> myV = myP.getPerspective().ToVector();
             myV[0] += x;
             myV[1] += y;
             myV[2] += z;
@@ -149,11 +149,11 @@ namespace MCL
                 {
                     for (int j = 2; j < perspectives.size(); j++)
                     {
-                        if (perspectives[j].x == newx && perspectives[j].y == newy && perspectives[j].z == newz)
+                        if (perspectives[j].dx == newx && perspectives[j].dy == newy && perspectives[j].dz == newz)
                         {
-                            myV[3] = perspectives[j + 1].x;
-                            myV[4] = perspectives[j + 1].y;
-                            myV[5] = perspectives[j + 1].z;
+                            myV[3] = perspectives[j + 1].dx;
+                            myV[4] = perspectives[j + 1].dy;
+                            myV[5] = perspectives[j + 1].dz;
                             break;
                         }
                     }
@@ -165,11 +165,11 @@ namespace MCL
                 {
                     for (int j = 0; j < perspectives.size() - 1; j++)
                     {
-                        if (perspectives[j].x == newx && perspectives[j].y == newy && perspectives[j].z == newz)
+                        if (perspectives[j].dx == newx && perspectives[j].dy == newy && perspectives[j].dz == newz)
                         {
-                            myV[3] = perspectives[j - 1].x;
-                            myV[4] = perspectives[j - 1].y;
-                            myV[5] = perspectives[j - 1].z;
+                            myV[3] = perspectives[j - 1].dx;
+                            myV[4] = perspectives[j - 1].dy;
+                            myV[5] = perspectives[j - 1].dz;
                             break;
                         }
                     }

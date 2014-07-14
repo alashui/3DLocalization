@@ -136,9 +136,17 @@ namespace MCL
         return this->makeGuess();
     }
 
-    int ActiveParticles::move(float x, float y, float theta)
+    int ActiveParticles::move(float x, float y, float z, float theta)
     {
-        // TODO
+        vector<Particle> newPList;
+        for (int i = 0; i < pList.size(); i++)
+        {
+            Particle myP = pList[i];
+            vector myV = myP.getPerspective().ToVector();
+            myV[0] += x;
+            myV[1] += y;
+            myV[2] += z;
+        }
         return 0;
     }
 

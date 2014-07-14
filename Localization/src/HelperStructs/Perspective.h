@@ -10,6 +10,8 @@
 
 namespace MCL
 {
+    std::vector<int> vec3(int x, int y, int z);
+
     struct Perspective
     {
         float x;
@@ -28,7 +30,7 @@ namespace MCL
             std::vector<float> p(6); p.push_back(x); p.push_back(y); p.push_back(z); p.push_back(dx); p.push_back(dy); p.push_back(dz);
             return p;
         }
-
+        
         inline bool operator==(const Perspective& a) {
             float eps = 0.00001;
             std::vector<float> v1 = this->ToVector();

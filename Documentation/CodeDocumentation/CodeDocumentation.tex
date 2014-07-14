@@ -243,52 +243,94 @@
   
   %=== Subsection 4.2, Directory Tree ===%
   \subsection{Program Flow}
+  This section will only provide an overview of how the program runs and will avoid the technical details. A more detailed description of the parts of this program are discussed later in this document.
+  
   \begin{enumerate}
-   \item
+   \item Building the program
+     \begin{itemize}
+       \item Ensure that you have all dependencies listed in \emph{Section 4.3, Building the Program}.
+       \item Navigate to the \texttt{/Localization/build/} folder via the terminal.
+       \item Enter \texttt{cmake ..} follow by \texttt{make} into the terminal to build the program.
+       \item If any errors appear in the previous steps please see the \emph{Errors and Issues} section.
+     \end{itemize}
+   \item Starting the Program
+     \begin{itemize}
+       \item Ensure that your actor has its main control sequence started and that is it publishing image information via a \texttt{ROS::publisher}.
+       \item Navigate to the \texttt{/Localization/build/} directory via the terminal, and type \texttt{./Localize}, this will run the programs executable.
+     \end{itemize}
   \end{enumerate}
+  
+  
+  %=== Subsection 4.3, Building the Program ===%
+  \subsection{Building the Program}
+  \begin{itemize}
+   \item Dependencies
+  \end{itemize}
 
 
-   %=== Subsection 4.3, Directory Tree ===%
+
+   %=== Subsection 4.4, Directory Tree ===%
   \subsection{Directory Tree}
   \begin{itemize}
     \item \texttt{/Localization/src/} -
     \begin{itemize}
       \item \texttt{Boot/}
-      \begin{itemize}
-	\item 
-      \end{itemize}
+        \begin{itemize}
+	  \item \texttt{Boot.h} - Loads feature data into memory and performs a `hand-shake` with the actor in the evironment.
+        \end{itemize}
       \item \texttt{GUI/}
-      \begin{itemize}
-        \item 
-      \end{itemize}
+        \begin{itemize}
+          \item TODO
+          \item TODO
+        \end{itemize}
       \item \texttt{HelperStructs/}
-      \begin{itemize}
-          \item 
-      \end{itemize}
+        \begin{itemize}
+          \item \texttt{Characterizer.h} - Defines a data structure to hold different types of features associated with a certain perspective.
+          \item \texttt{Perspective.h} - A data structure that defines a perspective in the enrivonment. In short, an \texttt{[x y z]} vector for position and a
+          \texttt{[dx dy dz]} vector for camera orientation.
+         \end{itemize}
       \item \texttt{IO/}
-      \begin{itemize}
-          \item 
-      \end{itemize}
+        \begin{itemize}
+          \item \texttt{ProgramIO.h} - Declares a list of functions to allow interaction with the user via terminal messages. 
+          \item \texttt{ProgramIO.cpp} - Defines the functions declared in \texttt{ProgramO.h}. 
+        \end{itemize}
       \item \texttt{MCL/}
-      \begin{itemize}
-          \item 
-      \end{itemize}
+        \begin{itemize}
+          \item \texttt{ActiveParticles/}
+            \begin{itemize}
+              \item \texttt{ActiveParticles.h} -
+              \item \texttt{ActiveParticles.cpp} -
+            \end{itemize}
+          \item \texttt{Control/}
+            \begin{itemize}
+              \item \texttt{Controller.h} -
+              \item \texttt{Controller.cpp} -
+            \end{itemize}
+          \item \texttt{Matching/}
+            \begin{itemize}
+              \item \texttt{Matching.h} -
+            \end{itemize}
+        \end{itemize}
       \item \texttt{Main/}
-      \begin{itemize}
-          \item 
-      \end{itemize}
+        \begin{itemize}
+          \item \item{Main.cpp} - The official starting point of the program. Called the boot functions, initializes the Controller class, and starts the main localization loop.
+        \end{itemize}
       \item \texttt{Particle/}
-      \begin{itemize}
-          \item 
-      \end{itemize}
+        \begin{itemize}
+          \item \texttt{Particle.h} -
+          \item \texttt{Particle.cpp} -
+        \end{itemize}
       \item \texttt{Robot/}
-      \begin{itemize}
-          \item 
-      \end{itemize}
+        \begin{itemize}
+          \item \texttt{RobotState.h} -
+          \item \texttt{RobotState.cpp} -
+          \item \texttt{RobotInit.h} -
+          \item \texttt{RobotIO.h} -
+        \end{itemize}
     \end{itemize}
-    \item \texttt{/Localization/build/} -
-    \item \texttt{/Localization/README.md}
-    \item \texttt{/Localization/CMakeLists.txt}
+    \item \texttt{/Localization/build/} - Where the build files and program executable will go.
+    \item \texttt{/Localization/README.md} - Quick breakdown of the 3DLocalization program.
+    \item \texttt{/Localization/CMakeLists.txt} - Tells CMake how to create the program and link dependencies.
   \end{itemize}
 
   

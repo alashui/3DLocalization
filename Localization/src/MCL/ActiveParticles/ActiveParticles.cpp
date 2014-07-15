@@ -121,6 +121,10 @@ namespace MCL
         {
             int rndIdx = dist(time(0));
             Perspective P = this->distribution[rndIdx];
+            int numbertofuzz = rand(0 - 6);
+            for (int i = 0; i < number)
+                // how do i fuzz this particle
+                
             pList.push_back(Particle(P));
         }
     }

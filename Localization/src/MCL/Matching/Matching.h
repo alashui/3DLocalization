@@ -31,11 +31,11 @@ namespace MCL
 
 		float sim = 0;
 
-        // a linear combination of similarity tests:
+        // a combination of similarity tests:
         
         // sim += (int) compareDescriptors(if1.surfs, if2.surfs) * 10;
         // sim += (int) compareDescriptors(if1.sifts, if2.sifts) ;/// 3;
-        sim += getSimilarity(c1.pixSum, c2.pixSum);
+        sim += getSimilarity(c1.gs, c2.gs);
         // sim += getSimilarity(if1.bw, if2.bw);
 
         // cout
@@ -98,7 +98,7 @@ namespace MCL
     {
         if (mat1.size() != mat2.size())
         {
-            cout << "Error in elementWiseDistance! Matrices are not the same size";
+            cout << "Error in Matching.h -> elementWiseDistance! Matrices are not the same size!";
             return -1;
         }
 
@@ -107,7 +107,7 @@ namespace MCL
         for (int r = 0; r < mat1.rows; r++)
             for (int c = 0; c < mat1.cols; c++)
                 difference += abs((int) (mat1.at<Vec<uchar, 1> >(r,c))[0] - (int) (mat2.at<Vec<uchar, 1> >(4*r,4*c))[0]);
-            // Total sketch with that (4*r, 4*c), but hey--if it works...
+            // ^ Total sketch with that (4*r, 4*c), but hey--if it works...
 
         // return mean difference
         return difference / (float) (mat1.rows * mat1.cols);

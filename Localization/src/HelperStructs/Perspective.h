@@ -1,6 +1,7 @@
 // Perspective.h
 #include <cstdlib>
 #include <vector>
+#include <cmath>
 
 namespace MCL
 {
@@ -21,6 +22,16 @@ namespace MCL
         {
             std::vector<float> p(6); p.push_back(x); p.push_back(y); p.push_back(z); p.push_back(dx); p.push_back(dy); p.push_back(dz);
             return p;
+        }
+
+        inline bool operator==(const Perspective& a) {
+            float eps = 0.00001;
+            vector<float> v1 = this->ToVector();
+            vector<float> v2 = a.ToVector();
+            for (int i = 0; i < v1.size(); i++)
+                if (abs(v1[i] - v2[i]) > eps)
+                    return false;
+            return true;
         }
     };
 

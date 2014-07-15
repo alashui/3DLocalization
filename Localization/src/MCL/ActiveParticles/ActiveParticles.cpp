@@ -136,7 +136,7 @@ namespace MCL
         return this->makeGuess();
     }
 
-    int ActiveParticles::move(float x, float y, float z, float theta)
+    int ActiveParticles::move(float x, float y, float z, int turntimes)
     {
         vector<Particle> newPList;
         for (int i = 0; i < pList.size(); i++)
@@ -146,6 +146,40 @@ namespace MCL
             myV[0] += x;
             myV[1] += y;
             myV[2] += z;
+
+            if (turntimes < 0)
+            {
+                for (int i = turntimes; i < 0; i++)
+                {
+                    for (int j = 2; j < perspectives.size(); j++)
+                    {
+                        if (perspectives[j].x == newx && perspectives[j].y == newy && perspectives[j].z == newz)
+                        {
+                            myV[3] = perspectives[j - 1].x;
+                            myV[4] = perspectives[j - 1].y;
+                            myV[5] = perspectives[j - 1].z;
+                            break;
+                        }
+                    }
+                }
+            }
+            else if (turntimes > 0)
+            {
+                for (int i = 0; i < turntimes; i++)
+                {
+                    for (int j = 0; j < perspectives.size() - 1; j++)
+                    {
+                        if (perspectives[j].x == newx && perspectives[j].y == newy && perspectives[j].z == newz)
+                        {
+                            myV[3] = perspectives[j + 1].x;
+                            myV[4] = perspectives[j + 1].y;
+                            myV[5] = perspectives[j + 1].z;
+                            break;
+                        }
+                    }
+                }
+            }
+            newPList.push_back(Particle(Perspective(myV)));
         }
         return 0;
     }

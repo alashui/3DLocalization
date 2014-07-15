@@ -31,7 +31,7 @@ namespace MCL
         int generateDistribution(int wantedSize = defaultDistributionSize);
         void generateParticles(int amount = pList.size());
         Perspective analyzeList();
-        int move(float x, float y, float z, float theta);
+        int move(float x, float y, float z, float turntimes); // e.g. turntimes = -1, -2, -3, 0, 1, 2, 3, ...
 
         vector<Particle> getParticleList() const;
         void setParticleList(vector<Particle>);

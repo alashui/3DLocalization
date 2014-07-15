@@ -34,6 +34,7 @@ namespace MCL
 	//*****-- Private Member Fields --*****//
 		ActiveParticles ap;
 		RobotState robot;
+		vector<float> comboWeighting; // weighing amount for each different feature detection algorithm. 
 
 	//*****-- Private Member Functions --*****//
 		// Get an image from the robots publisher and put it into the RobotState class, the RobotState class
@@ -73,11 +74,13 @@ namespace MCL
 		bool Spin();
 
 		// ActiveParticles get and set
-		ActiveParticles GetActiveParticles() const;
+		ActiveParticles GetActiveParticles() const;      // Get the ActiveParticles class by value.
+		void GetActiveParticles(ActiveParticles *) const;// Get the ActiveParticles class by pointer
 		bool SetActiveParticles(ActiveParticles);
 
-		// ActiveParticles get and set
+		// RobotState get and set
 		RobotState GetRobotState() const;
+		void GetRobotState(RobotState *) const;
 		bool SetRobotState(RobotState);
 
 	

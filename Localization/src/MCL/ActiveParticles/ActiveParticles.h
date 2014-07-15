@@ -72,6 +72,7 @@ namespace MCL
 
     //***** Get and Set Functions for Private Members ****/
         vector<Particle> GetParticleList() const;
+        void GetParticleList(vector<Particles>*);
         void SetParticleList(vector<Particle>);
 
         vector<Perspective> GetWeightHistory() const;

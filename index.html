@@ -46,6 +46,22 @@
             <li> Recieve movement commands from our program, and relay when those commands are finished.</li>
           </u1>
         The rest of the robots functionality is up to the user to decide. Any actor (quadcopters, Roombas, humans, etc.) that can do these two things should (theoretically be able to localize itself in an environment, given a 3D map of that environment.
+
+        As was stated earlier, this project consists of a few programs. These programs are broken up into two main catagories.
+        <u1>
+          <li>Pre-Localization 
+            <u1>
+              <li> PerspectiveGenerator - Takes a 3D model and processes it into a library of images.</li>
+              <li> DatabaseGenerator - Creates a database of feature data related to the images.</li>
+            </u1>
+          </li>
+          <li>During Localization
+            <ul>
+              <li>3DLocalization - Uses the data generated in the two Pre-Localization programs to actively locate an actor.</li>
+            </ul>
+          </li>
+        </u1>
+
         </p>
 
         <h2><a name="official-documentation" class="anchor" href="#official=documentation"><span class="octicon octicon-link"></span></a>Official Documentation</h2>

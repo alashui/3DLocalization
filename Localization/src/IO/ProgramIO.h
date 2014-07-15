@@ -13,12 +13,17 @@
 
 #include <iostream>
 #include <sstream>
+#include <stdexcept>
+#include <vector>
 
 namespace MCL
 {
 	// vector of strings that contain all of the error messages passed to the ErrorIO function. Declared here and defined in the .cpp file to
 	// avoid multiple inclusions.
 	extern std::vector<std::string> error_log;
+	extern const std::string red;
+	extern const std::string yellow;
+	extern const std::string reset;
 
 	// @Function - DebugIO
 	// @Input    - SS object containing the output message

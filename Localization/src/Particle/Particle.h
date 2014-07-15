@@ -11,7 +11,7 @@
 #define MCL_PARTICLE_H_
 
 #include "../HelperStructs/Perspective.h"
-#include "../IO/ProgramIO.cpp"
+#include "../IO/ProgramIO.h"
 
 namespace MCL
 {

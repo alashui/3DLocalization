@@ -179,7 +179,9 @@ namespace MCL
                     }
                 }
             }
-            newPList.push_back(Particle(Perspective(myV)));
+            Perspective P = Perspective(myV);
+            if (find(particles.begin(), particles.end(), P) != particles.end())
+                newPList.push_back(Particle(Perspective(myV)));
         }
         return 0;
     }

@@ -20,22 +20,18 @@ namespace MCL
 	{
 
 	private:
-	//********---------------------********//
+
 	//*****-- Private Member Fields --*****//
-	//********---------------------********//
 		MCL::Perspective perspective;         // the current perspective associated with the particle
 
 		float weight;                         // the weighting assigned to the particle based on its match with the actors image.
 
-	//********------------------------********//
 	//*****-- Private Member Functions --*****//
-	//********------------------------********//
 
 
 	public:
-	//**********------------**********//
+
 	//*****-- Public Functions --*****//
-	//**********------------**********//
 
 		//====Constructor====//
 		Particle();                              // Default constructor, initializes members to default values.
@@ -63,7 +59,7 @@ namespace MCL
 
 	//********-----------------------------------------------*******//
 	//*****-- Public Definitions, Constants, and other Fields--*****//
-	//********-----------------------------------------------*******//
+		
 		const float weightmin;                   // minimum weight that can be assigned to a particle
 		const float weightmax;					 // maximum weight that can be assigned to a particle
 		const float defaultweight;               // default weight for a particle (current 10, out of 100)

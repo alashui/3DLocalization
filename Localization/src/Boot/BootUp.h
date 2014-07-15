@@ -14,10 +14,10 @@
 #include "opencv2/core/core.hpp"
 #include "opencv2/highgui/highgui.hpp"
 
-#include "../HelperStructs/Perspective.h"
-#include "../HelperStructs/Characterizer.h"
-
+#include "../Helpers/Perspective.h"
+#include "../Helpers/Characterizer.h"
 #include "../Particle/Particle.h"
+#include "../Helpers/Globals/Globals.h"
 
 
 using namespace cv;
@@ -30,8 +30,7 @@ namespace MCL
     void GetAll(const fs::path& root, vector<fs::path>& ret);
     int LoadCharacterizers(string dirName, vector<Perspective> perspectives, map<Perspective, Characterizer, ComparePerspectives> masterMap);
 
-    int BootUp(string dirName, vector<Perspective> perspectives, vector<Particle> particles,
-                map<Perspective, Characterizer, ComparePerspectives> masterMap)
+    int BootUp(string dirName, vector<Particle> particles)
     {
         LoadCharacterizers(dirName, perspectives, masterMap);
         MCL::Robot_init();
@@ -40,7 +39,7 @@ namespace MCL
         return perspectives.size();
     }
 
-    int LoadCharacterizers(string dirName, vector<Perspective> perspectives, map<Perspective, Characterizer, ComparePerspectives> masterMap)
+    int LoadCharacterizers(string dirName)
     {
         string pathToData = "../../../Data";
         string toFeatures = pathToData + "/FeatureData/" + dirName;

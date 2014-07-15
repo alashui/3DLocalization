@@ -1,2 +1,5 @@
+*.toc
+*.log
+*.aux
 *.jpg
 *.yml

@@ -49,7 +49,7 @@
 
 	//***** TODO - Add some sort of randomization techniques for determining the movement commands *********//
 		// We need to first move the robot.
-		// ProgramIO::PublishMovecommand(movex, movey, thetamove)
+		// RobotIO::PublishMovecommand(movex, movey, thetamove)
 
 		// We then need to move the particles.
 		// this->ap.Move(movex, movey, movez, thetamove);

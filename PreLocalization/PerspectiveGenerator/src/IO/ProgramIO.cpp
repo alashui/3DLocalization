@@ -11,6 +11,10 @@ float beta = 0.0f;
 
 namespace IO
 {
+     float round(float x)
+    {
+        return (float) ((int) (x*100))/100.0;
+    }
 
     // @Input - path to the input file relative to the build folder of this project
     // @Output - bool letting the program know if everything succeeded okay
@@ -21,11 +25,13 @@ namespace IO
         std::ifstream file(name);
 
         if (!file.is_open())
+        {   std::cout << "ParseInput file not found\n" << std::endl;
             return false;
-
+        }
         // get the camxyz and lookat values.
         while(!file.eof())
         {
+            std::string str;
             int j = 0;
             double value = 0;                         // the value of the item at the below index
             int count = 0;                            // the current index in the below array
@@ -60,6 +66,8 @@ namespace IO
         translation[1] = values[4];
         translation[2] = values[5];
 
+        return true;
+
     }
 
 
@@ -71,8 +79,9 @@ namespace IO
         double maxy = 0;
         double z = 0;
         double dif = 0;
+        double theta = 0;
 
-        double values[6] = {0, 0, 0, 0, 0, 0};
+        double values[7] = {0, 0, 0, 0, 0, 0, 0};
 
         std::ifstream file(name);
 
@@ -82,7 +91,7 @@ namespace IO
         std::string str;
         // get the name of the .obj folder
         getline( file, str);
-        modelDirectoryName = str.c_str();
+        modelDirectoryName = str;
 
         // get the name of the obj file
         getline( file, str);
@@ -92,7 +101,7 @@ namespace IO
         int j = 0;
         // get the bounding box values
         getline(file, str);
-        for(int i = 0; i < str.size() && count < 6; i++)
+        for(int i = 0; i < str.size() && count < 7; i++)
         {
             if(str[i] == ' ' || str[i] == ',')
             {   
@@ -109,12 +118,33 @@ namespace IO
         minx = values[0]; maxx = values[1];
         miny = values[2]; maxy = values[3];
         z = values[4]; dif = values[5];
+        theta = values[6];
+        int ntheta = (int) theta;
+
+        if(ntheta < 0)
+            ntheta *= -1;
+        if(ntheta >= 360)
+            ntheta = ntheta%360;
+
+        if(ntheta <= 12)
+            ntheta = 10;
+        else if(ntheta <= 24)
+            ntheta = 15;
+        else if(ntheta <= 34)
+            ntheta = 30;
+        else if(ntheta <= 53)
+            ntheta = 45;
+        else if(ntheta <= 75)
+            ntheta = 60;
+        else
+            ntheta = 90;
+
 
         std::cout << "Input File Successfully Parsed. Generating Perspectives. " <<  std::endl;
 
         std::string filename;
         std::stringstream ss;
-        ss << "CurrentPoints.txt"; // internally generated file to be used by other parts of this program
+        ss << "../Inputfiles/CurrentPoints.txt"; // internally generated file to be used by other parts of this program
         filename = ss.str();ss.str("");
 
         std::ofstream file1;
@@ -135,22 +165,14 @@ namespace IO
                 else if((x >= -5 && x <= -3.2) && (y >= 6.7 && y <= 9))
                     continue;
 
-                ss << x << " " << y << " " << z << " " <<  1 << " " << 0 << " " << 0 << " " << "\n";
-                file1 << ss.str();ss.str("");
-                ss << x << " " << y << " " << z << " " << -1 << " " << 1 << " " << 0 << " " << "\n";
-                file1 << ss.str();ss.str("");
-                ss << x << " " << y << " " << z << " " << 0 << " " << -1 << " " << 0 << " " << "\n" ;
-                file1 << ss.str();ss.str("");
-                ss << x << " " << y << " " << z << " " << -1 << " " << -1 << " " << 0 << " " << "\n";
-                file1 << ss.str();ss.str("");
-                ss << x << " " << y << " " << z << " " << -1 << " " << 0 << " " << 0 << " " << "\n";
-                file1 << ss.str();ss.str("");
-                ss << x << " " << y << " " << z << " " << -1 << " " << 1 << " " << 0 << " " << "\n";
-                file1 << ss.str();ss.str("");
-                ss << x << " " << y << " " << z << " " << 0 << " " << 1 << " " << 0 << " " << "\n";
-                file1 << ss.str();ss.str("");
-                ss << x << " " << y << " " << z << " " << 1 << " " << 1 << " " << 0 << " " << "\n";
-                file1 << ss.str();ss.str("");
+                int currentangle = 0;
+                for(int i = 0; i < (360/ntheta); i++)
+                {
+                    double tempangle = (double)currentangle*3.14159/360.0;
+                    ss << x << " " << y << " " << z << " " <<  round(cos(tempangle)) << " " << round(sin(tempangle)) << " " << 0 << " " << "\n";
+                    file1 << ss.str();ss.str("");
+                    currentangle+=ntheta;
+                }
                 y = miny+dif*j;
             }
             x = minx+i*dif;
@@ -383,9 +405,6 @@ namespace IO
         // camera[0] = r * sin(alpha * 3.14f / 180.0f) * cos(beta * 3.14f / 180.0f);
         // camera[1] = r * cos(alpha * 3.14f / 180.0f) * cos(beta * 3.14f / 180.0f);
         // camera[2] = r *                               sin(beta * 3.14f / 180.0f);
-
-    //  uncomment this if not using an idle func
-        glutPostRedisplay();
     }
 
 
@@ -432,11 +451,7 @@ namespace IO
             // camera[0] = rAux * cos(betaAux * 3.14f / 180.0f) * sin(alphaAux * 3.14f / 180.0f);
             // camera[1] = rAux * cos(betaAux * 3.14f / 180.0f) * cos(alphaAux * 3.14f / 180.0f);
             // camera[2] = rAux * sin(betaAux * 3.14f / 180.0f);
-        }
-
-
-    //  uncomment this if not using an idle func
-        glutPostRedisplay();
+         }
     }
 
 

@@ -27,13 +27,13 @@ namespace MCL
         RobotState();
         ~RobotState();
 
-        Characterizer getCharacterizer();
-        void setCharacterizer(Characterizer);
+        Characterizer GetCharacterizer();
+        void SetCharacterizer(Characterizer);
 
-        Perspective getPerspective();
-        void setPerspective(Perspective);
+        Perspective GetPerspective();
+        void SetPerspective(Perspective);
 
-        void generateCharacterizer(Mat);
+        void GenerateCharacterizer(Mat);
     };
 }
 

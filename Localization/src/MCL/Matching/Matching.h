@@ -21,10 +21,10 @@ using namespace std;
 
 namespace MCL
 {
-    float getSimilarity(Mat& mat1, Mat& mat2);
-    float compareDescriptors(Mat& desc1, Mat& desc2);
+    float GetSimilarity(Mat& mat1, Mat& mat2);
+    float CompareDescriptors(Mat& desc1, Mat& desc2);
 
-	float compareAndWeigh(Particle p, RobotState R)
+	float CompareAndWeigh(Particle p, RobotState R)
 	{
 		Characterizer c1 = masterMap[p.getPerspective()];
 		Characterizer c2 = R.getCharacterizer();
@@ -33,16 +33,16 @@ namespace MCL
 
         // a combination of similarity tests:
         
-        // sim += (int) compareDescriptors(if1.surfs, if2.surfs) * 10;
-        // sim += (int) compareDescriptors(if1.sifts, if2.sifts) ;/// 3;
-        sim += getSimilarity(c1.gs, c2.gs);
-        // sim += getSimilarity(if1.bw, if2.bw);
+        // sim += (int) CompareDescriptors(if1.surfs, if2.surfs) * 10;
+        // sim += (int) CompareDescriptors(if1.sifts, if2.sifts) ;/// 3;
+        sim += GetSimilarity(c1.gs, c2.gs);
+        // sim += GetSimilarity(if1.bw, if2.bw);
 
         // cout
-        // << "SURFS: " << 10 * (int) compareDescriptors(if1.surfs, if2.surfs)
-        // << "\tSIFTS: " << (int) compareDescriptors(if1.sifts, if2.sifts) / 3
-        // << "\tPXSUM: " << getSimilarity(if1.pixSum, if2.pixSum)
-        // << "\tABOVE: " << getSimilarity(if1.bw, if2.bw) / 2
+        // << "SURFS: " << 10 * (int) CompareDescriptors(if1.surfs, if2.surfs)
+        // << "\tSIFTS: " << (int) CompareDescriptors(if1.sifts, if2.sifts) / 3
+        // << "\tPXSUM: " << GetSimilarity(if1.pixSum, if2.pixSum)
+        // << "\tABOVE: " << GetSimilarity(if1.bw, if2.bw) / 2
         // << "\tTOTAL: " << sim
         // << endl;
 
@@ -51,14 +51,14 @@ namespace MCL
 
 
     // given two images of different size, return a similarity score
-    float similarityOfDifferentSizedImages(Mat& mat1, Mat& mat2)
+    float SimilarityOfDifferentSizedImages(Mat& mat1, Mat& mat2)
     {
     // TODO
         return 10000.0;
     }
 
     // given two sets of keypoints and descriptors, return a similarity score
-    float compareDescriptors(Mat& desc1, Mat& desc2)
+    float CompareDescriptors(Mat& desc1, Mat& desc2)
     {
         // First match descriptors
         FlannBasedMatcher matcher;
@@ -88,11 +88,13 @@ namespace MCL
     }
 
     // Elementwise disance of two images.
-    float elementWiseDistance (Mat& mat1, Mat& mat2)
+    float ElementWiseDistance (Mat& mat1, Mat& mat2)
     {
         if (mat1.size() != mat2.size())
         {
-            cout << "Error in Matching.h -> elementWiseDistance! Matrices are not the same size!";
+            stringstream ss;
+            ss << "Error in Matching.h -> ElementWiseDistance! Matrices are not the same size!";
+            IO::ErrorIO(ss.str());
             return -1;
         }
 
@@ -108,12 +110,12 @@ namespace MCL
     }
 
     // Given two images, return a similarity score.
-    float getSimilarity( Mat& mat1, Mat& mat2)
+    float GetSimilarity( Mat& mat1, Mat& mat2)
     {
         if (mat1.size() != mat2.size())
-            return similarityOfDifferentSizedImages(mat1, mat2);
+            return SimilarityOfDifferentSizedImages(mat1, mat2);
 
-        float sim = elementWiseDistance(mat1, mat2);
+        float sim = ElementWiseDistance(mat1, mat2);
         // sim += norm(mat1, mat2);
         // ^ has issues with Mat types
 

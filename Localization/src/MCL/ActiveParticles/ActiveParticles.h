@@ -84,7 +84,7 @@ namespace MCL
         Perspective GetGuess() const;
         int GetAvgWeight() const;
         int GetGeneration() const;
-        int GumParticles() const;
+        int NumParticles() const;
 
         void GetConstants(string);
         float GetAngle(float, float);

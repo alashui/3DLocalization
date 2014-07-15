@@ -71,7 +71,7 @@ namespace MCL
 		// This function is publically accessible and it will go and individually call the private member functions that run the localization
 		// algorithm in the correct order. The purpose of this function is to abstract the process of localization away from the user and just have 
 		// them call this function, the class will handle the rest internally. 
-		bool Spin();
+		bool SpinOnce();
 
 		// ActiveParticles get and set
 		ActiveParticles GetActiveParticles() const;      // Get the ActiveParticles class by value.

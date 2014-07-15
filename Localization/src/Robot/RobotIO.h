@@ -22,6 +22,9 @@ extern ros::NodeHandle node;
 extern ros::Publish data_publisher;
 extern ros::Subscriber movement_subscriber;
 
+extern const std::string publisher;
+extern const std::string subscriber;
+
 namespace MCL
 {
 

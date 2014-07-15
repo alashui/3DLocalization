@@ -15,6 +15,14 @@
 #ifndef MCL_CONTROLLER_H_
 #define MCL_CONTROLLER_H_
 
+#include "../ActiveParticles/ActiveParticles.h"
+#include "../../Helpers/Globals/"
+#include "../../Helpers/Characterizer.h"
+#include "../../Helpers/Perspective.h"
+#include "../../Particle/Particle.h"
+#include "../../IO/ProgramIO.h"
+#include "../../Robot/RobotState.h"
+#include "../../Robot/RobotIO.h"
 
 namespace MCL
 {
@@ -24,35 +32,44 @@ namespace MCL
 
 	private:
 	//*****-- Private Member Fields --*****//
+		ActiveParticles actpars;
+		RobotState robot;
 
 	//*****-- Private Member Functions --*****//
-		bool UpdateRobotData(); // Get an image from the robots publisher and put it into the RobotState class, the RobotState class
-								// will then process the image for feature data
+		// Get an image from the robots publisher and put it into the RobotState class, the RobotState class
+		// will then process the image for feature data
+		bool UpdateRobotData();
 
-		bool CompareFeatures(); // Take the ActiveParticles class and the RobotState class, pass them to the matching function and assign
-								// weights to the particles.
+		// Take the ActiveParticles class and the RobotState class, pass them to the matching function and assign weights to the particles.
+		bool CompareFeatures(); 
+								
+		// generate a distribution based on the location and weighting of the active particles. Sample from this
+		// distribution to create a new list of active particles.
+		bool GenDistributionAndSample(); 
 
-		bool GenDistributionAndSample(); // generate a distribution based on the location and weighting of the active particles. Sample
-		 								 // from this distribution to create a new list of active particles.
+		// Start by sending a movement command to the robot, then update every particle in the particle list accordingly
+		bool MoveUpdate();
 
-		bool MoveUpdate();				 // Start by sending a movement command to the robot, then update every particle in the particle list
-										 // accordingly.
-
-		bool PauseState(bool *, int = 10); // Called when the program needs to wait for another part of the program to do something.
-										   // the argument is a pointer to a boolean flag that this function will wait to be true before moving on.
-										   // The second optional argument determines how long the function will wait before giving up and returning.
+		// Called when the program needs to wait for another part of the program to do something.
+		// the argument is a pointer to a boolean flag that this function will wait to be true before moving on.
+		// The second optional argument determines how long the function will wait before giving up and returning.
+		bool PauseState(bool *, int = 10); 
 
 
 
 	public:
 	//*****-- Public Functions --*****//
-	//====Constructor====//
+
+		// Do-nothing constructor, just initiaizes the member fields to default values.
 		Controller();
 
-	//====Destructor====//
+		// Place holder for right now, not sure if dynamic memory is going to be needed for this class.
 		~Controller();
 
-	//====Spin - Drives the algorithm loop====//
+		// Based off the ROS::spin() function. This function is called once per iteration of the main algorithm loop inside Main/main.cpp.
+		// This function is publically accessible and it will go and individually call the private member functions that run the localization
+		// algorithm in the correct order. The purpose of this function is to abstract the process of localization away from the user and just have 
+		// them call this function, the class will handle the rest internally. 
 		bool Spin();
 	
 	//*****-- Public Definitions, Constants, and other Fields--*****//

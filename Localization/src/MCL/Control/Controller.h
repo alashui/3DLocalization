@@ -13,8 +13,8 @@
 *
 **/
 
-#ifndef THREEDL_CONTROLLER_H_
-#define THREEDL_CONTROLLER_H_
+#ifndef MCL_CONTROLLER_H_
+#define MCL_CONTROLLER_H_
 
 
 namespace MCL
@@ -24,27 +24,23 @@ namespace MCL
 	{
 
 	private:
-	//********---------------------********//
 	//*****-- Private Member Fields --*****//
-	//********---------------------********//
 
-	//********------------------------********//
 	//*****-- Private Member Functions --*****//
-	//********------------------------********//
-	public:
-	//**********------------**********//
-	//*****-- Public Functions --*****//
-	//**********------------**********//
 
+	public:
+	//*****-- Public Functions --*****//
 	//====Constructor====//
 		Controller();
 
 	//====Destructor====//
 		~Controller();
 
-	//********-----------------------------------------------*******//
+	//====Spin - Drives the algorithm loop====//
+		bool Spin();
+
+	
 	//*****-- Public Definitions, Constants, and other Fields--*****//
-	//********-----------------------------------------------*******//
 	};
 
 }

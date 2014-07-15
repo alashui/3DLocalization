@@ -47,13 +47,13 @@ namespace MCL
 		//====Get and Set====//
 		bool SetPerspective(Perspective);
 
-		MCL::Perspective getPerspective() const; // Get the perspective associated with this particle
+		MCL::Perspective GetPerspective() const; // Get the perspective associated with this particle
 
-		float getPerspective(int) const;         // Throws std::logic_error if argument is < 0 or > 5
+		float GetPerspective(int) const;         // Throws std::logic_error if argument is < 0 or > 5
 
-		float getWeight() const;                 // Get the current weight associated with this particle
+		float GetWeight() const;                 // Get the current weight associated with this particle
 
-		bool setWeight(float);                   // Set the weighting for the particle
+		bool SetWeight(float);                   // Set the weighting for the particle
 
 		float Distance(Particle);                // Get the Euclidean distance from one particle to this one
 

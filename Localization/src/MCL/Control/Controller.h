@@ -71,6 +71,15 @@ namespace MCL
 		// algorithm in the correct order. The purpose of this function is to abstract the process of localization away from the user and just have 
 		// them call this function, the class will handle the rest internally. 
 		bool Spin();
+
+		// ActiveParticles get and set
+		ActiveParticles GetActiveParticles() const;
+		bool SetActiveParticles(ActiveParticles);
+
+		// ActiveParticles get and set
+		RobotState GetRobotState() const;
+		bool SetRobotState(RobotState);
+
 	
 	//*****-- Public Definitions, Constants, and other Fields--*****//
 	};

@@ -10,7 +10,6 @@
 *			  particle, generating a distribution of likely perspective for the robot, and resampling according to this distribution. The majority of this
 *			  functionality is not defined inside of this class, this class just calls other classes (Like Robot or Particle) and their member functions to
 *			  run the program.
-*
 **/
 
 #ifndef MCL_CONTROLLER_H_
@@ -27,6 +26,23 @@ namespace MCL
 	//*****-- Private Member Fields --*****//
 
 	//*****-- Private Member Functions --*****//
+		bool UpdateRobotData(); // Get an image from the robots publisher and put it into the RobotState class, the RobotState class
+								// will then process the image for feature data
+
+		bool CompareFeatures(); // Take the ActiveParticles class and the RobotState class, pass them to the matching function and assign
+								// weights to the particles.
+
+		bool GenDistributionAndSample(); // generate a distribution based on the location and weighting of the active particles. Sample
+		 								 // from this distribution to create a new list of active particles.
+
+		bool MoveUpdate();				 // Start by sending a movement command to the robot, then update every particle in the particle list
+										 // accordingly.
+
+		bool PauseState(bool *, int = 10); // Called when the program needs to wait for another part of the program to do something.
+										   // the argument is a pointer to a boolean flag that this function will wait to be true before moving on.
+										   // The second optional argument determines how long the function will wait before giving up and returning.
+
+
 
 	public:
 	//*****-- Public Functions --*****//
@@ -38,7 +54,6 @@ namespace MCL
 
 	//====Spin - Drives the algorithm loop====//
 		bool Spin();
-
 	
 	//*****-- Public Definitions, Constants, and other Fields--*****//
 	};

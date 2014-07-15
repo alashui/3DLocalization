@@ -155,9 +155,9 @@ namespace MCL
                     {
                         if (perspectives[j].x == newx && perspectives[j].y == newy && perspectives[j].z == newz)
                         {
-                            myV[3] = perspectives[j - 1].x;
-                            myV[4] = perspectives[j - 1].y;
-                            myV[5] = perspectives[j - 1].z;
+                            myV[3] = perspectives[j + 1].x;
+                            myV[4] = perspectives[j + 1].y;
+                            myV[5] = perspectives[j + 1].z;
                             break;
                         }
                     }
@@ -171,9 +171,9 @@ namespace MCL
                     {
                         if (perspectives[j].x == newx && perspectives[j].y == newy && perspectives[j].z == newz)
                         {
-                            myV[3] = perspectives[j + 1].x;
-                            myV[4] = perspectives[j + 1].y;
-                            myV[5] = perspectives[j + 1].z;
+                            myV[3] = perspectives[j - 1].x;
+                            myV[4] = perspectives[j - 1].y;
+                            myV[5] = perspectives[j - 1].z;
                             break;
                         }
                     }

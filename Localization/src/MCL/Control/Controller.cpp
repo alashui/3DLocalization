@@ -13,7 +13,8 @@
 	// Take the ActiveParticles class and the RobotState class, pass them to the matching function and assign weights to the particles.
 	bool CompareFeatures()
 	{
-		
+		for(int i = 0; i < this->ap.getParticleList().size(); i++)
+		CompreAndWeigh
 	}
 							
 	// generate a distribution based on the location and weighting of the active particles. Sample from this

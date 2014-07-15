@@ -64,17 +64,26 @@ namespace MCL
 
         Particle myP(Perspective(avgx, avgy, avgz, 0, 0, 0));
 
-        // How do you average directions? 
+        double avgdx = 0;
+        double avgdy = 0;
+        double avgdz = 0;
 
         for (int i = 0; i < totalPs; i++)
         {
             if (myP.Distance(pList[i]) < dist)
             {
-                // TODO Count this point
+                float w = p.getWeight();
+                avgdx = w * pList[i].getPerspective(3);
+                avgdy = w * pList[i].getPerspective(4);
+                avgdz = w * pList[i].getPerspective(5);
             }
         }
 
-        return;
+        avgdx = avgdx / (this->avgWeight * totalPs);
+        avgdy = avgdy / (this->avgWeight * totalPs);
+        avgdz = avgdz / (this->avgWeight * totalPs);
+
+        return Perspective(avgx, avgy, avgz, avgdx, avgxy, avgdz);
     }
 
     float ActiveParticles::computeAvgWeight()

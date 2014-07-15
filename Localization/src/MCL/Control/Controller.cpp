@@ -50,12 +50,6 @@ namespace MCL
         float xmove, ymove, zmopve;
         int thetamove = 0;
 
-
-	// Start by sending a movement command to the robot, then update every particle in the particle list accordingly
-	bool MoveUpdate()
-	{
-		float xmove, ymove, zmove;
-		int thetamove = 0;
     //***** TODO - Add some sort of randomization techniques for determining the movement commands *********//
         // We need to first move the robot.
         // RobotIO::PublishMovecommand(movex, movey, thetamove)

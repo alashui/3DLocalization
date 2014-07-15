@@ -44,7 +44,7 @@
 	// Start by sending a movement command to the robot, then update every particle in the particle list accordingly
 	bool MoveUpdate()
 	{
-		float xmove, ymove, zmopve;
+		float xmove, ymove, zmove;
 		int thetamove = 0;
 
 	//***** TODO - Add some sort of randomization techniques for determining the movement commands *********//

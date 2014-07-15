@@ -47,14 +47,14 @@
         </ol>
         The rest of the robots functionality is up to the user to decide. Any actor (quadcopters, Roombas, humans, etc.) that can do these two things should be able to localize itself, given a 3D map of its environment.
         As was stated earlier, this project consists of a few programs. These programs are broken up into two main categories.
+        
         <ol>
         <li> Pre-Localization 
           <ol>
           <li> PerspectiveGenerator - Takes a 3D model and processes it into a library of images.</li>
           <li>DatabaseGenerator - Creates a database of feature data related to the images.</li>
-          </ol>
-        </li>
-        <li>During Localization
+          </ol></li>
+          <li>During Localization
           <ol>
           <li>3DLocalization - Uses the data generated in the two Pre-Localization programs to actively locate an actor.</li>
           </ol>

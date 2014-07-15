@@ -1,4 +1,8 @@
 // Perspective.h
+
+#ifndef MCL_PERSPECTIVE_H_
+#define MCL_PERSPECTIVE_H_
+
 #include <cstdlib>
 #include <vector>
 #include <cmath>
@@ -24,17 +28,57 @@ namespace MCL
             return p;
         }
 
-        std::vector<int> LeftDirection()
+        std::vector<int> Direction(string LorR);
         {
             std::vector<int> v;
             v.push_back((int) dx);
             v.push_back((int) dy);
             v.push_back((int) dz);
-            // switch(v)
-            // {
-            //     case vec3(1, 1, 0):
 
-            // }
+            bool left = (LorR == "LEFT");
+            switch(v)
+            {
+                case vec3(1, 0, 0):
+                    if (left)
+                        return vec3(1, 1, 0);
+                    else
+                        return vec3(1, -1, 0);
+                case vec3(1, 1, 0):
+                    if (left)
+                        return vec3(0, 1, 0);
+                    else
+                        return vec3(1, 0, 0);
+                case vec3(0, 1, 0):
+                    if (left)
+                        return vec3(-1, 1, 0);
+                    else
+                        return vec3(1, 1, 0);
+                case vec3(-1, 1, 0):
+                    if (left)
+                        return vec3(-1, 0, 0);
+                    else
+                        return vec3(0, 1, 0);
+                case vec3(-1, 0, 0):
+                    if (left)
+                        return vec3(-1, -1, 0);
+                    else
+                        return vec3(-1, 1, 0);
+                case vec3(1, 0, 0):
+                    if (left)
+                        return vec3(1, 1, 0);
+                    else
+                        return vec3(1, -1, 0);
+                case vec3(1, 0, 0):
+                    if (left)
+                        return vec3(1, 1, 0);
+                    else
+                        return vec3(1, -1, 0);
+                case vec3(1, 0, 0):
+                    if (left)
+                        return vec3(1, 1, 0);
+                    else
+                        return vec3(1, -1, 0);
+            }
             return v;
         }
 
@@ -63,3 +107,5 @@ namespace MCL
         return v;
     }
 }
+
+#endif

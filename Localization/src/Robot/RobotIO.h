@@ -10,6 +10,9 @@
 
 #include "ros/ros.h"
 #include "std_msgs/String.h"
+#include "cv_bridge/cv_bridge.h"
+#include "sensor_msgs/Image.h"
+#include "sensor_msgs/image_encodings.h"
 
 #include "RobotState.h"
 #include "../Particle/Particle.h"
@@ -32,7 +35,7 @@ namespace MCL
 
     bool PublishData(std::string str);
 
-	void MotionCallback(const std_msgs::String::ConstPtr&);
+	void ImageCallback(const sensor_msgs::ImageConstPtr& msg);
 }
 
 

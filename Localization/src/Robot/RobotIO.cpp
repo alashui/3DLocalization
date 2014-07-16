@@ -7,11 +7,21 @@ namespace MCL
     ros::Subscriber movement_subscriber;
 
     const std::string publish = "MCL_Publisher";
-    const std::string subscriber = "MCL_Subscriber";
+    const std::string subscriber = "ROBOT_DATA";
 
-    void MotionCallback(const std_msgs::String::ConstPtr& msg)
+    void ImageCallback(const sensor_msgs::ImageConstPtr& msg)
     {
-        int x = 2;
+        cv_bridge::CvImagePtr im2;
+        try
+        {
+            im2 = cv_bridge::toCvCopy(msg, sensor_msgs::image_encodings::BGR8);
+        }
+        catch
+        {
+            ErrorIO("ImageCall back conversion failed");
+        }
+
+        Controller::SetNextInputImage(im2->image);
     }
 
     bool RobotInit(int argc, char ** argv)
@@ -32,12 +42,12 @@ namespace MCL
 
         data_publisher.publish(msg);
 
-        movement_subscriber = node.subscribe(subscriber, 2, MotionCallback);
+        movement_subscriber = node.subscribe(subscriber, 2, ImageCallback);
 
         return ros::ok();
     }
 
-    bool PublishData(std::string str)
+    bool PublishData(int code, std::string str)
     {
         std_msgs::String msg;
         msg.data = str;

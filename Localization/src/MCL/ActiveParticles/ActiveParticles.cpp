@@ -72,7 +72,7 @@ namespace MCL
         {
             if (myP.Distance(pList[i]) < dist)
             {
-                float w = p.GetWeight();
+                float w = myP.GetWeight();
                 avgdx = w * pList[i].GetPerspective(3);
                 avgdy = w * pList[i].GetPerspective(4);
                 avgdz = w * pList[i].GetPerspective(5);
@@ -87,7 +87,7 @@ namespace MCL
         avgdz = avgdz / (this->GetAvgWeight() * totalPs);
         
 
-        Perspective guess(avgx, avgy, avgz, avgdx, avgxy, avgdz);
+        Perspective guess(avgx, avgy, avgz, avgdx, avgdy, avgdz);
         this->guessHistory.push_back(guess);
 
         return guess;
@@ -97,7 +97,7 @@ namespace MCL
     {
         float total = 0;
 
-        for (int i = 0; i < this->pList; i++)
+        for (int i = 0; i < this->pList.size(); i++)
         {
             total += this->pList[i].GetWeight();
         }
@@ -121,7 +121,7 @@ namespace MCL
 
         for (int i = 0; i < this->pList.size(); i++)
         {
-            int num = (this->weight * wantedSize) / totalWeight;
+            int num = (this->GetAvgWeight() * wantedSize) / totalWeight;
             for (; num > 0; num--)
                 this->distribution.push_back(this->pList[i].GetPerspective());
         }
@@ -199,6 +199,7 @@ namespace MCL
             return p;
 
         boost::random::uniform_int_distribution<> dist(0, 100);
+
         int rnd = dist(time(0));
         if (rnd > prob)
             return p;

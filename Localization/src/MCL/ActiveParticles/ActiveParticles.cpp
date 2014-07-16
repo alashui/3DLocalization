@@ -83,8 +83,12 @@ namespace MCL
         avgdx = avgdx / (this->avgWeight * totalPs);
         avgdy = avgdy / (this->avgWeight * totalPs);
         avgdz = avgdz / (this->avgWeight * totalPs);
+        
 
-        return Perspective(avgx, avgy, avgz, avgdx, avgxy, avgdz);
+        Perspective guess(avgx, avgy, avgz, avgdx, avgxy, avgdz);
+        this->guessHistory.push_back(guess);
+
+        return guess;
     }
 
     float ActiveParticles::ComputeAvgWeight()

@@ -65,10 +65,15 @@ namespace MCL
         //            the average weights or generating a list of best-guesses.
         Perspective AnalyzeList();
 
+        float GetAngle(float, float);
+        void SnapToGrid(Perspective*);
+
         //@Function - move(..)
         //@Purpose  - Translate and rotate every particle by the given parameters. @param turntimes turns the object by n*theta, where
         //            theta is the rotation value between consecutive image renderings in the PerspectiveGenerator program.
         int Move(float x, float y, float z, float turntimes); // e.g. turntimes = -1, -2, -3, 0, 1, 2, 3, ...
+
+        void GetConstants(string);
 
     //***** Get and Set Functions for Private Members ****/
         vector<Particle> GetParticleList() const;

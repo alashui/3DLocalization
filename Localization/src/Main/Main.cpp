@@ -9,6 +9,7 @@
 
 #include "../Boot/BootUp.h"
 #include "../Helpers/Globals/Globals.h"
+#include "../MCL/Control/Controller.h"
 
 using namespace std;
 
@@ -30,7 +31,9 @@ namespace MCL
 		if (BootUp(modelName) < 0)
 			return PrintUsage(argv[0]);
 
-		// controller stuff
+		Controller control;
+		control.spin();
+
 		return 0;
 	}
 }

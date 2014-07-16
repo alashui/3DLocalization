@@ -3,7 +3,6 @@
 
 namespace MCL
 {
-    ros::NodeHandle node;
     ros::Publisher data_publisher;
     ros::Subscriber movement_subscriber;
 
@@ -17,8 +16,14 @@ namespace MCL
 
     bool RobotInit(int argc, char ** argv)
     {
-        // ros::init(argc, argv, "3DLocalization");
-        data_publisher = node.advertise<std_msgs::String>(publish, 4);
+         ros::init(argc, argv, "3DLocalization");
+       	 return true;
+    }
+
+    bool InitCallbacks()
+    {
+    	ros::NodeHandle node;
+    	data_publisher = node.advertise<std_msgs::String>(publish, 4);
 
         std_msgs::String msg;
         std::stringstream ss;

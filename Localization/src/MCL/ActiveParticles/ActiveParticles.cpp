@@ -148,8 +148,9 @@ namespace MCL
 
     Perspective Scatter(Perspective p, float maxtranslation, int prob=32)
     {
-        if (prob < 5)
+        if (prob < 2)
             return p;
+
         boost::random::uniform_int_distribution<> dist(0, 100);
         int rnd = dist(time(0));
         if (rnd < prob)
@@ -190,7 +191,7 @@ namespace MCL
                 myV[4] = round(sin(newangle));
             }
 
-            Perspective P = Scatter(Perspective(myV), 10, this->gd * 3);
+            Perspective P = Scatter(Perspective(myV), this->gd);
 
             if (find(perspectives.begin(), perspectives.end(), P) != perspectives.end())
                 newPList.push_back(Particle(Perspective(myV)));
@@ -216,7 +217,6 @@ namespace MCL
         getline( file, str );
         this->dtheta = atof(str.c_str());
     }
-
 
     vector<Particle> ActiveParticles::GetParticleList()
     {

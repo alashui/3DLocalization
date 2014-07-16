@@ -17,7 +17,7 @@ namespace MCL
 	int PrintUsage(string appname)
 	{
 		cout << "Input not recognized. Format:\n\n"
-		<< "\t" << appname << " ,odelName" << endl;
+		<< "\t" << appname << " modelName" << endl;
 		return -1;
 	}
 	int main(int argc, char const *argv[])
@@ -29,7 +29,8 @@ namespace MCL
 
 		if (BootUp(modelName) < 0)
 			return PrintUsage(argv[0]);
-		
+
+		// controller stuff
 		return 0;
 	}
 }

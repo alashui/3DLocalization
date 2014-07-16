@@ -56,13 +56,15 @@ namespace MCL
         float dy = (maxy - avgy) > (avgy - miny) ? (maxy - avgy) : (avgy - miny);
         float dz = (maxz - avgz) > (avgz - minz) ? (maxz - avgz) : (avgz - minz);
 
-        float dist = sqrt(dx * dx + dy * dy + dz * dz);
+        float dist = sqrt(dx * dx + dy * dy + dz * dz) / 3;
 
         Particle myP(Perspective(avgx, avgy, avgz, 0, 0, 0));
 
         double avgdx = 0;
         double avgdy = 0;
         double avgdz = 0;
+
+        int inRange = 0;
 
         for (int i = 0; i < totalPs; i++)
         {
@@ -72,8 +74,11 @@ namespace MCL
                 avgdx = w * pList[i].getPerspective(3);
                 avgdy = w * pList[i].getPerspective(4);
                 avgdz = w * pList[i].getPerspective(5);
+                inRange++;
             }
         }
+
+        this->guessQualityHistory.push_back((float) inRange / (float) totalPs);
 
         avgdx = avgdx / (this->avgWeight * totalPs);
         avgdy = avgdy / (this->avgWeight * totalPs);
@@ -120,7 +125,7 @@ namespace MCL
         for (int i = 0; i < amount; i++)
         {
             int rndIdx = dist(time(0));
-            Perspective P = this->distribution[rndIdx];                
+            Perspective P = Scatter(this->distribution[rndIdx], this->gd);                
             pList.push_back(Particle(P));
         }
     }
@@ -153,22 +158,23 @@ namespace MCL
 
         boost::random::uniform_int_distribution<> dist(0, 100);
         int rnd = dist(time(0));
-        if (rnd < prob)
-        {
-            vector<float> v = p.ToVector();
-            if (prob % 2 == 0)
-            { // turn!
-                float curangle = GetAngle(p.dx, p.dy);
-                curangle += (float) (dist(boost::random::mt19937) - 50) / 16.0;
-                v[3] = round(cos(curangle));
-                v[4] = round(sin(curangle));
-            }
-            else
-            { // translate!
-                v[0] += (float) (dist(time(0)) - 50) * maxtranslation / 50.0;
-                v[1] += (float) (dist(boost::random::mt19937) - 50) * maxtranslation / 50.0;
-            }
+        if (rnd > prob)
+            return p;
+
+        vector<float> v = p.ToVector();
+        if (prob % 2 == 0)
+        { // turn!
+            float curangle = GetAngle(p.dx, p.dy);
+            curangle += (float) (dist(boost::random::mt19937) - 50) / 80.0;
+            v[3] = round(cos(curangle));
+            v[4] = round(sin(curangle));
         }
+        else
+        { // translate!
+            v[0] += (float) (dist(time(0)) - 50) * maxtranslation / 50.0;
+            v[1] += (float) (dist(boost::random::mt19937) - 50) * maxtranslation / 50.0;
+        }
+
         return Scatter(Perspective(v), maxtranslation, prob/2);
     }
 
@@ -191,7 +197,7 @@ namespace MCL
                 myV[4] = round(sin(newangle));
             }
 
-            Perspective P = Scatter(Perspective(myV), this->gd);
+            Perspective P = Perspective(myV);
 
             if (find(perspectives.begin(), perspectives.end(), P) != perspectives.end())
                 newPList.push_back(Particle(Perspective(myV)));

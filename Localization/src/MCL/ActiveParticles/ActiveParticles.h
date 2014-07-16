@@ -31,6 +31,7 @@ namespace MCL
         unsigned generation;                // current iteration of the MCL algorithm loop
         vector<float> weightHistory;        // history of the average weight
         vector<Perspective> guessHistory;   // history of the best guesses for each MCL loop iteration
+        vector<float> guessQualityHistory;  // history of guess quality
         vector<Perspective> distribution;   //   A vector of perspectives that is biased towards perspectives that are associated with a particle of
                                             // higher weight. When sampled randomly, this creates the effect of sampling from a distribution
                                             // that is skewed towards the areas in the map that are likely location for the actor 
@@ -39,7 +40,7 @@ namespace MCL
 
     /**** Private Functions, Internal Use Only ****/
         Perspective MakeGuess();            // Computes the perspective that represents the best guess as to our actors location       
-        float computeAvgWeight();           // pretty self explanatory if you ask me..
+        float ComputeAvgWeight();           // pretty self explanatory if you ask me..
 
     public:
 

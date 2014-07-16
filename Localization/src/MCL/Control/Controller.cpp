@@ -10,7 +10,6 @@
 namespace MCL
 {
     Controller::Controller()
-    : this->ap(), this->robot()
     {
         comboWeighting.push_back(1.0); //SURF
         comboWeighting.push_back(0.0); //SIFT
@@ -30,8 +29,8 @@ namespace MCL
         this->ap.GetParticleList(temp);
         
         for(int i = 0; i < this->ap.NumParticles(); i++)
-        {   Perspective * ptemp;
-            ptemp = temp[i];
+        {   Particle * ptemp;
+            ptemp = &((* temp)[i]);
             CompareAndWeigh(ptemp, this->robot, this->comboWeighting);
         }
     }
@@ -61,7 +60,7 @@ namespace MCL
     // Called when the program needs to wait for another part of the program to do something.
     // the argument is a pointer to a boolean flag that this function will wait to be true before moving on.
     // The second optional argument determines how long the function will wait before giving up and returning.
-    bool Controller::PauseState(bool * flag, float = 10.0)
+    bool Controller::PauseState(bool * flag, float time = 10.0)
     {
         // Wait until the flag is true to return
         for(int i = 0;!(*flag) && i < 100000; i++)
@@ -73,7 +72,7 @@ namespace MCL
     void Controller::init(string dirName)
     {
         this->ap.GetConstants(dirName);
-        this->ap.SetDistribution(perspectives)
+        this->ap.SetDistribution(perspectives);
         this->ap.GenerateParticles(500);
         UpdateRobotData();
     }
@@ -91,7 +90,7 @@ namespace MCL
     {
         return this->ap;
     }
-    void Controller::GetActiveParticles(ActiveParticles * ap2) const // Get the ActiveParticles class by pointer
+    void Controller::GetActiveParticles(ActiveParticles * ap2) // Get the ActiveParticles class by pointer
     {
         ap2 = &(this->ap);
     }
@@ -105,7 +104,7 @@ namespace MCL
     {
         return this->robot;
     }
-    void Controller::GetRobotState(RobotState * newbot) const
+    void Controller::GetRobotState(RobotState * newbot)
     {
         newbot = &(this->robot);
     }

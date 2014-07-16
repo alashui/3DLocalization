@@ -22,7 +22,7 @@ namespace MCL
         float avgy = 0.0;
         float avgz = 0.0;
 
-        int totalPs = this->numParticles();
+        int totalPs = this->NumParticles();
 
         float maxx = 0.0;
         float maxy = 0.0;
@@ -34,10 +34,10 @@ namespace MCL
         for (int i = 0; i < totalPs; i++)
         {
             Particle p(this->pList[i]);
-            float x = p.getPerspective(0);
-            float y = p.getPerspective(1);
-            float z = p.getPerspective(2);
-            float w = p.getWeight();
+            float x = p.GetPerspective(0);
+            float y = p.GetPerspective(1);
+            float z = p.GetPerspective(2);
+            float w = p.GetWeight();
             avgx += w * x;
             avgy += w * y;
             avgz += w * z;
@@ -50,9 +50,9 @@ namespace MCL
             minz = z < minz ? z : minz;
         }
 
-        avgx = avgx / (this->avgWeight * totalPs);
-        avgy = avgy / (this->avgWeight * totalPs);
-        avgz = avgz / (this->avgWeight * totalPs);
+        avgx = avgx / (this->GetAvgWeight() * totalPs);
+        avgy = avgy / (this->GetAvgWeight() * totalPs);
+        avgz = avgz / (this->GetAvgWeight() * totalPs);
 
         float dx = (maxx - avgx) > (avgx - minx) ? (maxx - avgx) : (avgx - minx);
         float dy = (maxy - avgy) > (avgy - miny) ? (maxy - avgy) : (avgy - miny);
@@ -60,7 +60,7 @@ namespace MCL
 
         float dist = sqrt(dx * dx + dy * dy + dz * dz) / 3;
 
-        Particle myP(Perspective(avgx, avgy, avgz, 0, 0, 0));
+        Particle myP(Perspective(avgx, avgy, avgz, 0.0, 0.0, 0.0));
 
         double avgdx = 0;
         double avgdy = 0;
@@ -72,19 +72,19 @@ namespace MCL
         {
             if (myP.Distance(pList[i]) < dist)
             {
-                float w = p.getWeight();
-                avgdx = w * pList[i].getPerspective(3);
-                avgdy = w * pList[i].getPerspective(4);
-                avgdz = w * pList[i].getPerspective(5);
+                float w = p.GetWeight();
+                avgdx = w * pList[i].GetPerspective(3);
+                avgdy = w * pList[i].GetPerspective(4);
+                avgdz = w * pList[i].GetPerspective(5);
                 inRange++;
             }
         }
 
         this->guessQualityHistory.push_back((float) inRange / (float) totalPs);
 
-        avgdx = avgdx / (this->avgWeight * totalPs);
-        avgdy = avgdy / (this->avgWeight * totalPs);
-        avgdz = avgdz / (this->avgWeight * totalPs);
+        avgdx = avgdx / (this->GetAvgWeight() * totalPs);
+        avgdy = avgdy / (this->GetAvgWeight() * totalPs);
+        avgdz = avgdz / (this->GetAvgWeight() * totalPs);
         
 
         Perspective guess(avgx, avgy, avgz, avgdx, avgxy, avgdz);
@@ -99,18 +99,23 @@ namespace MCL
 
         for (int i = 0; i < this->pList; i++)
         {
-            total += this->pList[i].getWeight();
+            total += this->pList[i].GetWeight();
         }
         float avg = total/this->pList.size();
         this->weightHistory.push_back(avg);
         return avg;
     }
 
+    int ActiveParticles::GenerateDistribution()
+    {
+        return GenerateDistribution(defaultDistributionSize);
+    }
+
     int ActiveParticles::GenerateDistribution(int wantedSize)
     {
         // Randomly generate a distribution based on 
         // the weights of all elements in pList
-        int totalWeight = this->getAvgWeight() * this->numParticles();
+        int totalWeight = this->GetAvgWeight() * this->NumParticles();
 
         this->distribution.clear();
 
@@ -118,9 +123,14 @@ namespace MCL
         {
             int num = (this->weight * wantedSize) / totalWeight;
             for (; num > 0; num--)
-                this->distribution.push_back(this->pList[i].getPerspective());
+                this->distribution.push_back(this->pList[i].GetPerspective());
         }
         return 0;
+    }
+
+    void ActiveParticles::GenerateParticles()
+    {
+        GenerateParticles(pList.size());
     }
 
     void ActiveParticles::GenerateParticles(int amount)
@@ -216,7 +226,7 @@ namespace MCL
         for (int i = 0; i < pList.size(); i++)
         {
             Particle myP = pList[i];
-            vector<float> myV = myP.getPerspective().ToVector();
+            vector<float> myV = myP.GetPerspective().ToVector();
             
             // Turn
             float origAngle = GetAngle(myV[3], myV[4]);

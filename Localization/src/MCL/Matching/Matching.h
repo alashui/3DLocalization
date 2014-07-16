@@ -12,10 +12,10 @@
 #include "opencv2/features2d/features2d.hpp"
 #include "opencv2/nonfree/features2d.hpp"
 
-#include "../Helpers/Globals/Globals.h"
-#include "../Helpers/Perspective.h"
-#include "../Helpers/Characterizer.h"
-#include "../IO/ProgramIO.h"
+#include "../../Helpers/Globals/Globals.h"
+#include "../../Helpers/Perspective.h"
+#include "../../Helpers/Characterizer.h"
+#include "../../IO/ProgramIO.h"
 
 using namespace cv;
 using namespace std;
@@ -27,15 +27,15 @@ namespace MCL
 
 	float CompareAndWeigh(Particle * p, RobotState R, vector<float> comboweights)
 	{
-		Characterizer c1 = masterMap[p->getPerspective()];
-		Characterizer c2 = R.getCharacterizer();
+		Characterizer c1 = masterMap[p->GetPerspective()];
+		Characterizer c2 = R.GetCharacterizer();
 
 		float sim = 0;
 
         // a combination of similarity tests:
         
         if(comboweights.size() != 4)
-            IO::ErrorIO("CompareAndWeight : Length of comboweight vector must be 4\n");
+            ErrorIO("CompareAndWeight : Length of comboweight vector must be 4\n");
 
         if(!abs(comboweights[0]) < .005)
             sim += (int) CompareDescriptors(c1.surfs, c2.surfs) *comboweights[0];
@@ -54,7 +54,7 @@ namespace MCL
         // << "\tTOTAL: " << sim
         // << endl;
 
-        p->SetWeight(sim)
+        p->SetWeight(sim);
         return sim;
 	}
 
@@ -103,7 +103,7 @@ namespace MCL
         {
             stringstream ss;
             ss << "Error in Matching.h -> ElementWiseDistance! Matrices are not the same size!";
-            IO::ErrorIO(ss.str());
+            ErrorIO(ss.str());
             return -1;
         }
 

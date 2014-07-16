@@ -5,7 +5,9 @@
 #include "../Characterizer.h"
 #include <vector>
 
-extern map<Perspective, Characterizer, ComparePerspectives> masterMap;
-extern std::vector<Perspective> perspectives;
+namespace MCL {
+	extern map<Perspective, Characterizer, ComparePerspectives> masterMap;
+	extern std::vector<Perspective> perspectives;
+}
 
 #endif

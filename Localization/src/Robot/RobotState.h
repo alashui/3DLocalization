@@ -33,7 +33,7 @@ namespace MCL
         Perspective GetPerspective();
         void SetPerspective(Perspective);
 
-        void GenerateCharacterizer(Mat);
+        void GenerateCharacterizer(Mat&);
     };
 }
 

@@ -1,5 +1,8 @@
 // Characterizer.h
 
+#ifndef MCL_CHARACTERIZER_H_
+#define MCL_CHARACTERIZER_H_
+
 #include "opencv2/core/core.hpp"
 #include <cstdlib>
 
@@ -17,3 +20,5 @@ namespace MCL {
     };
 
 }
+
+#endif

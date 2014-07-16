@@ -28,13 +28,13 @@ namespace fs = ::boost::filesystem;
 namespace MCL
 {
     void GetAll(const fs::path& root, vector<fs::path>& ret);
-    int LoadCharacterizers(string dirName, vector<Perspective> perspectives, map<Perspective, Characterizer, ComparePerspectives> masterMap);
+    
+    int LoadCharacterizers(string dirName);
 
-    int BootUp(string dirName, vector<Particle> particles)
+    int BootUp(string dirName)
     {
         LoadCharacterizers(dirName, perspectives, masterMap);
-        MCL::Robot_init();
-        // Particles::GenerateInitialParticles(perspectives, particles);
+        Robot_init();
 
         return perspectives.size();
     }

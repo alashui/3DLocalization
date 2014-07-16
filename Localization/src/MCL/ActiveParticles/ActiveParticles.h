@@ -99,3 +99,5 @@ namespace MCL
         const int defaultDistrbutionSize;
     };
 }
+
+#endif

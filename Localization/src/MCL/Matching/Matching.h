@@ -37,13 +37,13 @@ namespace MCL
         if(comboweights.size() != 4)
             ErrorIO("CompareAndWeight : Length of comboweight vector must be 4\n");
 
-        if(!abs(comboweights[0]) < .005)
+        if(!(abs(comboweights[0]) < .005))
             sim += (int) CompareDescriptors(c1.surfs, c2.surfs) *comboweights[0];
-        if(!abs(comboweights[1]) < .005)
+        if(!(abs(comboweights[1]) < .005))
             sim += (int) CompareDescriptors(c1.sifts, c2.sifts)*comboweights[1];
-        if(!abs(comboweights[2]) < .005)
+        if(!(abs(comboweights[2]) < .005))
             sim += GetSimilarity(c1.gs, c2.gs)*comboweights[2];
-        if(!abs(comboweights[3]) < .005)
+        if(!(abs(comboweights[3]) < .005))
             sim += GetSimilarity(c1.bw, c2.bw)*comboweights[3];
 
         // cout

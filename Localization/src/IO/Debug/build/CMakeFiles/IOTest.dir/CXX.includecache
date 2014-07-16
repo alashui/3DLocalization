@@ -6,7 +6,7 @@
 
 #IncludeRegexTransform: 
 
-/home/robotics/HMCREU/MCL/3DLocalization/Localization/src/IO/Debug/../../Particle/../HelperStructs/Perspective.h
+/home/jhallard/HMCREU/3DLocalization/Localization/src/IO/Debug/../../Particle/../Helpers/Perspective.h
 cstdlib
 -
 vector
@@ -16,7 +16,7 @@ cmath
 string
 -
 
-/home/robotics/HMCREU/MCL/3DLocalization/Localization/src/IO/Debug/../../Particle/../IO/ProgramIO.h
+/home/jhallard/HMCREU/3DLocalization/Localization/src/IO/Debug/../../Particle/../IO/ProgramIO.h
 iostream
 -
 sstream
@@ -26,13 +26,13 @@ stdexcept
 vector
 -
 
-/home/robotics/HMCREU/MCL/3DLocalization/Localization/src/IO/Debug/../../Particle/Particle.h
-../HelperStructs/Perspective.h
-/home/robotics/HMCREU/MCL/3DLocalization/Localization/src/IO/Debug/../../Particle/../HelperStructs/Perspective.h
+/home/jhallard/HMCREU/3DLocalization/Localization/src/IO/Debug/../../Particle/Particle.h
+../Helpers/Perspective.h
+/home/jhallard/HMCREU/3DLocalization/Localization/src/IO/Debug/../../Particle/../Helpers/Perspective.h
 ../IO/ProgramIO.h
-/home/robotics/HMCREU/MCL/3DLocalization/Localization/src/IO/Debug/../../Particle/../IO/ProgramIO.h
+/home/jhallard/HMCREU/3DLocalization/Localization/src/IO/Debug/../../Particle/../IO/ProgramIO.h
 
-/home/robotics/HMCREU/MCL/3DLocalization/Localization/src/IO/Debug/../ProgramIO.h
+/home/jhallard/HMCREU/3DLocalization/Localization/src/IO/Debug/../ProgramIO.h
 iostream
 -
 sstream
@@ -42,11 +42,11 @@ stdexcept
 vector
 -
 
-/home/robotics/HMCREU/MCL/3DLocalization/Localization/src/IO/Debug/main.cpp
+/home/jhallard/HMCREU/3DLocalization/Localization/src/IO/Debug/main.cpp
 ../../Particle/Particle.h
-/home/robotics/HMCREU/MCL/3DLocalization/Localization/src/IO/Debug/../../Particle/Particle.h
+/home/jhallard/HMCREU/3DLocalization/Localization/src/IO/Debug/../../Particle/Particle.h
 ../ProgramIO.h
-/home/robotics/HMCREU/MCL/3DLocalization/Localization/src/IO/Debug/../ProgramIO.h
+/home/jhallard/HMCREU/3DLocalization/Localization/src/IO/Debug/../ProgramIO.h
 iostream
 -
 vector

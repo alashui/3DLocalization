@@ -11,25 +11,28 @@
 #include "../Helpers/Globals/Globals.h"
 #include "../MCL/Control/Controller.h"
 
+#include <sstream>
+
 using namespace std;
 
 namespace MCL
 {
-    int PrintUsage(string appname)
+    int PrintError(string error)
     {
-        cout << "Input not recognized. Format:\n\n"
-        << "\t" << appname << " modelName" << endl;
+        stringstream ss;
+        ss << "Input Format Error : " << error << endl;
+        ErrorIO(ss.str());
         return -1;
     }
     int main(int argc, char const *argv[])
     {
         if (argc != 2)
-            return PrintUsage(argv[0]);
+            return PrintError("Must pass in the Name of the Model Directory as agrv[1]");
 
         string modelName = argv[1];
 
         if (BootUp(modelName) < 0)
-            return PrintUsage(argv[0]);
+            return PrintError("Model Directory Name not found inside /3DLocalization/Data/ModelData/.");
 
         Controller control;
 
@@ -37,7 +40,9 @@ namespace MCL
 
         while(control.SpinOnce())
         {
-            cout << "Generation " << control.ap.GetGeneration() << ": " << control.ap.GetAvgWeight() << endl;
+            stringstream ss;
+            ss << "Generation " << control.ap.GetGeneration() << ": " << control.ap.GetAvgWeight() << endl;
+            UserIO(ss.str());
         }
 
         return 0;

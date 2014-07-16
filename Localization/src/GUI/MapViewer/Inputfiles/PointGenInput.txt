@@ -1,0 +1,3 @@
+2ndFloorSprague/
+14db49e526f340dfba81c4a2da23c716.obj
+-4.5 2.9 -.25 9.0 0.4 0.25 30.0 

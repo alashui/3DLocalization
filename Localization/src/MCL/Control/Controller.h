@@ -16,13 +16,14 @@
 #define MCL_CONTROLLER_H_
 
 #include "../ActiveParticles/ActiveParticles.h"
-#include "../../Helpers/Globals/"
+#include "../../Helpers/Globals/Globals.h"
 #include "../../Helpers/Characterizer.h"
 #include "../../Helpers/Perspective.h"
 #include "../../Particle/Particle.h"
 #include "../../IO/ProgramIO.h"
 #include "../../Robot/RobotState.h"
-#include "../../Robot/RobotIO.h"
+#include "../Matching/Matching.h"
+// #include "../../Robot/RobotIO.h"
 
 namespace MCL
 {
@@ -54,7 +55,7 @@ namespace MCL
         // Called when the program needs to wait for another part of the program to do something.
         // the argument is a pointer to a boolean flag that this function will wait to be true before moving on.
         // The second optional argument determines how long the function will wait before giving up and returning.
-        bool PauseState(bool *, float = 10.0); 
+        bool PauseState(bool *, float ); 
 
 
 
@@ -73,14 +74,16 @@ namespace MCL
         // them call this function, the class will handle the rest internally. 
         bool SpinOnce();
 
+        void init(string);
+
         // ActiveParticles get and set
         ActiveParticles GetActiveParticles() const;      // Get the ActiveParticles class by value.
-        void GetActiveParticles(ActiveParticles *) const;// Get the ActiveParticles class by pointer
+        void GetActiveParticles(ActiveParticles *);// Get the ActiveParticles class by pointer
         bool SetActiveParticles(ActiveParticles);
 
         // RobotState get and set
         RobotState GetRobotState() const;
-        void GetRobotState(RobotState *) const;
+        void GetRobotState(RobotState *);
         bool SetRobotState(RobotState);
 
     

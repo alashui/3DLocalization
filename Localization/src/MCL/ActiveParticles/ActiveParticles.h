@@ -15,7 +15,7 @@
 #include <boost/random/mersenne_twister.hpp>
 
 #include <vector>
-#include <stdlib>
+#include <cstdlib>
 #include <cmath>
 
 // #include "../../Helpers/Characterize.h"
@@ -54,13 +54,15 @@ namespace MCL
         //@Purpose  - Take the list of active particles, consider their respective perspectives and weightings, and generate a 
         //            distribution of perspectives that when sampled will provide perspectives in areas that we think are more likely
         //            to contain our actor.
-        int GenerateDistribution(int wantedSize = defaultDistributionSize);
+        int GenerateDistribution(int wantedSize);// = defaultDistributionSize);
+        int GenerateDistribution();
 
         //@Function - generateParticles
         //@Purpose  - This function samples the distribution created in the generateDistribution(..) to refill the pList vector
         //            with guesses (which are hopefully more refined) as to where the actor can be in the environment. Makes @param amount
         //            samples
-        void GenerateParticles(int amount = pList.size());
+        void GenerateParticles(int amount);// = pList.size());
+        void GenerateParticles();// = pList.size());
 
         //@Function - analyzeList()
         //@Purpose  - Called once by the Controller class each iteration of the MCL loop. It computes data about the particle list like
@@ -75,11 +77,9 @@ namespace MCL
         //            theta is the rotation value between consecutive image renderings in the PerspectiveGenerator program.
         int Move(float x, float y, float z, float turntimes); // e.g. turntimes = -1, -2, -3, 0, 1, 2, 3, ...
 
-        void GetConstants(string);
-
     //***** Get and Set Functions for Private Members ****/
         vector<Particle> GetParticleList() const;
-        void GetParticleList(vector<Particles>*);
+        void GetParticleList(vector<Particle>*);
         void SetParticleList(vector<Particle>);
 
         vector<Perspective> GetWeightHistory() const;
@@ -95,10 +95,9 @@ namespace MCL
         int NumParticles() const;
 
         void GetConstants(string);
-        float GetAngle(float, float);
 
         /** Constants and Defines **/
-        const int defaultDistrbutionSize;
+        int defaultDistributionSize;
     };
 }
 

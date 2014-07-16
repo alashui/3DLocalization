@@ -14,7 +14,7 @@ using namespace std;
 
 namespace MCL
 {
-    void generateCharacterizer(Mat& img)
+    void RobotState::GenerateCharacterizer(Mat& img)
     {
         int divs = 50;
 
@@ -37,18 +37,18 @@ namespace MCL
 
         this->c.gs = grs;
         this->c.bw = averageImage::aboveBelow(grs);
-        this->image = img;
+        this->c.image = img;
     }
 
-    Characterizer getCharacterizer() 
+    Characterizer RobotState::GetCharacterizer() 
     { return this->c; }
 
-    void setCharacterizer(Characterizer cnew) 
+    void RobotState::SetCharacterizer(Characterizer cnew) 
     { this->c = cnew; }
 
-    Perspective getPerspective() 
+    Perspective RobotState::GetPerspective() 
     { return this->p; }
 
-    void setPerspective(Perspective newp)
+    void RobotState::SetPerspective(Perspective newp)
     { this->p = newp; }
 }

@@ -12,7 +12,7 @@
 namespace MCL
 {
 
-	MCL::Particle::Particle() :
+	Particle::Particle() :
 	weightmin(0), weightmax(100), defaultweight(10), perspective()
 	{
 		weight = defaultweight;
@@ -84,9 +84,9 @@ namespace MCL
 
 	float Particle::Distance(Particle p)
 	{
-		float dx = p.getPerspective(0) - this->getPerspective(0);
-		float dy = p.getPerspective(1) - this->getPerspective(1);
-		float dz = p.getPerspective(2) - this->getPerspective(2);
+		float dx = p.GetPerspective(0) - this->GetPerspective(0);
+		float dy = p.GetPerspective(1) - this->GetPerspective(1);
+		float dz = p.GetPerspective(2) - this->GetPerspective(2);
 		
 		return sqrt(dx * dx + dy * dy + dz * dz);
 	}

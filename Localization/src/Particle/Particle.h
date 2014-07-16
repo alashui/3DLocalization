@@ -10,7 +10,7 @@
 #ifndef MCL_PARTICLE_H_
 #define MCL_PARTICLE_H_
 
-#include "../HelperStructs/Perspective.h"
+#include "../Helpers/Perspective.h"
 #include "../IO/ProgramIO.h"
 
 namespace MCL
@@ -60,9 +60,9 @@ namespace MCL
 	//********-----------------------------------------------*******//
 	//*****-- Public Definitions, Constants, and other Fields--*****//
 		
-		const float weightmin;                   // minimum weight that can be assigned to a particle
-		const float weightmax;					 // maximum weight that can be assigned to a particle
-		const float defaultweight;               // default weight for a particle (current 10, out of 100)
+		 float weightmin;                   // minimum weight that can be assigned to a particle
+		 float weightmax;					 // maximum weight that can be assigned to a particle
+		 float defaultweight;               // default weight for a particle (current 10, out of 100)
 	};
 
 }

@@ -1,3 +1,6 @@
+#ifndef MCL_AVERAGEIMAGE_H_
+#define MCL_AVERAGEIMAGE_H_
+
 #include "opencv2/highgui/highgui.hpp"
 #include "opencv2/features2d/features2d.hpp"
 #include "opencv2/contrib/contrib.hpp"
@@ -120,3 +123,5 @@ namespace averageImage {
     }
 
 }
+
+#endif

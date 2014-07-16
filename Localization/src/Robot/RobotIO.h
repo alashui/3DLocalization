@@ -1,8 +1,8 @@
 // @File - RobotIO.h
 // @Author - Alex Rich, John Allard. Summer 2014
 // @Purpose - This file defines all of the functionality that this program needs to communicate with an actor in the environment.
-//			  This includes publishing localation information to the actor that needs to be localized, and recieving movement commands
-//			  from the robot so that we know how to properly update the particle locations.
+//            This includes publishing localation information to the actor that needs to be localized, and recieving movement commands
+//            from the robot so that we know how to properly update the particle locations.
 
 
 #ifndef MCL_ROBOTIO_H_
@@ -28,9 +28,9 @@ extern const std::string subscriber;
 namespace MCL
 {
 
-	bool RobotInit(int arc, char ** argv, std::string publisher, std::string subscriber);
+    bool RobotInit(int arc, char ** argv, std::string publisher, std::string subscriber);
 
-	bool PublishData(std::string str);
+    bool PublishData(std::string str);
 
 
 }

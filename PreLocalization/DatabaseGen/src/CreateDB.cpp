@@ -116,22 +116,22 @@ void removeBad(vector<KeyPoint> kps, Mat& img, vector<KeyPoint> unique_points, i
 
 int main(int argc, char** argv)
 {
-	// Number of divisions for Gray Scale and Above Below Images
-	int divs = 50;
+    // Number of divisions for Gray Scale and Above Below Images
+    int divs = 50;
 
-	if (argc != 2)
-	{
-		printPrompt(argv[0]);
-		return -1;
-	}
-	string modelDir = argv[1];
+    if (argc != 2)
+    {
+        printPrompt(argv[0]);
+        return -1;
+    }
+    string modelDir = argv[1];
 
-	// Path to Images:
-	string dir = "../../../Data/RenderedImages/" + modelDir;
+    // Path to Images:
+    string dir = "../../../Data/RenderedImages/" + modelDir;
     string pathToFeatures = "../../../Data/FeatureData";
-	string bwdir = modelDir + "/bwimages";
-	string gsdir = modelDir + "/gsimages";
-	string kdir = modelDir + "/descriptors";
+    string bwdir = modelDir + "/bwimages";
+    string gsdir = modelDir + "/gsimages";
+    string kdir = modelDir + "/descriptors";
 
     TickMeter tm;
     tm.reset();

@@ -11,26 +11,26 @@ const std::string subscriber = "MCL_Subscriber";
 
 bool RobotInit(int arc, char ** argv)
 {
-	ros::init(argc, argv, "3DLocalization")
-	data_publisher = node.advertise<std_msgs::String>(publish);
+    ros::init(argc, argv, "3DLocalization")
+    data_publisher = node.advertise<std_msgs::String>(publish);
 
-	std_msgs::String msg;
-	std::stringstream ss;
-	ss << "Initializing" << std::endl;
-	msg.data = ss.str();
+    std_msgs::String msg;
+    std::stringstream ss;
+    ss << "Initializing" << std::endl;
+    msg.data = ss.str();
 
-	data_publisher.publish(msg);
+    data_publisher.publish(msg);
 
-	movement_subscriber = node.subscribe(subscriber, 2, MotionCallback);
+    movement_subscriber = node.subscribe(subscriber, 2, MotionCallback);
 
-	return ros::ok();
+    return ros::ok();
 }
 
 
 bool PublishData(std::string str)
 {
-	std_msgs::String msg;
-	msg.data = str;
-	data_publisher.publish(msg);
-	MCL::DebugIO("Data Published to Robot");
+    std_msgs::String msg;
+    msg.data = str;
+    data_publisher.publish(msg);
+    MCL::DebugIO("Data Published to Robot");
 }

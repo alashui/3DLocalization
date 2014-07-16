@@ -1,5 +1,10 @@
-// Perspective.h
-
+/** @File    - Perspective.h
+*   @Author  - Alex Rich and John Allard, Summer 2014.
+*   @Purpose - This struct is defined to conveniently hold all of the data that defines a certain perspective in the environment.
+*              This includes information about the [x y z] spacial coordinated of the perspective, as well as the pdx dy dz] direction
+*              that the camera is looking along from this perspective. Various functions are also included to get/set the perspective
+*              with different data types.
+**/
 #ifndef MCL_PERSPECTIVE_H_
 #define MCL_PERSPECTIVE_H_
 
@@ -12,13 +17,13 @@ namespace MCL
 {
     struct Perspective
     {
-        float x;
-        float y;
-        float z;
-        float dx;
-        float dy;
-        float dz;
+        // [x y z] spacial coordinates
+        float x, y, z;
 
+        // [dx dy dz] direction of camera orientation coordinates.
+        float dx, dy, dz;
+
+        // various constructors
         Perspective(std::vector<float> v) : x(v[0]), y(v[1]), z(v[2]), dx(v[3]), dy(v[4]), dz(v[5]) { }
         Perspective(const Perspective & p) : x(p.x), y(p.y), z(p.z), dx(p.dx), dy(p.dy), dz(p.dz) { }
         Perspective() : x(0), y(0), z(0), dx(1), dy(0), dz(0) { }
@@ -38,6 +43,7 @@ namespace MCL
             return p;
         }
 
+        // Used to see if two perspectives are equal within a defined epsilon (because of flotating point trunc errors.)
         inline bool operator==(const Perspective& a) {
             float eps = 0.00001;
             std::vector<float> v1 = this->ToVector();
@@ -49,7 +55,7 @@ namespace MCL
         }
     };
 
-    class ComparePerspectives { // simple comparison function
+    class ComparePerspectives { // simple comparison function for the std::map to use
        public:
           bool operator()(const Perspective& a,const Perspective& b) const { return (a.x- b.x)>0; } // returns x>y
     };

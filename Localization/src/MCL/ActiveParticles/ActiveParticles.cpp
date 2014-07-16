@@ -260,7 +260,11 @@ namespace MCL
         // Get Input Data
         ifstream file(fn);
         if ( !file.is_open() )
-            cout << "Error! InputInfo.txt Not Found for model " << dirName << "! Looked in " << fn << endl;
+        {
+            stringstream ss;
+            ss << "Error : InputInfo.txt Not Found for model " << dirName << "! Looked in " << fn << endl;
+            ErrorIO(ss.str());
+        }
 
         string str;
 

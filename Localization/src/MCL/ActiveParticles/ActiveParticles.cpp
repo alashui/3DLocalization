@@ -125,7 +125,8 @@ namespace MCL
         for (int i = 0; i < amount; i++)
         {
             int rndIdx = dist(time(0));
-            Perspective P = Scatter(this->distribution[rndIdx], this->gd);                
+            Perspective P = Scatter(this->distribution[rndIdx], this->gd);
+            SnapToGrid(&P);
             pList.push_back(Particle(P));
         }
     }
@@ -151,19 +152,29 @@ namespace MCL
         return round(dtheta * intmul);
     }
 
-    Perspective SnapToGrid(Perspective p)
+    void ActiveParticles::SnapToGrid(Perspective * p)
     {
         Perspective refP = perspectives[0];
-        float normalx = p.x - refP.x;
-        float normaly = p.y - refP.y;
+        float normalx = p->x - refP.x;
+        float normaly = p->y - refP.y;
         float mul = (normalx + normaly) / this->gd;
         
         if (abs(mul - (int) floor(mul + 0.5)) < 0.0001)
-            return p;
+            return;
         
         // Else? Houston, we have a problem.
+        float mulx = normalx / this->gd;
+        float muly = normaly / this->gd;
+        int nearestMulx = floor(mulx + 0.5)
+        int nearestMuly = floor(muly + 0.5)
 
-        int nearestMul = floor(mul+0.5)
+        p->x = nearestMulx * this->gd + refP.x;
+        p->y = nearestMuly * this->gd + refP.y;
+
+        float angle = GetAngle(p->dx, p->dy);
+
+        p->dx = round(cos(angle));
+        p->dy = round(sin(angle));
     }
 
     Perspective Scatter(Perspective p, float maxtranslation, int prob=32)
@@ -214,6 +225,8 @@ namespace MCL
 
             Perspective P = Perspective(myV);
 
+            SnapToGrid(&P);
+
             if (find(perspectives.begin(), perspectives.end(), P) != perspectives.end())
                 newPList.push_back(Particle(Perspective(myV)));
         }
@@ -240,52 +253,35 @@ namespace MCL
     }
 
     vector<Particle> ActiveParticles::GetParticleList()
-    {
-        return this->pList;
-    }
+    { return this->pList; }
+
+    void ActiveParticles::GetParticleList(vector<Particle> * v)
+    { v = &(this->pList); }
 
     void ActiveParticles::SetParticleList(vector<Particle> pl)
-    {
-        this->pList = pl;
-    }
+    { this->pList = pl; }
 
     vector<Perspective> ActiveParticles::GetWeightHistory()
-    {
-        return this->weightHistory;
-    }
+    { return this->weightHistory; }
 
     vector<Perspective> ActiveParticles::GetGuessHistory()
-    {
-        return this->guessHistory;
-    }
+    { return this->guessHistory; }
 
     vector<Perspective> ActiveParticles::GetDistribution()
-    {
-        return this->distribution;
-    }
+    { return this->distribution; }
     
     void ActiveParticles::SetDistribution(vector<Perspective> dist)
-    {
-        this->distribution = dist;
-    }
+    { this->distribution = dist; }
 
     Perspective ActiveParticles::GetGuess()
-    {
-        return this->guessHistory.back();
-    }
+    { return this->guessHistory.back(); }
     
     int ActiveParticles::GetAvgWeight()
-    {
-        return this->weightHistory.back();
-    }
+    { return this->weightHistory.back(); }
     
     int ActiveParticles::GetGeneration()
-    {
-        return this->generation;
-    }
+    { return this->generation; }
 
     int ActiveParticles::NumParticles()
-    {       
-        return this->pList.size();
-    }
+    { return this->pList.size(); }
 }

@@ -120,11 +120,7 @@ namespace MCL
         for (int i = 0; i < amount; i++)
         {
             int rndIdx = dist(time(0));
-            Perspective P = this->distribution[rndIdx];
-            int numbertofuzz = rand(0 - 6);
-            for (int i = 0; i < number)
-                // how do i fuzz this particle
-                
+            Perspective P = this->distribution[rndIdx];                
             pList.push_back(Particle(P));
         }
     }
@@ -150,17 +146,33 @@ namespace MCL
         return round(dtheta * intmul);
     }
 
-    int ActiveParticles::Move
-
-    int ActiveParticles::MoveList(float x, float y, float z, int turntimes)
+    Perspective Scatter(Perspective p, float maxtranslation, int prob=32)
     {
-        float mul = (x+y+z) / gd;
-        if (abs(mul - floor(mul + 0.5)) > 0.0001)
+        if (prob < 5)
+            return p;
+        boost::random::uniform_int_distribution<> dist(0, 100);
+        int rnd = dist(time(0));
+        if (rnd < prob)
         {
-            cout << "Error! Unable to move specified translation: " << x << "\t" << y << "\t" << z << endl;
-            return -1;
+            vector<float> v = p.ToVector();
+            if (prob % 2 == 0)
+            { // turn!
+                float curangle = GetAngle(p.dx, p.dy);
+                curangle += (float) (dist(boost::random::mt19937) - 50) / 16.0;
+                v[3] = round(cos(curangle));
+                v[4] = round(sin(curangle));
+            }
+            else
+            { // translate!
+                v[0] += (float) (dist(time(0)) - 50) * maxtranslation / 50.0;
+                v[1] += (float) (dist(boost::random::mt19937) - 50) * maxtranslation / 50.0;
+            }
         }
+        return Scatter(Perspective(v), maxtranslation, prob/2);
+    }
 
+    int ActiveParticles::Move(float x, float y, float z, int turntimes)
+    {
         vector<Particle> newPList;
         for (int i = 0; i < pList.size(); i++)
         {
@@ -178,7 +190,8 @@ namespace MCL
                 myV[4] = round(sin(newangle));
             }
 
-            Perspective P = Perspective(myV);
+            Perspective P = Scatter(Perspective(myV), 10, this->gd * 3);
+
             if (find(perspectives.begin(), perspectives.end(), P) != perspectives.end())
                 newPList.push_back(Particle(Perspective(myV)));
         }

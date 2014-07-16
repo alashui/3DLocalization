@@ -23,7 +23,7 @@ using namespace std;
 
 namespace MCL
 {
-	float CompareAndWeigh(Particle*, RobotState, vector<float>);
+	float CompareAndWeigh(Particle, RobotState, vector<float>);
 
     // given two images of different size, return a similarity score
     float SimilarityOfDifferentSizedImages(Mat&, Mat&);

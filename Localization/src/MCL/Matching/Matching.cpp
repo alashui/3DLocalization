@@ -15,9 +15,11 @@ namespace MCL
     float GetSimilarity(Mat& mat1, Mat& mat2);
     float CompareDescriptors(Mat& desc1, Mat& desc2);
 
-	float CompareAndWeigh(Particle * p, RobotState R, vector<float> comboweights)
+	float CompareAndWeigh(Particle p, RobotState R, vector<float> comboweights)
 	{
-		Characterizer c1 = masterMap[p->GetPerspective()];
+        if (masterMap.find(p.GetPerspective()) == masterMap.end())
+            cout << "NOT FOUND: " << p.GetPerspective().ToString() << endl;
+		Characterizer c1 = masterMap[p.GetPerspective()];
 		Characterizer c2 = R.GetCharacterizer();
 
 		float sim = 0;
@@ -44,7 +46,6 @@ namespace MCL
         // << "\tTOTAL: " << sim
         // << endl;
 
-        p->SetWeight(sim);
         return sim;
 	}
 
@@ -68,6 +69,12 @@ namespace MCL
 
         vector<vector<DMatch> > vecmatches;
         float ratio = 0.75;
+
+        if (desc1.empty() || desc2.empty())
+        {
+            ErrorIO("Error in Matching.cpp->CompareDescriptors: At least one of the descriptors is empty!");
+            return 1000.0;
+        }
 
         matcher.knnMatch(desc1, desc2, vecmatches, 2);
         for (int i = 0; i < vecmatches.size(); i++)

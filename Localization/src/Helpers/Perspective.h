@@ -13,6 +13,7 @@
 #include <cmath>
 #include <string>
 #include <iostream>
+#include <sstream>
 
 namespace MCL
 {
@@ -42,6 +43,13 @@ namespace MCL
         {
             std::vector<float> p; p.push_back(x); p.push_back(y); p.push_back(z); p.push_back(dx); p.push_back(dy); p.push_back(dz);
             return p;
+        }
+
+        std::string ToString() const
+        {
+            std::stringstream ss; 
+            ss << "[" << x << ", " << y << ", " << z << "], [" << dx << ", " << dy << ", " << dz << "]";
+            return ss.str();
         }
 
         // Used to see if two perspectives are equal within a defined epsilon (because of flotating point trunc errors.)

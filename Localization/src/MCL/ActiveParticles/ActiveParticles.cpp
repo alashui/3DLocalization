@@ -13,7 +13,7 @@ namespace MCL
 
     ActiveParticles::ActiveParticles() : generation(0), defaultDistributionSize(800) {}
     
-    Perspective ActiveParticles::makeGuess()
+    Perspective ActiveParticles::MakeGuess()
     {
         // First Determine Location
         float avgx = 0.0;
@@ -82,7 +82,7 @@ namespace MCL
         return Perspective(avgx, avgy, avgz, avgdx, avgxy, avgdz);
     }
 
-    float ActiveParticles::computeAvgWeight()
+    float ActiveParticles::ComputeAvgWeight()
     {
         float total = 0;
 
@@ -95,7 +95,7 @@ namespace MCL
         return avg;
     }
 
-    int ActiveParticles::generateDistribution(int wantedSize)
+    int ActiveParticles::GenerateDistribution(int wantedSize)
     {
         // Randomly generate a distribution based on 
         // the weights of all elements in pList
@@ -112,7 +112,7 @@ namespace MCL
         return 0;
     }
 
-    void ActiveParticles::generateParticles(int amount)
+    void ActiveParticles::GenerateParticles(int amount)
     {
         this->pList.clear();
         boost::random::uniform_int_distribution<> dist(0, this->distribution.size() - 1);
@@ -129,15 +129,38 @@ namespace MCL
         }
     }
 
-    Perspective ActiveParticles::analyzeList()
+    Perspective ActiveParticles::AnalyzeList()
     {
         this->computeAvgWeight();
         this->generation++;
         return this->makeGuess();
     }
 
-    int ActiveParticles::move(float x, float y, float z, int turntimes)
+    // Rounds to second decimal place
+    float round(float x)
     {
+        return (float) ((int) (x*100))/100.0;
+    }
+
+    float ActiveParticles::GetAngle(float x, float y)
+    {
+        angle = atan2(y, x);
+        float mul = angle / dtheta
+        int intmul = (int) (mul + 0.5);
+        return round(dtheta * intmul);
+    }
+
+    int ActiveParticles::Move
+
+    int ActiveParticles::MoveList(float x, float y, float z, int turntimes)
+    {
+        float mul = (x+y+z) / gd;
+        if (abs(mul - floor(mul + 0.5)) > 0.0001)
+        {
+            cout << "Error! Unable to move specified translation: " << x << "\t" << y << "\t" << z << endl;
+            return -1;
+        }
+
         vector<Particle> newPList;
         for (int i = 0; i < pList.size(); i++)
         {
@@ -147,38 +170,14 @@ namespace MCL
             myV[1] += y;
             myV[2] += z;
 
-            if (turntimes < 0)
+            float angle = GetAngle(myV[3], myV[4]);
+            if (turntimes != 0)
             {
-                for (int i = turntimes; i < 0; i++)
-                {
-                    for (int j = 2; j < perspectives.size(); j++)
-                    {
-                        if (perspectives[j].dx == newx && perspectives[j].dy == newy && perspectives[j].dz == newz)
-                        {
-                            myV[3] = perspectives[j + 1].dx;
-                            myV[4] = perspectives[j + 1].dy;
-                            myV[5] = perspectives[j + 1].dz;
-                            break;
-                        }
-                    }
-                }
+                float newangle = angle + dtheta * turntimes;
+                myV[3] = round(cos(newangle));
+                myV[4] = round(sin(newangle));
             }
-            else if (turntimes > 0)
-            {
-                for (int i = 0; i < turntimes; i++)
-                {
-                    for (int j = 0; j < perspectives.size() - 1; j++)
-                    {
-                        if (perspectives[j].dx == newx && perspectives[j].dy == newy && perspectives[j].dz == newz)
-                        {
-                            myV[3] = perspectives[j - 1].dx;
-                            myV[4] = perspectives[j - 1].dy;
-                            myV[5] = perspectives[j - 1].dz;
-                            break;
-                        }
-                    }
-                }
-            }
+
             Perspective P = Perspective(myV);
             if (find(perspectives.begin(), perspectives.end(), P) != perspectives.end())
                 newPList.push_back(Particle(Perspective(myV)));
@@ -186,47 +185,67 @@ namespace MCL
         return 0;
     }
 
-    vector<Particle> ActiveParticles::getParticleList()
+    void ActiveParticles::GetConstants(string dirName)
+    {
+        string fn = "../../../../Data/InputData/" + dirName + "/InputInfo.txt";
+        // Get Input Data
+        ifstream file(fn);
+        if ( !file.is_open() )
+            cout << "Error! InputInfo.txt Not Found for model " << dirName << "! Looked in " << fn << endl;
+
+        string str;
+
+        // grid density
+        getline( file, str );
+        this->gd = atof(str.c_str());
+
+        // Angle difference
+        getline( file, str );
+        this->dtheta = atof(str.c_str());
+    }
+
+
+    vector<Particle> ActiveParticles::GetParticleList()
     {
         return this->pList;
     }
 
-    void ActiveParticles::setParticleList(vector<Particle> pl)
+    void ActiveParticles::SetParticleList(vector<Particle> pl)
     {
         this->pList = pl;
     }
 
-    vector<Perspective> ActiveParticles::getWeightHistory()
+    vector<Perspective> ActiveParticles::GetWeightHistory()
     {
         return this->weightHistory;
     }
 
-    vector<Perspective> ActiveParticles::getGuessHistory()
+    vector<Perspective> ActiveParticles::GetGuessHistory()
     {
         return this->guessHistory;
     }
 
-    vector<Perspective> ActiveParticles::getDistribution()
+    vector<Perspective> ActiveParticles::GetDistribution()
     {
         return this->distribution;
     }
     
-    void ActiveParticles::setDistribution(vector<Perspective> dist)
+    void ActiveParticles::SetDistribution(vector<Perspective> dist)
     {
         this->distribution = dist;
     }
 
-    Perspective ActiveParticles::getGuess()
+    Perspective ActiveParticles::GetGuess()
     {
         return this->guessHistory.back();
     }
     
-    int ActiveParticles::getAvgWeight()
+    int ActiveParticles::GetAvgWeight()
     {
         return this->weightHistory.back();
     }
     
-    int ActiveParticles::getGeneration()
+    int ActiveParticles::GetGeneration()
     {
         return this->generation;
     }

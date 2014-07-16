@@ -46,12 +46,12 @@ namespace MCL
 		this->perspective = p;
 	}
 
-	MCL::Perspective Particle::getPerspective() const
+	MCL::Perspective Particle::GetPerspective() const
 	{
 		return this->perspective;
 	}
 
-	float Particle::getPerspective(int index) const
+	float Particle::GetPerspective(int index) const
 	{
 		if(index >= 0 && index < 6)
 		{
@@ -66,12 +66,12 @@ namespace MCL
 		}
 	}
 
-	float Particle::getWeight() const
+	float Particle::GetWeight() const
 	{
 		return this->weight;
 	}
 
-	bool Particle::setWeight(float w)
+	bool Particle::SetWeight(float w)
 	{
 		if(w >= weightmin && w <= weightmax)
 		{

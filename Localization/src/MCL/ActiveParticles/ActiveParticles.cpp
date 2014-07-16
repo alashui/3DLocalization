@@ -264,7 +264,6 @@ namespace MCL
     }
 
     int ActiveParticles::numParticles()
-    
     {       
         return this->pList.size();
     }

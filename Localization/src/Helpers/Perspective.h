@@ -22,6 +22,15 @@ namespace MCL
         Perspective(std::vector<float> v) : x(v[0]), y(v[1]), z(v[2]), dx(v[3]), dy(v[4]), dz(v[5]) { }
         Perspective(const Perspective & p) : x(p.x), y(p.y), z(p.z), dx(p.dx), dy(p.dy), dz(p.dz) { }
         Perspective() : x(0), y(0), z(0), dx(1), dy(0), dz(0) { }
+        Perspective(float lx, float ly, float lz, float ldx, float ldy, float ldz)
+        {
+            x = lx;
+            y = ly;
+            z = lz;
+            dx = ldx;
+            dy = ldy;
+            dz = ldz;
+        }
 
         std::vector<float> ToVector() const
         {

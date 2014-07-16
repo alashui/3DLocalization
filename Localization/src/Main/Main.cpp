@@ -32,7 +32,11 @@ namespace MCL
 			return PrintUsage(argv[0]);
 
 		Controller control;
-		control.spin();
+
+		control.init(modelName);
+
+		while(true)
+			control.SpinOnce();
 
 		return 0;
 	}

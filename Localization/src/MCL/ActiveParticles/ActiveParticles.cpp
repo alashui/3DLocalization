@@ -226,7 +226,6 @@ namespace MCL
             myV[4] = round(sin(newangle * PI / 180.0));
 
             // Translate along axis.
-
             float mag = (float)sqrt(myV[3] * myV[3] + myV[4] * myV[4]);
             myV[3] /= mag;
             myV[4] /= mag;

@@ -151,6 +151,21 @@ namespace MCL
         return round(dtheta * intmul);
     }
 
+    Perspective SnapToGrid(Perspective p)
+    {
+        Perspective refP = perspectives[0];
+        float normalx = p.x - refP.x;
+        float normaly = p.y - refP.y;
+        float mul = (normalx + normaly) / this->gd;
+        
+        if (abs(mul - (int) floor(mul + 0.5)) < 0.0001)
+            return p;
+        
+        // Else? Houston, we have a problem.
+
+        int nearestMul = floor(mul+0.5)
+    }
+
     Perspective Scatter(Perspective p, float maxtranslation, int prob=32)
     {
         if (prob < 2)
@@ -269,7 +284,7 @@ namespace MCL
         return this->generation;
     }
 
-    int ActiveParticles::numParticles()
+    int ActiveParticles::NumParticles()
     {       
         return this->pList.size();
     }

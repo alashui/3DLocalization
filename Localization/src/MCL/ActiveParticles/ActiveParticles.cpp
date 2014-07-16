@@ -8,6 +8,8 @@
 
 #include "ActiveParticles.h"
 
+#define PI 3.1415926
+
 namespace MCL
 {
 
@@ -150,7 +152,7 @@ namespace MCL
 
     float ActiveParticles::GetAngle(float x, float y)
     {
-        angle = atan2(y, x);
+        angle = atan2(y, x) * 180.0 / PI;
         float mul = angle / dtheta
         int intmul = (int) (mul + 0.5);
         return round(dtheta * intmul);
@@ -177,8 +179,8 @@ namespace MCL
 
         float angle = GetAngle(p->dx, p->dy);
 
-        p->dx = round(cos(angle));
-        p->dy = round(sin(angle));
+        p->dx = round(cos(angle * PI / 180.0));
+        p->dy = round(sin(angle * PI / 180.0));
     }
 
     Perspective Scatter(Perspective p, float maxtranslation, int prob=32)
@@ -196,8 +198,8 @@ namespace MCL
         { // turn!
             float curangle = GetAngle(p.dx, p.dy);
             curangle += (float) (dist(boost::random::mt19937) - 50) / 80.0;
-            v[3] = round(cos(curangle));
-            v[4] = round(sin(curangle));
+            v[3] = round(cos(curangle * PI / 180.0));
+            v[4] = round(sin(curangle * PI / 180.0));
         }
         else
         { // translate!
@@ -208,24 +210,29 @@ namespace MCL
         return Scatter(Perspective(v), maxtranslation, prob/2);
     }
 
-    int ActiveParticles::Move(float x, float y, float z, int turntimes)
+    int ActiveParticles::Move(float travel, float turn)
     {
         vector<Particle> newPList;
         for (int i = 0; i < pList.size(); i++)
         {
             Particle myP = pList[i];
             vector<float> myV = myP.getPerspective().ToVector();
-            myV[0] += x;
-            myV[1] += y;
-            myV[2] += z;
+            
+            // Turn
+            float origAngle = GetAngle(myV[3], myV[4]);
+            float newangle = origangle + turn;
 
-            float angle = GetAngle(myV[3], myV[4]);
-            if (turntimes != 0)
-            {
-                float newangle = angle + dtheta * turntimes;
-                myV[3] = round(cos(newangle));
-                myV[4] = round(sin(newangle));
-            }
+            myV[3] = round(cos(newangle * PI / 180.0));
+            myV[4] = round(sin(newangle * PI / 180.0));
+
+            // Translate along axis.
+
+            float mag = (float)sqrt(myV[3] * myV[3] + myV[4] * myV[4]);
+            myV[3] /= mag;
+            myV[4] /= mag;
+
+            myV[0] += myV[3] * travel;
+            myV[1] += myV[4] * travel;
 
             Perspective P = Perspective(myV);
 

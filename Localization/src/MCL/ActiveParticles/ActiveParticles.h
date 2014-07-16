@@ -16,6 +16,8 @@
 
 #include <vector>
 #include <stdlib>
+#include <cmath>
+
 // #include "../../Helpers/Characterize.h"
 
 using namespace std;

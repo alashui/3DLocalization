@@ -132,30 +132,6 @@ home/robotics/HMCREU/MCL/3DLocalization/Localization/src/IO/ProgramIO.cpp.s:
 	$(MAKE) -f CMakeFiles/IOTest.dir/build.make CMakeFiles/IOTest.dir/home/robotics/HMCREU/MCL/3DLocalization/Localization/src/IO/ProgramIO.cpp.s
 .PHONY : home/robotics/HMCREU/MCL/3DLocalization/Localization/src/IO/ProgramIO.cpp.s
 
-home/robotics/HMCREU/MCL/3DLocalization/Localization/src/Robot/RobotIO.o: home/robotics/HMCREU/MCL/3DLocalization/Localization/src/Robot/RobotIO.cpp.o
-.PHONY : home/robotics/HMCREU/MCL/3DLocalization/Localization/src/Robot/RobotIO.o
-
-# target to build an object file
-home/robotics/HMCREU/MCL/3DLocalization/Localization/src/Robot/RobotIO.cpp.o:
-	$(MAKE) -f CMakeFiles/IOTest.dir/build.make CMakeFiles/IOTest.dir/home/robotics/HMCREU/MCL/3DLocalization/Localization/src/Robot/RobotIO.cpp.o
-.PHONY : home/robotics/HMCREU/MCL/3DLocalization/Localization/src/Robot/RobotIO.cpp.o
-
-home/robotics/HMCREU/MCL/3DLocalization/Localization/src/Robot/RobotIO.i: home/robotics/HMCREU/MCL/3DLocalization/Localization/src/Robot/RobotIO.cpp.i
-.PHONY : home/robotics/HMCREU/MCL/3DLocalization/Localization/src/Robot/RobotIO.i
-
-# target to preprocess a source file
-home/robotics/HMCREU/MCL/3DLocalization/Localization/src/Robot/RobotIO.cpp.i:
-	$(MAKE) -f CMakeFiles/IOTest.dir/build.make CMakeFiles/IOTest.dir/home/robotics/HMCREU/MCL/3DLocalization/Localization/src/Robot/RobotIO.cpp.i
-.PHONY : home/robotics/HMCREU/MCL/3DLocalization/Localization/src/Robot/RobotIO.cpp.i
-
-home/robotics/HMCREU/MCL/3DLocalization/Localization/src/Robot/RobotIO.s: home/robotics/HMCREU/MCL/3DLocalization/Localization/src/Robot/RobotIO.cpp.s
-.PHONY : home/robotics/HMCREU/MCL/3DLocalization/Localization/src/Robot/RobotIO.s
-
-# target to generate assembly for a file
-home/robotics/HMCREU/MCL/3DLocalization/Localization/src/Robot/RobotIO.cpp.s:
-	$(MAKE) -f CMakeFiles/IOTest.dir/build.make CMakeFiles/IOTest.dir/home/robotics/HMCREU/MCL/3DLocalization/Localization/src/Robot/RobotIO.cpp.s
-.PHONY : home/robotics/HMCREU/MCL/3DLocalization/Localization/src/Robot/RobotIO.cpp.s
-
 main.o: main.cpp.o
 .PHONY : main.o
 
@@ -192,9 +168,6 @@ help:
 	@echo "... home/robotics/HMCREU/MCL/3DLocalization/Localization/src/IO/ProgramIO.o"
 	@echo "... home/robotics/HMCREU/MCL/3DLocalization/Localization/src/IO/ProgramIO.i"
 	@echo "... home/robotics/HMCREU/MCL/3DLocalization/Localization/src/IO/ProgramIO.s"
-	@echo "... home/robotics/HMCREU/MCL/3DLocalization/Localization/src/Robot/RobotIO.o"
-	@echo "... home/robotics/HMCREU/MCL/3DLocalization/Localization/src/Robot/RobotIO.i"
-	@echo "... home/robotics/HMCREU/MCL/3DLocalization/Localization/src/Robot/RobotIO.s"
 	@echo "... main.o"
 	@echo "... main.i"
 	@echo "... main.s"

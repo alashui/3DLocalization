@@ -92,41 +92,16 @@ CMakeFiles/IOTest.dir/main.cpp.o.provides: CMakeFiles/IOTest.dir/main.cpp.o.requ
 
 CMakeFiles/IOTest.dir/main.cpp.o.provides.build: CMakeFiles/IOTest.dir/main.cpp.o
 
-CMakeFiles/IOTest.dir/home/robotics/HMCREU/MCL/3DLocalization/Localization/src/Robot/RobotIO.cpp.o: CMakeFiles/IOTest.dir/flags.make
-CMakeFiles/IOTest.dir/home/robotics/HMCREU/MCL/3DLocalization/Localization/src/Robot/RobotIO.cpp.o: /home/robotics/HMCREU/MCL/3DLocalization/Localization/src/Robot/RobotIO.cpp
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/robotics/HMCREU/MCL/3DLocalization/Localization/src/IO/Debug/build/CMakeFiles $(CMAKE_PROGRESS_3)
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object CMakeFiles/IOTest.dir/home/robotics/HMCREU/MCL/3DLocalization/Localization/src/Robot/RobotIO.cpp.o"
-	/usr/bin/c++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/IOTest.dir/home/robotics/HMCREU/MCL/3DLocalization/Localization/src/Robot/RobotIO.cpp.o -c /home/robotics/HMCREU/MCL/3DLocalization/Localization/src/Robot/RobotIO.cpp
-
-CMakeFiles/IOTest.dir/home/robotics/HMCREU/MCL/3DLocalization/Localization/src/Robot/RobotIO.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/IOTest.dir/home/robotics/HMCREU/MCL/3DLocalization/Localization/src/Robot/RobotIO.cpp.i"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -E /home/robotics/HMCREU/MCL/3DLocalization/Localization/src/Robot/RobotIO.cpp > CMakeFiles/IOTest.dir/home/robotics/HMCREU/MCL/3DLocalization/Localization/src/Robot/RobotIO.cpp.i
-
-CMakeFiles/IOTest.dir/home/robotics/HMCREU/MCL/3DLocalization/Localization/src/Robot/RobotIO.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/IOTest.dir/home/robotics/HMCREU/MCL/3DLocalization/Localization/src/Robot/RobotIO.cpp.s"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -S /home/robotics/HMCREU/MCL/3DLocalization/Localization/src/Robot/RobotIO.cpp -o CMakeFiles/IOTest.dir/home/robotics/HMCREU/MCL/3DLocalization/Localization/src/Robot/RobotIO.cpp.s
-
-CMakeFiles/IOTest.dir/home/robotics/HMCREU/MCL/3DLocalization/Localization/src/Robot/RobotIO.cpp.o.requires:
-.PHONY : CMakeFiles/IOTest.dir/home/robotics/HMCREU/MCL/3DLocalization/Localization/src/Robot/RobotIO.cpp.o.requires
-
-CMakeFiles/IOTest.dir/home/robotics/HMCREU/MCL/3DLocalization/Localization/src/Robot/RobotIO.cpp.o.provides: CMakeFiles/IOTest.dir/home/robotics/HMCREU/MCL/3DLocalization/Localization/src/Robot/RobotIO.cpp.o.requires
-	$(MAKE) -f CMakeFiles/IOTest.dir/build.make CMakeFiles/IOTest.dir/home/robotics/HMCREU/MCL/3DLocalization/Localization/src/Robot/RobotIO.cpp.o.provides.build
-.PHONY : CMakeFiles/IOTest.dir/home/robotics/HMCREU/MCL/3DLocalization/Localization/src/Robot/RobotIO.cpp.o.provides
-
-CMakeFiles/IOTest.dir/home/robotics/HMCREU/MCL/3DLocalization/Localization/src/Robot/RobotIO.cpp.o.provides.build: CMakeFiles/IOTest.dir/home/robotics/HMCREU/MCL/3DLocalization/Localization/src/Robot/RobotIO.cpp.o
-
 # Object files for target IOTest
 IOTest_OBJECTS = \
 "CMakeFiles/IOTest.dir/home/robotics/HMCREU/MCL/3DLocalization/Localization/src/IO/ProgramIO.cpp.o" \
-"CMakeFiles/IOTest.dir/main.cpp.o" \
-"CMakeFiles/IOTest.dir/home/robotics/HMCREU/MCL/3DLocalization/Localization/src/Robot/RobotIO.cpp.o"
+"CMakeFiles/IOTest.dir/main.cpp.o"
 
 # External object files for target IOTest
 IOTest_EXTERNAL_OBJECTS =
 
 IOTest: CMakeFiles/IOTest.dir/home/robotics/HMCREU/MCL/3DLocalization/Localization/src/IO/ProgramIO.cpp.o
 IOTest: CMakeFiles/IOTest.dir/main.cpp.o
-IOTest: CMakeFiles/IOTest.dir/home/robotics/HMCREU/MCL/3DLocalization/Localization/src/Robot/RobotIO.cpp.o
 IOTest: /opt/ros/hydro/lib/libopencv_imgproc.so.2.4.9
 IOTest: /opt/ros/hydro/lib/libopencv_highgui.so.2.4.9
 IOTest: /opt/ros/hydro/lib/libopencv_core.so.2.4.9
@@ -176,7 +151,6 @@ CMakeFiles/IOTest.dir/build: IOTest
 
 CMakeFiles/IOTest.dir/requires: CMakeFiles/IOTest.dir/home/robotics/HMCREU/MCL/3DLocalization/Localization/src/IO/ProgramIO.cpp.o.requires
 CMakeFiles/IOTest.dir/requires: CMakeFiles/IOTest.dir/main.cpp.o.requires
-CMakeFiles/IOTest.dir/requires: CMakeFiles/IOTest.dir/home/robotics/HMCREU/MCL/3DLocalization/Localization/src/Robot/RobotIO.cpp.o.requires
 .PHONY : CMakeFiles/IOTest.dir/requires
 
 CMakeFiles/IOTest.dir/clean:

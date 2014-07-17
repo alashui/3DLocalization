@@ -23,7 +23,6 @@ if(Boost_FOUND)
         src/MCL/ActiveParticles/ActiveParticles.cpp
         src/MCL/Control/Controller.cpp
         src/Particle/Particle.cpp
-        src/Robot/RobotIO.cpp
         src/Robot/RobotState.cpp
         src/MCL/Matching/Matching.cpp)
     target_link_libraries(3Dlocalize ${Boost_LIBRARIES} ${OpenCV_LIBRARIES} ${catkin_LIBRARIES} /opt/ros/hydro/lib/libcv_bridge.so)

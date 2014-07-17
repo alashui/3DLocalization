@@ -15,6 +15,12 @@
 #ifndef MCL_CONTROLLER_H_
 #define MCL_CONTROLLER_H_
 
+#include "ros/ros.h"
+#include "std_msgs/String.h"
+#include "cv_bridge/cv_bridge.h"
+#include "sensor_msgs/Image.h"
+#include "sensor_msgs/image_encodings.h"
+
 #include "../ActiveParticles/ActiveParticles.h"
 #include "../../Helpers/Globals/Globals.h"
 #include "../../Helpers/Characterizer.h"
@@ -23,7 +29,7 @@
 #include "../../IO/ProgramIO.h"
 #include "../../Robot/RobotState.h"
 #include "../Matching/Matching.h"
-#include "../../Robot/RobotIO.h"
+
 
 namespace MCL
 {
@@ -36,6 +42,12 @@ namespace MCL
         ActiveParticles ap;
         RobotState robot;
         vector<float> comboWeighting; // weighing amount for each different feature detection algorithm. 
+
+        ros::Publisher data_publisher;
+        ros::Subscriber movement_subscriber;
+
+        const std::string publish;// = "MCL_Publisher";
+        const std::string subscriber;// = "ROBOT_DATA";
 
 
     //*****-- Private Member Functions --*****//
@@ -90,6 +102,11 @@ namespace MCL
         RobotState GetRobotState() const;
         void GetRobotState(RobotState *);
         bool SetRobotState(RobotState);
+
+        bool RobotInit(int arc, char ** argv);
+        bool PublishData(int,std::string str);
+        bool InitCallbacks();
+        void ImageCallback(const sensor_msgs::ImageConstPtr& msg);
 
     
     //*****-- Public Definitions, Constants, and other Fields--*****//

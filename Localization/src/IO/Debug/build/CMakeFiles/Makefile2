@@ -56,7 +56,7 @@ CMAKE_BINARY_DIR = /home/robotics/HMCREU/MCL/3DLocalization/Localization/src/IO/
 CMakeFiles/IOTest.dir/all:
 	$(MAKE) -f CMakeFiles/IOTest.dir/build.make CMakeFiles/IOTest.dir/depend
 	$(MAKE) -f CMakeFiles/IOTest.dir/build.make CMakeFiles/IOTest.dir/build
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/robotics/HMCREU/MCL/3DLocalization/Localization/src/IO/Debug/build/CMakeFiles  1 2 3
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/robotics/HMCREU/MCL/3DLocalization/Localization/src/IO/Debug/build/CMakeFiles  1 2
 	@echo "Built target IOTest"
 .PHONY : CMakeFiles/IOTest.dir/all
 
@@ -66,7 +66,7 @@ all: CMakeFiles/IOTest.dir/all
 
 # Build rule for subdir invocation for target.
 CMakeFiles/IOTest.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/robotics/HMCREU/MCL/3DLocalization/Localization/src/IO/Debug/build/CMakeFiles 3
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/robotics/HMCREU/MCL/3DLocalization/Localization/src/IO/Debug/build/CMakeFiles 2
 	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/IOTest.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/robotics/HMCREU/MCL/3DLocalization/Localization/src/IO/Debug/build/CMakeFiles 0
 .PHONY : CMakeFiles/IOTest.dir/rule

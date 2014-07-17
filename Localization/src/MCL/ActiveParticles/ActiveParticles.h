@@ -10,7 +10,6 @@
 #define MCL_ACTIVEPARTICLES_H_
 
 #include "../../Helpers/Globals/Globals.h"
-#include "../../Helpers/Perspective.h"
 #include "../../Particle/Particle.h"
 #include "../../IO/ProgramIO.h"
 // #include <boost/random/mersenne_twister.hpp>

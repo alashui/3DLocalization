@@ -16,7 +16,6 @@
 #include <stdexcept>
 #include <vector>
 
-#include "../Robot/RobotIO.h"
 
 namespace MCL
 {

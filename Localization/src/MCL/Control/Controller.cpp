@@ -94,7 +94,11 @@ namespace MCL
 
     bool Controller::init(string dirName, int argc, char ** argv)
     {
-        RobotInit(argc, argv);
+        
+//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!//
+// !!!!!!!!  THIS MIGHT CAUSE AN ERROR !!!!!!!!!! //
+           RobotInit(argc, argv);
+//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!//
 
         if(!this->ap.GetConstants(dirName))
             return false;

@@ -53,5 +53,7 @@ int main(int argc, char ** argv)
         getchar();
     }
 
+    cout << "Error?" << endl;
+
     return 0;
 }

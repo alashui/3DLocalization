@@ -16,7 +16,7 @@ namespace MCL
         {
             im2 = cv_bridge::toCvCopy(msg, sensor_msgs::image_encodings::BGR8);
         }
-        catch
+        catch (...)
         {
             ErrorIO("ImageCall back conversion failed");
         }

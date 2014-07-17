@@ -9,12 +9,18 @@
 
 namespace MCL
 {
+    Mat Controller::nextImage;
     Controller::Controller()
     {
         comboWeighting.push_back(1.0); //SURF
         comboWeighting.push_back(0.0); //SIFT
         comboWeighting.push_back(0.0); //GREYSCALE
         comboWeighting.push_back(0.0); // B&W
+    }
+
+    void Controller::SetNextInputImage(Mat img)
+    {
+        Controller::nextImage = img;
     }
 
     bool Controller::UpdateRobotData()

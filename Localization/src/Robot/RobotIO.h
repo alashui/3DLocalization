@@ -16,6 +16,7 @@
 
 #include "RobotState.h"
 #include "../Particle/Particle.h"
+#include "../MCL/Control/Controller.h"
 
 #include <sstream>
 #include <iostream>

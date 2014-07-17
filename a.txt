@@ -1,0 +1,1000 @@
+ 1200  git commit -m "formatting"
+ 1201  git push -u origin master
+ 1202  man git push
+ 1203  git add .
+ 1204  git commit -m "formatting"
+ 1205  git push -u origin master
+ 1206  git pull origin master
+ 1207  cd Localize/build/
+ 1208  make
+ 1209  cd Localize/build/
+ 1210  ./localization Inputs.txt 
+ 1211  cd Localize/build/
+ 1212  make
+ 1213  ./localization Inputs.txt 
+ 1214  cd ..
+ 1215  cd CreateDB/build/
+ 1216  make
+ 1217  ./createDBWithImages InputsImages.txt 
+ 1218  make
+ 1219  ./createDBWithImages InputsImages.txt 
+ 1220  make
+ 1221  ./createDBWithImages InputsImages.txt 
+ 1222  make
+ 1223  ./createDBWithImages InputsImages.txt 
+ 1224  git add .
+ 1225  cd ../..
+ 1226  git add .
+ 1227  git commit -m "load images and save analysis to common folders"
+ 1228  git push -u origin master 
+ 1229  cd Localize/build/
+ 1230  make
+ 1231  ./localization Inputs.txt 
+ 1232  cd ../../CreateDB/build/
+ 1233  make
+ 1234  ./createDBWithImages InputsImages.txt 
+ 1235  make
+ 1236  ./createDBWithImages InputsImages.txt 
+ 1237  make
+ 1238  ./createDBWithImages InputsImages.txt 
+ 1239  make
+ 1240  ./createDBWithImages InputsImages.txt 
+ 1241  ../../Localize/build/
+ 1242  make
+ 1243  cd ../../Localize/build/
+ 1244  make
+ 1245  ./localization Inputs.txt 
+ 1246  make
+ 1247  ./localization Inputs.txt 
+ 1248  make
+ 1249  ./localization Inputs.txt 
+ 1250  make
+ 1251  ./localization Inputs.txt 
+ 1252  make
+ 1253  ./localization Inputs.txt 
+ 1254  make
+ 1255  ./localization Inputs.txt 
+ 1256  make
+ 1257  ./localization Inputs.txt 
+ 1258  make
+ 1259  ./localization Inputs.txt 
+ 1260  make
+ 1261  ./localization Inputs.txt 
+ 1262  make
+ 1263  ./localization Inputs.txt 
+ 1264  make
+ 1265  ./localization Inputs.txt 
+ 1266  make
+ 1267  ./localization Inputs.txt 
+ 1268  make
+ 1269  ./localization Inputs.txt 
+ 1270  make
+ 1271  ./localization Inputs.txt 
+ 1272  make
+ 1273  ./localization Inputs.txt 
+ 1274  make
+ 1275  ./localization Inputs.txt 
+ 1276  make
+ 1277  ./localization Inputs.txt 
+ 1278  make
+ 1279  ./localization Inputs.txt 
+ 1280  make
+ 1281  ./localization Inputs.txt 
+ 1282  make
+ 1283  ./localization Inputs.txt 
+ 1284  make
+ 1285  ./localization Inputs.txt 
+ 1286  make
+ 1287  ./localization Inputs.txt 
+ 1288  make
+ 1289  ./localization Inputs.txt 
+ 1290  make
+ 1291  ./localization Inputs.txt 
+ 1292  make
+ 1293  ./localization Inputs.txt 
+ 1294  make
+ 1295  ./localization Inputs.txt 
+ 1296  make
+ 1297  ./localization Inputs.txt 
+ 1298  make
+ 1299  ./localization Inputs.txt 
+ 1300  make
+ 1301  ./localization Inputs.txt 
+ 1302  make
+ 1303  ./localization Inputs.txt 
+ 1304  make
+ 1305  ./localization Inputs.txt 
+ 1306  make
+ 1307  ./localization Inputs.txt 
+ 1308  make
+ 1309  ./localization Inputs.txt 
+ 1310  make
+ 1311  ./localization Inputs.txt 
+ 1312  make
+ 1313  ./localization Inputs.txt 
+ 1314  make
+ 1315  ./localization Inputs.txt 
+ 1316  make
+ 1317  ./localization Inputs.txt 
+ 1318  make
+ 1319  ./localization Inputs.txt 
+ 1320  make
+ 1321  ./localization Inputs.txt 
+ 1322  make
+ 1323  ./localization Inputs.txt 
+ 1324  make
+ 1325  ./localization Inputs.txt 
+ 1326  make
+ 1327  ./localization Inputs.txt 
+ 1328  make
+ 1329  ./localization Inputs.txt 
+ 1330  make
+ 1331  ./localization Inputs.txt 
+ 1332  make
+ 1333  ./localization Inputs.txt 
+ 1334  make
+ 1335  ./localization Inputs.txt 
+ 1336  make
+ 1337  ./localization Inputs.txt 
+ 1338  make
+ 1339  ./localization Inputs.txt 
+ 1340  make
+ 1341  ./localization Inputs.txt 
+ 1342  make
+ 1343  ./localization Inputs.txt 
+ 1344  make
+ 1345  ./localization Inputs.txt 
+ 1346  make
+ 1347  ./localization Inputs.txt 
+ 1348  make
+ 1349  ./localization Inputs.txt 
+ 1350  make
+ 1351  ./localization Inputs.txt 
+ 1352  make
+ 1353  ./localization Inputs.txt 
+ 1354  make
+ 1355  ./localization Inputs.txt 
+ 1356  make
+ 1357  ./localization Inputs.txt 
+ 1358  make
+ 1359  ./localization Inputs.txt 
+ 1360  make
+ 1361  ./localization Inputs.txt 
+ 1362  make
+ 1363  ./localization Inputs.txt 
+ 1364  make
+ 1365  ./localization Inputs.txt 
+ 1366  make
+ 1367  ./localization Inputs.txt 
+ 1368  make
+ 1369  ./localization Inputs.txt 
+ 1370  make
+ 1371  ./localization Inputs.txt 
+ 1372  history
+ 1373  history > a.txt
+ 1374  gedit a.txt
+ 1375  ./localization Inputs.txt & 2 > a.txt
+ 1376  gedit a.txt
+ 1377  make
+ 1378  ./localization Inputs.txt
+ 1379  make
+ 1380  ./localization Inputs.txt
+ 1381  make
+ 1382  ./localization Inputs.txt
+ 1383  make
+ 1384  ./localization Inputs.txt
+ 1385  make
+ 1386  ./localization Inputs.txt
+ 1387  make
+ 1388  ./localization Inputs.txt
+ 1389  make
+ 1390  ./localization Inputs.txt
+ 1391  make
+ 1392  ./localization Inputs.txt
+ 1393  make
+ 1394  ./localization Inputs.txt
+ 1395  make
+ 1396  ./localization Inputs.txt
+ 1397  make
+ 1398  ./localization Inputs.txt
+ 1399  git add .
+ 1400  cd ..
+ 1401  git add .
+ 1402  git commit -m "issues wih mat.at<type>()"
+ 1403  git push -u origin master 
+ 1404  cd Desktop/Localize/Localize/build/
+ 1405  ./localization Inputs.txt
+ 1406  make
+ 1407  ./localization Inputs.txt
+ 1408  cd /tmp
+ 1409  ls
+ 1410  pkf-config --libs opencv
+ 1411  pkg-config --libs opencv
+ 1412  cd ~/Desktop/Localize/Localize/build/
+ 1413  make
+ 1414  ./localization Inputs.txt
+ 1415  make
+ 1416  ./localization Inputs.txt
+ 1417  make
+ 1418  ./localization Inputs.txt
+ 1419  make
+ 1420  ./localization Inputs.txt
+ 1421  make
+ 1422  ./localization Inputs.txt
+ 1423  make
+ 1424  ./localization Inputs.txt
+ 1425  make
+ 1426  ./localization Inputs.txt
+ 1427  make
+ 1428  ./localization Inputs.txt
+ 1429  make
+ 1430  ./localization Inputs.txt
+ 1431  make
+ 1432  ./localization Inputs.txt
+ 1433  make
+ 1434  ./localization Inputs.txt
+ 1435  make
+ 1436  ./localization Inputs.txt
+ 1437  make
+ 1438  ./localization Inputs.txt
+ 1439  kjalsdkfj
+ 1440  make
+ 1441  ./localization Inputs.txt
+ 1442  make
+ 1443  ./localization Inputs.txt
+ 1444  cd ../../CreateDB/build/
+ 1445  make
+ 1446  cd ../../ocalize/build
+ 1447  cd ../../Localize/build/
+ 1448  make
+ 1449  ./localization Inputs.txt
+ 1450  make
+ 1451  ./localization Inputs.txt
+ 1452  make
+ 1453  ./localization Inputs.txt
+ 1454  make
+ 1455  ./localization Inputs.txt
+ 1456  make
+ 1457  ./localization Inputs.txt
+ 1458  make
+ 1459  ./localization Inputs.txt
+ 1460  make
+ 1461  ./localization Inputs.txt
+ 1462  make
+ 1463  ./localization Inputs.txt
+ 1464  make
+ 1465  ./localization Inputs.txt
+ 1466  make
+ 1467  ./localization Inputs.txt
+ 1468  make
+ 1469  ./localization Inputs.txt
+ 1470  make
+ 1471  ./localization Inputs.txt
+ 1472  make
+ 1473  ./localization Inputs.txt
+ 1474  make
+ 1475  ./localization Inputs.txt
+ 1476  make
+ 1477  ./localization Inputs.txt
+ 1478  make
+ 1479  ./localization Inputs.txt
+ 1480  make
+ 1481  ./localization Inputs.txt
+ 1482  make
+ 1483  ./localization Inputs.txt
+ 1484  make
+ 1485  ./localization Inputs.txt
+ 1486  cd ../../CreateDB/
+ 1487  cd build/
+ 1488  make
+ 1489  history
+ 1490  ./createDBWithImages InputsImages.txt
+ 1491  make
+ 1492  ./createDBWithImages InputsImages.txt
+ 1493  make
+ 1494  ./createDBWithImages InputsImages.txt
+ 1495  make
+ 1496  ./createDBWithImages InputsImages.txt
+ 1497  make
+ 1498  ./createDBWithImages InputsImages.txt
+ 1499  make
+ 1500  ./createDBWithImages InputsImages.txt
+ 1501  make
+ 1502  ./createDBWithImages InputsImages.txt
+ 1503  make
+ 1504  ./createDBWithImages InputsImages.txt
+ 1505  cd ../../Localize/build/
+ 1506  make
+ 1507  ./localization Inputs.txt
+ 1508  make
+ 1509  ./localization Inputs.txt
+ 1510  make
+ 1511  ./localization Inputs.txt
+ 1512  make
+ 1513  ./localization Inputs.txt
+ 1514  make
+ 1515  ./localization Inputs.txt
+ 1516  make
+ 1517  ./localization Inputs.txt
+ 1518  make
+ 1519  ./localization Inputs.txt
+ 1520  make
+ 1521  ./localization Inputs.txt
+ 1522  make
+ 1523  ./localization Inputs.txt
+ 1524  make
+ 1525  ./localization Inputs.txt
+ 1526  make
+ 1527  ./localization Inputs.txt
+ 1528  make
+ 1529  ./localization Inputs.txt
+ 1530  make
+ 1531  ./localization Inputs.txt
+ 1532  make
+ 1533  ./localization Inputs.txt
+ 1534  make
+ 1535  ./localization Inputs.txt
+ 1536  make
+ 1537  make
+ 1538  cd Desktop/Localize/Localize/build/
+ 1539  make
+ 1540  ./localization Inputs.txt
+ 1541  make
+ 1542  ./localization Inputs.txt
+ 1543  make
+ 1544  ./localization Inputs.txt
+ 1545  make
+ 1546  ./localization Inputs.txt
+ 1547  make
+ 1548  ./localization Inputs.txt
+ 1549  make
+ 1550  ./localization Inputs.txt
+ 1551  make
+ 1552  ./localization Inputs.txt
+ 1553  make
+ 1554  ./localization Inputs.txt
+ 1555  make
+ 1556  ./localization Inputs.txt
+ 1557  make
+ 1558  ./localization Inputs.txt
+ 1559  make
+ 1560  ./localization Inputs.txt
+ 1561  make
+ 1562  ./localization Inputs.txt
+ 1563  make
+ 1564  ./localization Inputs.txt
+ 1565  make
+ 1566  ./localization Inputs.txt
+ 1567  make
+ 1568  ./localization Inputs.txt
+ 1569  make
+ 1570  ./localization Inputs.txt
+ 1571  make
+ 1572  ./localization Inputs.txt
+ 1573  make
+ 1574  ./localization Inputs.txt
+ 1575  cd ..
+ 1576  git add .
+ 1577  git commit -m "returns best matches, but similarity algorithm needs work
+ 1578  git commit -m "returns best matches, but similarity algorithm needs work"
+ 1579  git push -u origin master
+ 1580  cd CreateDB/build/
+ 1581  make
+ 1582  cd ../..
+ 1583  git add .
+ 1584  git commit -m "removes purple keypoints"
+ 1585  git push -u origin master 
+ 1586  cd ../../Localize/build/
+ 1587  make
+ 1588  cd ../..
+ 1589  git add .
+ 1590  git commit -m "Coventionalized delimiters. Commented code."
+ 1591  git push -u origin master
+ 1592  cd ../..
+ 1593  git add .
+ 1594  git commit -m "more instructions"
+ 1595  git push -u origin master 
+ 1596  cd Desktop/Localize/CreateDB/build/
+ 1597  make
+ 1598  ./createDBWithImages InputsImages.txt
+ 1599  cd Desktop/Localize/CreateDB/build/
+ 1600  make
+ 1601  ./createDBWithImages InputsImages.txt
+ 1602  cd ../../Localize/build/
+ 1603  make
+ 1604  ./localization Inputs.txt 
+ 1605  make
+ 1606  cd ../../CreateDB/build/
+ 1607  make
+ 1608  make 2 > a.txt
+ 1609  make > a.txt && 2 > a.txt
+ 1610  make > a.txt & 2 > a.txt
+ 1611  make & 2 > a.txt
+ 1612  history > a.txt
+ 1613  gedit a.txt 
+ 1614  make > a.txt 2 > &1
+ 1615  gedit a.txt 
+ 1616  make > a.txt 2>&1
+ 1617  gedit a.txt 
+ 1618  make > a.txt 2>&1
+ 1619  gedit a.txt 
+ 1620  make > a.txt 2>&1
+ 1621  gedit a.txt 
+ 1622  make > a.txt 2>&1
+ 1623  gedit a.txt 
+ 1624  make > a.txt 2>&1
+ 1625  gedit a.txt 
+ 1626  make > a.txt 2>&1
+ 1627  gedit a.txt 
+ 1628  make > a.txt 2>&1
+ 1629  gedit a.txt 
+ 1630  make > a.txt 2>&1
+ 1631  gedit a.txt 
+ 1632  make
+ 1633  gedit a.txt 
+ 1634  make > a.txt 2>&1
+ 1635  gedit a.txt 
+ 1636  make > a.txt 2>&1
+ 1637  gedit a.txt 
+ 1638  make > a.txt 2>&1
+ 1639  gedit a.txt 
+ 1640  make > a.txt 2>&1
+ 1641  gedit a.txt 
+ 1642  make > a.txt 2>&1
+ 1643  gedit a.txt 
+ 1644  make > a.txt 2>&1
+ 1645  gedit a.txt 
+ 1646  make
+ 1647  ./createDBWithImages InputsImages.txt
+ 1648  make
+ 1649  ./createDBWithImages InputsImages.txt
+ 1650  make
+ 1651  ./createDBWithImages InputsImages.txt
+ 1652  make
+ 1653  ./createDBWithImages InputsImages.txt
+ 1654  make
+ 1655  ./createDBWithImages InputsImages.txt
+ 1656  make
+ 1657  ./createDBWithImages InputsImages.txt
+ 1658  cd Desktop/Localize/CreateDB/build/
+ 1659  make
+ 1660  ./createDBWithImages InputsImages.txt
+ 1661  cd ../../
+ 1662  cd Localize/build/
+ 1663  make
+ 1664  ./localization Inputs.txt 
+ 1665  make
+ 1666  ./localization Inputs.txt 
+ 1667  make
+ 1668  ./localization Inputs.txt 
+ 1669  make
+ 1670  ./localization Inputs.txt 
+ 1671  make
+ 1672  ./localization Inputs.txt 
+ 1673  make
+ 1674  ./localization Inputs.txt 
+ 1675  ../../C
+ 1676  cd ../../CreateDB/
+ 1677  cd build/
+ 1678  make
+ 1679  ./createDBWithImages InputsImages.txt
+ 1680  cd ../../Localize/build/
+ 1681  make
+ 1682  ./localization Inputs.txt 
+ 1683  cd ~/Desktop/
+ 1684  mkdir 3DLocalization
+ 1685  cd 3DLocalization/
+ 1686  cd ..
+ 1687  rmdir 3DLocalization/
+ 1688  git clone https://github.com/jhallard/3DLocalization.git
+ 1689  ls
+ 1690  cd 3DLocalization/
+ 1691  ls
+ 1692  cd Data/
+ 1693  gedit README.md
+ 1694  cd FeatureData/
+ 1695  gedit .gitignore
+ 1696  cd ../..
+ 1697  git add .
+ 1698  git commit -m "initializing folders"
+ 1699  git push -u origin master 
+ 1700  cd PreLocalization/DatabaseGen/src/
+ 1701  gedit CreateDB.cpp
+ 1702  cd ../../..
+ 1703  git add .
+ 1704  git commit -m "Initialized some source"
+ 1705  git push -u origin master
+ 1706  gedit .gitignore
+ 1707  git add .
+ 1708  git commit -m "ignore jpgs and yml"
+ 1709  git push -u origin master
+ 1710  cd PreLocalization/DatabaseGen/
+ 1711  cd ../..
+ 1712  git add PreLocalization/DatabaseGen/
+ 1713  git commit -m "commit folder?"
+ 1714  git push -u origin master
+ 1715  git add PreLocalization/DatabaseGen/
+ 1716  git commit -m "create directories if needed"
+ 1717  git push -u origin master
+ 1718  git pull origin master
+ 1719  cd PreLocalization/DatabaseGen/build/
+ 1720  cmake ..
+ 1721  make
+ 1722  sudo apt-get install libboost-all-dev 
+ 1723  make
+ 1724  cmake ..
+ 1725  make
+ 1726  cmake ..
+ 1727  make
+ 1728  make --libboost_system
+ 1729  make libboost_system
+ 1730  cmake -v
+ 1731  make -v
+ 1732  make
+ 1733  cd ../../..
+ 1734  git add PreLocalization/DatabaseGen/
+ 1735  git commit -m "Link to Boost without PCL"
+ 1736  git push -u origin master
+ 1737  git pull origin master 
+ 1738  cd PreLocalization/DatabaseGen/build/
+ 1739  ./CreateDB SmallFolder
+ 1740  make
+ 1741  ./CreateDB SmallFolder
+ 1742  cd ../../..
+ 1743  git add PreLocalization/DatabaseGen/
+ 1744  git commit -m "Creates folder to save in if nonexistant"
+ 1745  git push -u origin master
+ 1746  git pull origin master
+ 1747  git push -u origin master
+ 1748  git add Data/Readme.md
+ 1749  ls Data/
+ 1750  git add Data/README.md
+ 1751  git commit -m "Descriptions of directories"
+ 1752  git pull origin master 
+ 1753  git push -u origin master
+ 1754  pkg-config --cflags opencv
+ 1755  git add README.md
+ 1756  git pull origin master
+ 1757  git commit -m "Updated README"
+ 1758  git push -u origin master 
+ 1759  git add PreLocalization/README.md
+ 1760  git commit -m "Updated Database Gen Readme"
+ 1761  git push -u origin master
+ 1762  cd Localization/src/
+ 1763  gedit .gitignore
+ 1764  cd ../..
+ 1765  git add Localization/
+ 1766  git commit -m "src"
+ 1767  git push -u origin master 
+ 1768  cd Localization/src/HelperStructs/
+ 1769  gedit Perspective.h
+ 1770  gedit Characterizer.h
+ 1771  cd ..
+ 1772  ls
+ 1773  cd Particle/
+ 1774  gedit Particle.h
+ 1775  gedit Particle.cpp
+ 1776  cd ..
+ 1777  cd Robot/
+ 1778  gedit Init.h
+ 1779  gedit IO.h
+ 1780  gedit RobotState.h
+ 1781  gedit RobotState.cpp
+ 1782  cd ../../../
+ 1783  git pull origin master 
+ 1784  git add Localization/
+ 1785  git commit -m "Initial Commit"
+ 1786  git push -u origin master 
+ 1787  git pull origin master
+ 1788  git push -u origin master
+ 1789  git pull origin master
+ 1790  git push -u origin master
+ 1791  git add Localization/
+ 1792  git commit -m "Updated README"
+ 1793  git push -u origin master 
+ 1794  ls -al ~/.ssh
+ 1795  ssh-keygen -t rsa -C "arich@hmc.edu"
+ 1796  eval "$(ssh-agent -s)"
+ 1797  ssh-add ~/.ssh/id_rsa
+ 1798  sudo apt-get install xclip 
+ 1799  xclip -sel clip < ~/.ssh/id_rsa.pub
+ 1800  ssh -T git@github.com
+ 1801  git add Localization/
+ 1802  git commit -m "Added final files"
+ 1803  git push -u origin master 
+ 1804  git add Localization/
+ 1805  git commit -m "Comments"
+ 1806  git push -u origin master 
+ 1807  cd Desktop/3DLocalization/
+ 1808  git pull origin master 
+ 1809  git add Localization/src/HelperStructs/
+ 1810  git commit -m "structs have members"
+ 1811  git push -u origin master 
+ 1812  git config --global credential.helper cache
+ 1813  git config --global credential.helper 'cache --timeout=3600'
+ 1814  git add Localization/src/HelperStructs/
+ 1815  git commit -m "structs have members"
+ 1816  git push -u origin master 
+ 1817  git add Localization/
+ 1818  git commit -m "Added Boot Folder"
+ 1819  git push -u origin master 
+ 1820  git add Localization/src/HelperStructs/
+ 1821  git commit -m "Updating names and members"
+ 1822  git push -u origin master
+ 1823  git pull origin master 
+ 1824  git push -u origin master
+ 1825  git add Localization/src/
+ 1826  git commit -m "load features"
+ 1827  git pull origin master 
+ 1828  git push -u origin master 
+ 1829  cd Localization/src/Boot/Debug/
+ 1830  gedit CMakeLists.txt
+ 1831  cd build/
+ 1832  cmake ..
+ 1833  make
+ 1834  cd ..
+ 1835  gedit main.cpp
+ 1836  cd build/
+ 1837  make
+ 1838  cd build/
+ 1839  make
+ 1840  cd ../../../
+ 1841  cd ../../
+ 1842  git add Localization/src/
+ 1843  git commit -m "BootUp Loads features and Perspective comparison"
+ 1844  cd Localization/src/Boot/Debug/
+ 1845  cd build/
+ 1846  gedit .gitignore
+ 1847  cd ../../../../
+ 1848  cd ..
+ 1849  git add Localization/src/
+ 1850  git commit -m "BootUp Loads features and Perspective comparison"
+ 1851  git push -u origin master
+ 1852  history
+ 1853  git config --global credential.helper 'cache --timeout=36000'
+ 1854  git push -u origin master
+ 1855  git pull origin master 
+ 1856  git push -u origin master 
+ 1857  cd Localization/src/Boot/Debug/
+ 1858  git rm -r --cached build/
+ 1859  git commit -m "Remove build folder"
+ 1860  git push -u origin master 
+ 1861  cd build/
+ 1862  ls
+ 1863  make
+ 1864  cd ../../../..
+ 1865  cd ..
+ 1866  git add .
+ 1867  git commit -m "BootUp function"
+ 1868  git push -u origin master 
+ 1869  git pull origin master 
+ 1870  git push -u origin master 
+ 1871  cd Localization/src/Boot/Debug/build/
+ 1872  make
+ 1873  cd ../../..
+ 1874  ls
+ 1875  cd ../../
+ 1876  git add Localization/src/HelperStructs/
+ 1877  git add Localization/src/Boot/
+ 1878  git commit -m "added namespace MCL"
+ 1879  git push -u origin master 
+ 1880  git pull origin master 
+ 1881  git add Localization/src/MCL/
+ 1882  git commit -m "ActiveParticles Class"
+ 1883  git push -u origin master 
+ 1884  git pull origin master 
+ 1885  git push -u origin master 
+ 1886  git add Localization/src/HelperStructs/
+ 1887  git add Localization/src/MCL/
+ 1888  git commit -m "Active Particles Update"
+ 1889  git push -u origin master
+ 1890  git pull origin master 
+ 1891  git add Localization/src/MCL/
+ 1892  git commit -m "ActiveParicle Getters/Setters"
+ 1893  git push -u origin master 
+ 1894  git rm Localization/src/MCL/ActiveParticles/ParticleControl.cpp
+ 1895  git rm Localization/src/MCL/ActiveParticles/ParticleControl.h
+ 1896  git add Localization/src/MCL/ActiveParticles/
+ 1897  git commit -m "Delete Old Files"
+ 1898  git push -u origin master 
+ 1899  git pull origin master 
+ 1900  history
+ 1901  historygit pull origin master
+ 1902  git pull origin master 
+ 1903  git add Documentation/CodeDocumentation.tex
+ 1904  git commit -m "Database Gen Docs Updated"
+ 1905  git push -u origin master
+ 1906  git pull origin master 
+ 1907  git add Localization/src/MCL/ActiveParticles/
+ 1908  git commit -m "Particle Distribution and Generation"
+ 1909  git push -u origin master 
+ 1910  git pull origin master 
+ 1911  git add .
+ 1912  git commit -m "Update ActiveParticles makeGuess. Missing direction calculation"
+ 1913  git push -u origin master 
+ 1914  git add .
+ 1915  git commit -m "Fixing tabs and comments"
+ 1916  git push -u origin master 
+ 1917  git rm Localization/src/MCL/ParticleAnalysis
+ 1918  git rm Localization/src/MCL/ParticleAnalysis/Matching.h
+ 1919  git rm Localization/src/MCL/ParticleAnalysis/ParticleControl.h
+ 1920  git rm Localization/src/MCL/ParticleAnalysis/README.md
+ 1921  git rm Localization/src/MCL/ParticleAnalysis/.gitignore
+ 1922  git add .
+ 1923  git commit -m "Remove extraneous files"
+ 1924  git push -u origin master 
+ 1925  cd Desktop/3DLocalization/
+ 1926  git pull origin master 
+ 1927  git add Localization/src/HelperStructs/
+ 1928  git commit -m "operator== for Perspective.h"
+ 1929  history
+ 1930  git config --global credential.helper 'cache --timeout=36000'
+ 1931  git push origin master 
+ 1932  git add Localization/src/MCL/ActiveParticles/
+ 1933  git commit -m "Guess Function"
+ 1934  git push -u origin master 
+ 1935  git add Localization/src/HelperStructs/
+ 1936  git commit -m "const
+ 1937  "
+ 1938  git push -u origin master 
+ 1939  git add Localization/src/MCL/ActiveParticles/
+ 1940  git commit -m "working on move
+ 1941  "
+ 1942  git push -u origin master 
+ 1943  git pull origin master 
+ 1944  git push -u origin master 
+ 1945  git pull origin master 
+ 1946  git add Localization/src/HelperStructs/
+ 1947  git commit -m "ifndef"
+ 1948  git push -u origin master 
+ 1949  git add Localization/src/HelperStructs/
+ 1950  git commit -m "removed case"
+ 1951  git push -u origin master 
+ 1952  git pull origin master 
+ 1953  git pull origin master
+ 1954  git add Localization/src/HelperStructs/
+ 1955  git commit -m "merge conflict"
+ 1956  git pull origin master 
+ 1957  git add Localization/src/HelperStructs/
+ 1958  git commit -m"Merge Conflict"
+ 1959  git push -u origin master 
+ 1960  git add .
+ 1961  git commit -m "Updated move function for active particles"
+ 1962  git push -u origin master 
+ 1963  git add Localization/src/Helpers/
+ 1964  git add .
+ 1965  git commit -m "Renamed Folder Helperstructs"
+ 1966  git push -u origin master 
+ 1967  git rm -r Localization/src/HelperStructs
+ 1968  git commit -m "Removed duplicate folder"
+ 1969  git push -u origin master 
+ 1970  git add .
+ 1971  git commit -m "Added globals file"
+ 1972  git push -u origin master 
+ 1973  git add .
+ 1974  git commit -m "Updating ActiveParticles.h's move function"
+ 1975  git push -u origin master 
+ 1976  git pull origin master 
+ 1977  git add .
+ 1978  git commit -m "updated headers"
+ 1979  git push -u origin master
+ 1980  git add Localization/src/MCL/Matching/
+ 1981  git commit -m "Added matching functions"
+ 1982  git push -u origin master 
+ 1983  git pull origin master 
+ 1984  git push -u origin master 
+ 1985  git pull origin master 
+ 1986  git add Localization/src/Robot/
+ 1987  git commit -m "RobotState functionality
+ 1988  "
+ 1989  git push -u origin master 
+ 1990  git add .
+ 1991  git commit -m "New Input Data Folder"
+ 1992  git push -u origin master 
+ 1993  cd ../../../../
+ 1994  cd ../../
+ 1995  git pull origin master 
+ 1996  cd ../../../../../../
+ 1997  git add .
+ 1998  git commit -m "Debug work"
+ 1999  git push -u origin master 
+ 2000  cd ../../../../../../
+ 2001  git pull origin master 
+ 2002  git add .
+ 2003  git commit -m "more debugging"
+ 2004  git push -u origin master 
+ 2005  git pull origin master 
+ 2006  cd Localization/src/MCL/ActiveParticles/Debug/build/
+ 2007  make
+ 2008  make
+ 2009  ./ap 
+ 2010  make
+ 2011  ./ap 
+ 2012  make
+ 2013  ./ap 
+ 2014  make
+ 2015  ./ap 
+ 2016  make
+ 2017  ./ap 
+ 2018  make
+ 2019  ./ap 
+ 2020  make
+ 2021  ./ap 
+ 2022  make
+ 2023  ./ap 
+ 2024  make
+ 2025  ./ap 
+ 2026  make
+ 2027  ./ap 
+ 2028  make
+ 2029  ./ap 
+ 2030  make
+ 2031  ./ap 
+ 2032  make
+ 2033  ./ap 
+ 2034  make
+ 2035  ./ap 
+ 2036  make
+ 2037  ./ap 
+ 2038  make
+ 2039  ./ap 
+ 2040  make
+ 2041  ./ap 
+ 2042  make
+ 2043  ./ap 
+ 2044  make
+ 2045  ./ap 
+ 2046  make
+ 2047  ./ap 
+ 2048  make
+ 2049  ./ap 
+ 2050  make
+ 2051  ./ap 
+ 2052  make
+ 2053  ./ap 
+ 2054  make
+ 2055  ./ap 
+ 2056  make
+ 2057  ./ap 
+ 2058  make
+ 2059  ./ap 
+ 2060  make
+ 2061  ./ap 
+ 2062  make
+ 2063  ./ap 
+ 2064  make
+ 2065  ./ap 
+ 2066  make
+ 2067  ./ap 
+ 2068  make
+ 2069  ./ap 
+ 2070  make
+ 2071  ./ap 
+ 2072  make
+ 2073  ./ap 
+ 2074  make
+ 2075  ./ap 
+ 2076  make
+ 2077  ./ap 
+ 2078  make
+ 2079  ./ap 
+ 2080  make
+ 2081  ./ap 
+ 2082  make
+ 2083  ./ap 
+ 2084  make
+ 2085  ./ap 
+ 2086  make
+ 2087  ./ap 
+ 2088  make
+ 2089  ./ap 
+ 2090  make
+ 2091  ./ap 
+ 2092  make
+ 2093  ./ap 
+ 2094  make
+ 2095  ./ap 
+ 2096  make
+ 2097  ./ap 
+ 2098  make
+ 2099  ./ap 
+ 2100  make
+ 2101  ./ap 
+ 2102  make
+ 2103  ./ap 
+ 2104  make
+ 2105  ./ap 
+ 2106  make
+ 2107  ./ap 
+ 2108  make
+ 2109  ./ap 
+ 2110  make
+ 2111  ./ap 
+ 2112  make
+ 2113  ./ap 
+ 2114  make
+ 2115  ./ap 
+ 2116  make
+ 2117  ./ap 
+ 2118  make
+ 2119  ./ap 
+ 2120  make
+ 2121  ./ap 
+ 2122  make
+ 2123  ./ap 
+ 2124  make
+ 2125  ./ap 
+ 2126  make
+ 2127  ./ap 
+ 2128  make
+ 2129  ./ap 
+ 2130  make
+ 2131  ./ap 
+ 2132  make
+ 2133  ./ap 
+ 2134  make
+ 2135  ./ap 
+ 2136  make
+ 2137  ./ap 
+ 2138  make
+ 2139  ./ap 
+ 2140  make
+ 2141  ./ap 
+ 2142  make
+ 2143  ./ap 
+ 2144  make
+ 2145  ./ap 
+ 2146  make
+ 2147  ./ap 
+ 2148  make
+ 2149  ./ap 
+ 2150  make
+ 2151  ./ap 
+ 2152  make
+ 2153  ./ap 
+ 2154  make
+ 2155  ./ap 
+ 2156  make
+ 2157  ./ap 
+ 2158  make
+ 2159  ./ap 
+ 2160  make
+ 2161  ./ap 
+ 2162  make
+ 2163  ./ap 
+ 2164  make
+ 2165  ./ap 
+ 2166  make
+ 2167  ./ap 
+ 2168  make
+ 2169  ./ap 
+ 2170  make
+ 2171  ./ap 
+ 2172  make
+ 2173  ./ap 
+ 2174  make
+ 2175  ./ap 
+ 2176  make
+ 2177  ./ap 
+ 2178  make
+ 2179  ./ap 
+ 2180  make
+ 2181  ./ap 
+ 2182  make
+ 2183  ./ap 
+ 2184  make
+ 2185  ./ap 
+ 2186  make
+ 2187  ./ap 
+ 2188  cd ~/Desktop/3DLocalization/
+ 2189  git add .
+ 2190  git commit -m "remove ros call"
+ 2191  git push -u origin master 
+ 2192  git add .
+ 2193  git commit -m "Main Compiles"
+ 2194  git push -u origin master 
+ 2195  git add .
+ 2196  git commit -m "Main Compiles and runs. Doesn't do any matching since UpdateRobotData isn't implemented."
+ 2197  git push -u origin master 
+ 2198  type/value mismatch at argument 1 in template parameter list for ‘template<<declaration error> > struct boost::math::policies::detail::is_domain_error_imp’
+ 2199  history > a.txt

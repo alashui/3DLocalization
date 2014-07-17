@@ -23,7 +23,7 @@
 #include "../../IO/ProgramIO.h"
 #include "../../Robot/RobotState.h"
 #include "../Matching/Matching.h"
-// #include "../../Robot/RobotIO.h"
+#include "../../Robot/RobotIO.h"
 
 namespace MCL
 {
@@ -37,7 +37,6 @@ namespace MCL
         RobotState robot;
         vector<float> comboWeighting; // weighing amount for each different feature detection algorithm. 
 
-        static Mat nextImage;
 
     //*****-- Private Member Functions --*****//
         // Get an image from the robots publisher and put it into the RobotState class, the RobotState class
@@ -63,6 +62,8 @@ namespace MCL
 
     public:
     //*****-- Public Functions --*****//
+        static Mat nextImage;
+
 
         // Do-nothing constructor, just initiaizes the member fields to default values.
         Controller();

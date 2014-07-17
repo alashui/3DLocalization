@@ -34,8 +34,6 @@ int main(int argc, char ** argv)
     if (BootUp(modelName) < 0)
         return PrintError("Model Directory Name not found inside /3DLocalization/Data/ModelData/.");
 
-    ros::init(&argc, argv, "3DLocalization");
-
     Controller control;
 
     control.init(modelName);

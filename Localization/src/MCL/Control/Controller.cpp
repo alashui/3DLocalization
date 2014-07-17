@@ -20,6 +20,10 @@ namespace MCL
     bool Controller::UpdateRobotData()
     { 
         // TODO : Grab frame from Camera callback, put the image into the robotstate class. Have the robot class process the image.
+        Mat im = imread("../../../image.jpg");
+        if(!im.data)
+            cout << "NOIMAGE"<< endl;
+        robot.GenerateCharacterizer(im);
     }
 
     // Take the ActiveParticles class and the RobotState class, pass them to the matching function and assign weights to the particles.
@@ -70,8 +74,11 @@ namespace MCL
         return false;
     }
 
-    bool Controller::init(string dirName)
+    bool Controller::init(string dirName, int argc, char ** argv)
     {
+        // RobotInit(argc, argv);
+        // InitCallbacks();
+
         if(!this->ap.GetConstants(dirName))
             return false;
         this->ap.SetDistribution(perspectives);

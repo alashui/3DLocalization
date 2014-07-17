@@ -129,7 +129,7 @@ namespace MCL
         {
             // cout << this->pList[i].GetWeight() << "\t" << wantedSize << "\t" << totalWeight << endl;
             int num = (this->pList[i].GetWeight() * wantedSize) / totalWeight;
-            for (; num > 0; num--)
+            for (; num > -1; num--)
                 this->distribution.push_back(this->pList[i].GetPerspective());
         }
         return 0;
@@ -142,9 +142,10 @@ namespace MCL
 
     void ActiveParticles::GenerateParticles(int amount)
     {
-
         this->pList.clear();
         // uniform_int_distribution<int> dist(0, this->distribution.size() - 1);
+
+        cout << this->distribution.size() << endl;
 
         for (int i = 0; i < amount; i++)
         {

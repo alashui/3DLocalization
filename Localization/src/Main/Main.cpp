@@ -38,7 +38,7 @@ int main(int argc, char ** argv)
 
     Controller control;
 
-    if (!control.init(modelName))
+    if (!control.init(modelName, argc, argv))
         return PrintError("Controller Could not Init!");
 
     cout << "Done With Initialization." << endl;
@@ -48,7 +48,8 @@ int main(int argc, char ** argv)
         stringstream ss;
         ss << "Generation " << control.GetActiveParticles().GetGeneration() << ": " << control.GetActiveParticles().GetAvgWeight() << endl;
         UserIO(ss.str());
-
+        RobotState r = control.GetRobotState();
+        cout << "Guess: " << r.GetPerspective().ToString() << endl;
         getchar();
     }
 

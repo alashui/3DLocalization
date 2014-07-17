@@ -37,6 +37,8 @@ namespace MCL
         RobotState robot;
         vector<float> comboWeighting; // weighing amount for each different feature detection algorithm. 
 
+        static Mat nextImage;
+
     //*****-- Private Member Functions --*****//
         // Get an image from the robots publisher and put it into the RobotState class, the RobotState class
         // will then process the image for feature data
@@ -68,13 +70,15 @@ namespace MCL
         // Place holder for right now, not sure if dynamic memory is going to be needed for this class.
         // ~Controller();
 
+        static void SetNextInputImage(Mat);
+
         // Based off the ROS::spin() function. This function is called once per iteration of the main algorithm loop inside Main/main.cpp.
         // This function is publically accessible and it will go and individually call the private member functions that run the localization
         // algorithm in the correct order. The purpose of this function is to abstract the process of localization away from the user and just have 
         // them call this function, the class will handle the rest internally. 
         bool SpinOnce();
 
-        bool init(string);
+        bool init(string, int, char**);
 
         // ActiveParticles get and set
         ActiveParticles GetActiveParticles() const;      // Get the ActiveParticles class by value.

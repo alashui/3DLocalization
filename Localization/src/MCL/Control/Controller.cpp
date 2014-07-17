@@ -30,9 +30,9 @@ namespace MCL
     { 
         // TODO : Grab frame from Camera callback, put the image into the robotstate class. Have the robot class process the image.
         // Mat im = imread("../../../image.jpg");
-        if(!this->nextImage.data)
+        if(this->nextImage.empty())
         {
-            ErrorIO("NOIMAGE");
+            ErrorIO("nextImage.Data is null in UpdateRobotData");
             return false;
         }
         else
@@ -127,10 +127,23 @@ namespace MCL
     bool Controller::SpinOnce()
     {
         ros::spinOnce();
+
         CompareFeatures();
+        
+        ros::spinOnce();
+        
         GenDistributionAndSample();
+        
+        ros::spinOnce();
+        
         MoveUpdate();
+        
+        ros::spinOnce();
+
         UpdateRobotData();
+        
+        ros::spinOnce();
+
         this->ap.AnalyzeList();
         ros::spinOnce();
 
@@ -150,14 +163,18 @@ namespace MCL
         cv_bridge::CvImagePtr im2;
         try
         {
-            im2 = cv_bridge::toCvCopy(img, sensor_msgs::image_encodings::TYPE_32FC3);
+            im2 = cv_bridge::toCvCopy(img, sensor_msgs::image_encodings::BGR8);
         }
         catch (...)
         {
             ErrorIO("ImageCallback toCvCopy call failed");
         }
 
-        this->nextImage = im2->image;
+        if(!im2->image.empty())
+            this->nextImage = im2->image;
+        else
+            DebugIO("Image Data from Robot is Null");
+
         //SetNextInputImage(im2->image);
     }
 
@@ -252,8 +269,8 @@ namespace MCL
 
         x = false;
         PauseState(&x, 3);
-
-        robotImageSubscriber = this->rosNodePtr->subscribe(this->ROBOT_IMAGE_PUBLISHER_NAME, 2,
+        image_transport::ImageTransport it(*rosNodePtr);
+        robotImageSubscriber = it.subscribe(this->ROBOT_IMAGE_PUBLISHER_NAME, 2,
          &Controller::ImageCallback, this);
 
         // wait max 5 seconds for the subscriber to connect.

@@ -81,20 +81,26 @@ namespace MCL
     // The second optional argument determines how long the function will wait before giving up and returning.
     bool Controller::PauseState(bool * flag, float waittime = 10.0) //(seconds)
     {
-        unsigned int temp = time(0);
+       time_t temp = std::time(NULL);
         // Wait until the flag is true to return
-        for(int i = 0;!(*flag) && (time(0) - temp) < waittime*1000; i++)
-
-            return true;
+        while((time(NULL) - temp) < waittime)
+        {
+            if(*flag)
+                return true;
+        }
     
         return false;
     }
 
-    bool Controller::PauseState(bool (Controller::*foo)(), float time = 10.0)
+    bool Controller::PauseState(bool (Controller::*foo)(), float waittime = 10.0)
     {
+        time_t temp = time(NULL);
         // Wait until the flag is true to return
-        for(int i = 0; !((this->*foo)()) && i < 100000; i++)
-            return true;
+        while((time(NULL) - temp) < waittime)
+        {
+            if((this->*foo)())
+                return true;
+        }
     
         return false;
     }
@@ -191,6 +197,7 @@ namespace MCL
     // Called when the robot program is 
     bool Controller::RobotInit()
     {
+        DebugIO("Attempting to Subscribe to Robot ros::Publishers ... ");
         mclDataPublisher = this->rosNodePtr->advertise<std_msgs::String>(MCL_PUBLISHER_NAME, 4);
 
         bool (Controller::*connect_flag) ();
@@ -203,7 +210,7 @@ namespace MCL
             return false;
         }
         else
-            UserIO("Robot Has Subscribed to mclDataPublisher.");
+            DebugIO("Robot Has Subscribed to mclDataPublisher.");
 
         // ++++ TODO - Send a Handshake greeting to the robot program - TODO ++++ //
         std_msgs::String msg;
@@ -241,7 +248,7 @@ namespace MCL
         }
 
         else
-            UserIO("Localization Program Has Subscribed to the Robot Data Publisher.");
+            DebugIO("Localization Program Has Subscribed to the Robot Data Publisher.");
 
         return ros::ok();
     }

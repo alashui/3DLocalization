@@ -22,6 +22,7 @@ namespace MCL
     // vector of strings that contain all of the error messages passed to the ErrorIO function. Declared here and defined in the .cpp file to
     // avoid multiple inclusions.
     extern std::vector<std::string> error_log;
+    extern std::vector<std::string> debug_log;
     extern const std::string red;
     extern const std::string yellow;
     extern const std::string reset;
@@ -47,7 +48,7 @@ namespace MCL
     //            log an error code with this message.
     void ErrorIO(std::string);
 
-    // @Function - getErrorLog
+    // @Function - GetErrorLog
     // @Input    - None 
     // @Output   - Returns a vector of strings filled with every single error message that has been passed to ErrorIO during the course of the program.
     std::vector<std::string> GetErrorLog();
@@ -56,6 +57,16 @@ namespace MCL
     // @Input    - Nothing
     // @Output   - Nothing returned, outputs every single error message inside of the error_log vector to the screen in a specific format.
     void PrintErrorLog();
+
+    // @Function - GetDebugLog
+    // @Input    - None 
+    // @Output   - Returns a vector of strings filled with every single dbug message that has been passed to DebugIO during the course of the program.
+    std::vector<std::string> GetDebugLog();
+
+    // @Function - PrintDebugLog
+    // @Input    - Nothing
+    // @Output   - Nothing returned, outputs every single error message inside of the error_log vector to the screen in a specific format.
+    void PrintDebugLog();
 
 
 }

@@ -18,6 +18,7 @@
 #include "../Helpers/Characterizer.h"
 #include "../Particle/Particle.h"
 #include "../Helpers/Globals/Globals.h"
+#include "../IO/ProgramIO.h"
 
 
 using namespace cv;
@@ -52,7 +53,10 @@ namespace MCL
         // Get a list of all filenames
         GetAll(pstr, ret);
 
-        cout << "<\n  Attempting to load " << ret.size() << " images and their characterizers." << endl;
+
+        stringstream ss;
+        ss << "Bootup.h - Attempting to load " << ret.size() << " images and their characterizers.";
+        DebugIO(ss.str()); ss.str("");
 
         // tmp Descriptors
         Mat descriptors;
@@ -66,7 +70,8 @@ namespace MCL
             vector<string> tokens; 
 
             if (fn[0] != delimiter.c_str()[0]){
-                cout << "\033[1;33m  Extraneous file found: " << fn << "\033[0m" << endl; // ]]
+                ss << " Extraneous file found: " << fn;
+                DebugIO(ss.str());
                 continue;
             }
 
@@ -140,17 +145,20 @@ namespace MCL
             // Check for invalid input
             if(! masterMap[P].gs.data )
             {
-                cout <<  "\033[1;31m  Could not open or find pixsum for " << gsfn << ".\033[0m" << endl; //]]
+                ss <<  "Bootup.h - Could not open or find pixsum for " << gsfn;
+                ErrorIO(ss.str());
                 return -1;
             }
             if(! masterMap[P].bw.data )
             {
-                cout <<  "\033[1;31m  Could not open or find bw for " << bwfn << ".\033[0m" << endl; //]]
+                ss <<  "BootUp.h - Could not open or find bw for " << bwfn;
+                ErrorIO(ss.str());
                 return -1;
             }
         }
-
-        cout << ">\n  " << perspectives.size() << " Images Loaded." << endl;
+        stringstream s;
+        s << perspectives.size() << " Images Loaded.";
+        DebugIO(s.str());
 
         return perspectives.size();
     }

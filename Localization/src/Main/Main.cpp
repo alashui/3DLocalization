@@ -18,16 +18,14 @@ using namespace MCL;
 
 int PrintError(string error)
 {
-    stringstream ss;
-    ss << "Input Format Error: " << error << endl;
-    ErrorIO(ss.str());
+    ErrorIO(error);
     return -1;
 }
 
 int main(int argc, char ** argv)
 {
     MCL::show_debug_IO = true; // Show the debugging output, remove this for final version or cleaner terminal output.
-    
+
     srand(time(0));
     ros::init(argc, argv, "Localizer"); // Init must be called before initializing the Controller class;
 
@@ -56,7 +54,8 @@ int main(int argc, char ** argv)
         getchar();
     }
 
-    cout << "Error?" << endl;
+    DebugIO("Initiating Self-Destruct Sequence.. 5 ... 4 .. 3 .. 2 .. 1");
+    DebugIO("Booooooom????");
 
     return 0;
 }

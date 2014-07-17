@@ -25,6 +25,7 @@
 
 #include "AverageImage.h"
 #include "Similarity.h"
+#include "../../../Localization/src/IO/ProgramIO.h"
 
 using namespace cv;
 using namespace std;
@@ -33,12 +34,11 @@ namespace fs = ::boost::filesystem;
 // Print usage
 static void printPrompt( const string& applName )
 {
-    cout << "/*\n"
+    stringstream ss;
+    ss << "/*\n"
     << " * Given a folder of photos, this computes descriptors and info of images.\n"
-         << " */\n" << endl;
-    cout << endl << "Format:\n" << endl;
-    cout << applName << " ModelDirectoryName" << endl;
-    cout << endl;
+    << " */\n" << endl <<  "Format:\n" << endl << applName << " ModelDirectoryName" << endl;
+    DebugIO(ss.str());
 }
 
 // return the filenames of all files that have the specified extension

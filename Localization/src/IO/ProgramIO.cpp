@@ -13,6 +13,7 @@ namespace MCL
 {
     // vector of strings that contain all of the error messages passed to the ErrorIO function
     std::vector<std::string> error_log;
+    std::vector<std::string> debug_log;
     const std::string red = "\033[1;31m";
     const std::string yellow = "\033[1;33m";
     const std::string reset = "\033[0m";
@@ -29,6 +30,8 @@ namespace MCL
         {
             std::cout << yellow << "[ " << ss << " ]" << reset << std::endl;
         }
+
+        debug_log.push_back(ss);
     }
 
     // @Function - UserIO
@@ -48,7 +51,7 @@ namespace MCL
     void ErrorIO(std::string ss)
     {
         error_log.push_back(ss);
-        std::cout  << red <<" Error #" << error_log.size() << " : [ " << ss << reset << " ]" << std::endl;
+        std::cout  << red <<" Error #" << error_log.size() << " : [ " << ss  << " ]" << reset << std::endl;
     }
 
     // @Function - getErrorLog
@@ -68,6 +71,26 @@ namespace MCL
         for(int i = 0; i < error_log.size(); i++)
         {
             std::cout << red <<" Error #" << i << " [ " << error_log[i] << " ] " << reset << std::endl;
+        }
+    }
+
+    // @Function - getErrorLog
+    // @Input    - None 
+    // @Output   - Returns a vector of strings filled with every single error message that has been passed to ErrorIO during the course of the program.
+    std::vector<std::string> getDebugLog()
+    {
+        return debug_log;
+    }
+
+    // @Function - PrintErrorLog
+    // @Input    - Nothing
+    // @Output   - Nothing returned, outputs every single error message inside of the error_log vector to the screen in a specific format.
+    void PrintDebugLog()
+    {
+        std::cout << yellow <<" Printing Debug Log. " << debug_log.size() << " Total Debug Notes." << reset << std::endl;
+        for(int i = 0; i < debug_log.size(); i++)
+        {
+            std::cout << yellow <<" Debug Note #" << i << " [ " << debug_log[i] << " ] " << reset << std::endl;
         }
     }
 

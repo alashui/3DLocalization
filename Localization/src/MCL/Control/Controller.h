@@ -21,6 +21,8 @@
 #include "sensor_msgs/Image.h"
 #include "sensor_msgs/image_encodings.h"
 
+#include <ctime>
+
 #include "../ActiveParticles/ActiveParticles.h"
 #include "../../Helpers/Globals/Globals.h"
 #include "../../Helpers/Characterizer.h"

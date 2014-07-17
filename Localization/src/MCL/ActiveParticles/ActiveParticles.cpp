@@ -267,7 +267,7 @@ namespace MCL
         if ( !file.is_open() )
         {
             stringstream ss;
-            ss << "Error : InputInfo.txt Not Found for model " << dirName << "! Looked in " << fn << endl;
+            ss << "InputInfo.txt Not Found for model " << dirName << "! Looked in " << fn;;
             ErrorIO(ss.str());
             return false;
         }

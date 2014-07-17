@@ -2,7 +2,11 @@
 *
 *	@File Matching.cpp
 * 	@Author Alex and John Summer 2014
-* 	@Info Matches particles and robot state!
+* 	@Info Matches different types of feature data between a particle and the current robot state. This involved comparing the
+*         SURF, SIFT, B/W, and Greyscale features of both the image rendering from the particle location and the image coming from 
+*         robots camera feed. Different weights are assigned to represent the quality of the matches and then they are weighed once
+*         again based on how important we think each set of features are. (e.g. SURF feature are more accurate than Greyscale so we weight
+*         those more). This file is really at the heart of the MCL algorithm and thus goes through constant updates.
 *
 **/
 #include "Matching.h"
@@ -25,7 +29,6 @@ namespace MCL
 		float sim = 0;
 
         // a combination of similarity tests:
-        
         if(comboweights.size() != 4)
             ErrorIO("CompareAndWeight : Length of comboweight vector must be 4\n");
 

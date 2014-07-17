@@ -51,7 +51,7 @@ namespace MCL
     void ErrorIO(std::string ss)
     {
         error_log.push_back(ss);
-        std::cout  << red <<" Error #" << error_log.size() << " : [ " << ss  << " ]" << reset << std::endl;
+        std::cout  << red <<" Error : " << "[ "  << ss  << " ]" << reset << std::endl;
     }
 
     // @Function - getErrorLog

@@ -39,21 +39,30 @@ namespace MCL
 
     private:
     //*****-- Private Member Fields --*****//
-        ActiveParticles ap;
-        RobotState robot;
+        ActiveParticles ap;           // Class that defines our list of active particles and functionality related to them.
+        RobotState robot;             // Class that defines our knowledge of the current state of the robot trying to be localized
         vector<float> comboWeighting; // weighing amount for each different feature detection algorithm. 
 
-        ros::Publisher data_publisher;
-        ros::Subscriber movement_subscriber;
+        ros::Publisher mclDataPublisher;         // ros::Publisher that allows us to publish data to the robot control program
+        ros::Subscriber robotMovementSubscriber; // Our Subscriber object that allows us to get robot movement commands from the user
+                                                 // so that we can update our particles according to the robots movement.
+        ros::NodeHandle * rosNodePtr;            // Handle to the ros::Node that we will publish and subscribe under
+        Mat nextImage;                           // Holds the current image from the robot image callback function for us to grab 
+                                                 // as needed.
 
-        const std::string publish;// = "MCL_Publisher";
-        const std::string subscriber;// = "ROBOT_DATA";
+        const std::string MCL_PUBLISHER_NAME;// = "MCL_Publisher";
+        const std::string ROBOT_PUBLISHER_NAME;// = "ROBOT_DATA";
 
 
     //*****-- Private Member Functions --*****//
+        
         // Get an image from the robots publisher and put it into the RobotState class, the RobotState class
         // will then process the image for feature data
         bool UpdateRobotData();
+
+        bool RobotInit(int arc, char ** argv);
+        bool PublishData(int,std::string str);
+        void ImageCallback(const sensor_msgs::ImageConstPtr& msg);
 
         // Take the ActiveParticles class and the RobotState class, pass them to the matching function and assign weights to the particles.
         bool CompareFeatures(); 
@@ -74,16 +83,12 @@ namespace MCL
 
     public:
     //*****-- Public Functions --*****//
-        static Mat nextImage;
 
-
-        // Do-nothing constructor, just initiaizes the member fields to default values.
+        // Initializes member fields and our ros node.
         Controller();
 
-        // Place holder for right now, not sure if dynamic memory is going to be needed for this class.
-        // ~Controller();
-
-        static void SetNextInputImage(Mat);
+        // Deletes the ros::NodeHandle that is dynamically allocated in Controller()
+         ~Controller();
 
         // Based off the ROS::spin() function. This function is called once per iteration of the main algorithm loop inside Main/main.cpp.
         // This function is publically accessible and it will go and individually call the private member functions that run the localization
@@ -102,11 +107,6 @@ namespace MCL
         RobotState GetRobotState() const;
         void GetRobotState(RobotState *);
         bool SetRobotState(RobotState);
-
-        bool RobotInit(int arc, char ** argv);
-        bool PublishData(int,std::string str);
-        bool InitCallbacks();
-        void ImageCallback(const sensor_msgs::ImageConstPtr& msg);
 
     
     //*****-- Public Definitions, Constants, and other Fields--*****//

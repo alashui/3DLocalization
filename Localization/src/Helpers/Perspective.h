@@ -39,6 +39,12 @@ namespace MCL
             dz = ldz;
         }
 
+        float GetAngle() const
+        {
+            float angle = atan2(dy, dx) * 180.0 / 3.14159;
+            return round(angle);
+        }
+
         std::vector<float> ToVector() const
         {
             std::vector<float> p; p.push_back(x); p.push_back(y); p.push_back(z); p.push_back(dx); p.push_back(dy); p.push_back(dz);
@@ -71,7 +77,19 @@ namespace MCL
 
     class ComparePerspectives { // simple comparison function for the std::map to use
        public:
-          bool operator()(const Perspective& a,const Perspective& b) const { /*std::cout << "COMPAREPERSPECTIVES" << std::endl;*/ return (a.operator==(b)); } // returns x>y
+          bool operator()(const Perspective& a,const Perspective& b) const 
+          { 
+            if(a.x < b.x)
+                return true;
+            if(a.y < b.y)
+                return true;
+            if(a.z < b.z)
+                return true;
+            if(a.GetAngle() < b.GetAngle())
+                return true;
+
+            return false; 
+          } // returns x>y
     };
 
 }

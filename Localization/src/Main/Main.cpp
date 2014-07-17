@@ -47,11 +47,11 @@ int main(int argc, char ** argv)
     while(control.SpinOnce())
     {
         stringstream ss;
-        ss << "Generation " << control.GetActiveParticles().GetGeneration() << ": " << control.GetActiveParticles().GetAvgWeight() << endl;
+        ss << "Generation : " << control.GetActiveParticles().GetGeneration() << ", AvgWeight :  " << control.GetActiveParticles().GetAvgWeight();
         DebugIO(ss.str());
         RobotState r = control.GetRobotState();
-        cout << "Guess: " << r.GetPerspective().ToString() << endl;
-        getchar();
+        ss <<"Guess : " << r.GetPerspective().ToString(); DebugIO(ss.str());
+        char x = getchar();
     }
 
     DebugIO("Initiating Self-Destruct Sequence.. 5 ... 4 .. 3 .. 2 .. 1");

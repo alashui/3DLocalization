@@ -145,7 +145,7 @@ namespace MCL
         this->pList.clear();
         // uniform_int_distribution<int> dist(0, this->distribution.size() - 1);
         stringstream ss;
-        ss << this->distribution.size() << endl;
+        ss << "Distribution Size : " << this->distribution.size();
         DebugIO(ss.str());
 
         for (int i = 0; i < amount; i++)

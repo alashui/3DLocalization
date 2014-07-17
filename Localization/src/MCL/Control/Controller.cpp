@@ -45,11 +45,13 @@ namespace MCL
     {
         vector<Particle> v = this->ap.GetParticleList();
 
+
         for(int i = 0; i < this->ap.NumParticles(); i++)
         {   
             float wt = CompareAndWeigh(v[i], this->robot, this->comboWeighting);
             cout << wt << endl;
             v[i].SetWeight(wt);
+            std::cout << v[i].ToString() << std::endl;
         }
 
         this->ap.SetParticleList(v);

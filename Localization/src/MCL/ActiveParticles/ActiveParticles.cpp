@@ -14,6 +14,8 @@ namespace MCL
 {
 
     ActiveParticles::ActiveParticles() : generation(0), defaultDistributionSize(800) {}
+
+    Perspective Scatter(Perspective p, float maxtranslation, int prob=32);
     
     Perspective ActiveParticles::MakeGuess()
     {
@@ -136,12 +138,12 @@ namespace MCL
     void ActiveParticles::GenerateParticles(int amount)
     {
         this->pList.clear();
-        boost::random::uniform_int_distribution<> dist(0, this->distribution.size() - 1);
+        // uniform_int_distribution<int> dist(0, this->distribution.size() - 1);
 
         for (int i = 0; i < amount; i++)
         {
-            int rndIdx = dist(time(0));
-            Perspective P = Scatter(this->distribution[rndIdx], this->gd);
+            int rndIdx = rand() % this->distribution.size();
+            Perspective P = Scatter(this->distribution[rndIdx], this->gd, 32);
             SnapToGrid(&P);
             pList.push_back(Particle(P));
         }
@@ -149,9 +151,9 @@ namespace MCL
 
     Perspective ActiveParticles::AnalyzeList()
     {
-        this->computeAvgWeight();
+        this->ComputeAvgWeight();
         this->generation++;
-        return this->makeGuess();
+        return this->MakeGuess();
     }
 
     // Rounds to second decimal place
@@ -162,8 +164,8 @@ namespace MCL
 
     float ActiveParticles::GetAngle(float x, float y)
     {
-        angle = atan2(y, x) * 180.0 / PI;
-        float mul = angle / dtheta
+        float angle = atan2(y, x) * 180.0 / PI;
+        float mul = angle / dtheta;
         int intmul = (int) (mul + 0.5);
         return round(dtheta * intmul);
     }
@@ -181,8 +183,8 @@ namespace MCL
         // Else? Houston, we have a problem.
         float mulx = normalx / this->gd;
         float muly = normaly / this->gd;
-        int nearestMulx = floor(mulx + 0.5)
-        int nearestMuly = floor(muly + 0.5)
+        int nearestMulx = floor(mulx + 0.5);
+        int nearestMuly = floor(muly + 0.5);
 
         p->x = nearestMulx * this->gd + refP.x;
         p->y = nearestMuly * this->gd + refP.y;
@@ -193,14 +195,14 @@ namespace MCL
         p->dy = round(sin(angle * PI / 180.0));
     }
 
-    Perspective Scatter(Perspective p, float maxtranslation, int prob=32)
+    Perspective ActiveParticles::Scatter(Perspective p, float maxtranslation, int prob)
     {
         if (prob < 2)
             return p;
 
-        boost::random::uniform_int_distribution<> dist(0, 100);
+        // uniform_int_distribution<int> dist(1, 100);
 
-        int rnd = dist(time(0));
+        int rnd = rand() % 100; // dist(time(0));
         if (rnd > prob)
             return p;
 
@@ -208,14 +210,14 @@ namespace MCL
         if (prob % 2 == 0)
         { // turn!
             float curangle = GetAngle(p.dx, p.dy);
-            curangle += (float) (dist(boost::random::mt19937) - 50) / 80.0;
+            curangle += (float) (rand() % 100 - 50) / 80; //(dist(default_random_engine) - 50) / 80.0;
             v[3] = round(cos(curangle * PI / 180.0));
             v[4] = round(sin(curangle * PI / 180.0));
         }
         else
         { // translate!
-            v[0] += (float) (dist(time(0)) - 50) * maxtranslation / 50.0;
-            v[1] += (float) (dist(boost::random::mt19937) - 50) * maxtranslation / 50.0;
+            v[0] += (float) (rand() % 100 - 50) * maxtranslation / 50.0;
+            v[1] += (float) (rand() % 100 - 50) * maxtranslation / 50.0;
         }
 
         return Scatter(Perspective(v), maxtranslation, prob/2);
@@ -231,7 +233,7 @@ namespace MCL
             
             // Turn
             float origAngle = GetAngle(myV[3], myV[4]);
-            float newangle = origangle + turn;
+            float newangle = origAngle + turn;
 
             myV[3] = round(cos(newangle * PI / 180.0));
             myV[4] = round(sin(newangle * PI / 180.0));
@@ -258,7 +260,7 @@ namespace MCL
     {
         string fn = "../../../../Data/InputData/" + dirName + "/InputInfo.txt";
         // Get Input Data
-        ifstream file(fn);
+        ifstream file(fn.c_str());
         if ( !file.is_open() )
         {
             stringstream ss;
@@ -286,7 +288,7 @@ namespace MCL
     void ActiveParticles::SetParticleList(vector<Particle> pl)
     { this->pList = pl; }
 
-    vector<Perspective> ActiveParticles::GetWeightHistory()
+    vector<float> ActiveParticles::GetWeightHistory()
     { return this->weightHistory; }
 
     vector<Perspective> ActiveParticles::GetGuessHistory()

@@ -14,12 +14,13 @@
 #include "../../Particle/Particle.h"
 #include "../../IO/ProgramIO.h"
 #include <boost/random/mersenne_twister.hpp>
-#include <boost/random/uniform_int_distribution.hpp>
+// #include <boost/random/uniform_int_distribution.hpp>
 
 
 #include <vector>
 #include <cstdlib>
 #include <cmath>
+#include <fstream>
 
 // #include "../../Helpers/Characterize.h"
 
@@ -46,12 +47,13 @@ namespace MCL
     /**** Private Functions, Internal Use Only ****/
         Perspective MakeGuess();            // Computes the perspective that represents the best guess as to our actors location       
         float ComputeAvgWeight();           // pretty self explanatory if you ask me..
+        Perspective Scatter(Perspective, float, int);
 
     public:
 
     /**** Public Functions ****/
         ActiveParticles();
-        ~ActiveParticles();
+        // ~ActiveParticles();
 
         //@Function - GenerateDistribution
         //@Purpose  - Take the list of active particles, consider their respective perspectives and weightings, and generate a 
@@ -83,24 +85,24 @@ namespace MCL
         //@Function - move(..)
         //@Purpose  - Translate and rotate every particle by the given parameters. @param turntimes turns the object by n*theta, where
         //            theta is the rotation value between consecutive image renderings in the PerspectiveGenerator program.
-        int Move(float x, float y, float z, float turntimes); // e.g. turntimes = -1, -2, -3, 0, 1, 2, 3, ...
+        int Move(float, float); // e.g. turntimes = -1, -2, -3, 0, 1, 2, 3, ...
 
     //***** Get and Set Functions for Private Members ****/
-        vector<Particle> GetParticleList() const;
+        vector<Particle> GetParticleList();
         void GetParticleList(vector<Particle>*);
         void SetParticleList(vector<Particle>);
 
-        vector<Perspective> GetWeightHistory() const;
+        vector<float> GetWeightHistory();
 
-        vector<Perspective> GetGuessHistory() const;
+        vector<Perspective> GetGuessHistory();
 
-        vector<Perspective> GetDistribution() const;
+        vector<Perspective> GetDistribution();
         void SetDistribution(vector<Perspective>);
 
-        Perspective GetGuess() const;   // Get the current best guess as to the actors position
-        int GetAvgWeight() const;       // Get the average weight for the current particle list
-        int GetGeneration() const;      // Get the iteration count of the algorithm, how many times we have re-sampled particles
-        int NumParticles() const;       
+        Perspective GetGuess();   // Get the current best guess as to the actors position
+        int GetAvgWeight();       // Get the average weight for the current particle list
+        int GetGeneration();      // Get the iteration count of the algorithm, how many times we have re-sampled particles
+        int NumParticles();       
 
         void GetConstants(string);      // 
 

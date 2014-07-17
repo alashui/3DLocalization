@@ -1,5 +1,5 @@
-#ifndef MCL_AVERAGEIMAGE_H_
-#define MCL_AVERAGEIMAGE_H_
+#ifndef MCL_AVERAGEIMAGE_H
+#define MCL_AVERAGEIMAGE_H
 
 #include "opencv2/highgui/highgui.hpp"
 #include "opencv2/features2d/features2d.hpp"
@@ -19,7 +19,7 @@ namespace averageImage {
 
     // Get the sum of the pixel values within a square of an image
     #define T double
-    T getMagnitude(const int leftx, const int uppery, const int rightx, const int lowery, const Mat& img)
+    inline T getMagnitude(const int leftx, const int uppery, const int rightx, const int lowery, const Mat& img)
     {
         double area = (double) ((rightx - leftx) * (lowery - uppery));
         T one = (T) img.at<T>(uppery, leftx) / area;//(leftx, uppery);
@@ -36,7 +36,7 @@ namespace averageImage {
     }
 
     // Get the pixel sum image of an integral picture.
-    Mat getPixSum(const Mat& image, const int divisions)
+    inline Mat getPixSum(const Mat& image, const int divisions)
     {
         Mat results(divisions, divisions, CV_64F);
 
@@ -83,7 +83,7 @@ namespace averageImage {
     // Input is the average pixel image
     // Output is the bw image with above average colored white
     // and below painted black.
-    Mat aboveBelow(const Mat& image)
+    inline Mat aboveBelow(const Mat& image)
     {
         Mat results(image.size(), CV_32S);
         int avg = (int) (mean(image)).val[0];
@@ -102,7 +102,7 @@ namespace averageImage {
         return results;
     }
 
-    Mat getPixSumFromImage(const Mat& image, const int divisions)    
+    inline Mat getPixSumFromImage(const Mat& image, const int divisions)    
     {
         Mat newImage;
         if (image.channels() > 1)

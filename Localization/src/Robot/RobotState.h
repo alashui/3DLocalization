@@ -24,8 +24,8 @@ namespace MCL
         Perspective p;
 
     public:
-        RobotState();
-        ~RobotState();
+        // RobotState();
+        // ~RobotState();
 
         Characterizer GetCharacterizer();
         void SetCharacterizer(Characterizer);

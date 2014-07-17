@@ -7,7 +7,7 @@ find_package( OpenCV REQUIRED )
 set(Boost_USE_STATIC_LIBS ON) 
 set(Boost_USE_MULTITHREADED ON)  
 set(Boost_USE_STATIC_RUNTIME OFF) 
-find_package(Boost 1.46.1 COMPONENTS filesystem system random REQUIRED)
+find_package(Boost 1.46.1 COMPONENTS filesystem system)
 
 if(Boost_FOUND)
     include_directories( SYSTEM ${OpenCV_INCLUDE_DIRS} ${Boost_INCLUDE_DIRS} ) 

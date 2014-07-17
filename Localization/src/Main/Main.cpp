@@ -27,6 +27,7 @@ int PrintError(string error)
 int main(int argc, char ** argv)
 {
     srand(time(0));
+    ros::init(argc, argv, "LLocalizer"); // Init must be called before initializing the Controller class;
 
     if (argc != 2)
         return PrintError("Must pass in the Name of the Model Directory as agrv[1]");

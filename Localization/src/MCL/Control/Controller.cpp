@@ -9,16 +9,12 @@
 
 namespace MCL
 {
-    //static variable definitions
-    Mat Controller::nextImage;
-
     Controller::Controller() :
-    publish("MCL_Publisher"), // name of the MCL-related data publisher that we must publish under.
-    subscriber("ROBOT_DATA") // Name of the robot movement data publisher we must subscribe to and the user must publish under
+    MCL_PUBLISHER_NAME("MCL_Publisher"), // name of the MCL-related data publisher that we must publish under.
+    ROBOT_PUBLISHER_NAME("ROBOT_DATA") // Name of the robot movement data publisher we must subscribe to and the user must publish under
 
     {
-        ros::init(argc, argv, "3DLocalization"); // Init must be called before making a node handle
-        rosNodeHandle = new ros::NodeHandle();   // now throw the node handle on the stack
+        rosNodePtr= new ros::NodeHandle();   // now throw the node handle on the stack
         comboWeighting.push_back(1.0); //SURF
         comboWeighting.push_back(0.0); //SIFT
         comboWeighting.push_back(0.0); //GREYSCALE
@@ -27,7 +23,7 @@ namespace MCL
 
     Controller::~Controller()
     {
-        delete rosNodeHandle;
+        delete rosNodePtr;
     }
 
     bool Controller::UpdateRobotData()
@@ -40,7 +36,7 @@ namespace MCL
             return false;
         }
         else
-            robot.GenerateCharacterizer(im);
+            robot.GenerateCharacterizer(this->nextImage);
         return true;
     }
 
@@ -92,6 +88,14 @@ namespace MCL
         return false;
     }
 
+    bool Controller::PauseState(bool (Controller::*foo)(), float time = 10.0)
+    {
+        // Wait until the flag is true to return
+        for(int i = 0; !((this->*foo)()) && i < 100000; i++)
+            return true;
+    
+        return false;
+    }
     bool Controller::init(string dirName, int argc, char ** argv)
     {
         
@@ -142,12 +146,24 @@ namespace MCL
         //SetNextInputImage(im2->image);
     }
 
+    bool Controller::publisherConnected()
+    {
+        return(this->mclDataPublisher.getNumSubscribers());
+    }
+
+    bool Controller::subscriberConnected()
+    {
+        return(robotMovementSubscriber.getNumPublishers());
+    }
+
     // Called when the robot program is 
     bool Controller::RobotInit(int argc, char ** argv)
     {
         mclDataPublisher = this->rosNodePtr->advertise<std_msgs::String>(MCL_PUBLISHER_NAME, 4);
 
-        bool connection_succeded = this->PauseState(&(mclDataPublisher->getNumSubscribers()), 10);
+        bool (Controller::*connect_flag) ();
+        connect_flag = &Controller::publisherConnected;
+        bool connection_succeded = this->PauseState(connect_flag, 10);
 
         if(!connection_succeded)
         {
@@ -155,21 +171,22 @@ namespace MCL
             return false;
         }
         else
-            UserIO("Robot Has Subscribed to mclDataPublisher.")
+            UserIO("Robot Has Subscribed to mclDataPublisher.");
 
         // ++++ TODO - Send a Handshake greeting to the robot program - TODO ++++ //
         std_msgs::String msg;
         std::stringstream ss;
         ss << "Initializing" << std::endl;
         msg.data = ss.str();
-        mcl_data_publisher.publish(msg);
+        mclDataPublisher.publish(msg);
         // ++++ TODO - Send a Handshake greeting to the robot program - TODO ++++ //
 
 
         robotMovementSubscriber = this->rosNodePtr->subscribe(this->ROBOT_PUBLISHER_NAME, 2, &Controller::ImageCallback, this);
 
         // wait max 5 seconds for the subscriber to connect.
-        connection_succeded = this->PauseState(&(robotMovementSubscriber->getNumPublishers()), 5);
+        connect_flag = &Controller::subscriberConnected;
+        connection_succeded = this->PauseState(connect_flag, 5);
 
         if(!connection_succeded)
         {
@@ -177,7 +194,7 @@ namespace MCL
             return false;
         }
         else
-            UserIO("Localization Program Has Subscribed to the Robot Data Publisher.")
+            UserIO("Localization Program Has Subscribed to the Robot Data Publisher.");
 
         return ros::ok();
     }
@@ -186,7 +203,7 @@ namespace MCL
     {
         std_msgs::String msg;
         msg.data = str;
-        data_publisher.publish(msg);
+        mclDataPublisher.publish(msg);
         MCL::DebugIO("Data Published to Robot");
     }
 

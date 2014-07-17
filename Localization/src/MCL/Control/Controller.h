@@ -78,6 +78,10 @@ namespace MCL
         // the argument is a pointer to a boolean flag that this function will wait to be true before moving on.
         // The second optional argument determines how long the function will wait before giving up and returning.
         bool PauseState(bool *, float ); 
+        bool PauseState(bool (Controller::*foo)(), float);
+
+        bool publisherConnected();  // returns true if the robot has subscribed to our data publisher
+        bool subscriberConnected(); // returns true if we have subscribed to the robots movement publisher
 
 
 

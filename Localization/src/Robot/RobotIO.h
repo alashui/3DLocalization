@@ -19,7 +19,7 @@
 #include <cmath>
 
 extern ros::NodeHandle node;
-extern ros::Publish data_publisher;
+extern ros::Publisher data_publisher;
 extern ros::Subscriber movement_subscriber;
 
 extern const std::string publisher;
@@ -32,7 +32,7 @@ namespace MCL
 
     bool PublishData(std::string str);
 
-
+	void MotionCallback(const std_msgs::String::ConstPtr&);
 }
 
 

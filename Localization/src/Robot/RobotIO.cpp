@@ -1,36 +1,42 @@
 #include "RobotIO.h"
 
 
-ros::NodeHandle node;
-ros::Publish data_publisher;
-ros::Subscriber movement_subscriber;
-
-const std::string publisher = "MCL_Publisher";
-const std::string subscriber = "MCL_Subscriber";
-
-
-bool RobotInit(int argc, char ** argv)
+namespace MCL
 {
-    ros::init(argc, argv, "3DLocalization");
-    data_publisher = node.advertise<std_msgs::String>(publish);
+    ros::NodeHandle node;
+    ros::Publisher data_publisher;
+    ros::Subscriber movement_subscriber;
 
-    std_msgs::String msg;
-    std::stringstream ss;
-    ss << "Initializing" << std::endl;
-    msg.data = ss.str();
+    const std::string publish = "MCL_Publisher";
+    const std::string subscriber = "MCL_Subscriber";
 
-    data_publisher.publish(msg);
+    void MotionCallback(const std_msgs::String::ConstPtr& msg)
+    {
+        int x = 2;
+    }
 
-    movement_subscriber = node.subscribe(subscriber, 2, MotionCallback);
+    bool RobotInit(int argc, char ** argv)
+    {
+        // ros::init(argc, argv, "3DLocalization");
+        data_publisher = node.advertise<std_msgs::String>(publish, 4);
 
-    return ros::ok();
-}
+        std_msgs::String msg;
+        std::stringstream ss;
+        ss << "Initializing" << std::endl;
+        msg.data = ss.str();
 
+        data_publisher.publish(msg);
 
-bool PublishData(std::string str)
-{
-    std_msgs::String msg;
-    msg.data = str;
-    data_publisher.publish(msg);
-    MCL::DebugIO("Data Published to Robot");
+        movement_subscriber = node.subscribe(subscriber, 2, MotionCallback);
+
+        return ros::ok();
+    }
+
+    bool PublishData(std::string str)
+    {
+        std_msgs::String msg;
+        msg.data = str;
+        data_publisher.publish(msg);
+        MCL::DebugIO("Data Published to Robot");
+    }
 }

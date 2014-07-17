@@ -14,37 +14,38 @@
 #include <sstream>
 
 using namespace std;
+using namespace MCL;
 
-namespace MCL
+int PrintError(string error)
 {
-    int PrintError(string error)
+    stringstream ss;
+    ss << "Input Format Error : " << error << endl;
+    ErrorIO(ss.str());
+    return -1;
+}
+
+int main(int argc, char ** argv)
+{
+    if (argc != 2)
+        return PrintError("Must pass in the Name of the Model Directory as agrv[1]");
+
+    string modelName = argv[1];
+
+    if (BootUp(modelName) < 0)
+        return PrintError("Model Directory Name not found inside /3DLocalization/Data/ModelData/.");
+
+    ros::init(&argc, argv, "3DLocalization");
+
+    Controller control;
+
+    control.init(modelName);
+
+    while(control.SpinOnce())
     {
         stringstream ss;
-        ss << "Input Format Error : " << error << endl;
-        ErrorIO(ss.str());
-        return -1;
+        ss << "Generation " << control.GetActiveParticles().GetGeneration() << ": " << control.GetActiveParticles().GetAvgWeight() << endl;
+        UserIO(ss.str());
     }
-    int main(int argc, char const *argv[])
-    {
-        if (argc != 2)
-            return PrintError("Must pass in the Name of the Model Directory as agrv[1]");
 
-        string modelName = argv[1];
-
-        if (BootUp(modelName) < 0)
-            return PrintError("Model Directory Name not found inside /3DLocalization/Data/ModelData/.");
-
-        Controller control;
-
-        control.init(modelName);
-
-        while(control.SpinOnce())
-        {
-            stringstream ss;
-            ss << "Generation " << control.GetActiveParticles().GetGeneration() << ": " << control.GetActiveParticles().GetAvgWeight() << endl;
-            UserIO(ss.str());
-        }
-
-        return 0;
-    }
+    return 0;
 }

@@ -66,7 +66,7 @@ namespace MCL
         Controller();
 
         // Place holder for right now, not sure if dynamic memory is going to be needed for this class.
-        ~Controller();
+        // ~Controller();
 
         // Based off the ROS::spin() function. This function is called once per iteration of the main algorithm loop inside Main/main.cpp.
         // This function is publically accessible and it will go and individually call the private member functions that run the localization

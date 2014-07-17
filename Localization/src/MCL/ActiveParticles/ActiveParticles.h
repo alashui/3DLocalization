@@ -25,12 +25,12 @@
 // #include "../../Helpers/Characterize.h"
 
 using namespace std;
+using namespace MCL;
 
 namespace MCL
 {
     class ActiveParticles
     {
-
     private:
     /**** Private Fields ****/
         vector<Particle> pList;             // list of active particles

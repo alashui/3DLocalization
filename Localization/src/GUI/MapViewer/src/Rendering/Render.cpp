@@ -159,7 +159,7 @@ namespace Render
     void recursive_render(const aiNode* nd)
     {
 
-        // Get node transformation matrix
+        //Get node transformation matrix
         aiMatrix4x4 m = nd->mTransformation;
         // OpenGL matrices are column major
         m.Transpose();
@@ -184,6 +184,8 @@ namespace Render
             glBindVertexArray(myMeshes[nd->mMeshes[n]].vao);
             // draw
             glDrawElements(GL_TRIANGLES,myMeshes[nd->mMeshes[n]].numFaces*3,GL_UNSIGNED_INT,0);
+
+            //glutSolidSphere(2, 100, 100);
         }
 
         // draw all children
@@ -192,6 +194,7 @@ namespace Render
             recursive_render(nd->mChildren[n]);
         }
         popMatrix();
+
     }
 
 
@@ -202,8 +205,8 @@ namespace Render
         //std::cout << "render" << std::endl;
         static float step = 0.0f;
 
+        step+=0.02;
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
 
         View::setCamera(camera[0], camera[1], camera[2],translation[0], translation[1], translation[2]);
 
@@ -236,7 +239,13 @@ namespace Render
             frame = 0;
             glutSetWindowTitle(s);
         }
-
+        
+        glMatrixMode(GL_MODELVIEW);
+        pushMatrix();
+        setModelMatrix();
+        glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+        glutSolidSphere(4, 100, 100);
+        popMatrix();
         // swap buffers
         glutSwapBuffers();
 

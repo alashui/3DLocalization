@@ -36,6 +36,8 @@ namespace IO
     // This list can be as long as possible, just make usre each line has those 6 values listed above >
     bool parseInputFile(const char *);
 
+    void Idle(void);
+
     bool generatePoints(char *);
 
     // round a floating point number to two decimal places

@@ -16,6 +16,8 @@
 #include <stdexcept>
 #include <vector>
 
+#include "../Robot/RobotIO.h"
+
 namespace MCL
 {
     // vector of strings that contain all of the error messages passed to the ErrorIO function. Declared here and defined in the .cpp file to

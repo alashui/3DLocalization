@@ -17,6 +17,14 @@ namespace IO
         return (float) ((int) (x*100))/100.0;
     }
 
+    void Idle(void)
+    {
+          if ( glutGetWindow() != main_window )
+            glutSetWindow(main_window);
+
+            glutPostRedisplay();
+    }
+
     // Finds and loads the .obj file that contains the 3D model data.
     // Pass it the full file name of the .obj file relative to the build folder!
     bool Import3DFromFile()//, const aiScene* scene)

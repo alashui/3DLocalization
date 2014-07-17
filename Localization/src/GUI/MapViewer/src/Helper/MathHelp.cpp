@@ -62,8 +62,10 @@ std::string modelname = "14db49e526f340dfba81c4a2da23c716.obj";
 std::string modelDirectoryName = "2ndFloorSprague/";
 std::string pathToModelDataDirectory = "../../../../../Data/ModelData/";
 
-int width = 800;
-int height = 700;
+int main_window = 0;
+
+int width = 1000;
+int height = 800;
 
 
 std::map<std::string, GLuint> textureIdMap;

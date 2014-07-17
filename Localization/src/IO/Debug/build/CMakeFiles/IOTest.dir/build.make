@@ -32,10 +32,10 @@ CMAKE_COMMAND = /usr/bin/cmake
 RM = /usr/bin/cmake -E remove -f
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/jhallard/HMCREU/3DLocalization/Localization/src/IO/Debug
+CMAKE_SOURCE_DIR = /home/robotics/HMCREU/MCL/3DLocalization/Localization/src/IO/Debug
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/jhallard/HMCREU/3DLocalization/Localization/src/IO/Debug/build
+CMAKE_BINARY_DIR = /home/robotics/HMCREU/MCL/3DLocalization/Localization/src/IO/Debug/build
 
 # Include any dependencies generated for this target.
 include CMakeFiles/IOTest.dir/depend.make
@@ -46,42 +46,42 @@ include CMakeFiles/IOTest.dir/progress.make
 # Include the compile flags for this target's objects.
 include CMakeFiles/IOTest.dir/flags.make
 
-CMakeFiles/IOTest.dir/home/jhallard/HMCREU/3DLocalization/Localization/src/IO/ProgramIO.cpp.o: CMakeFiles/IOTest.dir/flags.make
-CMakeFiles/IOTest.dir/home/jhallard/HMCREU/3DLocalization/Localization/src/IO/ProgramIO.cpp.o: /home/jhallard/HMCREU/3DLocalization/Localization/src/IO/ProgramIO.cpp
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/jhallard/HMCREU/3DLocalization/Localization/src/IO/Debug/build/CMakeFiles $(CMAKE_PROGRESS_1)
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object CMakeFiles/IOTest.dir/home/jhallard/HMCREU/3DLocalization/Localization/src/IO/ProgramIO.cpp.o"
-	/usr/bin/c++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/IOTest.dir/home/jhallard/HMCREU/3DLocalization/Localization/src/IO/ProgramIO.cpp.o -c /home/jhallard/HMCREU/3DLocalization/Localization/src/IO/ProgramIO.cpp
+CMakeFiles/IOTest.dir/home/robotics/HMCREU/MCL/3DLocalization/Localization/src/IO/ProgramIO.cpp.o: CMakeFiles/IOTest.dir/flags.make
+CMakeFiles/IOTest.dir/home/robotics/HMCREU/MCL/3DLocalization/Localization/src/IO/ProgramIO.cpp.o: /home/robotics/HMCREU/MCL/3DLocalization/Localization/src/IO/ProgramIO.cpp
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/robotics/HMCREU/MCL/3DLocalization/Localization/src/IO/Debug/build/CMakeFiles $(CMAKE_PROGRESS_1)
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object CMakeFiles/IOTest.dir/home/robotics/HMCREU/MCL/3DLocalization/Localization/src/IO/ProgramIO.cpp.o"
+	/usr/bin/c++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/IOTest.dir/home/robotics/HMCREU/MCL/3DLocalization/Localization/src/IO/ProgramIO.cpp.o -c /home/robotics/HMCREU/MCL/3DLocalization/Localization/src/IO/ProgramIO.cpp
 
-CMakeFiles/IOTest.dir/home/jhallard/HMCREU/3DLocalization/Localization/src/IO/ProgramIO.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/IOTest.dir/home/jhallard/HMCREU/3DLocalization/Localization/src/IO/ProgramIO.cpp.i"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -E /home/jhallard/HMCREU/3DLocalization/Localization/src/IO/ProgramIO.cpp > CMakeFiles/IOTest.dir/home/jhallard/HMCREU/3DLocalization/Localization/src/IO/ProgramIO.cpp.i
+CMakeFiles/IOTest.dir/home/robotics/HMCREU/MCL/3DLocalization/Localization/src/IO/ProgramIO.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/IOTest.dir/home/robotics/HMCREU/MCL/3DLocalization/Localization/src/IO/ProgramIO.cpp.i"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -E /home/robotics/HMCREU/MCL/3DLocalization/Localization/src/IO/ProgramIO.cpp > CMakeFiles/IOTest.dir/home/robotics/HMCREU/MCL/3DLocalization/Localization/src/IO/ProgramIO.cpp.i
 
-CMakeFiles/IOTest.dir/home/jhallard/HMCREU/3DLocalization/Localization/src/IO/ProgramIO.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/IOTest.dir/home/jhallard/HMCREU/3DLocalization/Localization/src/IO/ProgramIO.cpp.s"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -S /home/jhallard/HMCREU/3DLocalization/Localization/src/IO/ProgramIO.cpp -o CMakeFiles/IOTest.dir/home/jhallard/HMCREU/3DLocalization/Localization/src/IO/ProgramIO.cpp.s
+CMakeFiles/IOTest.dir/home/robotics/HMCREU/MCL/3DLocalization/Localization/src/IO/ProgramIO.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/IOTest.dir/home/robotics/HMCREU/MCL/3DLocalization/Localization/src/IO/ProgramIO.cpp.s"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -S /home/robotics/HMCREU/MCL/3DLocalization/Localization/src/IO/ProgramIO.cpp -o CMakeFiles/IOTest.dir/home/robotics/HMCREU/MCL/3DLocalization/Localization/src/IO/ProgramIO.cpp.s
 
-CMakeFiles/IOTest.dir/home/jhallard/HMCREU/3DLocalization/Localization/src/IO/ProgramIO.cpp.o.requires:
-.PHONY : CMakeFiles/IOTest.dir/home/jhallard/HMCREU/3DLocalization/Localization/src/IO/ProgramIO.cpp.o.requires
+CMakeFiles/IOTest.dir/home/robotics/HMCREU/MCL/3DLocalization/Localization/src/IO/ProgramIO.cpp.o.requires:
+.PHONY : CMakeFiles/IOTest.dir/home/robotics/HMCREU/MCL/3DLocalization/Localization/src/IO/ProgramIO.cpp.o.requires
 
-CMakeFiles/IOTest.dir/home/jhallard/HMCREU/3DLocalization/Localization/src/IO/ProgramIO.cpp.o.provides: CMakeFiles/IOTest.dir/home/jhallard/HMCREU/3DLocalization/Localization/src/IO/ProgramIO.cpp.o.requires
-	$(MAKE) -f CMakeFiles/IOTest.dir/build.make CMakeFiles/IOTest.dir/home/jhallard/HMCREU/3DLocalization/Localization/src/IO/ProgramIO.cpp.o.provides.build
-.PHONY : CMakeFiles/IOTest.dir/home/jhallard/HMCREU/3DLocalization/Localization/src/IO/ProgramIO.cpp.o.provides
+CMakeFiles/IOTest.dir/home/robotics/HMCREU/MCL/3DLocalization/Localization/src/IO/ProgramIO.cpp.o.provides: CMakeFiles/IOTest.dir/home/robotics/HMCREU/MCL/3DLocalization/Localization/src/IO/ProgramIO.cpp.o.requires
+	$(MAKE) -f CMakeFiles/IOTest.dir/build.make CMakeFiles/IOTest.dir/home/robotics/HMCREU/MCL/3DLocalization/Localization/src/IO/ProgramIO.cpp.o.provides.build
+.PHONY : CMakeFiles/IOTest.dir/home/robotics/HMCREU/MCL/3DLocalization/Localization/src/IO/ProgramIO.cpp.o.provides
 
-CMakeFiles/IOTest.dir/home/jhallard/HMCREU/3DLocalization/Localization/src/IO/ProgramIO.cpp.o.provides.build: CMakeFiles/IOTest.dir/home/jhallard/HMCREU/3DLocalization/Localization/src/IO/ProgramIO.cpp.o
+CMakeFiles/IOTest.dir/home/robotics/HMCREU/MCL/3DLocalization/Localization/src/IO/ProgramIO.cpp.o.provides.build: CMakeFiles/IOTest.dir/home/robotics/HMCREU/MCL/3DLocalization/Localization/src/IO/ProgramIO.cpp.o
 
 CMakeFiles/IOTest.dir/main.cpp.o: CMakeFiles/IOTest.dir/flags.make
 CMakeFiles/IOTest.dir/main.cpp.o: ../main.cpp
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/jhallard/HMCREU/3DLocalization/Localization/src/IO/Debug/build/CMakeFiles $(CMAKE_PROGRESS_2)
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/robotics/HMCREU/MCL/3DLocalization/Localization/src/IO/Debug/build/CMakeFiles $(CMAKE_PROGRESS_2)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object CMakeFiles/IOTest.dir/main.cpp.o"
-	/usr/bin/c++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/IOTest.dir/main.cpp.o -c /home/jhallard/HMCREU/3DLocalization/Localization/src/IO/Debug/main.cpp
+	/usr/bin/c++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/IOTest.dir/main.cpp.o -c /home/robotics/HMCREU/MCL/3DLocalization/Localization/src/IO/Debug/main.cpp
 
 CMakeFiles/IOTest.dir/main.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/IOTest.dir/main.cpp.i"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -E /home/jhallard/HMCREU/3DLocalization/Localization/src/IO/Debug/main.cpp > CMakeFiles/IOTest.dir/main.cpp.i
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -E /home/robotics/HMCREU/MCL/3DLocalization/Localization/src/IO/Debug/main.cpp > CMakeFiles/IOTest.dir/main.cpp.i
 
 CMakeFiles/IOTest.dir/main.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/IOTest.dir/main.cpp.s"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -S /home/jhallard/HMCREU/3DLocalization/Localization/src/IO/Debug/main.cpp -o CMakeFiles/IOTest.dir/main.cpp.s
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -S /home/robotics/HMCREU/MCL/3DLocalization/Localization/src/IO/Debug/main.cpp -o CMakeFiles/IOTest.dir/main.cpp.s
 
 CMakeFiles/IOTest.dir/main.cpp.o.requires:
 .PHONY : CMakeFiles/IOTest.dir/main.cpp.o.requires
@@ -92,16 +92,41 @@ CMakeFiles/IOTest.dir/main.cpp.o.provides: CMakeFiles/IOTest.dir/main.cpp.o.requ
 
 CMakeFiles/IOTest.dir/main.cpp.o.provides.build: CMakeFiles/IOTest.dir/main.cpp.o
 
+CMakeFiles/IOTest.dir/home/robotics/HMCREU/MCL/3DLocalization/Localization/src/Robot/RobotIO.cpp.o: CMakeFiles/IOTest.dir/flags.make
+CMakeFiles/IOTest.dir/home/robotics/HMCREU/MCL/3DLocalization/Localization/src/Robot/RobotIO.cpp.o: /home/robotics/HMCREU/MCL/3DLocalization/Localization/src/Robot/RobotIO.cpp
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/robotics/HMCREU/MCL/3DLocalization/Localization/src/IO/Debug/build/CMakeFiles $(CMAKE_PROGRESS_3)
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object CMakeFiles/IOTest.dir/home/robotics/HMCREU/MCL/3DLocalization/Localization/src/Robot/RobotIO.cpp.o"
+	/usr/bin/c++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/IOTest.dir/home/robotics/HMCREU/MCL/3DLocalization/Localization/src/Robot/RobotIO.cpp.o -c /home/robotics/HMCREU/MCL/3DLocalization/Localization/src/Robot/RobotIO.cpp
+
+CMakeFiles/IOTest.dir/home/robotics/HMCREU/MCL/3DLocalization/Localization/src/Robot/RobotIO.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/IOTest.dir/home/robotics/HMCREU/MCL/3DLocalization/Localization/src/Robot/RobotIO.cpp.i"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -E /home/robotics/HMCREU/MCL/3DLocalization/Localization/src/Robot/RobotIO.cpp > CMakeFiles/IOTest.dir/home/robotics/HMCREU/MCL/3DLocalization/Localization/src/Robot/RobotIO.cpp.i
+
+CMakeFiles/IOTest.dir/home/robotics/HMCREU/MCL/3DLocalization/Localization/src/Robot/RobotIO.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/IOTest.dir/home/robotics/HMCREU/MCL/3DLocalization/Localization/src/Robot/RobotIO.cpp.s"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -S /home/robotics/HMCREU/MCL/3DLocalization/Localization/src/Robot/RobotIO.cpp -o CMakeFiles/IOTest.dir/home/robotics/HMCREU/MCL/3DLocalization/Localization/src/Robot/RobotIO.cpp.s
+
+CMakeFiles/IOTest.dir/home/robotics/HMCREU/MCL/3DLocalization/Localization/src/Robot/RobotIO.cpp.o.requires:
+.PHONY : CMakeFiles/IOTest.dir/home/robotics/HMCREU/MCL/3DLocalization/Localization/src/Robot/RobotIO.cpp.o.requires
+
+CMakeFiles/IOTest.dir/home/robotics/HMCREU/MCL/3DLocalization/Localization/src/Robot/RobotIO.cpp.o.provides: CMakeFiles/IOTest.dir/home/robotics/HMCREU/MCL/3DLocalization/Localization/src/Robot/RobotIO.cpp.o.requires
+	$(MAKE) -f CMakeFiles/IOTest.dir/build.make CMakeFiles/IOTest.dir/home/robotics/HMCREU/MCL/3DLocalization/Localization/src/Robot/RobotIO.cpp.o.provides.build
+.PHONY : CMakeFiles/IOTest.dir/home/robotics/HMCREU/MCL/3DLocalization/Localization/src/Robot/RobotIO.cpp.o.provides
+
+CMakeFiles/IOTest.dir/home/robotics/HMCREU/MCL/3DLocalization/Localization/src/Robot/RobotIO.cpp.o.provides.build: CMakeFiles/IOTest.dir/home/robotics/HMCREU/MCL/3DLocalization/Localization/src/Robot/RobotIO.cpp.o
+
 # Object files for target IOTest
 IOTest_OBJECTS = \
-"CMakeFiles/IOTest.dir/home/jhallard/HMCREU/3DLocalization/Localization/src/IO/ProgramIO.cpp.o" \
-"CMakeFiles/IOTest.dir/main.cpp.o"
+"CMakeFiles/IOTest.dir/home/robotics/HMCREU/MCL/3DLocalization/Localization/src/IO/ProgramIO.cpp.o" \
+"CMakeFiles/IOTest.dir/main.cpp.o" \
+"CMakeFiles/IOTest.dir/home/robotics/HMCREU/MCL/3DLocalization/Localization/src/Robot/RobotIO.cpp.o"
 
 # External object files for target IOTest
 IOTest_EXTERNAL_OBJECTS =
 
-IOTest: CMakeFiles/IOTest.dir/home/jhallard/HMCREU/3DLocalization/Localization/src/IO/ProgramIO.cpp.o
+IOTest: CMakeFiles/IOTest.dir/home/robotics/HMCREU/MCL/3DLocalization/Localization/src/IO/ProgramIO.cpp.o
 IOTest: CMakeFiles/IOTest.dir/main.cpp.o
+IOTest: CMakeFiles/IOTest.dir/home/robotics/HMCREU/MCL/3DLocalization/Localization/src/Robot/RobotIO.cpp.o
 IOTest: /opt/ros/hydro/lib/libopencv_imgproc.so.2.4.9
 IOTest: /opt/ros/hydro/lib/libopencv_highgui.so.2.4.9
 IOTest: /opt/ros/hydro/lib/libopencv_core.so.2.4.9
@@ -149,8 +174,9 @@ IOTest: CMakeFiles/IOTest.dir/link.txt
 CMakeFiles/IOTest.dir/build: IOTest
 .PHONY : CMakeFiles/IOTest.dir/build
 
-CMakeFiles/IOTest.dir/requires: CMakeFiles/IOTest.dir/home/jhallard/HMCREU/3DLocalization/Localization/src/IO/ProgramIO.cpp.o.requires
+CMakeFiles/IOTest.dir/requires: CMakeFiles/IOTest.dir/home/robotics/HMCREU/MCL/3DLocalization/Localization/src/IO/ProgramIO.cpp.o.requires
 CMakeFiles/IOTest.dir/requires: CMakeFiles/IOTest.dir/main.cpp.o.requires
+CMakeFiles/IOTest.dir/requires: CMakeFiles/IOTest.dir/home/robotics/HMCREU/MCL/3DLocalization/Localization/src/Robot/RobotIO.cpp.o.requires
 .PHONY : CMakeFiles/IOTest.dir/requires
 
 CMakeFiles/IOTest.dir/clean:
@@ -158,6 +184,6 @@ CMakeFiles/IOTest.dir/clean:
 .PHONY : CMakeFiles/IOTest.dir/clean
 
 CMakeFiles/IOTest.dir/depend:
-	cd /home/jhallard/HMCREU/3DLocalization/Localization/src/IO/Debug/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/jhallard/HMCREU/3DLocalization/Localization/src/IO/Debug /home/jhallard/HMCREU/3DLocalization/Localization/src/IO/Debug /home/jhallard/HMCREU/3DLocalization/Localization/src/IO/Debug/build /home/jhallard/HMCREU/3DLocalization/Localization/src/IO/Debug/build /home/jhallard/HMCREU/3DLocalization/Localization/src/IO/Debug/build/CMakeFiles/IOTest.dir/DependInfo.cmake --color=$(COLOR)
+	cd /home/robotics/HMCREU/MCL/3DLocalization/Localization/src/IO/Debug/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/robotics/HMCREU/MCL/3DLocalization/Localization/src/IO/Debug /home/robotics/HMCREU/MCL/3DLocalization/Localization/src/IO/Debug /home/robotics/HMCREU/MCL/3DLocalization/Localization/src/IO/Debug/build /home/robotics/HMCREU/MCL/3DLocalization/Localization/src/IO/Debug/build /home/robotics/HMCREU/MCL/3DLocalization/Localization/src/IO/Debug/build/CMakeFiles/IOTest.dir/DependInfo.cmake --color=$(COLOR)
 .PHONY : CMakeFiles/IOTest.dir/depend
 

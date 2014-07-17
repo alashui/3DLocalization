@@ -97,6 +97,8 @@ extern std::string modelname;
 extern std::string modelDirectoryName;
 extern std::string pathToModelDataDirectory;
 
+extern int main_window;
+
 
 extern int width;
 extern int height;

@@ -10,7 +10,7 @@ set(Boost_USE_MULTITHREADED ON)
 set(Boost_USE_STATIC_LIBS_RUNTIME OFF)
 find_package(OpenGL REQUIRED)
 find_package( OpenCV REQUIRED )
-find_package(Boost 1.46.1 COMPONENTS filesystem system)
+find_package(Boost 1.46.1 COMPONENTS filesystem system REQUIRED)
 
 include_directories(${Boost_INCLUDE_DIRS} ${OpenGL_INCLUDE_DIRS})
 include_directories(${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_CURRENT_BINARY_DIR})

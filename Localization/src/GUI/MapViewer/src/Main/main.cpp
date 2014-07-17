@@ -63,7 +63,7 @@ int main(int argc, char **argv)
     // }
 
     glutInitWindowSize(width, height);
-    glutCreateWindow("PerspectiveGenerator");
+    main_window = glutCreateWindow("PerspectiveGenerator");
     
     glewInit();
     if (glewIsSupported("GL_VERSION_3_3"))
@@ -77,7 +77,7 @@ int main(int argc, char **argv)
 //  Callback Registration
     glutDisplayFunc(Render::renderScene);
     glutReshapeFunc(IO::changeSize);
-    glutIdleFunc(Render::renderScene);
+    glutIdleFunc(IO::Idle);//sRender::renderScene);
 
 //  Mouse and Keyboard Callbacks
     glutKeyboardFunc(IO::processKeys);

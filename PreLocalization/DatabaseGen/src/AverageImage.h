@@ -7,7 +7,7 @@
 #include "opencv2/nonfree/nonfree.hpp"
 #include "opencv2/core/core.hpp"
 #include "opencv2/calib3d/calib3d.hpp"
-#include "cvaux.h"
+//#include "cvaux.h"
 
 #include <iostream>
 #include <fstream>

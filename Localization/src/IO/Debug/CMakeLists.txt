@@ -13,7 +13,7 @@ include_directories(${OpenGL_INCLUDE_DIRS})
 #########################################################
 # Include Files
 #########################################################
-add_executable(IOTest ../../../IO/ProgramIO.cpp ../main.cpp)
+add_executable(IOTest ../../../IO/ProgramIO.cpp ../main.cpp ../../../Robot/RobotIO.cpp)
 
 ########################################################
 # Linking & stuff

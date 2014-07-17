@@ -17,14 +17,14 @@ if(Boost_FOUND)
     include_directories( SYSTEM ${OpenCV_INCLUDE_DIRS} ${Boost_INCLUDE_DIRS})
     include_directories(include ${catkin_INCLUDE_DIRS}) 
     add_executable( 3Dlocalize 
-    	src/Main/Main.cpp 
-    	src/Helpers/Globals/Globals.cpp
-    	src/IO/ProgramIO.cpp
-    	src/MCL/ActiveParticles/ActiveParticles.cpp
-    	src/MCL/Control/Controller.cpp
-    	src/Particle/Particle.cpp
-    	src/Robot/RobotIO.cpp
-    	src/Robot/RobotState.cpp
-    	src/MCL/Matching/Matching.cpp)
+        src/Main/Main.cpp 
+        src/Helpers/Globals/Globals.cpp
+        src/IO/ProgramIO.cpp
+        src/MCL/ActiveParticles/ActiveParticles.cpp
+        src/MCL/Control/Controller.cpp
+        src/Particle/Particle.cpp
+        src/Robot/RobotIO.cpp
+        src/Robot/RobotState.cpp
+        src/MCL/Matching/Matching.cpp)
     target_link_libraries(3Dlocalize ${Boost_LIBRARIES} ${OpenCV_LIBRARIES} ${catkin_LIBRARIES} /opt/ros/hydro/lib/libcv_bridge.so)
 endif()

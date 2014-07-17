@@ -82,12 +82,23 @@ namespace MCL
             std::cout << "P1 : " << a.ToString() << " P2 : " << b.ToString() << std::endl;
             if(a.x < b.x)
                 return true;
+            if(a.x > b.x)
+                return false;
+
             if(a.y < b.y)
                 return true;
+            if(a.y > b.y)
+                return false;
+
             if(a.z < b.z)
                 return true;
+            if(a.z > b.z)
+                return false;
+
             if(a.GetAngle() < b.GetAngle())
                 return true;
+            if(a.GetAngle() > b.GetAngle())
+                return false;
 
             std::cout << "Perspective Comparison false" << std::endl;
             return false; 

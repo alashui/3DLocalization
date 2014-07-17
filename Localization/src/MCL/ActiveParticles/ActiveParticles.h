@@ -100,7 +100,7 @@ namespace MCL
         void SetDistribution(vector<Perspective>);
 
         Perspective GetGuess();   // Get the current best guess as to the actors position
-        int GetAvgWeight();       // Get the average weight for the current particle list
+        float GetAvgWeight();       // Get the average weight for the current particle list
         int GetGeneration();      // Get the iteration count of the algorithm, how many times we have re-sampled particles
         int NumParticles();       
 

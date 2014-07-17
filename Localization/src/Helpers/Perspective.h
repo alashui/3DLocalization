@@ -12,6 +12,7 @@
 #include <vector>
 #include <cmath>
 #include <string>
+#include <iostream>
 
 namespace MCL
 {
@@ -39,7 +40,7 @@ namespace MCL
 
         std::vector<float> ToVector() const
         {
-            std::vector<float> p(6); p.push_back(x); p.push_back(y); p.push_back(z); p.push_back(dx); p.push_back(dy); p.push_back(dz);
+            std::vector<float> p; p.push_back(x); p.push_back(y); p.push_back(z); p.push_back(dx); p.push_back(dy); p.push_back(dz);
             return p;
         }
 

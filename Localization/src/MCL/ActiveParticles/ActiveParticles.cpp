@@ -13,7 +13,7 @@
 namespace MCL
 {
 
-    ActiveParticles::ActiveParticles() : generation(0), defaultDistributionSize(800) {}
+    ActiveParticles::ActiveParticles() : generation(0), defaultDistributionSize(3000), gd(0.2), dtheta(15) {srand(time(0));}
 
     Perspective Scatter(Perspective p, float maxtranslation, int prob=32);
     
@@ -51,6 +51,9 @@ namespace MCL
             maxz = z > maxz ? z : maxz;
             minz = z < minz ? z : minz;
         }
+        string t = "\t";
+
+        // cout << totalPs << t << this->GetAvgWeight() << t << avgx << "\t" << avgy << "\t" << avgz << endl;
 
         avgx = avgx / (this->GetAvgWeight() * totalPs);
         avgy = avgy / (this->GetAvgWeight() * totalPs);
@@ -90,6 +93,7 @@ namespace MCL
         
 
         Perspective guess(avgx, avgy, avgz, avgdx, avgdy, avgdz);
+        SnapToGrid(&guess);
         this->guessHistory.push_back(guess);
 
         return guess;
@@ -97,13 +101,14 @@ namespace MCL
 
     float ActiveParticles::ComputeAvgWeight()
     {
-        float total = 0;
+        double avg = 0;
 
-        for (int i = 0; i < this->pList.size(); i++)
+        float totalPs = (float) this->pList.size();
+
+        for (int i = 0; i < totalPs; i++)
         {
-            total += this->pList[i].GetWeight();
+            avg += this->pList[i].GetWeight() / totalPs;
         }
-        float avg = total/this->pList.size();
         this->weightHistory.push_back(avg);
         return avg;
     }
@@ -118,12 +123,12 @@ namespace MCL
         // Randomly generate a distribution based on 
         // the weights of all elements in pList
         int totalWeight = this->GetAvgWeight() * this->NumParticles();
-
         this->distribution.clear();
 
         for (int i = 0; i < this->pList.size(); i++)
         {
-            int num = (this->GetAvgWeight() * wantedSize) / totalWeight;
+            // cout << this->pList[i].GetWeight() << "\t" << wantedSize << "\t" << totalWeight << endl;
+            int num = (this->pList[i].GetWeight() * wantedSize) / totalWeight;
             for (; num > 0; num--)
                 this->distribution.push_back(this->pList[i].GetPerspective());
         }
@@ -137,6 +142,7 @@ namespace MCL
 
     void ActiveParticles::GenerateParticles(int amount)
     {
+
         this->pList.clear();
         // uniform_int_distribution<int> dist(0, this->distribution.size() - 1);
 
@@ -177,10 +183,7 @@ namespace MCL
         float normaly = p->y - refP.y;
         float mul = (normalx + normaly) / this->gd;
         
-        if (abs(mul - (int) floor(mul + 0.5)) < 0.0001)
-            return;
-        
-        // Else? Houston, we have a problem.
+
         float mulx = normalx / this->gd;
         float muly = normaly / this->gd;
         int nearestMulx = floor(mulx + 0.5);
@@ -203,23 +206,22 @@ namespace MCL
         // uniform_int_distribution<int> dist(1, 100);
 
         int rnd = rand() % 100; // dist(time(0));
-        if (rnd > prob)
-            return p;
-
         vector<float> v = p.ToVector();
-        if (prob % 2 == 0)
-        { // turn!
-            float curangle = GetAngle(p.dx, p.dy);
-            curangle += (float) (rand() % 100 - 50) / 80; //(dist(default_random_engine) - 50) / 80.0;
-            v[3] = round(cos(curangle * PI / 180.0));
-            v[4] = round(sin(curangle * PI / 180.0));
+        if (rnd < prob)
+        {
+            if (prob % 2 == 0)
+            { // turn!
+                float curangle = GetAngle(p.dx, p.dy);
+                curangle += (float) (rand() % 100 - 50) / 80; //(dist(default_random_engine) - 50) / 80.0;
+                v[3] = round(cos(curangle * PI / 180.0));
+                v[4] = round(sin(curangle * PI / 180.0));
+            }
+            else
+            { // translate!
+                v[0] += (float) (rand() % 100 - 50) * maxtranslation / 50.0;
+                v[1] += (float) (rand() % 100 - 50) * maxtranslation / 50.0;
+            }
         }
-        else
-        { // translate!
-            v[0] += (float) (rand() % 100 - 50) * maxtranslation / 50.0;
-            v[1] += (float) (rand() % 100 - 50) * maxtranslation / 50.0;
-        }
-
         return Scatter(Perspective(v), maxtranslation, prob/2);
     }
 
@@ -303,8 +305,10 @@ namespace MCL
     Perspective ActiveParticles::GetGuess()
     { return this->guessHistory.back(); }
     
-    int ActiveParticles::GetAvgWeight()
-    { return this->weightHistory.back(); }
+    float ActiveParticles::GetAvgWeight()
+    { 
+        // cout << this->weightHistory.back() << endl; 
+        return this->weightHistory.back(); }
     
     int ActiveParticles::GetGeneration()
     { return this->generation; }

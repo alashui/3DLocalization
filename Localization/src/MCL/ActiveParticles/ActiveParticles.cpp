@@ -259,7 +259,7 @@ namespace MCL
 
     bool ActiveParticles::GetConstants(string dirName)
     {
-        string fn = "../../../../Data/InputData/" + dirName + "/InputInfo.txt";
+        string fn = "../../Data/InputData/" + dirName + "/InputInfo.txt";
         // Get Input Data
         ifstream file(fn.c_str());
         if ( !file.is_open() )

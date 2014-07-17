@@ -26,6 +26,8 @@ int PrintError(string error)
 
 int main(int argc, char ** argv)
 {
+    srand(time(0));
+
     if (argc != 2)
         return PrintError("Must pass in the Name of the Model Directory as agrv[1]");
 
@@ -39,11 +41,15 @@ int main(int argc, char ** argv)
     if (!control.init(modelName))
         return PrintError("Controller Could not Init!");
 
+    cout << "Done With Initialization." << endl;
+
     while(control.SpinOnce())
     {
         stringstream ss;
         ss << "Generation " << control.GetActiveParticles().GetGeneration() << ": " << control.GetActiveParticles().GetAvgWeight() << endl;
         UserIO(ss.str());
+
+        getchar();
     }
 
     return 0;

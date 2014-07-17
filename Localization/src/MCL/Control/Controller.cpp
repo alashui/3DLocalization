@@ -25,14 +25,15 @@ namespace MCL
     // Take the ActiveParticles class and the RobotState class, pass them to the matching function and assign weights to the particles.
     bool Controller::CompareFeatures()
     {
-        vector<Particle> * temp;
-        this->ap.GetParticleList(temp);
-        
+        vector<Particle> v = this->ap.GetParticleList();
+
         for(int i = 0; i < this->ap.NumParticles(); i++)
-        {   Particle * ptemp;
-            ptemp = &((* temp)[i]);
-            CompareAndWeigh(ptemp, this->robot, this->comboWeighting);
+        {   
+            float wt = CompareAndWeigh(v[i], this->robot, this->comboWeighting);
+            v[i].SetWeight(wt);
         }
+
+        this->ap.SetParticleList(v);
     }
                             
     // generate a distribution based on the location and weighting of the active particles. Sample from this
@@ -74,7 +75,8 @@ namespace MCL
         if(!this->ap.GetConstants(dirName))
             return false;
         this->ap.SetDistribution(perspectives);
-        this->ap.GenerateParticles(500);
+        this->ap.GenerateParticles(10);
+        this->ap.AnalyzeList();
         UpdateRobotData();
 
         return true;
@@ -86,6 +88,7 @@ namespace MCL
         GenDistributionAndSample();
         MoveUpdate();
         UpdateRobotData();
+        this->ap.AnalyzeList();
     }
 
     // ActiveParticles get and set

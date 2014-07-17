@@ -41,7 +41,7 @@ namespace MCL
 
     int LoadCharacterizers(string dirName)
     {
-        string pathToData = "../../../Data";
+        string pathToData = "../../Data";
         string toFeatures = pathToData + "/FeatureData/" + dirName;
         string toPhotos = pathToData + "/RenderedImages/" + dirName;
 
@@ -114,7 +114,7 @@ namespace MCL
             {
                 stringstream ss;
                 ss << ID[j];
-                imfn += ss.str() + delimiter;  
+                fn += ss.str() + delimiter;  
             }
 
             // Create filename for loading stuff
@@ -151,6 +151,9 @@ namespace MCL
                 return -1;
             }
         }
+
+        cout << ">\n  " << perspectives.size() << " Images Loaded." << endl;
+
         return perspectives.size();
     }
 

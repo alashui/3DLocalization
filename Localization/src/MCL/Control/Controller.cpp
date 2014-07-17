@@ -96,12 +96,12 @@ namespace MCL
     
         return false;
     }
-    bool Controller::init(string dirName, int argc, char ** argv)
+    bool Controller::init(string dirName)
     {
         
 //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!//
 // !!!!!!!!  THIS MIGHT CAUSE AN ERROR !!!!!!!!!! //
-           RobotInit(argc, argv);
+           RobotInit();
 //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!//
 
         if(!this->ap.GetConstants(dirName))
@@ -147,7 +147,7 @@ namespace MCL
     }
 
     // Parse the string that contains the 4 movement commands, [x y z dtheta] with theta being in the xy plane
-    void MovementCallback(const std_msgs::String msg)
+    void Controller::MovementCallback(const std_msgs::String msg)
     {
         std::string str = msg.data;
 
@@ -155,16 +155,20 @@ namespace MCL
         int j = 0, count = 0, value = 0;
         for(int i = 0; count < 4 && i != str.size(); i++)
         {
-            if(i == str.size()-1 || (str[i] == ' ' || str[i] == '_' || str[i] == ',')
+            if(i == str.size()-1 || (str[i] == ' ' || str[i] == '_' || str[i] == ','))
             {
                 std::string temp;
                 temp = str.substr(j, i);
                 value = atof(temp.c_str());
-                values[count] = value;
+                movement[count] = value;
                 count++;
                 j = i;
             }
         }
+
+//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!//
+//!!!!!!!TODO - We have the movment data from the robot, find a way to store it so that MovementUpdate function can use it!!!!!!!!//
+//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!//
     }
 
     bool Controller::publisherConnected()
@@ -174,7 +178,7 @@ namespace MCL
 
     bool Controller::imageSubscriberConnected()
     {
-        return(robotImagetSubscriber.getNumPublishers());
+        return(robotImageSubscriber.getNumPublishers());
     }
 
     bool Controller::movementSubscriberConnected()
@@ -183,7 +187,7 @@ namespace MCL
     }
 
     // Called when the robot program is 
-    bool Controller::RobotInit(int argc, char ** argv)
+    bool Controller::RobotInit()
     {
         mclDataPublisher = this->rosNodePtr->advertise<std_msgs::String>(MCL_PUBLISHER_NAME, 4);
 
@@ -208,7 +212,8 @@ namespace MCL
         // ++++ TODO - Send a Handshake greeting to the robot program - TODO ++++ //
 
 
-        robotImageSubscriber = this->rosNodePtr->subscribe(this->ROBOT_PUBLISHER_NAME, 2, &Controller::ImageCallback, this);
+        robotImageSubscriber = this->rosNodePtr->subscribe(this->ROBOT_IMAGE_PUBLISHER_NAME, 2,
+         &Controller::ImageCallback, this);
 
         // wait max 5 seconds for the subscriber to connect.
         connect_flag = &Controller::imageSubscriberConnected;
@@ -220,9 +225,11 @@ namespace MCL
             return false;
         }
 
-         robotMovementSubscriber = this->rosNodePtr->subscribe(this->ROBOT_MOVEMENT_NAME, 2, &Controller::MovementCallback, this);
+         robotMovementSubscriber = this->rosNodePtr->subscribe(this->ROBOT_MOVEMENT_PUBLISHER_NAME, 2,
+          &Controller::MovementCallback, this);
+
         // wait max 5 seconds for the subscriber to connect.
-        connect_flag = &Controller::imageSubscriberConnected;
+        connect_flag = &Controller::movementSubscriberConnected;
         connection_succeded = this->PauseState(connect_flag, 5);
 
         if(!connection_succeded)
@@ -240,8 +247,16 @@ namespace MCL
     bool Controller::PublishData(int code, std::string str)
     {
         std_msgs::String msg;
-        msg.data = str;
+        stringstream ss;
+
+        // turn the integer code and the string of data into a ros String message
+        ss << code << "_" << str;
+        msg.data = ss.str();
+
+        // publish the message
         mclDataPublisher.publish(msg);
+
+        // alert the user of the publishing
         MCL::DebugIO("Data Published to Robot");
     }
 

@@ -53,7 +53,7 @@ namespace MCL
 
         const std::string MCL_PUBLISHER_NAME;// = "MCL_Publisher";
         const std::string ROBOT_IMAGE_PUBLISHER_NAME;// = "ROBOT_IMAGE_DATA";
-        const std::string ROBOT_MOVEMENT_PUBISHER_NAME; // = ROBOT MOVEMENT DATA
+        const std::string ROBOT_MOVEMENT_PUBLISHER_NAME; // = ROBOT MOVEMENT DATA
 
 
     //*****-- Private Member Functions --*****//
@@ -62,8 +62,8 @@ namespace MCL
         // will then process the image for feature data
         bool UpdateRobotData();
 
-        bool RobotInit(int arc, char ** argv);
-        bool PublishData(int,std::string str);
+        bool RobotInit();
+        bool PublishData(int, std::string str);
         void ImageCallback(const sensor_msgs::ImageConstPtr& msg);
         void MovementCallback(const std_msgs::String msg);
 
@@ -104,7 +104,7 @@ namespace MCL
         // them call this function, the class will handle the rest internally. 
         bool SpinOnce();
 
-        bool init(string, int, char**);
+        bool init(string);
 
         // ActiveParticles get and set
         ActiveParticles GetActiveParticles() const;      // Get the ActiveParticles class by value.

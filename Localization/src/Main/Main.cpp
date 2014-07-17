@@ -39,7 +39,7 @@ int main(int argc, char ** argv)
 
     Controller control;
 
-    if (!control.init(modelName, argc, argv))
+    if (!control.init(modelName))
         return PrintError("Controller Could not Init!");
 
     cout << "Done With Initialization." << endl;

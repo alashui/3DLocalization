@@ -82,9 +82,8 @@ namespace MCL
         void SnapToGrid(Perspective*);
 
         //@Function - move(..)
-        //@Purpose  - Translate and rotate every particle by the given parameters. @param turntimes turns the object by n*theta, where
-        //            theta is the rotation value between consecutive image renderings in the PerspectiveGenerator program.
-        int Move(float, float); // e.g. turntimes = -1, -2, -3, 0, 1, 2, 3, ...
+        //@Purpose  - Rotate the particle roate degrees and then translate it along it direction vector ( [dx dy dz] )
+        int Move(float tranlate, float rotate); 
 
     //***** Get and Set Functions for Private Members ****/
         vector<Particle> GetParticleList();
@@ -103,7 +102,7 @@ namespace MCL
         int GetGeneration();      // Get the iteration count of the algorithm, how many times we have re-sampled particles
         int NumParticles();       
 
-        bool GetConstants(string);      // 
+        bool GetConstants(string);      // Get the grid density and rotation interval from the generated input file (Data/InputFiles/$ModelName/InputFile.txt)
 
         /** Constants and Defines **/
         int defaultDistributionSize;    // Default size of the distribution that we sample from (currently 800, should be more)

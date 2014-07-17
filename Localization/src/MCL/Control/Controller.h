@@ -46,12 +46,14 @@ namespace MCL
         ros::Publisher mclDataPublisher;         // ros::Publisher that allows us to publish data to the robot control program
         ros::Subscriber robotMovementSubscriber; // Our Subscriber object that allows us to get robot movement commands from the user
                                                  // so that we can update our particles according to the robots movement.
+        ros::Subscriber robotImageSubscriber;    // This continuously recieves images from the robot.
         ros::NodeHandle * rosNodePtr;            // Handle to the ros::Node that we will publish and subscribe under
         Mat nextImage;                           // Holds the current image from the robot image callback function for us to grab 
                                                  // as needed.
 
         const std::string MCL_PUBLISHER_NAME;// = "MCL_Publisher";
-        const std::string ROBOT_PUBLISHER_NAME;// = "ROBOT_DATA";
+        const std::string ROBOT_IMAGE_PUBLISHER_NAME;// = "ROBOT_IMAGE_DATA";
+        const std::string ROBOT_MOVEMENT_PUBISHER_NAME; // = ROBOT MOVEMENT DATA
 
 
     //*****-- Private Member Functions --*****//
@@ -63,6 +65,11 @@ namespace MCL
         bool RobotInit(int arc, char ** argv);
         bool PublishData(int,std::string str);
         void ImageCallback(const sensor_msgs::ImageConstPtr& msg);
+        void MovementCallback(const std_msgs::String msg);
+
+        bool publisherConnected();         // returns true if the robot has subscribed to our data publisher
+        bool imageSubscriberConnected();   // returns true if we have subscribed to the robots image publisher
+        bool movementSubscriberConnected();// returns true if we have subscribed to the robots movement publisher
 
         // Take the ActiveParticles class and the RobotState class, pass them to the matching function and assign weights to the particles.
         bool CompareFeatures(); 
@@ -79,9 +86,6 @@ namespace MCL
         // The second optional argument determines how long the function will wait before giving up and returning.
         bool PauseState(bool *, float ); 
         bool PauseState(bool (Controller::*foo)(), float);
-
-        bool publisherConnected();  // returns true if the robot has subscribed to our data publisher
-        bool subscriberConnected(); // returns true if we have subscribed to the robots movement publisher
 
 
 

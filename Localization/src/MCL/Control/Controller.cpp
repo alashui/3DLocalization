@@ -10,9 +10,9 @@
 namespace MCL
 {
     Controller::Controller() :
-    MCL_PUBLISHER_NAME("MCL_Publisher"), // name of the MCL-related data publisher that we must publish under.
-    ROBOT_PUBLISHER_NAME("ROBOT_DATA") // Name of the robot movement data publisher we must subscribe to and the user must publish under
-
+    MCL_PUBLISHER_NAME("MCL_DATA_PUBLISHER"), // name of the MCL-related data publisher that we must publish under.
+    ROBOT_MOVEMENT_PUBLISHER_NAME("ROBOT_MOVEMENT_PUBLISHER"), // Name of the robot movement data publisher we must subscribe to and the user must publish under
+    ROBOT_IMAGE_PUBLISHER_NAME("ROBOT_IMAGE_PUBLISHER")
     {
         rosNodePtr= new ros::NodeHandle();   // now throw the node handle on the stack
         comboWeighting.push_back(1.0); //SURF
@@ -146,12 +146,38 @@ namespace MCL
         //SetNextInputImage(im2->image);
     }
 
+    // Parse the string that contains the 4 movement commands, [x y z dtheta] with theta being in the xy plane
+    void MovementCallback(const std_msgs::String msg)
+    {
+        std::string str = msg.data;
+
+        float movement[4] = {0,0,0,0};
+        int j = 0, count = 0, value = 0;
+        for(int i = 0; count < 4 && i != str.size(); i++)
+        {
+            if(i == str.size()-1 || (str[i] == ' ' || str[i] == '_' || str[i] == ',')
+            {
+                std::string temp;
+                temp = str.substr(j, i);
+                value = atof(temp.c_str());
+                values[count] = value;
+                count++;
+                j = i;
+            }
+        }
+    }
+
     bool Controller::publisherConnected()
     {
         return(this->mclDataPublisher.getNumSubscribers());
     }
 
-    bool Controller::subscriberConnected()
+    bool Controller::imageSubscriberConnected()
+    {
+        return(robotImagetSubscriber.getNumPublishers());
+    }
+
+    bool Controller::movementSubscriberConnected()
     {
         return(robotMovementSubscriber.getNumPublishers());
     }
@@ -182,10 +208,10 @@ namespace MCL
         // ++++ TODO - Send a Handshake greeting to the robot program - TODO ++++ //
 
 
-        robotMovementSubscriber = this->rosNodePtr->subscribe(this->ROBOT_PUBLISHER_NAME, 2, &Controller::ImageCallback, this);
+        robotImageSubscriber = this->rosNodePtr->subscribe(this->ROBOT_PUBLISHER_NAME, 2, &Controller::ImageCallback, this);
 
         // wait max 5 seconds for the subscriber to connect.
-        connect_flag = &Controller::subscriberConnected;
+        connect_flag = &Controller::imageSubscriberConnected;
         connection_succeded = this->PauseState(connect_flag, 5);
 
         if(!connection_succeded)
@@ -193,6 +219,18 @@ namespace MCL
             ErrorIO("Robot Movement Publisher Failed to be Detected after 10 seconds of waiting. (RobotInit(..))");
             return false;
         }
+
+         robotMovementSubscriber = this->rosNodePtr->subscribe(this->ROBOT_MOVEMENT_NAME, 2, &Controller::MovementCallback, this);
+        // wait max 5 seconds for the subscriber to connect.
+        connect_flag = &Controller::imageSubscriberConnected;
+        connection_succeded = this->PauseState(connect_flag, 5);
+
+        if(!connection_succeded)
+        {
+            ErrorIO("Robot Movement Publisher Failed to be Detected after 10 seconds of waiting. (RobotInit(..))");
+            return false;
+        }
+
         else
             UserIO("Localization Program Has Subscribed to the Robot Data Publisher.");
 

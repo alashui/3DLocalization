@@ -79,6 +79,7 @@ namespace MCL
        public:
           bool operator()(const Perspective& a,const Perspective& b) const 
           { 
+            std::cout << "P1 : " << a.ToString() << " P2 : " << b.ToString() << std::endl;
             if(a.x < b.x)
                 return true;
             if(a.y < b.y)
@@ -88,6 +89,7 @@ namespace MCL
             if(a.GetAngle() < b.GetAngle())
                 return true;
 
+            std::cout << "Perspective Comparison false" << std::endl;
             return false; 
           } // returns x>y
     };

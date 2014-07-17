@@ -26,6 +26,8 @@ int PrintError(string error)
 
 int main(int argc, char ** argv)
 {
+    MCL::show_debug_IO = true; // Show the debugging output, remove this for final version or cleaner terminal output.
+    
     srand(time(0));
     ros::init(argc, argv, "Localizer"); // Init must be called before initializing the Controller class;
 
@@ -40,15 +42,15 @@ int main(int argc, char ** argv)
     Controller control;
 
     if (!control.init(modelName))
-        return PrintError("Controller Could not Init!");
+        return PrintError("Could Not Properly Initialize Controller.");
 
-    cout << "Done With Initialization." << endl;
+    DebugIO("Initialization Finished Successfully, Starting Main Loop");
 
     while(control.SpinOnce())
     {
         stringstream ss;
         ss << "Generation " << control.GetActiveParticles().GetGeneration() << ": " << control.GetActiveParticles().GetAvgWeight() << endl;
-        UserIO(ss.str());
+        DebugIO(ss.str());
         RobotState r = control.GetRobotState();
         cout << "Guess: " << r.GetPerspective().ToString() << endl;
         getchar();

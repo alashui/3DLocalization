@@ -25,6 +25,7 @@ namespace MCL
     extern const std::string red;
     extern const std::string yellow;
     extern const std::string reset;
+    extern bool show_debug_IO;
 
     // @Function - DebugIO
     // @Input    - SS object containing the output message

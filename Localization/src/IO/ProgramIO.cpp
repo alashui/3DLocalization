@@ -16,6 +16,7 @@ namespace MCL
     const std::string red = "\033[1;31m";
     const std::string yellow = "\033[1;33m";
     const std::string reset = "\033[0m";
+    bool show_debug_IO = false;
 
     // @Function - DebugIO
     // @Input    - SS object containing the output message
@@ -24,7 +25,10 @@ namespace MCL
     //            with inline debugging output messages.
     void DebugIO(std::string ss)
     {
-        std::cout << yellow << ss << reset << std::endl;
+        if(show_debug_IO)
+        {
+            std::cout << yellow << "[ " << ss << " ]" << reset << std::endl;
+        }
     }
 
     // @Function - UserIO
@@ -33,7 +37,7 @@ namespace MCL
     // @Purpose  - for use when the program needs to display simple information to the user, like loading times, or the progress of a certain task.
     void UserIO(std::string ss)
     {
-        std::cout << ss << std::endl;
+        std::cout << "[ " << ss << " ]" << std::endl;
     }
 
     // @Function - ErrorIO
@@ -44,7 +48,7 @@ namespace MCL
     void ErrorIO(std::string ss)
     {
         error_log.push_back(ss);
-        std::cout  << red <<" Error #" << error_log.size() << " " << ss << reset << std::endl;
+        std::cout  << red <<" Error #" << error_log.size() << " : [ " << ss << reset << " ]" << std::endl;
     }
 
     // @Function - getErrorLog
@@ -63,7 +67,7 @@ namespace MCL
         std::cout << red <<" Printing Error Log. " << error_log.size() << " Total Errors." << reset << std::endl;
         for(int i = 0; i < error_log.size(); i++)
         {
-            std::cout << red <<" Error #" << i << " " << error_log[i] << reset <<std::endl;
+            std::cout << red <<" Error #" << i << " [ " << error_log[i] << " ] " << reset << std::endl;
         }
     }
 

@@ -79,10 +79,12 @@ namespace MCL
     // Called when the program needs to wait for another part of the program to do something.
     // the argument is a pointer to a boolean flag that this function will wait to be true before moving on.
     // The second optional argument determines how long the function will wait before giving up and returning.
-    bool Controller::PauseState(bool * flag, float time = 10.0)
+    bool Controller::PauseState(bool * flag, float waittime = 10.0) //(seconds)
     {
+        unsigned int temp = time(0);
         // Wait until the flag is true to return
-        for(int i = 0;!(*flag) && i < 100000; i++)
+        for(int i = 0;!(*flag) && (time(0) - temp) < waittime*1000; i++)
+
             return true;
     
         return false;

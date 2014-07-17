@@ -8,6 +8,9 @@
 #ifndef MCL_ROBOTIO_H_
 #define MCL_ROBOTIO_H_
 
+#include <stdio.h>
+#include <iostream>
+
 #include "ros/ros.h"
 #include "std_msgs/String.h"
 #include "cv_bridge/cv_bridge.h"
@@ -19,7 +22,6 @@
 #include "../MCL/Control/Controller.h"
 
 #include <sstream>
-#include <iostream>
 #include <cmath>
 
 extern ros::NodeHandle node;

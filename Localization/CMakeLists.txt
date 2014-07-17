@@ -4,7 +4,7 @@ project( localization )
  
 find_package( OpenCV REQUIRED )
 
-find_package(catkin REQUIRED COMPONENTS roscpp std_msgs genmsg)
+find_package(catkin REQUIRED COMPONENTS roscpp std_msgs genmsg image_transport cv_bridge)
 
 catkin_package()
 

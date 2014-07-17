@@ -33,8 +33,8 @@ namespace MCL
 
     int BootUp(string dirName)
     {
-        LoadCharacterizers(dirName, perspectives, masterMap);
-        Robot_init();
+        LoadCharacterizers(dirName);
+        // Robot_init();
 
         return perspectives.size();
     }

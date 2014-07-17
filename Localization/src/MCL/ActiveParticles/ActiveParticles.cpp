@@ -179,10 +179,9 @@ namespace MCL
     void ActiveParticles::SnapToGrid(Perspective * p)
     {
         Perspective refP = perspectives[0];
+        
         float normalx = p->x - refP.x;
         float normaly = p->y - refP.y;
-        float mul = (normalx + normaly) / this->gd;
-        
 
         float mulx = normalx / this->gd;
         float muly = normaly / this->gd;

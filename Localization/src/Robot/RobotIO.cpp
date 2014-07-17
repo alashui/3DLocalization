@@ -9,9 +9,9 @@ const std::string publisher = "MCL_Publisher";
 const std::string subscriber = "MCL_Subscriber";
 
 
-bool RobotInit(int arc, char ** argv)
+bool RobotInit(int argc, char ** argv)
 {
-    ros::init(argc, argv, "3DLocalization")
+    ros::init(argc, argv, "3DLocalization");
     data_publisher = node.advertise<std_msgs::String>(publish);
 
     std_msgs::String msg;

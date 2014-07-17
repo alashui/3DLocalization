@@ -41,7 +41,7 @@ namespace MCL
         while(control.SpinOnce())
         {
             stringstream ss;
-            ss << "Generation " << control.ap.GetGeneration() << ": " << control.ap.GetAvgWeight() << endl;
+            ss << "Generation " << control.GetActiveParticles().GetGeneration() << ": " << control.GetActiveParticles().GetAvgWeight() << endl;
             UserIO(ss.str());
         }
 

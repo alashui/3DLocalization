@@ -19,7 +19,7 @@ using namespace MCL;
 int PrintError(string error)
 {
     stringstream ss;
-    ss << "Input Format Error : " << error << endl;
+    ss << "Input Format Error: " << error << endl;
     ErrorIO(ss.str());
     return -1;
 }
@@ -36,7 +36,8 @@ int main(int argc, char ** argv)
 
     Controller control;
 
-    control.init(modelName);
+    if (!control.init(modelName))
+        return PrintError("Controller Could not Init!");
 
     while(control.SpinOnce())
     {

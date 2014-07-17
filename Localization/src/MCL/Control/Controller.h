@@ -74,7 +74,7 @@ namespace MCL
         // them call this function, the class will handle the rest internally. 
         bool SpinOnce();
 
-        void init(string);
+        bool init(string);
 
         // ActiveParticles get and set
         ActiveParticles GetActiveParticles() const;      // Get the ActiveParticles class by value.

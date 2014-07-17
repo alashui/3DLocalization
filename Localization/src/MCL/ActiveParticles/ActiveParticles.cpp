@@ -179,7 +179,7 @@ namespace MCL
     void ActiveParticles::SnapToGrid(Perspective * p)
     {
         Perspective refP = perspectives[0];
-        
+
         float normalx = p->x - refP.x;
         float normaly = p->y - refP.y;
 
@@ -257,7 +257,7 @@ namespace MCL
         return 0;
     }
 
-    void ActiveParticles::GetConstants(string dirName)
+    bool ActiveParticles::GetConstants(string dirName)
     {
         string fn = "../../../../Data/InputData/" + dirName + "/InputInfo.txt";
         // Get Input Data
@@ -267,6 +267,7 @@ namespace MCL
             stringstream ss;
             ss << "Error : InputInfo.txt Not Found for model " << dirName << "! Looked in " << fn << endl;
             ErrorIO(ss.str());
+            return false;
         }
 
         string str;
@@ -278,6 +279,7 @@ namespace MCL
         // Angle difference
         getline( file, str );
         this->dtheta = atof(str.c_str());
+        return true;
     }
 
     vector<Particle> ActiveParticles::GetParticleList()

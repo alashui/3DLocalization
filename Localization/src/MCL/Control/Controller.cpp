@@ -69,12 +69,15 @@ namespace MCL
         return false;
     }
 
-    void Controller::init(string dirName)
+    bool Controller::init(string dirName)
     {
-        this->ap.GetConstants(dirName);
+        if(!this->ap.GetConstants(dirName))
+            return false;
         this->ap.SetDistribution(perspectives);
         this->ap.GenerateParticles(500);
         UpdateRobotData();
+
+        return true;
     }
 
     bool Controller::SpinOnce()

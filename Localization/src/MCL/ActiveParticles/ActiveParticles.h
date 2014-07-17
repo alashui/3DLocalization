@@ -104,7 +104,7 @@ namespace MCL
         int GetGeneration();      // Get the iteration count of the algorithm, how many times we have re-sampled particles
         int NumParticles();       
 
-        void GetConstants(string);      // 
+        bool GetConstants(string);      // 
 
         /** Constants and Defines **/
         int defaultDistributionSize;    // Default size of the distribution that we sample from (currently 800, should be more)

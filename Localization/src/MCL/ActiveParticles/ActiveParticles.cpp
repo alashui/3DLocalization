@@ -117,7 +117,7 @@ namespace MCL
 
     int ActiveParticles::GenerateDistribution()
     {
-        return GenerateDistribution(2000);
+        return GenerateDistribution(6000);
     }
 
     int ActiveParticles::GenerateDistribution(int wantedSize)
@@ -154,9 +154,9 @@ namespace MCL
         {
             int rndIdx = rand() % this->distribution.size();
             Perspective P = Scatter(this->distribution[rndIdx], this->gd*2, 32);
-            cout << this->distribution[rndIdx].ToString() << "->" << P.ToString();
+            // cout << this->distribution[rndIdx].ToString() << "->" << P.ToString();
             SnapToGrid(&P);
-            cout << "->" << P.ToString() << endl;
+            // cout << "->" << P.ToString() << endl;
             if (!masterMap.count(P))
             {
                 i--;

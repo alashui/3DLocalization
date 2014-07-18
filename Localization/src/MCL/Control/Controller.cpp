@@ -15,9 +15,9 @@ namespace MCL
     ROBOT_IMAGE_PUBLISHER_NAME("ROBOT_IMAGE_PUBLISHER")
     {
         rosNodePtr= new ros::NodeHandle();   // now throw the node handle on the stack
-        comboWeighting.push_back(0.0); //SURF
+        comboWeighting.push_back(1.0); //SURF
         comboWeighting.push_back(0.0); //SIFT
-        comboWeighting.push_back(1.0); //GREYSCALE
+        comboWeighting.push_back(0.0); //GREYSCALE
         comboWeighting.push_back(0.0); // B&W
     }
 
@@ -119,7 +119,7 @@ namespace MCL
         if(!this->ap.GetConstants(dirName))
             return false;
         this->ap.SetDistribution(perspectives);
-        this->ap.GenerateParticles(10);
+        this->ap.GenerateParticles(600);
         this->ap.AnalyzeList();
 
         return true;
@@ -127,28 +127,50 @@ namespace MCL
 
     bool Controller::SpinOnce()
     {
+        time_t tstart = time(0);
+
         ros::spinOnce();
 
         CompareFeatures();
 
-        this->ap.AnalyzeList();
+        time_t duration = time(0) - tstart;
+        stringstream ss;
+        ss << "CompareFeatures took " << duration << " seconds.";
+        DebugIO(ss.str());
+        tstart = time(0);
+        ss.str("");
 
+        this->ap.AnalyzeList();
         robot.SetPerspective(ap.GetGuess());
-        
+
+        duration = time(0) - tstart;
+        ss << "AnalyzeList took " << duration << " seconds.";
+        DebugIO(ss.str());
+        tstart = time(0);
+        ss.str("");
+
         ros::spinOnce();
         
         GenDistributionAndSample();
-        
+
+        duration = time(0) - tstart;
+        ss << "GenDistributionAndSample took " << duration << " seconds.";
+        DebugIO(ss.str());
+        tstart = time(0);
+        ss.str("");
+
         ros::spinOnce();
         
         MoveUpdate();
-        
+
+        duration = time(0) - tstart;
+        ss << "MoveUpdate took " << duration << " seconds.";
+        DebugIO(ss.str());
+
         ros::spinOnce();
 
         UpdateRobotData();
         
-        ros::spinOnce();
-
         ros::spinOnce();
 
         return true;

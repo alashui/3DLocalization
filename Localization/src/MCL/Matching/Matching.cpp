@@ -41,9 +41,9 @@ namespace MCL
             ErrorIO("CompareAndWeight : Length of comboweight vector must be 4\n");
 
         if(!(abs(comboweights[0]) < .005))
-            sim += (int) CompareDescriptors(c1.surfs, c2.surfs) *comboweights[0];
+            sim += CompareDescriptors(c1.surfs, c2.surfs) *comboweights[0];
         if(!(abs(comboweights[1]) < .005))
-            sim += (int) CompareDescriptors(c1.sifts, c2.sifts)*comboweights[1];
+            sim += CompareDescriptors(c1.sifts, c2.sifts)*comboweights[1];
         if(!(abs(comboweights[2]) < .005))
             sim += GetSimilarity(c1.gs, c2.gs)*comboweights[2];
         if(!(abs(comboweights[3]) < .005))
@@ -101,7 +101,7 @@ namespace MCL
         if (count < 2)
             return 1000.0;
         // cout << total / count << " ";
-        return 1/count; // + count / 2.0;
+        return count; // + count / 2.0;
     }
 
     // Elementwise disance of two images.

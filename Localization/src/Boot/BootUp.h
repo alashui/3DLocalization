@@ -61,6 +61,8 @@ namespace MCL
         // tmp Descriptors
         Mat descriptors;
 
+        int percent = 0;
+
         for (int i = 0; i < ret.size(); i++)
         { // Load image, bw, gs, and descriptors via filename. 
 

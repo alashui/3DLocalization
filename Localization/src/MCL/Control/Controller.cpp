@@ -15,9 +15,9 @@ namespace MCL
     ROBOT_IMAGE_PUBLISHER_NAME("ROBOT_IMAGE_PUBLISHER")
     {
         rosNodePtr= new ros::NodeHandle();   // now throw the node handle on the stack
-        comboWeighting.push_back(1.0); //SURF
+        comboWeighting.push_back(0.0); //SURF
         comboWeighting.push_back(0.0); //SIFT
-        comboWeighting.push_back(0.0); //GREYSCALE
+        comboWeighting.push_back(1.0); //GREYSCALE
         comboWeighting.push_back(0.0); // B&W
     }
 
@@ -48,6 +48,7 @@ namespace MCL
         for(int i = 0; i < this->ap.NumParticles(); i++)
         {   
             float wt = CompareAndWeigh(v[i], this->robot, this->comboWeighting);
+            cout << wt << endl;
             v[i].SetWeight(wt);
         }
 
@@ -113,13 +114,13 @@ namespace MCL
 // !!!!!!!!  THIS MIGHT CAUSE AN ERROR !!!!!!!!!! //
            RobotInit();
 //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!//
+        UpdateRobotData();
 
         if(!this->ap.GetConstants(dirName))
             return false;
         this->ap.SetDistribution(perspectives);
         this->ap.GenerateParticles(10);
         this->ap.AnalyzeList();
-        UpdateRobotData();
 
         return true;
     }

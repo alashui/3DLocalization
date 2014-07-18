@@ -51,6 +51,8 @@ namespace MCL
 
         float Distance(Particle);                // Get the Euclidean distance from one particle to this one
 
+        std::string ToString();
+
     //********-----------------------------------------------*******//
     //*****-- Public Definitions, Constants, and other Fields--*****//
         

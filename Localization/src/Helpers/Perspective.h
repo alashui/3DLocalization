@@ -54,12 +54,15 @@ namespace MCL
 
         // Used to see if two perspectives are equal within a defined epsilon (because of flotating point trunc errors.)
         inline bool operator==(const Perspective& a) {
-            float eps = 0.00001;
-            std::vector<float> v1 = this->ToVector();
-            std::vector<float> v2 = a.ToVector();
-            for (int i = 0; i < v1.size(); i++)
-                if (abs(v1[i] - v2[i]) > eps)
-                    return false;
+            float eps = 0.001;
+            if (abs(a.x - x) > eps || abs(a.y - y) > eps || abs(a.z - z) > eps)
+                return false;
+
+            float angle1 = atan2(x, y);
+            float angle2 = atan2(a.x, a.y);
+            if (abs(angle1 - angle2) > 0.1)
+                return false;
+            
             return true;
         }
     };

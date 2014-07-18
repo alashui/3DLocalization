@@ -139,8 +139,10 @@ namespace MCL
             store.release();
 
             // Add bw and gs images.
-            masterMap[P].gs = imread(gsfn, CV_LOAD_IMAGE_GRAYSCALE);
-            masterMap[P].bw = imread(bwfn, CV_LOAD_IMAGE_GRAYSCALE);
+            Mat gstmp = imread(gsfn, CV_LOAD_IMAGE_GRAYSCALE);
+            Mat bwtmp = imread(bwfn, CV_LOAD_IMAGE_GRAYSCALE);
+            masterMap[P].gs = gstmp;
+            masterMap[P].bw = bwtmp;
 
             // Check for invalid input
             if(! masterMap[P].gs.data )

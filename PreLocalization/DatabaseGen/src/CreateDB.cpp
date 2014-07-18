@@ -38,7 +38,8 @@ static void printPrompt( const string& applName )
     ss << "/*\n"
     << " * Given a folder of photos, this computes descriptors and info of images.\n"
     << " */\n" << endl <<  "Format:\n" << endl << applName << " ModelDirectoryName" << endl;
-    DebugIO(ss.str());
+    // MCL::DebugIO(ss.str());
+    cout << ss.str();
 }
 
 // return the filenames of all files that have the specified extension
@@ -280,7 +281,7 @@ int main(int argc, char** argv)
 
         if ((count * 100 / total) % 5 == 0)
         {
-            cout << 100 * count / total << " percent done. Estimated Time Remaining: " << (x-s)/60.0 << " minutes. ";
+            cout << (float)(100.0*count)/ total << " percent done. Estimated Time Remaining: " << (x-s)/60.0 << " minutes. ";
             cout << "Total skipped so far: " << skipped << "." << endl;
         }
     }

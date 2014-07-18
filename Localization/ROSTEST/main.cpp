@@ -1,4 +1,4 @@
-..#include "ros/ros.h"
+#include "ros/ros.h"
 #include "std_msgs/String.h"
 #include "cv_bridge/cv_bridge.h"
 #include "sensor_msgs/Image.h"
@@ -77,13 +77,7 @@ int main(int argc, char **argv)
 	//data_publisher = node.advertise<sensor_msgs::ImageConstPtr&>(publish_image_data_under, 4);
 	data_publisher = it.advertise(publish_image_data_under, 4, true);
 
-    image_names.push_back("../../../Data/RenderedImages/2ndFloorSprague/_1.25_1.75_0.4_0_-1_0_.jpg");
-    image_names.push_back("../../../Data/RenderedImages/2ndFloorSprague/_1.75_9_0.4_0.49_-0.86_0_.jpg");
-    image_names.push_back("../../../Data/RenderedImages/2ndFloorSprague/_2.5_0.75_0.4_0_-1_0_.jpg");
-    image_names.push_back("../../../Data/RenderedImages/2ndFloorSprague/_-2_9_0.4_0.5_0.86_0_.jpg");
-	image_names.push_back("../../../Data/RenderedImages/2ndFloorSprague/_1.25_1.75_0.4_0_1_0_.jpg");
-	image_names.push_back("../../../Data/RenderedImages/2ndFloorSprague/_-1.75_9_0.4_-0.5_-0.86_0_.jpg");/*       _2.5_0.75_0.4_0_1_0_.jpg             _2_9_0.4_-0.5_-0.86_0_.jpg
-	_1.25_1.75_0.4_-0.49_0.86_0_.jpg                  _-1.75_9_0.4_0.5_0.86_0_.jpg         _-2.5_0.75_0.4_-0.49_0.86_0_.jpg     _2_9_0.4_0.5_0.86_0_.jpg*/
+    image_names.push_back("../../../Data/RenderedImages/SmallFolder/_0.5_0_0.4_0_-1_0_.jpg");
 
 	LoadImages();
 

@@ -96,6 +96,8 @@ namespace MCL
         SnapToGrid(&guess);
         this->guessHistory.push_back(guess);
 
+        cout << "ParticleListSize:" << pList.size() << endl;
+
         return guess;
     }
 
@@ -115,7 +117,7 @@ namespace MCL
 
     int ActiveParticles::GenerateDistribution()
     {
-        return GenerateDistribution(defaultDistributionSize);
+        return GenerateDistribution(2000);
     }
 
     int ActiveParticles::GenerateDistribution(int wantedSize)

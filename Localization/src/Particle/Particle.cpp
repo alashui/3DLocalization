@@ -30,7 +30,7 @@ namespace MCL
         if(w >= weightmin && w <= weightmax)
             weight = w;
         else
-            weight = defaultweight;
+            weight = w; //defaultweight;
     }
 
     //====Destructor====//
@@ -39,6 +39,12 @@ namespace MCL
      int x = 0;
     }
 
+    std::string Particle::ToString()
+    {
+        std::stringstream ss;
+        ss << this->perspective.ToString() << " Weight: " << weight;
+        return ss.str();
+    }
 
     //====Get and Set====//
     bool Particle::SetPerspective(Perspective p)
@@ -73,6 +79,8 @@ namespace MCL
 
     bool Particle::SetWeight(float w)
     {
+        weight = w; 
+        return true;
         if(w >= weightmin && w <= weightmax)
         {
             weight = w;

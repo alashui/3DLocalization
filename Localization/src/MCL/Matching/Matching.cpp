@@ -28,6 +28,11 @@ namespace MCL
 
 		float sim = 0;
 
+        namedWindow("a");
+        imshow("a", c1.gs);
+        waitKey(0);
+        destroyAllWindows();
+
         // a combination of similarity tests:
         if(comboweights.size() != 4)
             ErrorIO("CompareAndWeight : Length of comboweight vector must be 4\n");
@@ -41,6 +46,7 @@ namespace MCL
         if(!(abs(comboweights[3]) < .005))
             sim += GetSimilarity(c1.bw, c2.bw)*comboweights[3];
 
+        cout << "Sim in Matching.cpp in CompareandWeight: " << sim << endl;
         // cout
         // << "SURFS: " << 10 * (int) CompareDescriptors(c1.surfs, c2.surfs)
         // << "\tSIFTS: " << (int) CompareDescriptors(c1.sifts, c2.sifts) / 3

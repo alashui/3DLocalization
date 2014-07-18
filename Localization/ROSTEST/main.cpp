@@ -52,6 +52,11 @@ ros::Subscriber mcl_data_subscriber;
 const std::string publish_image_data_under = "ROBOT_IMAGE_PUBLISHER";
 const std::string mcl_data_publisher_name = "MCL_DATA_PUBLISHER";
 
+string dirName = "2ndFloorSprague/";
+string pathToData = "../../../Data";
+string toFeatures = pathToData + "/FeatureData/" + dirName;
+string toPhotos = pathToData + "/RenderedImages/" + dirName;
+
 const int handshake = 15;
 const int readymove = 25;
 const int starting_move = 10;
@@ -118,15 +123,24 @@ int main(int argc, char **argv)
     time_t temptime = time(0);
     std::cout << "Waiting for Handshake from Program .." << std::endl;
     while(!handshake_recieved && (time(0) - temptime) < 20)
+    {
+    	ros::Duration(0.05).sleep();
     	ros::spinOnce();
-    std::cout << "Handshake recieved" << std::endl;
+    }
+    if(handshake_recieved)
+    	std::cout << "Handshake recieved" << std::endl;
+    else
+    {
+    	std::cout << "No handshake recieved";
+    	return -1;
+    }
 	
 	movement_publisher = node.advertise<std_msgs::String>("ROBOT_MOVEMENT_PUBLISHER", 4);
 
 	//data_publisher = node.advertise<sensor_msgs::ImageConstPtr&>(publish_image_data_under, 4);
 	data_publisher = it.advertise(publish_image_data_under, 4, true);
-
-	  image_names.push_back("../../../Data/RenderedImages/2ndFloorSprague/_0.25_1.75_0.4_1_0_0_.jpg");
+	  image_names.push_back("../../../Data/RenderedImages/2ndFloorSprague/_1_0_0.4_1_0_0_.jpg");
+	  image_names.push_back("../../../Data/RenderedImages/2ndFloorSprague/_0.5_1.75_0.4_0_-1_0_.jpg");
 	  image_names.push_back("../../../Data/RenderedImages/2ndFloorSprague/_2.25_1.75_0.4_1_0_0_.jpg");
 	  image_names.push_back("../../../Data/RenderedImages/2ndFloorSprague/_0.5_1.5_0.4_1_0_0_.jpg");
 	  image_names.push_back("../../../Data/RenderedImages/2ndFloorSprague/_0.25_1.75_0.4_1_0_0_.jpg");
@@ -166,10 +180,7 @@ int main(int argc, char **argv)
 
 	bool loadImages()
 	{
-		string dirName = "2ndFloorSprague/";
-		string pathToData = "../../../Data";
-        string toFeatures = pathToData + "/FeatureData/" + dirName;
-        string toPhotos = pathToData + "/RenderedImages/" + dirName;
+	
 
         string delimiter = "_";
 
@@ -218,12 +229,17 @@ int main(int argc, char **argv)
 		std::vector<std::string> strs;
 		std::vector<float> vals;
 		str = str.substr(1,str.size()-1);
-        boost::split(strs, str, boost::is_any_of(" _,"));
+        boost::split(strs, str, boost::is_any_of("_"));
 
-        for(int i = 0; i < 6; i++)
+        for(int i = 0; i < strs.size(); i++)
+        {
+        	std::cout << "[ " << strs[i] << " ]" << endl;
+        }
+
+        for(int i = 1; i < strs.size()-1; i++)
         {
         	vals.push_back(atof(strs[i].c_str()));
-        	std::cout << vals[i] << ", ";
+        	std::cout << vals[i-1] << ", ";
         }
         cout <<endl;
 
@@ -250,17 +266,18 @@ int main(int argc, char **argv)
 		vals[3] = round(cos(theta));
 		vals[4] = round(sin(theta));
 
-		for(int i = 0; i < 6; i++)
+		for(int i = 1; i < strs.size()-1; i++)
         {
-        	vals.push_back(atof(strs[i].c_str()));
+        	// vals.push_back(atof(strs[i].c_str()));
         	std::cout << vals[i] << ", ";
         }
         cout <<endl;
 
 
 		stringstream ss;
-		ss << "_" << vals[0] << "_" << vals[1] << "_" << vals[2] << "_" << vals[3] << "_" << vals[4] << "_" << vals[5] << "_" << ".jpg";
+		ss << toPhotos << "_" << vals[0] << "_" << vals[1] << "_" << vals[2] << "_" << vals[3] << "_" << vals[4] << "_" << vals[5] << "_" << ".jpg";
 		std::cout << ss.str() << endl;
+
 
 		for(int i = 0; i < image_names.size(); i++)
 		{

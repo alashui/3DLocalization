@@ -316,10 +316,10 @@ namespace MCL
         else
             DebugIO("Robot Has Subscribed to mclDataPublisher.");
 
-        this->PublishData(handshake, " ");
+        this->PublishData(handshake, "_");
 
         // pause for a second to let the robot start it's publishers.
-        bool x = false; PauseState(&x, 3);
+        bool x = false; PauseState(&x, 2);
 
         // Subscribe to the robot movement data publisher.
         robotMovementSubscriber = this->rosNodePtr->subscribe(this->ROBOT_MOVEMENT_PUBLISHER_NAME, 2, &Controller::MovementCallback, this);
@@ -337,7 +337,7 @@ namespace MCL
             DebugIO("Localization Program Has Subscribed to the Robot Movement Publisher.");
 
         // pause again for the robot to boot up the image callback.
-        x = false; PauseState(&x, 3);
+        x = false; PauseState(&x, 2);
 
         // subscribe to the robot image publisher (implemented through the ros::ImageTransport class)
         image_transport::ImageTransport it(*rosNodePtr);

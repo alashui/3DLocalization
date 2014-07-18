@@ -108,10 +108,10 @@ int main(int argc, char **argv)
 	NodeHandle node;
 	image_transport::ImageTransport it(node);
 
-	// std::cout << "Starting image load" << endl;
-	// loadImages();
-	// cout << "Done Loading Images" << endl;
-	// getchar();
+	std::cout << "Starting image load" << endl;
+	loadImages();
+	cout << "Done Loading Images" << endl;
+	getchar();
 
     mcl_data_subscriber = node.subscribe(mcl_data_publisher_name, 4, MyDataCallback);
 
@@ -126,15 +126,16 @@ int main(int argc, char **argv)
 	//data_publisher = node.advertise<sensor_msgs::ImageConstPtr&>(publish_image_data_under, 4);
 	data_publisher = it.advertise(publish_image_data_under, 4, true);
 
-	 image_names.push_back("../../../Data/RenderedImages/2ndFloorSprague/_0.25_1.75_0.4_1_0_0_.jpg");
-	 image_names.push_back("../../../Data/RenderedImages/2ndFloorSprague/_0.5_1.5_0.4_1_0_0_.jpg");
-	 image_names.push_back("../../../Data/RenderedImages/2ndFloorSprague/_0.25_1.75_0.4_1_0_0_.jpg");
-	 image_names.push_back("../../../Data/RenderedImages/2ndFloorSprague/_0.5_1_0.4_1_1_0_.jpg");
+	  image_names.push_back("../../../Data/RenderedImages/2ndFloorSprague/_0.25_1.75_0.4_1_0_0_.jpg");
+	  image_names.push_back("../../../Data/RenderedImages/2ndFloorSprague/_2.25_1.75_0.4_1_0_0_.jpg");
+	  image_names.push_back("../../../Data/RenderedImages/2ndFloorSprague/_0.5_1.5_0.4_1_0_0_.jpg");
+	  image_names.push_back("../../../Data/RenderedImages/2ndFloorSprague/_0.25_1.75_0.4_1_0_0_.jpg");
+	 // image_names.push_back("../../../Data/RenderedImages/2ndFloorSprague/_0.5_1_0.4_1_1_0_.jpg");
 	 
 	 for(int i = 0; i < image_names.size(); i++)
 	 	image_list.push_back(imread(image_names[i]));
 
-	//char key = 'k';
+	// char key = 'k';
 	// namedWindow("Robot Image");
 	while(ros::ok())
 	{
@@ -145,7 +146,7 @@ int main(int argc, char **argv)
 		out_msg.header.stamp = scan_time;
 		out_msg.header.frame_id = "robot_image";
 		out_msg.encoding = sensor_msgs::image_encodings::BGR8;
-		out_msg.image = image_list[0];
+		out_msg.image = image_list[current_image];
 		// imshow("Robot Image", image_list[current_image]);
 
 		// std::cout << image_list.size() << "\n";
@@ -183,7 +184,7 @@ int main(int argc, char **argv)
         	stringstream ss;
         	ss << toPhotos << ret[i].string();
         	image_names.push_back(ss.str());
-        	// std::cout << image_names[i] << endl;
+        	if(i%100==0) std::cout << image_names[i] << endl;
         	image_list.push_back(imread(image_names[i]));
         }
 
@@ -216,20 +217,21 @@ int main(int argc, char **argv)
 
 		std::vector<std::string> strs;
 		std::vector<float> vals;
+		str = str.substr(1,str.size()-1);
         boost::split(strs, str, boost::is_any_of(" _,"));
 
         for(int i = 0; i < 6; i++)
         {
         	vals.push_back(atof(strs[i].c_str()));
-        	std::cout << vals[i] << endl;
+        	std::cout << vals[i] << ", ";
         }
+        cout <<endl;
 
         float nangle = 0;
         nangle = atan2(vals[4], vals[3]) * 180.0 / 3.1415;
 
-        std::cout << "atan" << endl;
         float theta = (float) ((rand()%2-4))*30;          // -60 60
-		float dist = (float) ((rand()%3)-6)*0.25;
+		float dist = (float) ((rand()%1)-2)*0.25;
 
 		theta += nangle;
 
@@ -237,10 +239,10 @@ int main(int argc, char **argv)
 		vals[1] += sin(nangle)*dist;
 
 		int xx = vals[0]/.25;
-		vals[0] = xx*.25;
+		vals[0] = round(xx*.25);
 
 		xx = vals[1]/.25;
-		vals[1] = xx*.25;
+		vals[1] = round(xx*.25);
 
 		int yy = theta/30;
 		theta = yy*30;
@@ -248,14 +250,25 @@ int main(int argc, char **argv)
 		vals[3] = round(cos(theta));
 		vals[4] = round(sin(theta));
 
+		for(int i = 0; i < 6; i++)
+        {
+        	vals.push_back(atof(strs[i].c_str()));
+        	std::cout << vals[i] << ", ";
+        }
+        cout <<endl;
+
+
 		stringstream ss;
 		ss << "_" << vals[0] << "_" << vals[1] << "_" << vals[2] << "_" << vals[3] << "_" << vals[4] << "_" << vals[5] << "_" << ".jpg";
+		std::cout << ss.str() << endl;
 
 		for(int i = 0; i < image_names.size(); i++)
 		{
 			if(image_names[i] == ss.str())
 				current_image = i;
 		}
+
+
 
 
         // MCL::Perspective P(vals);

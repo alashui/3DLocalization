@@ -53,8 +53,11 @@ int main(int argc, char ** argv)
     namedWindow("Top Match");
     // namedWindow("Weighted Average");
     char key = ' ';
-    while(control.SpinOnce() && key != 'q' && key != 'Q')
+    while(key != 'q' && key != 'Q')
     {
+        if(!control.SpinOnce())
+            continue;
+        
         RobotState r = control.GetRobotState();
         stringstream ss;
         ss << "Generation : " << control.GetActiveParticles().GetGeneration() << ", AvgWeight :  " << control.GetActiveParticles().GetAvgWeight();

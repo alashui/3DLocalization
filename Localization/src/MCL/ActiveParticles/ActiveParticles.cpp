@@ -354,7 +354,7 @@ namespace MCL
         vector<float> g = GetGuess().ToVector();
         for (int i = 0; i < g.size(); i++)
             pListFile << g[i] << " ";
-        pListFile << "\n";
+        pListFile << "0\n";
         for (int i = 0; i < NumParticles(); i++)
         {
             Particle p = pList[i];

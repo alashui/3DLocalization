@@ -2,6 +2,8 @@
 
 from graphics import *
 
+from time import sleep
+
 def main():
 	f = open('ParticleLists.txt')
 
@@ -39,31 +41,31 @@ def main():
 	w = maxx - minx
 	h = maxy - miny
 
-	if w == 0:
-		w = 550
-	if h == 0:
-		h = 550
-
-	mulx = 500/w 
-	muly = 500/h
-	mulw = 255 / maxw
+	mulw = 255 / maxw;
 
 	win = GraphWin('Points', 570, 570)
 
-	# colors = {1:"blue", 2:"light blue"}
+	x = 10+(particles[0][0] - minx) * 550/w 
+	y = 10+(particles[0][1] - miny) * 550/h
+	c = Circle(Point(x, y), 6)
+	c.setFill("green")
+	c.draw(win)
+	
+	particles.pop(0)
 
 	for point in particles:
-		x = point[0] * mulx
-		y = point[1] * muly
+		x = 10+(point[0] - minx) * 550/w 
+		y = 10+(point[1] - miny) * 550/h
 
 		wt = point[4]
 
-		c = Circle(Point(x - minx, y - miny), 4)
+		c = Circle(Point(x, y), 4)
 		c.setFill(color_rgb(wt*mulw, 0, 255 - wt*mulw))
 		c.draw(win)
-		print "Point", x - minx, y - miny
+		# print "Point", x - minx, y - miny
 
 	win.getMouse()
+	# sleep(5)
 	win.close()
 
 	return main()

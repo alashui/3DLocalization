@@ -53,7 +53,8 @@ namespace MCL
         }
 
         // Used to see if two perspectives are equal within a defined epsilon (because of flotating point trunc errors.)
-        inline bool operator==(const Perspective& a) {
+        inline bool operator==(const Perspective& a) const {
+            std::cout << "COMPARING PERSPECTIVES: " << ToString() << " " << a.ToString() << std::endl;
             float eps = 0.001;
             if (abs(a.x - x) > eps || abs(a.y - y) > eps || abs(a.z - z) > eps)
                 return false;
@@ -62,14 +63,15 @@ namespace MCL
             float angle2 = atan2(a.x, a.y);
             if (abs(angle1 - angle2) > 0.1)
                 return false;
-            
+
+            std::cout << "TRUE" << std::endl;
             return true;
         }
     };
 
     class ComparePerspectives { // simple comparison function for the std::map to use
        public:
-          bool operator()(const Perspective& a,const Perspective& b) const { return (a.x- b.x)>0; } // returns x>y
+          bool operator()(const Perspective& a,const Perspective& b) const { /*std::cout << "COMPAREPERSPECTIVES" << std::endl;*/ return (a.operator==(b)); } // returns x>y
     };
 
 }

@@ -21,9 +21,12 @@ namespace MCL
 
 	float CompareAndWeigh(Particle p, RobotState R, vector<float> comboweights)
 	{
-        if (masterMap.find(p.GetPerspective()) == masterMap.end())
+        if (!masterMap.count(p.GetPerspective()))
+        {
             cout << "NOT FOUND: " << p.GetPerspective().ToString() << endl;
-		Characterizer c1 = masterMap[p.GetPerspective()];
+            return -1.0;
+        }
+		Characterizer c1 = masterMap.at(p.GetPerspective());
 		Characterizer c2 = R.GetCharacterizer();
 
 		float sim = 0;

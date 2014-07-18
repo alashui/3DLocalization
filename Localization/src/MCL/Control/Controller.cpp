@@ -49,9 +49,8 @@ namespace MCL
         for(int i = 0; i < this->ap.NumParticles(); i++)
         {   
             float wt = CompareAndWeigh(v[i], this->robot, this->comboWeighting);
-            cout << wt << endl;
             v[i].SetWeight(wt);
-            std::cout << v[i].ToString() << std::endl;
+            std::cout << "Controller, CompareFeatures: " << v[i].ToString() << std::endl;
         }
 
         this->ap.SetParticleList(v);

@@ -108,9 +108,6 @@ namespace MCL
 
             perspectives.push_back(P);
 
-            // Add it to our map
-            masterMap[P] = tmp;
-
             fn = delimiter;
 
             for (int j = 0; j < ID.size(); j++)
@@ -130,19 +127,23 @@ namespace MCL
 
             FileNode n1 = store["SurfDescriptors"];
             read(n1, descriptors);
-            masterMap[P].surfs = descriptors;
+            tmp.surfs = descriptors;
 
             FileNode n2 = store["SiftDescriptors"];
             read(n2, descriptors);
-            masterMap[P].sifts = descriptors;
+            tmp.sifts = descriptors;
 
             store.release();
 
             // Add bw and gs images.
             Mat gstmp = imread(gsfn, CV_LOAD_IMAGE_GRAYSCALE);
             Mat bwtmp = imread(bwfn, CV_LOAD_IMAGE_GRAYSCALE);
-            masterMap[P].gs = gstmp;
-            masterMap[P].bw = bwtmp;
+            tmp.gs = gstmp;
+            tmp.bw = bwtmp;
+
+            masterMap[P] = tmp;
+
+            cout << "masterMap size: " << masterMap.size();
 
             // Check for invalid input
             if(! masterMap[P].gs.data )
@@ -159,8 +160,27 @@ namespace MCL
             }
         }
         stringstream s;
-        s << perspectives.size() << " Images Loaded.";
+        s << perspectives.size() << " Images Loaded." << masterMap.size();
         DebugIO(s.str());
+
+        // namedWindow("IMAGE");
+
+        // for (int i = 0; i < perspectives.size(); i++)
+        // {
+        //     imshow("IMAGE", masterMap.at(perspectives[i]).gs);
+        //     waitKey(0);
+        // }
+        //         destroyAllWindows();
+
+
+        for(map<Perspective, Characterizer>::iterator it=masterMap.begin(); it!=masterMap.end(); ++it)
+        {
+            namedWindow("IMAGE");
+            imshow("IMAGE", it->second.gs);
+            waitKey(0);
+            destroyAllWindows();
+        }
+
 
         return perspectives.size();
     }

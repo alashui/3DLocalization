@@ -98,8 +98,6 @@ namespace MCL
 
         cout << "ParticleListSize:" << pList.size() << endl;
 
-        cout << "GUESS" << guess.ToString()<< endl;
-
         return guess;
     }
 

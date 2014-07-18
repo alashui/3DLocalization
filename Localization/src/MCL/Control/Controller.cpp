@@ -133,9 +133,7 @@ namespace MCL
 
         this->ap.AnalyzeList();
 
-        vector<Particle> v = ap.GetParticleList();
-        for (int i = 0; i < v.size(); i++)
-            cout << v[i].ToString() << endl;
+        robot.SetPerspective(ap.GetGuess());
         
         ros::spinOnce();
         

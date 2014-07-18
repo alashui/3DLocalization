@@ -51,7 +51,7 @@ int main(int argc, char ** argv)
 
     // namedWindow("Robot Image");
     namedWindow("Top Match");
-    namedWindow("Weighted Average");
+    // namedWindow("Weighted Average");
     char key = ' ';
     while(key != 'q' && key != 'Q')
     {
@@ -66,9 +66,9 @@ int main(int argc, char ** argv)
         DebugIO(ss.str());
         // UserIO(ss.str());
         imshow("Top Match", masterMap.at(r.GetGuessPerspective()).image);
-        if (masterMap.count(r.GetWeightedPerspective()))
-            imshow("Weighted Average", masterMap.at(r.GetWeightedPerspective()).image);
-        key = waitKey(10);
+        // if (masterMap.count(r.GetWeightedPerspective()))
+            // imshow("Weighted Average", masterMap.at(r.GetWeightedPerspective()).image);
+        key = waitKey(1000);
     }
     destroyAllWindows();
 

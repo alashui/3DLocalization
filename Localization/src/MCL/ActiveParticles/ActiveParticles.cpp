@@ -343,4 +343,27 @@ namespace MCL
 
     int ActiveParticles::NumParticles()
     { return this->pList.size(); }
+
+    void ActiveParticles::generatePoints()
+    {
+        ofstream pListFile;
+        pListFile.open("ParticleLists.txt");
+
+        vector<float> g = GetGuess().ToVector();
+        for (int i = 0; i < g.length(); i++)
+            pListFile << g[i] << " ";
+
+        for (int i = 0; i < NumParticles(); i++)
+        {
+            Particle p = pList[i];
+            vector<float> pv = p.ToVector();
+            for (int j = 0; j < pv.length(); j++)
+                pListFile << "\n" << pv[j] << " ";
+            pListFile << p.GetWeight();
+        }
+
+        pListFile.close();
+
+        return true;
+    }
 }

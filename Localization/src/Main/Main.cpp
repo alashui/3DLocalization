@@ -49,7 +49,7 @@ int main(int argc, char ** argv)
 
     DebugIO("Initialization Finished Successfully, Starting Main Loop");
 
-    // namedWindow("Robot Image");
+    namedWindow("Robot Image");
     namedWindow("Top Match");
     // namedWindow("Weighted Average");
     char key = ' ';
@@ -66,6 +66,7 @@ int main(int argc, char ** argv)
         DebugIO(ss.str());
         // UserIO(ss.str());
         imshow("Top Match", masterMap.at(r.GetGuessPerspective()).image);
+        imshow("Robot Image", r.GetCharacterizer().image);
         // if (masterMap.count(r.GetWeightedPerspective()))
             // imshow("Weighted Average", masterMap.at(r.GetWeightedPerspective()).image);
         key = waitKey(1000);

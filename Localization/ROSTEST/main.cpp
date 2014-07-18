@@ -81,15 +81,15 @@ void publish_Move()
 	vector<float> temp = getMoveData();
 	stringstream ss;
 	std_msgs::String msg;
-
-	std_msgs::String msg;
 	msg.data = "10";
 	movement_publisher.publish(msg);
-	ros::Duration(1).sleep();
+	ros::Duration(2).sleep();
 
 	ss << "20" << " " << temp[0] << " " << temp[1] << " ";
 	msg.data = ss.str();
 	movement_publisher.publish(msg);
+	// imshow("Robot Image", image_list[current_image]);
+
 }
 
  void MyDataCallback(const std_msgs::String msg)
@@ -141,14 +141,14 @@ int main(int argc, char **argv)
 
 	//data_publisher = node.advertise<sensor_msgs::ImageConstPtr&>(publish_image_data_under, 4);
 	data_publisher = it.advertise(publish_image_data_under, 4, true);
-	  image_names.push_back("../../../Data/RenderedImages/2ndFloorSprague/_0.25_1.75_0.4_1_0_0_.jpg");
+	 image_names.push_back("../../../Data/RenderedImages/2ndFloorSprague/_2.25_5_0.4_1_1_0_.jpg");
 	 // image_names.push_back("../../../Data/RenderedImages/2ndFloorSprague/_0.5_1_0.4_1_1_0_.jpg");
 	 
 	 for(int i = 0; i < image_names.size(); i++)
 	 	image_list.push_back(imread(image_names[i]));
 
 	char key = 'k';
-	namedWindow("Robot Image");
+	// namedWindow("Robot Image");
 	while(ros::ok() && key != 'q')
 	{
 		ros::spinOnce();
@@ -158,12 +158,9 @@ int main(int argc, char **argv)
 		out_msg.header.stamp = scan_time;
 		out_msg.header.frame_id = "robot_image";
 		out_msg.encoding = sensor_msgs::image_encodings::BGR8;
-		// cout << "Current image #" << current_image << "  -  " << image_names[current_image] << endl;
+		
 		out_msg.image = image_list[current_image];
-		imshow("Robot Image", image_list[current_image]);
 
-		// std::cout << image_list.size() << "\n";
-		//cv_bridge::CvImagePtr cv_ptr = cv_bridge::toCvCopy(image_list[i], enc::BGR8);
 		data_publisher.publish(out_msg.toImageMsg());
 		ros::spinOnce();
 
@@ -185,7 +182,7 @@ int main(int argc, char **argv)
         // Get a list of all filenames
         GetAll(pstr, ret);
 
-        for(int i = 0; i < ret.size() && i < 2000; i++)
+        for(int i = 0; i < ret.size() && i < 3000; i++)
         {
         	stringstream ss;
         	ss << toPhotos << ret[i].string();
@@ -239,7 +236,7 @@ int main(int argc, char **argv)
         float nangle = 0;
         nangle = atan2(vals[3], vals[4]) * 180.0 / 3.1415;
 
-        float theta = (float) ((rand()%2-4))*30;          // -60 60
+        float theta = (float) ((rand()%5-10))*30;          // -60 60
 		float dist = (float) ((rand()%2)-4)*0.25;
 
 		theta += nangle;

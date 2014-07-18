@@ -154,7 +154,7 @@ namespace MCL
         if(!this->ap.GetConstants(dirName))
             return false;
         this->ap.SetDistribution(perspectives);
-        this->ap.GenerateParticles(200);
+        this->ap.GenerateParticles(400);
         this->ap.AnalyzeList();
 
         return true;

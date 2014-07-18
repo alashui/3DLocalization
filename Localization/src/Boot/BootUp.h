@@ -62,6 +62,8 @@ namespace MCL
         Mat descriptors;
 
         int percent = 0;
+        int total = ret.size();
+        int done = 0;
 
         for (int i = 0; i < ret.size(); i++)
         { // Load image, bw, gs, and descriptors via filename. 
@@ -157,6 +159,16 @@ namespace MCL
                 ss <<  "BootUp.h - Could not open or find bw for " << bwfn;
                 ErrorIO(ss.str());
                 return -1;
+            }
+            done++;
+            if (done > 1000) 
+                break;
+            if ((done * 100) / total > percent)
+            {
+                percent++;
+                stringstream ss;
+                ss << percent << "\% done.";
+                DebugIO(ss.str());
             }
         }
         stringstream s;

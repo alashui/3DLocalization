@@ -50,11 +50,16 @@ namespace MCL
     {
         vector<Particle> v = this->ap.GetParticleList();
 
-
+        float bestweight = -1;
         for(int i = 0; i < this->ap.NumParticles(); i++)
         {   
             float wt = CompareAndWeigh(v[i], this->robot, this->comboWeighting);
             v[i].SetWeight(wt);
+            if (wt > bestweight)
+            {
+                bestweight = wt;
+                robot.SetGuessPerspective(v[i].GetPerspective());
+            }
         }
 
         this->ap.SetParticleList(v);
@@ -168,7 +173,7 @@ namespace MCL
         ss.str("");
 
         this->ap.AnalyzeList();
-        robot.SetPerspective(ap.GetGuess());
+        robot.SetWeightedPerspective(ap.GetGuess());
 
         duration = time(0) - tstart;
         ss << "AnalyzeList took " << duration << " seconds.";

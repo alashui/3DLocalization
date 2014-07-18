@@ -44,16 +44,26 @@ int main(int argc, char ** argv)
 
     DebugIO("Initialization Finished Successfully, Starting Main Loop");
 
+    namedWindow("Robot Image");
+    namedWindow("Top Match");
+    // namedWindow("Weighted Average");
+
     while(control.SpinOnce())
     {
         RobotState r = control.GetRobotState();
         stringstream ss;
         ss << "Generation : " << control.GetActiveParticles().GetGeneration() << ", AvgWeight :  " << control.GetActiveParticles().GetAvgWeight();
-        ss <<", Guess : " << r.GetPerspective().ToString(); 
+        ss <<",\n  Guess : " << r.GetGuessPerspective().ToString(); 
+        ss <<",\n  Weighted Guess : " << r.GetWeightedPerspective().ToString(); 
         DebugIO(ss.str());
         // UserIO(ss.str());
-        char x = getchar();
+        if (!r.GetCharacterizer().image.empty())
+            imshow("Robot Image", r.GetCharacterizer().image);
+        imshow("Top Match", masterMap.at(r.GetGuessPerspective()).image);
+        // imshow("Weighted Average", masterMap.at(r.GetWeightedPerspective()).image);
+        waitKey(0);
     }
+    destroyAllWindows();
 
     DebugIO("Initiating Self-Destruct Sequence.. 5 ... 4 .. 3 .. 2 .. 1");
     DebugIO("Booooooom????");

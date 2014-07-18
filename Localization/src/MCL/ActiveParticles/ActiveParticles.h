@@ -100,7 +100,9 @@ namespace MCL
         Perspective GetGuess();   // Get the current best guess as to the actors position
         float GetAvgWeight();       // Get the average weight for the current particle list
         int GetGeneration();      // Get the iteration count of the algorithm, how many times we have re-sampled particles
-        int NumParticles();       
+        int NumParticles();
+        void writePoints();
+       
 
         bool GetConstants(string);      // Get the grid density and rotation interval from the generated input file (Data/InputFiles/$ModelName/InputFile.txt)
 

@@ -182,7 +182,9 @@ namespace MCL
     {
         this->ComputeAvgWeight();
         this->generation++;
-        return this->MakeGuess();
+        Perspective p = this->MakeGuess();
+        writePoints();
+        return p;
     }
 
     // Rounds to second decimal place
@@ -344,26 +346,24 @@ namespace MCL
     int ActiveParticles::NumParticles()
     { return this->pList.size(); }
 
-    void ActiveParticles::generatePoints()
+    void ActiveParticles::writePoints()
     {
         ofstream pListFile;
-        pListFile.open("ParticleLists.txt");
+        pListFile.open("../src/GUI/PyViewer/ParticleLists.txt");
 
         vector<float> g = GetGuess().ToVector();
-        for (int i = 0; i < g.length(); i++)
+        for (int i = 0; i < g.size(); i++)
             pListFile << g[i] << " ";
-
+        pListFile << "\n";
         for (int i = 0; i < NumParticles(); i++)
         {
             Particle p = pList[i];
-            vector<float> pv = p.ToVector();
-            for (int j = 0; j < pv.length(); j++)
-                pListFile << "\n" << pv[j] << " ";
-            pListFile << p.GetWeight();
+            vector<float> pv = p.GetPerspective().ToVector();
+            for (int j = 0; j < pv.size(); j++)
+                pListFile << pv[j] << " ";
+            pListFile << p.GetWeight() << "\n";
         }
 
         pListFile.close();
-
-        return true;
     }
 }

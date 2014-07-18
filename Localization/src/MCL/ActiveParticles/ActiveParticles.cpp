@@ -237,7 +237,6 @@ namespace MCL
         {
             if (rnd % 2 == 0)
             { // turn!
-                cout << "U";
                 float curangle = p.GetAngle();
                 curangle += (float) (rand() % 100 - 50) / 25; //(dist(default_random_engine) - 50) / 80.0;
                 v[3] = round(cos(curangle * PI / 180.0));
@@ -245,7 +244,6 @@ namespace MCL
             }
             else
             { // translate!
-                cout << "R";
                 v[0] += (float) (rand() % 100 - 50) * maxtranslation / 50.0;
                 v[1] += (float) (rand() % 100 - 50) * maxtranslation / 50.0;
             }

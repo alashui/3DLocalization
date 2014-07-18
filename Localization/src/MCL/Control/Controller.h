@@ -24,6 +24,7 @@
 #include "sensor_msgs/Image.h"
 #include <cv_bridge/cv_bridge.h>
 #include <image_transport/image_transport.h>
+#include <boost/algorithm/string.hpp>
 
 #include <ctime>
 
@@ -86,6 +87,7 @@ namespace MCL
         bool imageSubscriberConnected();   // returns true if we have subscribed to the robots image publisher
         bool movementSubscriberConnected();// returns true if we have subscribed to the robots movement publisher
         bool imageFeedStarted();           // returns true if the robot image feed has began publishing.
+        bool robotIsMoving();              // returns true if robot is moving
 
         // Take the ActiveParticles class and the RobotState class, pass them to the matching function and assign weights to the particles.
         bool CompareFeatures(); 

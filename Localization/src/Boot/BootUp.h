@@ -144,7 +144,7 @@ namespace MCL
             Mat bwtmp = imread(bwfn, CV_LOAD_IMAGE_GRAYSCALE);
             tmp.gs = gstmp;
             tmp.bw = bwtmp;
-
+;
             masterMap[P] = tmp;
 
             // Check for invalid input

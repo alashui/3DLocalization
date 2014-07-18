@@ -83,7 +83,7 @@ namespace MCL
 
         if (desc1.empty() || desc2.empty())
         {
-            ErrorIO("Error in Matching.cpp->CompareDescriptors: At least one of the descriptors is empty!");
+            //ErrorIO("Error in Matching.cpp->CompareDescriptors: At least one of the descriptors is empty!");
             return 1000.0;
         }
 
@@ -99,7 +99,7 @@ namespace MCL
         }
 
         if (count < 2)
-            return 1000.0;
+            return 1;
         // cout << total / count << " ";
         return count; // + count / 2.0;
     }

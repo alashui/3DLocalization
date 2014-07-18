@@ -45,39 +45,46 @@ ros::Subscriber mcl_data_subscriber;
 const std::string publish_image_data_under = "ROBOT_IMAGE_PUBLISHER";
 const std::string mcl_data_publisher_name = "MCL_DATA_PUBLISHER";
 
+const int handshake = 15;
+const int readymove = 25;
+const int starting_move = 10;
+const int finished_move = 20;
+
 
 vector<Mat> image_list;
 vector<string>  image_names;
 
+bool handshake_recieved = false;
+
 
 void publish_Move()
 {
-	float dist = (float) ((rand()%10)-5)/10.0; // -.5, .5
-	float theta = (float) ((rand()%120)-60);          // -60 60
+	float dist = (float) ((rand()%10)-5)/100.0; // -.5, .5
+	float theta = (float) ((rand()%2-4))*30;          // -60 60
 	stringstream ss;
 	std_msgs::String msg;
-	ss << "20" << " " << dist << " " << theta;
+	ss << "20" << " " << dist << " " << theta << " ";
 	msg.data = ss.str();
 	movement_publisher.publish(msg);
 }
 
  void MyDataCallback(const std_msgs::String msg)
 {
-	std::cout << "begin callback" << endl;
 	string str = msg.data;
 
-	if(str == "15")
-		std::cout << "handshake recieved" << std::endl;
-	else if(str == "25")
+	if(atoi(str.c_str())== handshake)
+	{
+		handshake_recieved = true;
+	}
+	else if(atoi(str.c_str()) == readymove)
 	{
 		std::cout << "Movement Command Recieved, starting move" << std::endl;
 		std_msgs::String msg;
 		msg.data = "10";
 		movement_publisher.publish(msg);
+		ros::Duration(1.5).sleep();
 		publish_Move();
 	}
-
-	cout << "end callback " << endl;
 }
 
 
@@ -97,6 +104,12 @@ int main(int argc, char **argv)
 	image_transport::ImageTransport it(node);
 
     mcl_data_subscriber = node.subscribe(mcl_data_publisher_name, 4, MyDataCallback);
+
+    time_t temptime = time(0);
+    std::cout << "Waiting for Handshake from Program .." << std::endl;
+    while(!handshake_recieved && (time(0) - temptime) < 20)
+    	ros::spinOnce();
+    std::cout << "Handshake recieved" << std::endl;
 	
 	movement_publisher = node.advertise<std_msgs::String>("ROBOT_MOVEMENT_PUBLISHER", 4);
 
@@ -107,8 +120,9 @@ int main(int argc, char **argv)
 
 	LoadImages();
 
-	while(true)
+	while(ros::ok())
 	{
+		ros::spinOnce();
 		int i = rand()%image_names.size();
 		cv_bridge::CvImage out_msg;
 		ros::Time scan_time = ros::Time::now();
@@ -120,7 +134,7 @@ int main(int argc, char **argv)
 		data_publisher.publish(out_msg.toImageMsg());
 		ros::spinOnce();
 
-		ros::Duration(0.1).sleep();
+		//ros::Duration(0.1).sleep();
 	}
 
 

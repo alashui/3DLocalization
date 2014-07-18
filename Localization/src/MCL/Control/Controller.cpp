@@ -76,34 +76,38 @@ namespace MCL
     bool Controller::MoveUpdate()
     {
         recentMove.clear();
+        bool (Controller::*connect_flag) ();
+        connect_flag = &Controller::robotIsMoving;
 
+        //publish the ready-move command to the robot program.
         std_msgs::String msg;
         stringstream ss;
-        ss << readymove;
+        ss << readymove << " ";
         msg.data = ss.str();
         mclDataPublisher.publish(msg);
 
-        ros::spinOnce();
+        //ros::spinOnce();
 
-        bool started = PauseState(&moving, 10);
+        bool started = PauseState(connect_flag, 5);
 
         if(!started)
         {
             ErrorIO("MoveUpdate - robot did not send start_move Signal");
+            this->ap.Move(0, 0);
+            return false;
         }
         else
-            DebugIO("Robot has Started Moving");
-
-        ros::spinOnce();
-
-        while(moving)
         {
+            DebugIO("Robot has Started Moving");
             ros::spinOnce();
+            while(moving)
+            {
+                ros::spinOnce();
+            }
+            DebugIO("Robot has finished moving");
+            this->ap.Move(recentMove[0], recentMove[1]);
+            return true;
         }
-
-        DebugIO("Robot has finished moving");
-
-        this->ap.Move(recentMove[0], recentMove[1]);
     }
 
     // Called when the program needs to wait for another part of the program to do something.
@@ -150,7 +154,7 @@ namespace MCL
         if(!this->ap.GetConstants(dirName))
             return false;
         this->ap.SetDistribution(perspectives);
-        this->ap.GenerateParticles(600);
+        this->ap.GenerateParticles(200);
         this->ap.AnalyzeList();
 
         return true;
@@ -164,39 +168,43 @@ namespace MCL
 
         CompareFeatures();
 
-        time_t duration = time(0) - tstart;
-        stringstream ss;
-        ss << "CompareFeatures took " << duration << " seconds.";
-        DebugIO(ss.str());
-        tstart = time(0);
-        ss.str("");
+        // time_t duration = time(0) - tstart;
+        // stringstream ss;
+        // ss << "CompareFeatures took " << duration << " seconds.";
+        // DebugIO(ss.str());
+        // tstart = time(0);
+        // ss.str("");
 
         this->ap.AnalyzeList();
         robot.SetWeightedPerspective(ap.GetGuess());
 
-        duration = time(0) - tstart;
-        ss << "AnalyzeList took " << duration << " seconds.";
-        DebugIO(ss.str());
-        tstart = time(0);
-        ss.str("");
+        // duration = time(0) - tstart;
+        // ss << "AnalyzeList took " << duration << " seconds.";
+        // DebugIO(ss.str());
+        // tstart = time(0);
+        // ss.str("");
 
         ros::spinOnce();
         
         GenDistributionAndSample();
 
-        duration = time(0) - tstart;
-        ss << "GenDistributionAndSample took " << duration << " seconds.";
-        DebugIO(ss.str());
-        tstart = time(0);
-        ss.str("");
+        // duration = time(0) - tstart;
+        // ss << "GenDistributionAndSample took " << duration << " seconds.";
+        // DebugIO(ss.str());
+        // tstart = time(0);
+        // ss.str("");
 
         ros::spinOnce();
         
-        MoveUpdate();
+        if(!MoveUpdate())
+        {
+            ErrorIO("MoveUpdate Failed");
+            return false;
+        }
 
-        duration = time(0) - tstart;
-        ss << "MoveUpdate took " << duration << " seconds.";
-        DebugIO(ss.str());
+        // duration = time(0) - tstart;
+        // ss << "MoveUpdate took " << duration << " seconds.";
+        // DebugIO(ss.str());
 
         ros::spinOnce();
 
@@ -241,47 +249,43 @@ namespace MCL
     // Parse the string that contains the 4 movement commands, [x y z dtheta] with theta being in the xy plane
     void Controller::MovementCallback(const std_msgs::String msg)
     {
-        DebugIO("Inside of movement callback");
+        //DebugIO("Inside of movement callback");
 
 
-        std::string str = msg.data;
-        std::cout << "Recieved move command " << str << std::endl;
+         std::string str = msg.data;
+        // stringstream ss;
+        // ss << "Recieved move command " << str;
+        // DebugIO(ss.str());
+
         int state;
 
-        int j = 0, count = 0, value = 0;
-        for(int i = 0; i != str.size(); i++)
-        {
-            if(i == str.size()-1 || (str[i] == ' ' || str[i] == '_' || str[i] == ','))
-            {
-                std::string temp;
-                temp = str.substr(j, i);
+        std::vector<std::string> strs;
+        boost::split(strs, str, boost::is_any_of(" _,"));
 
-                if(count == 0)
-                    state = atoi(temp.c_str());
-                else
-                {
-                    value = atof(temp.c_str());
-                    recentMove.push_back(value);
-                }
-                count++;
-                j = i;
-            }
-        }
+        state = atoi(strs[0].c_str());  // parse token to int
 
-        std::cout << "State value from robot : " << state << std::endl;
+        //std::cout << "State value from robot : " << state << std::endl;
         if(state == starting_move)
         {
             moving = true;
             DebugIO("Starting move value recieved");
             recentMove.clear();
+            return;
         }
         else if(state == finished_move)
         {
             DebugIO("Finished Move Value Recieved");
-            str = str.substr(1, 50);
-
-            std::cout << "Movedetected : Translation = " << recentMove[0] << " || Rotation = " << recentMove[1] << std::endl;
             moving = false;
+            for(int i = 1; i < strs.size(); i++)
+            {
+              float value = atof(strs[i].c_str());
+              recentMove.push_back(value);
+            }
+            std::cout << "Movedetected : Translation = " << recentMove[0] << " || Rotation = " << recentMove[1] << std::endl;
+        }
+        else
+        {
+            ErrorIO("Error : State command from robot must be 10 (start move) or 20 (stop move)");
         }
 
 
@@ -312,10 +316,10 @@ namespace MCL
         else
             DebugIO("Robot Has Subscribed to mclDataPublisher.");
 
-        this->PublishData(handshake, "");
+        this->PublishData(handshake, " ");
 
         // pause for a second to let the robot start it's publishers.
-        bool x = false; PauseState(&x, 1);
+        bool x = false; PauseState(&x, 3);
 
         // Subscribe to the robot movement data publisher.
         robotMovementSubscriber = this->rosNodePtr->subscribe(this->ROBOT_MOVEMENT_PUBLISHER_NAME, 2, &Controller::MovementCallback, this);
@@ -333,7 +337,7 @@ namespace MCL
             DebugIO("Localization Program Has Subscribed to the Robot Movement Publisher.");
 
         // pause again for the robot to boot up the image callback.
-        x = false; PauseState(&x, 1);
+        x = false; PauseState(&x, 3);
 
         // subscribe to the robot image publisher (implemented through the ros::ImageTransport class)
         image_transport::ImageTransport it(*rosNodePtr);
@@ -400,7 +404,12 @@ namespace MCL
 
     bool Controller::imageFeedStarted()
     {
-        return (image_feed_started);
+        return(image_feed_started);
+    }
+
+    bool Controller::robotIsMoving()
+    {
+        return(moving);
     }
 
 

@@ -12,6 +12,7 @@
 #include "../MCL/Control/Controller.h"
 
 #include <sstream>
+#include <stdio.h>
 
 using namespace std;
 using namespace MCL;
@@ -38,6 +39,9 @@ int main(int argc, char ** argv)
     if (BootUp(modelName) < 0)
         return PrintError("Model Directory Name not found inside /3DLocalization/Data/ModelData/.");
 
+    UserIO("Boot Up is Finished. Be ready to start your robot control program.");
+    UserIO("Press any key to continue");
+    getchar();
     Controller control;
 
     if (!control.init(modelName))
@@ -49,7 +53,7 @@ int main(int argc, char ** argv)
     namedWindow("Top Match");
     // namedWindow("Weighted Average");
 
-    while(control.SpinOnce())
+    while(control.SpinOnce() and ros::ok())
     {
         RobotState r = control.GetRobotState();
         stringstream ss;

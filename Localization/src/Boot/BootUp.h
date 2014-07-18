@@ -145,7 +145,7 @@ namespace MCL
             Mat bwtmp = imread(bwfn, CV_LOAD_IMAGE_GRAYSCALE);
             tmp.gs = gstmp;
             tmp.bw = bwtmp;
-;
+
             masterMap[P] = tmp;
 
             // Check for invalid input
@@ -174,7 +174,7 @@ namespace MCL
             }
         }
         stringstream s;
-        s << perspectives.size() << " Images Loaded." << masterMap.size();
+        s << perspectives.size() << " Images Loaded.";
         DebugIO(s.str());
 
         // namedWindow("IMAGE");

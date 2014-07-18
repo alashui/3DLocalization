@@ -81,6 +81,12 @@ void publish_Move()
 	vector<float> temp = getMoveData();
 	stringstream ss;
 	std_msgs::String msg;
+
+	std_msgs::String msg;
+	msg.data = "10";
+	movement_publisher.publish(msg);
+	ros::Duration(1).sleep();
+
 	ss << "20" << " " << temp[0] << " " << temp[1] << " ";
 	msg.data = ss.str();
 	movement_publisher.publish(msg);
@@ -97,10 +103,6 @@ void publish_Move()
 	else if(atoi(str.c_str()) == readymove)
 	{
 		std::cout << "Movement Command Recieved, starting move" << std::endl;
-		std_msgs::String msg;
-		msg.data = "10";
-		movement_publisher.publish(msg);
-		ros::Duration(1.5).sleep();
 		publish_Move();
 	}
 }
@@ -139,19 +141,15 @@ int main(int argc, char **argv)
 
 	//data_publisher = node.advertise<sensor_msgs::ImageConstPtr&>(publish_image_data_under, 4);
 	data_publisher = it.advertise(publish_image_data_under, 4, true);
-	  image_names.push_back("../../../Data/RenderedImages/2ndFloorSprague/_1_0_0.4_1_0_0_.jpg");
-	  image_names.push_back("../../../Data/RenderedImages/2ndFloorSprague/_0.5_1.75_0.4_0_-1_0_.jpg");
-	  image_names.push_back("../../../Data/RenderedImages/2ndFloorSprague/_2.25_1.75_0.4_1_0_0_.jpg");
-	  image_names.push_back("../../../Data/RenderedImages/2ndFloorSprague/_0.5_1.5_0.4_1_0_0_.jpg");
 	  image_names.push_back("../../../Data/RenderedImages/2ndFloorSprague/_0.25_1.75_0.4_1_0_0_.jpg");
 	 // image_names.push_back("../../../Data/RenderedImages/2ndFloorSprague/_0.5_1_0.4_1_1_0_.jpg");
 	 
 	 for(int i = 0; i < image_names.size(); i++)
 	 	image_list.push_back(imread(image_names[i]));
 
-	// char key = 'k';
-	// namedWindow("Robot Image");
-	while(ros::ok())
+	char key = 'k';
+	namedWindow("Robot Image");
+	while(ros::ok() && key != 'q')
 	{
 		ros::spinOnce();
 		int i = rand()%image_names.size();
@@ -160,19 +158,16 @@ int main(int argc, char **argv)
 		out_msg.header.stamp = scan_time;
 		out_msg.header.frame_id = "robot_image";
 		out_msg.encoding = sensor_msgs::image_encodings::BGR8;
+		// cout << "Current image #" << current_image << "  -  " << image_names[current_image] << endl;
 		out_msg.image = image_list[current_image];
-		// imshow("Robot Image", image_list[current_image]);
+		imshow("Robot Image", image_list[current_image]);
 
 		// std::cout << image_list.size() << "\n";
 		//cv_bridge::CvImagePtr cv_ptr = cv_bridge::toCvCopy(image_list[i], enc::BGR8);
 		data_publisher.publish(out_msg.toImageMsg());
 		ros::spinOnce();
 
-		// key = cv::waitKey(2);
-		// if(key == ' ')
-		// 	current_image++;
-		// if(current_image == image_list.size())
-		// 	current_image = 0;
+		key = cv::waitKey(2);
 		//ros::Duration(0.1).sleep();
 	}
 
@@ -190,7 +185,7 @@ int main(int argc, char **argv)
         // Get a list of all filenames
         GetAll(pstr, ret);
 
-        for(int i = 0; i < ret.size() && i < 1000; i++)
+        for(int i = 0; i < ret.size() && i < 2000; i++)
         {
         	stringstream ss;
         	ss << toPhotos << ret[i].string();
@@ -232,9 +227,7 @@ int main(int argc, char **argv)
         boost::split(strs, str, boost::is_any_of("_"));
 
         for(int i = 0; i < strs.size(); i++)
-        {
         	std::cout << "[ " << strs[i] << " ]" << endl;
-        }
 
         for(int i = 1; i < strs.size()-1; i++)
         {
@@ -244,55 +237,59 @@ int main(int argc, char **argv)
         cout <<endl;
 
         float nangle = 0;
-        nangle = atan2(vals[4], vals[3]) * 180.0 / 3.1415;
+        nangle = atan2(vals[3], vals[4]) * 180.0 / 3.1415;
 
         float theta = (float) ((rand()%2-4))*30;          // -60 60
-		float dist = (float) ((rand()%1)-2)*0.25;
+		float dist = (float) ((rand()%2)-4)*0.25;
 
 		theta += nangle;
 
-		vals[0] += cos(nangle)*dist;
-		vals[1] += sin(nangle)*dist;
+		int yy = theta/30;
+		theta = (int) yy*30;
+
+		vals[0] += cos(theta*3.14159/180.0)*dist;
+		vals[1] += sin(theta*3.14159/180.0)*dist;
 
 		int xx = vals[0]/.25;
 		vals[0] = round(xx*.25);
+		if(vals[0] == 0)
+			vals[0] = ((rand()%4)+1)*.25;
 
 		xx = vals[1]/.25;
 		vals[1] = round(xx*.25);
 
-		int yy = theta/30;
-		theta = yy*30;
+		vals[3] = round(cos(theta*3.14159/180.0));
+		vals[4] = round(sin(theta*3.14159/180.0));
 
-		vals[3] = round(cos(theta));
-		vals[4] = round(sin(theta));
-
-		for(int i = 1; i < strs.size()-1; i++)
+		for(int i = 0; i < vals.size(); i++)
         {
-        	// vals.push_back(atof(strs[i].c_str()));
-        	std::cout << vals[i] << ", ";
+        	std::cout << vals[i] << " ";
         }
         cout <<endl;
 
-
+        std::vector<float> ret;
 		stringstream ss;
-		ss << toPhotos << "_" << vals[0] << "_" << vals[1] << "_" << vals[2] << "_" << vals[3] << "_" << vals[4] << "_" << vals[5] << "_" << ".jpg";
+		ss << toPhotos << "_" << vals[0] << "_" << vals[1] << "_" << vals[2] << "_" << round(vals[3]) << "_" << round(vals[4]) << "_" << round(vals[5]) << "_" << ".jpg";
 		std::cout << ss.str() << endl;
-
 
 		for(int i = 0; i < image_names.size(); i++)
 		{
-			if(image_names[i] == ss.str())
+			if(!image_names[i].compare(ss.str()))
+			{
 				current_image = i;
+				cout << "image name from vector #" << i << "  " <<image_names[i] << endl;
+				ret.push_back(dist);
+        		ret.push_back(theta);
+        		return ret;
+			}
 		}
 
+		ret.push_back(0);
+		ret.push_back(0);
 
 
 
         // MCL::Perspective P(vals);
-
-        std::vector<float> ret;
-        ret.push_back(dist);
-        ret.push_back(theta);
 
         return ret;
 

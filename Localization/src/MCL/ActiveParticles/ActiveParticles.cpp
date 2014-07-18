@@ -150,13 +150,25 @@ namespace MCL
         ss << "Distribution Size : " << this->distribution.size();
         DebugIO(ss.str());
 
-        for (int i = 0; i < amount; i++)
+        for (int i = 0; i < 0.9*amount; i++)
         {
             int rndIdx = rand() % this->distribution.size();
             Perspective P = Scatter(this->distribution[rndIdx], this->gd*2, 32);
             // cout << this->distribution[rndIdx].ToString() << "->" << P.ToString();
             SnapToGrid(&P);
             // cout << "->" << P.ToString() << endl;
+            if (!masterMap.count(P))
+            {
+                i--;
+                continue;
+            }
+            pList.push_back(Particle(P));
+        }
+
+        for (int i = 0; i < 0.1*amount; i++)
+        {
+            int rndIdx = rand() % perspectives.size();
+            Perspective P = perspectives[rndIdx];
             if (!masterMap.count(P))
             {
                 i--;

@@ -17,8 +17,8 @@ namespace MCL
         rosNodePtr= new ros::NodeHandle();   // now throw the node handle on the stack
         comboWeighting.push_back(1.0); //SURF
         comboWeighting.push_back(0.0); //SIFT
-        comboWeighting.push_back(0.0); //GREYSCALE
-        comboWeighting.push_back(0.0); // B&W
+        comboWeighting.push_back(0.2); //GREYSCALE
+        comboWeighting.push_back(0.2); // B&W
     }
 
     Controller::~Controller()

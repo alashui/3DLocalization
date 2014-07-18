@@ -57,7 +57,8 @@ int main(int argc, char ** argv)
         ss <<",\n  Weighted Guess : " << r.GetWeightedPerspective().ToString(); 
         DebugIO(ss.str());
         // UserIO(ss.str());
-        imshow("Robot Image", r.GetCharacterizer().image);
+        if (!r.GetCharacterizer().image.empty())
+            imshow("Robot Image", r.GetCharacterizer().image);
         imshow("Top Match", masterMap.at(r.GetGuessPerspective()).image);
         // imshow("Weighted Average", masterMap.at(r.GetWeightedPerspective()).image);
         waitKey(0);

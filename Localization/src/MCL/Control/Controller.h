@@ -67,7 +67,8 @@ namespace MCL
         const int handshake;     // message from us to the robot signifying a handshake
         const int readymove;     // message from us to the robot meaning we are ready for them to move.
 
-        bool moving;
+        bool moving;             // Flag that lets us know if the robot is moving.
+        bool image_feed_started; // Flag that lets us know when the robot has started publshing camera data.
 
 
     //*****-- Private Member Functions --*****//
@@ -84,6 +85,7 @@ namespace MCL
         bool publisherConnected();         // returns true if the robot has subscribed to our data publisher
         bool imageSubscriberConnected();   // returns true if we have subscribed to the robots image publisher
         bool movementSubscriberConnected();// returns true if we have subscribed to the robots movement publisher
+        bool imageFeedStarted();           // returns true if the robot image feed has began publishing.
 
         // Take the ActiveParticles class and the RobotState class, pass them to the matching function and assign weights to the particles.
         bool CompareFeatures(); 

@@ -27,6 +27,7 @@ int main(int argc, char ** argv)
     MCL::show_debug_IO = true; // Show the debugging output, remove this for final version or cleaner terminal output.
 
     srand(time(0));
+    
     ros::init(argc, argv, "Localizer"); // Init must be called before initializing the Controller class;
 
     if (argc != 2)

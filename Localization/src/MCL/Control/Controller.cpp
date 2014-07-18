@@ -24,6 +24,7 @@ namespace MCL
         comboWeighting.push_back(0.0); //GREYSCALE
         comboWeighting.push_back(0.0); // B&W
         moving = false;
+        image_feed_started = false;
     }
 
     Controller::~Controller()
@@ -33,8 +34,6 @@ namespace MCL
 
     bool Controller::UpdateRobotData()
     { 
-        // TODO : Grab frame from Camera callback, put the image into the robotstate class. Have the robot class process the image.
-        // Mat im = imread("../../../image.jpg");
         if(this->nextImage.empty())
         {
             ErrorIO("nextImage.Data is null in UpdateRobotData");
@@ -141,12 +140,12 @@ namespace MCL
     }
     bool Controller::init(string dirName)
     {
-        
-//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!//
-// !!!!!!!!  THIS MIGHT CAUSE AN ERROR !!!!!!!!!! //
-           RobotInit();
-//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!//
+        // Initiate the ros::Callback functions and shake hands with the robot.
+        RobotInit();
+
+        // Initiate our RobotState object with the data recieved from the robot
         UpdateRobotData();
+
 
         if(!this->ap.GetConstants(dirName))
             return false;
@@ -229,11 +228,14 @@ namespace MCL
         }
 
         if(!im2->image.empty())
-            this->nextImage = im2->image;
-        else
-            DebugIO("Image Data from Robot is Null");
+        {
+             if(!image_feed_started)
+                image_feed_started = true;
 
-        //SetNextInputImage(im2->image);
+            this->nextImage = im2->image;
+        }
+        else
+            ErrorIO("Image Data from Robot is Null");
     }
 
     // Parse the string that contains the 4 movement commands, [x y z dtheta] with theta being in the xy plane
@@ -285,6 +287,102 @@ namespace MCL
 
     }
 
+    // Called when the robot program is 
+    bool Controller::RobotInit()
+    {
+        stringstream ss;
+        bool (Controller::*connect_flag) (); // fucntion pointer that our pause function will use to tell when we have
+                                             // successfully connected to the robot
+
+        DebugIO("Attempting to Subscribe to Robot ros::Publishers ... ");
+
+        // Advertise our Data publisher
+        mclDataPublisher = this->rosNodePtr->advertise<std_msgs::String>(MCL_PUBLISHER_NAME, 4);
+
+        connect_flag = &Controller::publisherConnected;
+
+        // Wait for the connection with our Data Publisher to succeed or time out.
+        bool connection_succeded = this->PauseState(connect_flag, 10);
+
+        if(!connection_succeded)
+        {
+            ErrorIO("Robot Program Failed to Subscribe to mclDataPublisher after 10 seconds. (RobotInit(..))");
+            return false;
+        }
+        else
+            DebugIO("Robot Has Subscribed to mclDataPublisher.");
+
+        this->PublishData(handshake, "");
+
+        // pause for a second to let the robot start it's publishers.
+        bool x = false; PauseState(&x, 1);
+
+        // Subscribe to the robot movement data publisher.
+        robotMovementSubscriber = this->rosNodePtr->subscribe(this->ROBOT_MOVEMENT_PUBLISHER_NAME, 2, &Controller::MovementCallback, this);
+
+        // wait max 10 seconds for us to connect to the movement data publisher.
+        connect_flag = &Controller::movementSubscriberConnected;
+        connection_succeded = this->PauseState(connect_flag, 10);
+
+        if(!connection_succeded)
+        {
+            ErrorIO("Robot Movement Publisher Failed to be Detected after 10 seconds of waiting. (RobotInit(..))");
+            return false;
+        }
+        else
+            DebugIO("Localization Program Has Subscribed to the Robot Movement Publisher.");
+
+        // pause again for the robot to boot up the image callback.
+        x = false; PauseState(&x, 1);
+
+        // subscribe to the robot image publisher (implemented through the ros::ImageTransport class)
+        image_transport::ImageTransport it(*rosNodePtr);
+        robotImageSubscriber = it.subscribe(this->ROBOT_IMAGE_PUBLISHER_NAME, 2,&Controller::ImageCallback, this);
+
+        // wait max 10 seconds for the subscriber to connect.
+        connect_flag = &Controller::imageSubscriberConnected;
+        connection_succeded = this->PauseState(connect_flag, 10);
+
+        if(!connection_succeded)
+        {
+            ErrorIO("Robot Image Publisher Failed to be Detected after 10 seconds of waiting. (RobotInit(..))");
+            return false;
+        }
+        else
+            DebugIO("Successfully Connected to robot Image Feed");
+
+        ros::spinOnce();
+
+        // wait max 10 seconds for the subscriber to connect.
+        connect_flag = &Controller::imageFeedStarted;
+        connection_succeded = this->PauseState(connect_flag, 10);
+
+        if(!connection_succeded)
+        {
+            ErrorIO("RobotInit() - Waited 30 Seconds for Robot to Publish Image Data But None Has Been Recieved");
+            return false;
+        }
+        else
+            DebugIO("Image data has been recieved");
+
+        ros::spinOnce();
+
+        return ros::ok();
+    }
+
+    bool Controller::PublishData(int code, std::string str)
+    {
+        std_msgs::String msg;
+        stringstream ss;
+
+        // turn the integer code and the string of data into a ros String message
+        ss << code << "_" << str;
+        msg.data = ss.str();
+
+        // publish the message
+        mclDataPublisher.publish(msg);
+    }
+
     bool Controller::publisherConnected()
     {
         return(this->mclDataPublisher.getNumSubscribers());
@@ -300,91 +398,9 @@ namespace MCL
         return(robotMovementSubscriber.getNumPublishers());
     }
 
-    // Called when the robot program is 
-    bool Controller::RobotInit()
+    bool Controller::imageFeedStarted()
     {
-        DebugIO("Attempting to Subscribe to Robot ros::Publishers ... ");
-        mclDataPublisher = this->rosNodePtr->advertise<std_msgs::String>(MCL_PUBLISHER_NAME, 4);
-
-        bool (Controller::*connect_flag) ();
-        connect_flag = &Controller::publisherConnected;
-        bool connection_succeded = this->PauseState(connect_flag, 10);
-
-        stringstream ss;
-        // ss << "Num subscribers : " << mclDataPublisher.getNumSubscribers();
-        // DebugIO(ss.str());
-
-        if(!connection_succeded)
-        {
-            ErrorIO("Robot Program Failed to Subscribe to mclDataPublisher after 10 seconds. (RobotInit(..))");
-            return false;
-        }
-        else
-            DebugIO("Robot Has Subscribed to mclDataPublisher.");
-
-        // ++++ TODO - Send a Handshake greeting to the robot program - TODO ++++ //
-        std_msgs::String msg;
-        ss << handshake << std::endl;
-        msg.data = ss.str();
-        mclDataPublisher.publish(msg);
-        // ++++ TODO - Send a Handshake greeting to the robot program - TODO ++++ //
-
-        bool x = false;
-        PauseState(&x, 3);
-
-        robotMovementSubscriber = this->rosNodePtr->subscribe(this->ROBOT_MOVEMENT_PUBLISHER_NAME, 2,
-        &Controller::MovementCallback, this);
-
-        // wait max 5 seconds for the subscriber to connect.
-        connect_flag = &Controller::movementSubscriberConnected;
-        connection_succeded = this->PauseState(connect_flag, 10);
-
-        if(!connection_succeded)
-        {
-            ErrorIO("Robot Movement Publisher Failed to be Detected after 10 seconds of waiting. (RobotInit(..))");
-            return false;
-        }
-        else
-            DebugIO("Localization Program Has Subscribed to the Robot Movement Publisher.");
-
-
-        x = false;
-        PauseState(&x, 3);
-        image_transport::ImageTransport it(*rosNodePtr);
-        robotImageSubscriber = it.subscribe(this->ROBOT_IMAGE_PUBLISHER_NAME, 2,
-         &Controller::ImageCallback, this);
-
-        // wait max 5 seconds for the subscriber to connect.
-        connect_flag = &Controller::imageSubscriberConnected;
-        connection_succeded = this->PauseState(connect_flag, 10);
-
-        if(!connection_succeded)
-        {
-            ErrorIO("Robot Image Publisher Failed to be Detected after 10 seconds of waiting. (RobotInit(..))");
-            return false;
-        }
-        else
-            DebugIO("Successfully Connected to robot Image Feed");
-
-        ros::spinOnce();
-        ros::spinOnce();
-        return ros::ok();
-    }
-
-    bool Controller::PublishData(int code, std::string str)
-    {
-        std_msgs::String msg;
-        stringstream ss;
-
-        // turn the integer code and the string of data into a ros String message
-        ss << code << "_" << str;
-        msg.data = ss.str();
-
-        // publish the message
-        mclDataPublisher.publish(msg);
-
-        // alert the user of the publishing
-        MCL::DebugIO("Data Published to Robot");
+        return (image_feed_started);
     }
 
 

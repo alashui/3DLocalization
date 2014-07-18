@@ -306,7 +306,7 @@ namespace MCL
         connect_flag = &Controller::publisherConnected;
 
         // Wait for the connection with our Data Publisher to succeed or time out.
-        bool connection_succeded = this->PauseState(connect_flag, 10);
+        bool connection_succeded = this->PauseState(connect_flag, 30);
 
         if(!connection_succeded)
         {

@@ -52,8 +52,8 @@ int main(int argc, char ** argv)
     namedWindow("Robot Image");
     namedWindow("Top Match");
     // namedWindow("Weighted Average");
-
-    while(control.SpinOnce() and ros::ok())
+    char key = ' ';
+    while(control.SpinOnce() && key != 'q' && key != 'Q')
     {
         RobotState r = control.GetRobotState();
         stringstream ss;
@@ -66,7 +66,7 @@ int main(int argc, char ** argv)
             imshow("Robot Image", r.GetCharacterizer().image);
         imshow("Top Match", masterMap.at(r.GetGuessPerspective()).image);
         // imshow("Weighted Average", masterMap.at(r.GetWeightedPerspective()).image);
-        waitKey(0);
+        key = waitKey(0);
     }
     destroyAllWindows();
 

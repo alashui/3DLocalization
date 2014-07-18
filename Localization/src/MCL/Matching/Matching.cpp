@@ -31,10 +31,10 @@ namespace MCL
 
 		float sim = 0;
 
-        namedWindow("a");
-        imshow("a", c1.gs);
-        waitKey(0);
-        destroyAllWindows();
+        // namedWindow("a");
+        // imshow("a", c1.gs);
+        // waitKey(0);
+        // destroyAllWindows();
 
         // a combination of similarity tests:
         if(comboweights.size() != 4)
@@ -49,7 +49,6 @@ namespace MCL
         if(!(abs(comboweights[3]) < .005))
             sim += GetSimilarity(c1.bw, c2.bw)*comboweights[3];
 
-        cout << "Sim in Matching.cpp in CompareandWeight: " << sim << endl;
         // cout
         // << "SURFS: " << 10 * (int) CompareDescriptors(c1.surfs, c2.surfs)
         // << "\tSIFTS: " << (int) CompareDescriptors(c1.sifts, c2.sifts) / 3
@@ -58,7 +57,7 @@ namespace MCL
         // << "\tTOTAL: " << sim
         // << endl;
 
-        return sim;
+        return 200/(sim+2);
 	}
 
 

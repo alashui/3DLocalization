@@ -143,8 +143,6 @@ namespace MCL
 
             masterMap[P] = tmp;
 
-            cout << "masterMap size: " << masterMap.size();
-
             // Check for invalid input
             if(! masterMap[P].gs.data )
             {
@@ -173,13 +171,13 @@ namespace MCL
         //         destroyAllWindows();
 
 
-        for(map<Perspective, Characterizer>::iterator it=masterMap.begin(); it!=masterMap.end(); ++it)
-        {
-            namedWindow("IMAGE");
-            imshow("IMAGE", it->second.gs);
-            waitKey(0);
-            destroyAllWindows();
-        }
+        // for(map<Perspective, Characterizer>::iterator it=masterMap.begin(); it!=masterMap.end(); ++it)
+        // {
+        //     namedWindow("IMAGE");
+        //     imshow("IMAGE", it->second.gs);
+        //     waitKey(0);
+        //     destroyAllWindows();
+        // }
 
 
         return perspectives.size();

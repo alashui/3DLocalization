@@ -55,9 +55,9 @@ namespace MCL
 
         // cout << totalPs << t << this->GetAvgWeight() << t << avgx << "\t" << avgy << "\t" << avgz << endl;
 
-        avgx = avgx / (this->GetAvgWeight() * totalPs);
-        avgy = avgy / (this->GetAvgWeight() * totalPs);
-        avgz = avgz / (this->GetAvgWeight() * totalPs);
+        avgx = avgx / (this->GetAvgWeight() * (float) totalPs);
+        avgy = avgy / (this->GetAvgWeight() * (float) totalPs);
+        avgz = avgz / (this->GetAvgWeight() * (float) totalPs);
 
         float dx = (maxx - avgx) > (avgx - minx) ? (maxx - avgx) : (avgx - minx);
         float dy = (maxy - avgy) > (avgy - miny) ? (maxy - avgy) : (avgy - miny);
@@ -98,6 +98,8 @@ namespace MCL
 
         cout << "ParticleListSize:" << pList.size() << endl;
 
+        cout << "GUESS" << guess.ToString()<< endl;
+
         return guess;
     }
 
@@ -124,7 +126,7 @@ namespace MCL
     {
         // Randomly generate a distribution based on 
         // the weights of all elements in pList
-        int totalWeight = this->GetAvgWeight() * this->NumParticles();
+        float totalWeight = this->GetAvgWeight() * (float) this->NumParticles();
         this->distribution.clear();
 
         for (int i = 0; i < this->pList.size(); i++)
@@ -153,8 +155,15 @@ namespace MCL
         for (int i = 0; i < amount; i++)
         {
             int rndIdx = rand() % this->distribution.size();
-            Perspective P = Scatter(this->distribution[rndIdx], this->gd, 32);
+            Perspective P = Scatter(this->distribution[rndIdx], this->gd*2, 32);
+            cout << this->distribution[rndIdx].ToString() << "->" << P.ToString();
             SnapToGrid(&P);
+            cout << "->" << P.ToString() << endl;
+            if (!masterMap.count(P))
+            {
+                i--;
+                continue;
+            }
             pList.push_back(Particle(P));
         }
     }
@@ -210,17 +219,21 @@ namespace MCL
 
         int rnd = rand() % 100; // dist(time(0));
         vector<float> v = p.ToVector();
+
+        // cout << "Scattering with prob: " << rnd << "/" << prob << endl;
         if (rnd < prob)
         {
-            if (prob % 2 == 0)
+            if (rnd % 2 == 0)
             { // turn!
-                float curangle = GetAngle(p.dx, p.dy);
-                curangle += (float) (rand() % 100 - 50) / 80; //(dist(default_random_engine) - 50) / 80.0;
+                cout << "U";
+                float curangle = p.GetAngle();
+                curangle += (float) (rand() % 100 - 50) / 25; //(dist(default_random_engine) - 50) / 80.0;
                 v[3] = round(cos(curangle * PI / 180.0));
                 v[4] = round(sin(curangle * PI / 180.0));
             }
             else
             { // translate!
+                cout << "R";
                 v[0] += (float) (rand() % 100 - 50) * maxtranslation / 50.0;
                 v[1] += (float) (rand() % 100 - 50) * maxtranslation / 50.0;
             }

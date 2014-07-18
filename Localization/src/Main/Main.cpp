@@ -53,9 +53,6 @@ int main(int argc, char ** argv)
         DebugIO(ss.str());
         // UserIO(ss.str());
         char x = getchar();
-        vector<Particle> v = control.GetActiveParticles().GetParticleList();
-        for (int i = 0; i < v.size(); i++)
-            cout << v[i].ToString() << endl;
     }
 
     DebugIO("Initiating Self-Destruct Sequence.. 5 ... 4 .. 3 .. 2 .. 1");

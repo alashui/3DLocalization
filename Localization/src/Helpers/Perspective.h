@@ -60,7 +60,7 @@ namespace MCL
 
         // Used to see if two perspectives are equal within a defined epsilon (because of flotating point trunc errors.)
         inline bool operator==(const Perspective& a) const {
-            std::cout << "COMPARING PERSPECTIVES: " << ToString() << " " << a.ToString() << std::endl;
+            // std::cout << "COMPARING PERSPECTIVES: " << ToString() << " " << a.ToString() << std::endl;
             float eps = 0.001;
             if (abs(a.x - x) > eps || abs(a.y - y) > eps || abs(a.z - z) > eps)
                 return false;
@@ -70,7 +70,7 @@ namespace MCL
             if (abs(angle1 - angle2) > 0.1)
                 return false;
 
-            std::cout << "TRUE" << std::endl;
+            // std::cout << "TRUE" << std::endl;
             return true;
         }
     };
@@ -79,7 +79,7 @@ namespace MCL
        public:
           bool operator()(const Perspective& a,const Perspective& b) const 
           { 
-            std::cout << "P1 : " << a.ToString() << " P2 : " << b.ToString() << std::endl;
+            // std::cout << "P1 : " << a.ToString() << " P2 : " << b.ToString() << std::endl;
             if(a.x < b.x)
                 return true;
             if(a.x > b.x)
@@ -100,7 +100,7 @@ namespace MCL
             if(a.GetAngle() > b.GetAngle())
                 return false;
 
-            std::cout << "Perspective Comparison false" << std::endl;
+            // std::cout << "Perspective Comparison false" << std::endl;
             return false; 
           } // returns x>y
     };

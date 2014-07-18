@@ -77,7 +77,7 @@ int main(int argc, char **argv)
 	//data_publisher = node.advertise<sensor_msgs::ImageConstPtr&>(publish_image_data_under, 4);
 	data_publisher = it.advertise(publish_image_data_under, 4, true);
 
-    image_names.push_back("../../../Data/RenderedImages/SmallFolder/_0.5_0_0.4_0_-1_0_.jpg");
+    image_names.push_back("../../../Data/RenderedImages/SmallFolder/_0.5_1.5_0.4_0.5_0.86_0_.jpg");
 
 	LoadImages();
 

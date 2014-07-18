@@ -50,7 +50,6 @@ namespace MCL
         {   
             float wt = CompareAndWeigh(v[i], this->robot, this->comboWeighting);
             v[i].SetWeight(wt);
-            std::cout << "Controller, CompareFeatures: " << v[i].ToString() << std::endl;
         }
 
         this->ap.SetParticleList(v);
@@ -131,6 +130,12 @@ namespace MCL
         ros::spinOnce();
 
         CompareFeatures();
+
+        this->ap.AnalyzeList();
+
+        vector<Particle> v = ap.GetParticleList();
+        for (int i = 0; i < v.size(); i++)
+            cout << v[i].ToString() << endl;
         
         ros::spinOnce();
         
@@ -146,7 +151,6 @@ namespace MCL
         
         ros::spinOnce();
 
-        this->ap.AnalyzeList();
         ros::spinOnce();
 
         return true;

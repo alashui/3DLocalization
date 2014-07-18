@@ -46,9 +46,15 @@ namespace MCL
     void RobotState::SetCharacterizer(Characterizer cnew) 
     { this->c = cnew; }
 
-    Perspective RobotState::GetPerspective() 
-    { return this->p; }
+    Perspective RobotState::GetGuessPerspective() 
+    { return this->pGuess; }
 
-    void RobotState::SetPerspective(Perspective newp)
-    { this->p = newp; }
+    void RobotState::SetGuessPerspective(Perspective newp)
+    { this->pGuess = newp; }
+
+    Perspective RobotState::GetWeightedPerspective() 
+    { return this->pWeighted; }
+
+    void RobotState::SetWeightedPerspective(Perspective newp)
+    { this->pWeighted = newp; }
 }

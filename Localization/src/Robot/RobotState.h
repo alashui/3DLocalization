@@ -21,7 +21,9 @@ namespace MCL
     private:
 
         Characterizer c;
-        Perspective p;
+        Perspective pGuess;
+        Perspective pWeighted;
+
 
     public:
         // RobotState();
@@ -30,8 +32,11 @@ namespace MCL
         Characterizer GetCharacterizer();
         void SetCharacterizer(Characterizer);
 
-        Perspective GetPerspective();
-        void SetPerspective(Perspective);
+        Perspective GetGuessPerspective();
+        void SetGuessPerspective(Perspective);
+
+        Perspective GetWeightedPerspective();
+        void SetWeightedPerspective(Perspective);
 
         void GenerateCharacterizer(Mat&);
     };

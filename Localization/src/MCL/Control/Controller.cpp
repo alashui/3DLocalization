@@ -12,13 +12,18 @@ namespace MCL
     Controller::Controller() :
     MCL_PUBLISHER_NAME("MCL_DATA_PUBLISHER"), // name of the MCL-related data publisher that we must publish under.
     ROBOT_MOVEMENT_PUBLISHER_NAME("ROBOT_MOVEMENT_PUBLISHER"), // Name of the robot movement data publisher we must subscribe to and the user must publish under
-    ROBOT_IMAGE_PUBLISHER_NAME("ROBOT_IMAGE_PUBLISHER")
+    ROBOT_IMAGE_PUBLISHER_NAME("ROBOT_IMAGE_PUBLISHER"),
+    starting_move(10),
+    finished_move(20),
+    handshake(15),
+    readymove(25)
     {
         rosNodePtr= new ros::NodeHandle();   // now throw the node handle on the stack
         comboWeighting.push_back(1.0); //SURF
         comboWeighting.push_back(0.0); //SIFT
         comboWeighting.push_back(0.0); //GREYSCALE
         comboWeighting.push_back(0.0); // B&W
+        moving = false;
     }
 
     Controller::~Controller()
@@ -66,15 +71,35 @@ namespace MCL
     // Start by sending a movement command to the robot, then update every particle in the particle list accordingly
     bool Controller::MoveUpdate()
     {
-        float xmove, ymove, zmopve;
-        int thetamove = 0;
+        recentMove.clear();
 
-    //***** TODO - Add some sort of randomization techniques for determining the movement commands *********//
-        // We need to first move the robot.
-        // RobotIO::PublishMovecommand(movex, movey, thetamove)
+        std_msgs::String msg;
+        stringstream ss;
+        ss << readymove;
+        msg.data = ss.str();
+        mclDataPublisher.publish(msg);
 
-        // We then need to move the particles.
-        // this->ap.Move(movex, movey, movez, thetamove);
+        ros::spinOnce();
+
+        bool started = PauseState(&moving, 10);
+
+        if(!started)
+        {
+            ErrorIO("MoveUpdate - robot did not send start_move Signal");
+        }
+        else
+            DebugIO("Robot has Started Moving");
+
+        ros::spinOnce();
+
+        while(moving)
+        {
+            ros::spinOnce();
+        }
+
+        DebugIO("Robot has finished moving");
+
+        this->ap.Move(recentMove[0], recentMove[1]);
     }
 
     // Called when the program needs to wait for another part of the program to do something.
@@ -86,6 +111,7 @@ namespace MCL
         // Wait until the flag is true to return
         while((time(NULL) - temp) < waittime)
         {
+            ros::spinOnce();
             if(*flag)
                 return true;
         }
@@ -100,6 +126,7 @@ namespace MCL
         // Wait until the flag is true to return
         while((time(NULL) - temp) < waittime)
         {
+            ros::spinOnce();
             if((this->*foo)())
                 return true;
         }
@@ -185,7 +212,7 @@ namespace MCL
     // their own publisher and to convert their image data to a sensor_msgs::Image::ConstPtr& .
     void Controller::ImageCallback(const sensor_msgs::Image::ConstPtr& img)
     {
-        DebugIO("Recieved Img from Robot");
+        //DebugIO("Recieved Img from Robot");
         cv_bridge::CvImagePtr im2;
         try
         {
@@ -208,26 +235,49 @@ namespace MCL
     void Controller::MovementCallback(const std_msgs::String msg)
     {
         DebugIO("Inside of movement callback");
+
+
         std::string str = msg.data;
-        return;
-        float movement[4] = {0,0,0,0};
+        std::cout << "Recieved move command " << str << std::endl;
+        int state;
+
         int j = 0, count = 0, value = 0;
-        for(int i = 0; count < 4 && i != str.size(); i++)
+        for(int i = 0; i != str.size(); i++)
         {
             if(i == str.size()-1 || (str[i] == ' ' || str[i] == '_' || str[i] == ','))
             {
                 std::string temp;
                 temp = str.substr(j, i);
-                value = atof(temp.c_str());
-                movement[count] = value;
+
+                if(count == 0)
+                    state = atoi(temp.c_str());
+                else
+                {
+                    value = atof(temp.c_str());
+                    recentMove.push_back(value);
+                }
                 count++;
                 j = i;
             }
         }
 
-//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!//
-//!!!!!!!TODO - We have the movment data from the robot, find a way to store it so that MovementUpdate function can use it!!!!!!!!//
-//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!//
+        std::cout << "State value from robot : " << state << std::endl;
+        if(state == starting_move)
+        {
+            moving = true;
+            DebugIO("Starting move value recieved");
+            recentMove.clear();
+        }
+        else if(state == finished_move)
+        {
+            DebugIO("Finished Move Value Recieved");
+            str = str.substr(1, 50);
+
+            std::cout << "Movedetected : Translation = " << recentMove[0] << " || Rotation = " << recentMove[1] << std::endl;
+            moving = false;
+        }
+
+
     }
 
     bool Controller::publisherConnected()
@@ -269,7 +319,7 @@ namespace MCL
 
         // ++++ TODO - Send a Handshake greeting to the robot program - TODO ++++ //
         std_msgs::String msg;
-        ss << "Initializing" << std::endl;
+        ss << handshake << std::endl;
         msg.data = ss.str();
         mclDataPublisher.publish(msg);
         // ++++ TODO - Send a Handshake greeting to the robot program - TODO ++++ //

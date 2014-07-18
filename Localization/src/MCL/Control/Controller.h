@@ -48,6 +48,7 @@ namespace MCL
         ActiveParticles ap;           // Class that defines our list of active particles and functionality related to them.
         RobotState robot;             // Class that defines our knowledge of the current state of the robot trying to be localized
         vector<float> comboWeighting; // weighing amount for each different feature detection algorithm. 
+        vector<float> recentMove;     // The recent x,y,z,theta move coords from the robot.
 
         ros::Publisher mclDataPublisher;         // ros::Publisher that allows us to publish data to the robot control program
         ros::Subscriber robotMovementSubscriber; // Our Subscriber object that allows us to get robot movement commands from the user
@@ -60,6 +61,13 @@ namespace MCL
         const std::string MCL_PUBLISHER_NAME;// = "MCL_Publisher";
         const std::string ROBOT_IMAGE_PUBLISHER_NAME;// = "ROBOT_IMAGE_DATA";
         const std::string ROBOT_MOVEMENT_PUBLISHER_NAME; // = ROBOT MOVEMENT DATA
+
+        const int starting_move; // message from robot means they are starting to move
+        const int finished_move; // message from robot means they are done moving and what their movement coordinates are.
+        const int handshake;     // message from us to the robot signifying a handshake
+        const int readymove;     // message from us to the robot meaning we are ready for them to move.
+
+        bool moving;
 
 
     //*****-- Private Member Functions --*****//

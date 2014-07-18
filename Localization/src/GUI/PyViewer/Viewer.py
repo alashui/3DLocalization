@@ -50,18 +50,28 @@ def main():
 	c = Circle(Point(x, y), 6)
 	c.setFill("green")
 	c.draw(win)
+	dx = 10 + ( particles[0][0] + particles[0][2] * 0.2 - minx) * 550 / w
+	dy = 10 + ( particles[0][1] + particles[0][3] * 0.2 - miny) * 550 / h
+	l = Line(Point(x, y), Point(dx, dy))
+	l.setArrow("last")
+	l.draw(win)
 	
 	particles.pop(0)
 
 	for point in particles:
 		x = 10+(point[0] - minx) * 550/w 
 		y = 10+(point[1] - miny) * 550/h
+		dx = 10 + ( point[0] + point[2] * 0.2 - minx) * 550 / w
+		dy = 10 + ( point[1] + point[3] * 0.2 - miny) * 550 / h
 
 		wt = point[4]
 
 		c = Circle(Point(x, y), 4)
 		c.setFill(color_rgb(wt*mulw, 0, 255 - wt*mulw))
 		c.draw(win)
+		l = Line(Point(x, y), Point(dx, dy))
+		l.setArrow("last")
+		l.draw(win)
 		# print "Point", x - minx, y - miny
 
 	win.getMouse()

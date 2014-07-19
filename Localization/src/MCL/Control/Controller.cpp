@@ -49,16 +49,27 @@ namespace MCL
     {
         vector<Particle> v = this->ap.GetParticleList();
 
-        float bestweight = -1;
+        float maxw = -1;
+        float minw = 10000;
         for(int i = 0; i < this->ap.NumParticles(); i++)
         {   
             float wt = CompareAndWeigh(v[i], this->robot, this->comboWeighting);
             v[i].SetWeight(wt);
-            if (wt > bestweight)
+            if (wt > maxw)
             {
-                bestweight = wt;
+                maxw = wt;
                 robot.SetGuessPerspective(v[i].GetPerspective());
             }
+            else if (wt < minw)
+                minw = wt;
+        }
+
+        float w = maxw - minw;
+        if (w=0)
+
+        for (int i = 0; i < this->ap.NumParticles(); i++)
+        {
+
         }
 
         this->ap.SetParticleList(v);

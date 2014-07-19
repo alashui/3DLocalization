@@ -45,7 +45,10 @@ int main(int argc, char ** argv)
     Controller control;
 
     if (!control.init(modelName))
+    {
         return PrintError("Could Not Properly Initialize Controller.");
+        return -1;
+    }
 
     DebugIO("Initialization Finished Successfully, Starting Main Loop");
 

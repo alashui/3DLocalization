@@ -57,7 +57,7 @@ namespace MCL
         // << "\tTOTAL: " << sim
         // << endl;
 
-        return 200/(sim+2);
+        return sim;
 	}
 
 
@@ -84,7 +84,7 @@ namespace MCL
         if (desc1.empty() || desc2.empty())
         {
             //ErrorIO("Error in Matching.cpp->CompareDescriptors: At least one of the descriptors is empty!");
-            return 1000;
+            return 4;
         }
 
         matcher.knnMatch(desc1, desc2, vecmatches, 2);
@@ -95,13 +95,13 @@ namespace MCL
         for( int i = 0; i < matches.size(); i++ )
         {
             total += matches[i].distance;
-            count += 1.0;
+            count += 1.0/(matches[i].distance+1);
         }
 
         if (count < 2)
-            return 1000;
+            return 4;
         // cout << total / count << " ";
-        return 1/count; // + count / 2.0;
+        return count; // + count / 2.0;
     }
 
     // Elementwise disance of two images.

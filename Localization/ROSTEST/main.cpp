@@ -62,12 +62,12 @@ const int readymove = 25;
 const int starting_move = 10;
 const int finished_move = 20;
 
-const int num_images = 2500;
+const int num_images = 2000;
 
 
 vector<Mat> image_list;
 vector<string> image_names;
-int current_image = 0;
+int current_image = 118;
 
 vector<fs::path> ret;
 
@@ -146,8 +146,8 @@ int main(int argc, char **argv)
 	 image_names.push_back("../../../Data/RenderedImages/2ndFloorSprague/_1.25_4.25_0.4_-1_1_0_.jpg");
 	 // image_names.push_back("../../../Data/RenderedImages/2ndFloorSprague/_0.5_1_0.4_1_1_0_.jpg");
 	 
-	  for(int i = 0; i < image_names.size(); i++)
-	  	image_list.push_back(imread(image_names[i]));
+	  //for(int i = 0; i < image_names.size(); i++)
+	  	// image_list.push_back(imread(image_names[i]));
 
 	char key = 'k';
 	// namedWindow("Robot Image");
@@ -226,8 +226,8 @@ int main(int argc, char **argv)
 		str = str.substr(1,str.size()-1);
         boost::split(strs, str, boost::is_any_of("_"));
 
-        for(int i = 0; i < strs.size(); i++)
-        	std::cout << "[ " << strs[i] << " ]" << endl;
+        // for(int i = 0; i < strs.size(); i++)
+        // 	std::cout << "[ " << strs[i] << " ]" << endl;
 
         for(int i = 1; i < strs.size()-1; i++)
         {
@@ -239,8 +239,8 @@ int main(int argc, char **argv)
         float nangle = 0;
         nangle = atan2(vals[3], vals[4]) * 180.0 / 3.1415;
 
-        float theta = (float) ((rand()%5-10))*30;          // -60 60
-		float dist = 0;//(float) ((rand()%2)-4)*0.25;
+        float theta = (float) ((rand()%5)-10)*30;          // -60 60
+		float dist = (float) ((rand()%2)-4)*0.25;
 
 		theta += nangle;
 
@@ -251,12 +251,12 @@ int main(int argc, char **argv)
 		vals[1] += sin(theta*3.14159/180.0)*dist;
 
 		int xx = vals[0]/.249;
-		//vals[0] = round(xx*.25);
+		vals[0] = round(xx*.25);
 		if(vals[0] == 0.0)
 			vals[0] = ((rand()%4)+1)*.25;
 
 		xx = vals[1]/.249;
-		//vals[1] = round(xx*.25);
+		vals[1] = round(xx*.25);
 
 		vals[3] = round(cos(theta*3.14159/180.0));
 		vals[4] = round(sin(theta*3.14159/180.0));

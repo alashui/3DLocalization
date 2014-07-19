@@ -153,7 +153,7 @@ namespace MCL
         for (int i = 0; i < 0.9*amount; i++)
         {
             int rndIdx = rand() % this->distribution.size();
-            Perspective P = Scatter(this->distribution[rndIdx], this->gd*2, 32);
+            Perspective P = Scatter(this->distribution[rndIdx], this->gd*2, 64);
             // cout << this->distribution[rndIdx].ToString() << "->" << P.ToString();
             SnapToGrid(&P);
             // cout << "->" << P.ToString() << endl;

@@ -145,7 +145,11 @@ namespace MCL
     bool Controller::init(string dirName)
     {
         // Initiate the ros::Callback functions and shake hands with the robot.
-        RobotInit();
+        if(!RobotInit())
+        {
+            ErrorIO("RobotInit failed");
+            return false;
+        }
 
         // Initiate our RobotState object with the data recieved from the robot
         UpdateRobotData();

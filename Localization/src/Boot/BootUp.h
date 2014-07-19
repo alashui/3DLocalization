@@ -186,7 +186,6 @@ namespace MCL
         // }
         //         destroyAllWindows();
 
-
         // for(map<Perspective, Characterizer>::iterator it=masterMap.begin(); it!=masterMap.end(); ++it)
         // {
         //     namedWindow("IMAGE");

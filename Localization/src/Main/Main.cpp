@@ -57,7 +57,9 @@ int main(int argc, char ** argv)
     // namedWindow("Weighted Average");
     char key = ' ';
     while(key != 'q' && key != 'Q')
-    {
+    {   
+        stringstream ss; ss.str("");
+        static time_t tstart = time(0);
         DebugIO("Start Loop");
         RobotState r = control.GetRobotState();
         
@@ -66,8 +68,7 @@ int main(int argc, char ** argv)
 
         if(control.exitFlagSet())
             return -1;
-        
-        stringstream ss;
+
         // ss << "Generation : " << control.GetActiveParticles().GetGeneration() << ", AvgWeight :  " << control.GetActiveParticles().GetAvgWeight();
         // ss <<",\n  Guess : " << r.GetGuessPerspective().ToString(); 
         // ss <<",\n  Weighted Guess : " << r.GetWeightedPerspective().ToString(); 
@@ -78,7 +79,10 @@ int main(int argc, char ** argv)
         // if (masterMap.count(r.GetWeightedPerspective()))
             // imshow("Weighted Average", masterMap.at(r.GetWeightedPerspective()).image);
         key = waitKey(4);
-        DebugIO("End Loop");
+        time_t temp = time(0) - tstart;
+        tstart = time(0);
+        ss << "End of Loop -- " << temp << " ms ";
+        DebugIO(ss.str());
     }
     destroyAllWindows();
 

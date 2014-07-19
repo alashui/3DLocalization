@@ -83,7 +83,7 @@ namespace MCL
     bool Controller::GenDistributionAndSample()
     {
         ap.GenerateDistribution();
-        ap.GenerateParticles();
+        ap.GenerateParticles((int)(ap.GetParticleList().size()));
     }
 
     // Start by sending a movement command to the robot, then update every particle in the particle list accordingly
@@ -172,7 +172,7 @@ namespace MCL
         if(!this->ap.GetConstants(dirName))
             return false;
         this->ap.SetDistribution(perspectives);
-        this->ap.GenerateParticles(400);
+        this->ap.GenerateParticles(800);
         this->ap.AnalyzeList();
 
         return true;

@@ -58,10 +58,11 @@ int main(int argc, char ** argv)
     char key = ' ';
     while(key != 'q' && key != 'Q')
     {
+        RobotState r = control.GetRobotState();
+        
         if(!control.SpinOnce())
             continue;
         
-        RobotState r = control.GetRobotState();
         stringstream ss;
         ss << "Generation : " << control.GetActiveParticles().GetGeneration() << ", AvgWeight :  " << control.GetActiveParticles().GetAvgWeight();
         ss <<",\n  Guess : " << r.GetGuessPerspective().ToString(); 
@@ -69,10 +70,10 @@ int main(int argc, char ** argv)
         DebugIO(ss.str());
         // UserIO(ss.str());
         imshow("Top Match", masterMap.at(r.GetGuessPerspective()).image);
-        imshow("Robot Image", r.GetCharacterizer().image);
+        // imshow("Robot Image", r.GetCharacterizer().image);
         // if (masterMap.count(r.GetWeightedPerspective()))
             // imshow("Weighted Average", masterMap.at(r.GetWeightedPerspective()).image);
-        key = waitKey(1000);
+        key = waitKey(4);
     }
     destroyAllWindows();
 

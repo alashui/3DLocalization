@@ -165,7 +165,7 @@ namespace MCL
                 return -1;
             }
             done++;
-            if (done > 2000) 
+            if (done > 4400) 
                 break;
             if ((done * 100) / total > percent)
             {

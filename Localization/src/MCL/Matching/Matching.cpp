@@ -79,7 +79,7 @@ namespace MCL
         double count = 0.0;
 
         vector<vector<DMatch> > vecmatches;
-        float ratio = 0.75;
+        float ratio = 0.8;
 
         if (desc1.empty() || desc2.empty())
         {
@@ -87,6 +87,7 @@ namespace MCL
             return 4;
         }
 
+        float sim = 0;
         matcher.knnMatch(desc1, desc2, vecmatches, 2);
         for (int i = 0; i < vecmatches.size(); i++)
             if (vecmatches[i][0].distance < ratio * vecmatches[i][1].distance)
@@ -96,12 +97,13 @@ namespace MCL
         {
             total += matches[i].distance;
             count += 1.0/(matches[i].distance+1);
+            sim +=  1.0/(matches[i].distance+.8);
         }
 
         if (count < 2)
-            return 4;
+            return 2;
         // cout << total / count << " ";
-        return count; // + count / 2.0;
+        return sqrt(sim); // + count / 2.0;
     }
 
     // Elementwise disance of two images.

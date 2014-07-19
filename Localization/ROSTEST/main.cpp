@@ -67,7 +67,7 @@ const int num_images = 2000;
 
 vector<Mat> image_list;
 vector<string> image_names;
-int current_image = 118;
+int current_image = 0;
 
 vector<fs::path> ret;
 
@@ -80,6 +80,7 @@ float round(float x);
 
 void publish_Move()
 {
+	static int count = 0;
 	vector<float> temp = getMoveData();
 	stringstream ss;
 	std_msgs::String msg;
@@ -88,9 +89,13 @@ void publish_Move()
 	ros::spinOnce();
 	ros::Duration(1).sleep();
 
+
 	ss << "20" << " " << temp[0] << " " << temp[1] << " ";
 	msg.data = ss.str();
 	movement_publisher.publish(msg);
+
+	if(current_image == image_list.size())
+		current_image = 0;
 	// imshow("Robot Image", image_list[current_image]);
 
 }
@@ -143,14 +148,14 @@ int main(int argc, char **argv)
 
 	// //data_publisher = node.advertise<sensor_msgs::ImageConstPtr&>(publish_image_data_under, 4);
 	 data_publisher = it.advertise(publish_image_data_under, 4, true);
-	 image_names.push_back("../../../Data/RenderedImages/2ndFloorSprague/_1.25_4.25_0.4_-1_1_0_.jpg");
+	 // image_names.push_back("../../../Data/RenderedImages/2ndFloorSprague/_1.25_4.25_0.4_-1_1_0_.jpg");
 	 // image_names.push_back("../../../Data/RenderedImages/2ndFloorSprague/_0.5_1_0.4_1_1_0_.jpg");
 	 
 	  //for(int i = 0; i < image_names.size(); i++)
 	  	// image_list.push_back(imread(image_names[i]));
 
 	char key = 'k';
-	// namedWindow("Robot Image");
+	namedWindow("Robot Image");
 	while(ros::ok() && key != 'q')
 	{
 		ros::spinOnce();
@@ -160,14 +165,19 @@ int main(int argc, char **argv)
 		out_msg.header.stamp = scan_time;
 		out_msg.header.frame_id = "robot_image";
 		out_msg.encoding = sensor_msgs::image_encodings::BGR8;
-		
 		out_msg.image = image_list[current_image];
 		
 		if(!out_msg.image.empty())
 			data_publisher.publish(out_msg.toImageMsg());
 		ros::spinOnce();
 
+		imshow("Robot Image", image_list[current_image]);
+
 		key = cv::waitKey(2);
+		if(key == ' ')
+			current_image++;
+		if(current_image == image_list.size())
+			current_image = 0;
 		//ros::Duration(0.1).sleep();
 	}
 
@@ -177,26 +187,39 @@ int main(int argc, char **argv)
 	{
 	
 
-        string delimiter = "_";
+		image_names.push_back("../../../Data/RenderedImages/2ndFloorSprague/_0.5_3.25_0.4_0.86_-0.5_0_.jpg");
+		image_names.push_back("../../../Data/RenderedImages/2ndFloorSprague/_0.5_3.25_0.4_0.49_-0.86_0_.jpg");
+		image_names.push_back("../../../Data/RenderedImages/2ndFloorSprague/_0.5_3.25_0.4_0_-1_0_.jpg");
+		image_names.push_back("../../../Data/RenderedImages/2ndFloorSprague/_0.5_3.25_0.4_1_0_0_.jpg");
+		image_names.push_back("../../../Data/RenderedImages/2ndFloorSprague/_0.5_3.25_0.4_-0.5_-0.86_0_.jpg");
 
-        // Go into folder and get all available photos and features.
-        const char * pstr = toPhotos.c_str();
-        fs::path p(pstr);
-        // Get a list of all filenames
-        GetAll(pstr, ret);
+		for(int i = 0; i < image_names.size(); i++)
+		{
+			image_list.push_back(imread(image_names[i]));
+		}
 
-        for(int i = 0; i < ret.size() && i < num_images; i++)
-        {
-        	stringstream ss;
-        	ss << toPhotos << ret[i].string();
-        	image_names.push_back(ss.str());
-        	if(i%100==0) std::cout << image_names[i] << endl;
-        	image_list.push_back(imread(image_names[i]));
-        }
+		return true;
 
-        if(image_list.size() == 0)
-        	cout << "failure!!" << endl;
-        return true;
+        // string delimiter = "_";
+
+        // // Go into folder and get all available photos and features.
+        // const char * pstr = toPhotos.c_str();
+        // fs::path p(pstr);
+        // // Get a list of all filenames
+        // GetAll(pstr, ret);
+
+        // for(int i = 0; i < ret.size() && i < num_images; i++)
+        // {
+        // 	stringstream ss;
+        // 	ss << toPhotos << ret[i].string();
+        // 	image_names.push_back(ss.str());
+        // 	if(i%100==0) std::cout << image_names[i] << endl;
+        // 	image_list.push_back(imread(image_names[i]));
+        // }
+
+        // if(image_list.size() == 0)
+        // 	cout << "failure!!" << endl;
+        // return true;
 
 	}
 
@@ -219,71 +242,71 @@ int main(int argc, char **argv)
 
     vector<float> getMoveData()
 	{ 
-		string str = image_names[current_image];
+		// string str = image_names[current_image];
 
-		std::vector<std::string> strs;
-		std::vector<float> vals;
-		str = str.substr(1,str.size()-1);
-        boost::split(strs, str, boost::is_any_of("_"));
+		// std::vector<std::string> strs;
+		// std::vector<float> vals;
+		// str = str.substr(1,str.size()-1);
+  //       boost::split(strs, str, boost::is_any_of("_"));
 
-        // for(int i = 0; i < strs.size(); i++)
-        // 	std::cout << "[ " << strs[i] << " ]" << endl;
+  //       // for(int i = 0; i < strs.size(); i++)
+  //       // 	std::cout << "[ " << strs[i] << " ]" << endl;
 
-        for(int i = 1; i < strs.size()-1; i++)
-        {
-        	vals.push_back(atof(strs[i].c_str()));
-        	std::cout << vals[i-1] << ", ";
-        }
-        cout <<endl;
+  //       for(int i = 1; i < strs.size()-1; i++)
+  //       {
+  //       	vals.push_back(atof(strs[i].c_str()));
+  //       	std::cout << vals[i-1] << ", ";
+  //       }
+  //       cout <<endl;
 
-        float nangle = 0;
-        nangle = atan2(vals[3], vals[4]) * 180.0 / 3.1415;
+  //       float nangle = 0;
+  //       nangle = atan2(vals[3], vals[4]) * 180.0 / 3.1415;
 
-        float theta = (float) ((rand()%5)-10)*30;          // -60 60
-		float dist = (float) ((rand()%2)-4)*0.25;
+  //       float theta = (float) ((rand()%5)-10)*30;          // -60 60
+		// float dist = (float) ((rand()%2)-4)*0.25;
 
-		theta += nangle;
+		// theta += nangle;
 
-		int yy = theta/30;
-		theta = (int) yy*30;
+		// int yy = theta/30;
+		// theta = (int) yy*30;
 
-		vals[0] += cos(theta*3.14159/180.0)*dist;
-		vals[1] += sin(theta*3.14159/180.0)*dist;
+		// vals[0] += cos(theta*3.14159/180.0)*dist;
+		// vals[1] += sin(theta*3.14159/180.0)*dist;
 
-		int xx = vals[0]/.249;
-		vals[0] = round(xx*.25);
-		if(vals[0] == 0.0)
-			vals[0] = ((rand()%4)+1)*.25;
+		// int xx = vals[0]/.249;
+		// vals[0] = round(xx*.25);
+		// if(vals[0] == 0.0)
+		// 	vals[0] = ((rand()%4)+1)*.25;
 
-		xx = vals[1]/.249;
-		vals[1] = round(xx*.25);
+		// xx = vals[1]/.249;
+		// vals[1] = round(xx*.25);
 
-		vals[3] = round(cos(theta*3.14159/180.0));
-		vals[4] = round(sin(theta*3.14159/180.0));
+		// vals[3] = round(cos(theta*3.14159/180.0));
+		// vals[4] = round(sin(theta*3.14159/180.0));
 
-		for(int i = 0; i < vals.size(); i++)
-        {
-        	std::cout << vals[i] << " ";
-        }
-        cout <<endl;
+		// for(int i = 0; i < vals.size(); i++)
+  //       {
+  //       	std::cout << vals[i] << " ";
+  //       }
+  //       cout <<endl;
 
-        std::vector<float> ret;
-		stringstream ss;
-		ss << toPhotos << "_" << vals[0] << "_" << vals[1] << "_" << vals[2] << "_" << round(vals[3]) << "_" << round(vals[4]) << "_" << round(vals[5]) << "_" << ".jpg";
-		std::cout << ss.str() << endl;
+  //       std::vector<float> ret;
+		// stringstream ss;
+		// ss << toPhotos << "_" << vals[0] << "_" << vals[1] << "_" << vals[2] << "_" << round(vals[3]) << "_" << round(vals[4]) << "_" << round(vals[5]) << "_" << ".jpg";
+		// std::cout << ss.str() << endl;
 
-		for(int i = 0; i < image_names.size(); i++)
-		{
-			if(!image_names[i].compare(ss.str()))
-			{
-				current_image = i;
-				cout << "image name from vector #" << i << "  " <<image_names[i] << endl;
-				ret.push_back(dist);
-        		ret.push_back(theta);
-        		return ret;
-			}
-		}
-
+		// for(int i = 0; i < image_names.size(); i++)
+		// {
+		// 	if(!image_names[i].compare(ss.str()))
+		// 	{
+		// 		current_image = i;
+		// 		cout << "image name from vector #" << i << "  " <<image_names[i] << endl;
+		// 		ret.push_back(dist);
+  //       		ret.push_back(theta);
+  //       		return ret;
+		// 	}
+		// }
+		vector<float> ret;
 		ret.push_back(0);
 		ret.push_back(0);
 

@@ -353,6 +353,24 @@ namespace MCL
         for (int i = 0; i < g.size(); i++)
             pListFile << g[i] << " ";
         pListFile << "0\n";
+
+        float maxw = 0;
+        Perspective best;
+        for (int i = 0; i < NumParticles(); i++)
+        {
+            if (pList[i].GetWeight() > maxw)
+            {
+                maxw = pList[i].GetWeight();
+                best = pList[i].GetPerspective();
+            }
+        }
+        
+        g = best.ToVector();
+        for (int i = 0; i < g.size(); i++)
+            pListFile << g[i] << " ";
+        pListFile << "0\n";
+
+
         for (int i = 0; i < NumParticles(); i++)
         {
             Particle p = pList[i];

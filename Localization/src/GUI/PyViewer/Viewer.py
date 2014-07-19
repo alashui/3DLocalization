@@ -48,13 +48,55 @@ def main():
 
     win = GraphWin('Points', 570, 570)
 
+    l = Line(Point(20, 20), Point(20,530))
+    l.setArrow("both")
+    l.draw(win)
+
+    l = Line(Point(50, 560), Point(520,560))
+    l.setArrow("both")
+    l.draw(win)
+
+    avgx = (maxx + minx) / 2.0
+    avgy = (maxy + miny) / 2.0
+
+    l = Line(Point(15, 10+(avgy - miny) * 550/h), Point(25, 10+(avgy - miny) * 550/h))
+    l.draw(win)
+
+    l = Line(Point(10+(avgx - minx) * 550/w, 555), Point(10+(avgx - minx) * 550/w, 565))
+    l.draw(win)
+
+    t = Text(Point(20, 10), str(maxy))
+    t.draw(win)
+    t = Text(Point(550, 560), str(maxx))
+    t.draw(win)
+    t = Text(Point(20, 540), str(miny))
+    t.draw(win)
+    t = Text(Point(20, 560), str(minx))
+    t.draw(win)
+    t = Text(Point(45, 10+(avgy - miny) * 550/h), str(avgy))
+    t.draw(win)
+    t = Text(Point(10+(avgx - minx) * 550/w, 540), str(avgx))
+    t.draw(win)
     x = 10+(particles[0][0] - minx) * 550/w 
-    y = 10+(particles[0][1] - miny) * 550/h
-    c = Circle(Point(x, y), 6)
+    y = 570 - (10+(particles[0][1] - miny) * 550/h)
+    c = Circle(Point(x, y), 8)
     c.setFill("green")
     c.draw(win)
     dx = 10 + ( particles[0][0] + particles[0][2] * 0.2 - minx) * 550 / w
-    dy = 10 + ( particles[0][1] + particles[0][3] * 0.2 - miny) * 550 / h
+    dy = 570 - (10 + ( particles[0][1] + particles[0][3] * 0.2 - miny) * 550 / h)
+    l = Line(Point(x, y), Point(dx, dy))
+    l.setArrow("last")
+    l.draw(win)
+    
+    particles.pop(0)
+
+    x = 10+(particles[0][0] - minx) * 550/w 
+    y = 570 - (10+(particles[0][1] - miny) * 550/h)
+    c = Circle(Point(x, y), 8)
+    c.setFill("yellow")
+    c.draw(win)
+    dx = 10 + ( particles[0][0] + particles[0][2] * 0.2 - minx) * 550 / w
+    dy = 570 - (10 + ( particles[0][1] + particles[0][3] * 0.2 - miny) * 550 / h)
     l = Line(Point(x, y), Point(dx, dy))
     l.setArrow("last")
     l.draw(win)
@@ -63,9 +105,9 @@ def main():
 
     for point in particles:
         x = 10+(point[0] - minx) * 550/w 
-        y = 10+(point[1] - miny) * 550/h
+        y = 570 - (10+(point[1] - miny) * 550/h)
         dx = 10 + ( point[0] + point[2] * 0.2 - minx) * 550 / w
-        dy = 10 + ( point[1] + point[3] * 0.2 - miny) * 550 / h
+        dy = 570 - (10 + ( point[1] + point[3] * 0.2 - miny) * 550 / h)
 
         wt = point[4]
 

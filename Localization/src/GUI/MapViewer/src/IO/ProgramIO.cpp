@@ -307,3 +307,35 @@ namespace IO
 
 
 } // end namespace IO
+
+
+std::vector<Particle> GetParticleList()
+{
+    std::string fn = "../../PyViewer/ParticleLists.txt";
+    ifstream file(fn.c_str());
+    if ( !file.is_open() )
+    {
+        stringstream ss;
+        ss << "ParticleLists.txt not found.";
+        ErrorIO(ss.str());
+        return std::vector<Particle> v;
+    }
+
+    std::vector<Particle> pList;
+
+    string str;
+    getline( file, str );
+    while (str.compare("\n"))
+    {
+        std::vector<std::string> strs;
+        boost::split(strs, str, boost::is_any_of(" "));
+        for (int i = 0; i < strs.size(); i++)
+            v.push_back(atof(strs[i].c_str()))
+
+        float wt = v.back();
+        v.pop_back();
+
+        pList.push_back(Particle(Perspective(v), wt));
+    }
+    return pList;
+}

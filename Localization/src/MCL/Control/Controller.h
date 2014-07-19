@@ -68,9 +68,11 @@ namespace MCL
         const int handshake;     // message from us to the robot signifying a handshake
         const int readymove;     // message from us to the robot meaning we are ready for them to move.
         const int robotdata;     // message from us to meaning we are sending data about the robot
+        const int killflag;      // signal from the robot to shut down
 
         bool moving;             // Flag that lets us know if the robot is moving.
         bool image_feed_started; // Flag that lets us know when the robot has started publshing camera data.
+        bool EXIT_FLAG;
 
 
     //*****-- Private Member Functions --*****//
@@ -108,6 +110,7 @@ namespace MCL
 
 
 
+
     public:
     //*****-- Public Functions --*****//
 
@@ -124,6 +127,8 @@ namespace MCL
         bool SpinOnce();
 
         bool init(string);
+
+        bool exitFlagSet(); // check if exit flag is set
 
         // ActiveParticles get and set
         ActiveParticles GetActiveParticles() const;      // Get the ActiveParticles class by value.

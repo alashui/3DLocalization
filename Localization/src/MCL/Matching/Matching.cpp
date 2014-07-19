@@ -84,7 +84,7 @@ namespace MCL
         if (desc1.empty() || desc2.empty())
         {
             //ErrorIO("Error in Matching.cpp->CompareDescriptors: At least one of the descriptors is empty!");
-            return 4;
+            return 1;
         }
 
         float sim = 0;
@@ -101,9 +101,9 @@ namespace MCL
         }
 
         if (count < 2)
-            return 2;
+            return 1;
         // cout << total / count << " ";
-        return sqrt(sim); // + count / 2.0;
+        return sqrt(sqrt(sim*sim*sim)); // + count / 2.0;
     }
 
     // Elementwise disance of two images.

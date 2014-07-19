@@ -60,6 +60,7 @@ string toPhotos = pathToData + "/RenderedImages/" + dirName;
 const int handshake = 15;
 const int readymove = 25;
 const int guessdata = 35;
+const int killflag = 666;
 const int starting_move = 10;
 const int finished_move = 20;
 
@@ -107,7 +108,8 @@ void publish_Move()
 	string str = msg.data;
 	std::vector<std::string> strs;
 	std::vector<float> vals;
-    boost::split(strs, str, boost::is_any_of("_ "));
+    boost::split(strs, str, boost::is_any_of("_"));
+
 
     int command = atoi(strs[0].c_str());
 
@@ -122,7 +124,12 @@ void publish_Move()
 	}
 	else if(command == guessdata)
 	{
-
+		cout << "Guess data : " << str <<endl;
+		for(int i = 0; i < strs.size(); i++)
+		{
+			cout << " " << strs[i] << " ";
+		}
+		cout << endl;
 		if(strs.size() != 7)
 		{
 			cout << "Invalid guess data format" << endl;
@@ -144,6 +151,7 @@ void publish_Move()
 		if(BestGuessImage.empty())
 		{
 			cout << "image data corrupted in guess data callback" << endl;
+			BestGuessImage = imread("../../../Data/RenderedImages/2ndFloorSprague/_0.5_3.25_0.4_0_-1_0_.jpg");
 			return;
 		}
 	}
@@ -213,6 +221,17 @@ int main(int argc, char **argv)
 		//ros::Duration(0.1).sleep();
 	}
 
+	std_msgs::String msg;
+	stringstream ss;
+	ss << killflag << "_";
+	msg.data = ss.str();
+	movement_publisher.publish(msg);
+
+	ros::spinOnce();
+	ros::spinOnce();
+
+	ros::shutdown();
+
 }
 
 	bool loadImages()
@@ -224,6 +243,13 @@ int main(int argc, char **argv)
 		image_names.push_back("../../../Data/RenderedImages/2ndFloorSprague/_0.5_3.25_0.4_0_-1_0_.jpg");
 		image_names.push_back("../../../Data/RenderedImages/2ndFloorSprague/_0.5_3.25_0.4_1_0_0_.jpg");
 		image_names.push_back("../../../Data/RenderedImages/2ndFloorSprague/_0.5_3.25_0.4_-0.5_-0.86_0_.jpg");
+
+		image_names.push_back("../../../Data/RenderedImages/2ndFloorSprague/_0.5_2.75_0.4_0_-1_0_.jpg");
+		image_names.push_back("../../../Data/RenderedImages/2ndFloorSprague/_0.5_2.5_0.4_0.49_-0.86_0_.jpg");
+		image_names.push_back("../../../Data/RenderedImages/2ndFloorSprague/_-2.75_0.5_0.4_0.5_0.86_0_.jpg");
+		image_names.push_back("../../../Data/RenderedImages/2ndFloorSprague/_1.5_2.75_0.4_0.86_-0.5_0.jpg");
+		image_names.push_back("../../../Data/RenderedImages/2ndFloorSprague/_0.75_3.25_0.4_-0.86_0.5_0.jpg");
+
 
 		for(int i = 0; i < image_names.size(); i++)
 		{

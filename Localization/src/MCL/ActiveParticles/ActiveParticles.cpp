@@ -235,14 +235,14 @@ namespace MCL
         // cout << "Scattering with prob: " << rnd << "/" << prob << endl;
         if (rnd < prob)
         {
-            if (rnd % 2 == 0)
+            if (rnd % 2 != 3)
             { // turn!
                 float curangle = p.GetAngle();
                 curangle += (float) (rand() % 100 - 50) / 25; //(dist(default_random_engine) - 50) / 80.0;
                 v[3] = round(cos(curangle * PI / 180.0));
                 v[4] = round(sin(curangle * PI / 180.0));
             }
-            else
+            else if(rnd % 2 == 1)
             { // translate!
                 v[0] += (float) (rand() % 100 - 50) * maxtranslation / 50.0;
                 v[1] += (float) (rand() % 100 - 50) * maxtranslation / 50.0;

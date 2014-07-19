@@ -17,7 +17,8 @@ namespace MCL
     finished_move(20),
     handshake(15),
     readymove(25),
-    robotdata(35)
+    robotdata(35),
+    killflag(666)
     {
         rosNodePtr= new ros::NodeHandle();   // now throw the node handle on the stack
         comboWeighting.push_back(1.0); //SURF
@@ -26,6 +27,7 @@ namespace MCL
         comboWeighting.push_back(0.0); // B&W
         moving = false;
         image_feed_started = false;
+        EXIT_FLAG = false;
     }
 
     Controller::~Controller()
@@ -178,6 +180,7 @@ namespace MCL
 
     bool Controller::SpinOnce()
     {
+
         time_t tstart = time(0);
 
         ros::spinOnce();
@@ -281,6 +284,11 @@ namespace MCL
 
         state = atoi(strs[0].c_str());  // parse token to int
 
+        if(state == killflag)
+        {
+            EXIT_FLAG = true;
+            return;
+        }
         //std::cout << "State value from robot : " << state << std::endl;
         if(state == starting_move)
         {
@@ -399,7 +407,7 @@ namespace MCL
         if(code == robotdata)
         {
             vector<float> temp = robot.GetGuessPerspective().ToVector();
-            ss << code << "_" << temp[0] << "_" << temp[1] << "_" << temp[2] << "_" << temp[3] <<
+            ss << code << "_" << temp[0] << "_" << temp[1] << "_" << temp[2] << "_" << temp[3] << "_" <<
              temp[4] << "_" << temp[5]; 
         }
         else
@@ -463,5 +471,10 @@ namespace MCL
     bool Controller::SetRobotState(RobotState rs)
     {
         this->robot = rs;
+    }
+
+    bool Controller::exitFlagSet()
+    {
+        return this->EXIT_FLAG;
     }
 }

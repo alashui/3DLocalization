@@ -52,7 +52,7 @@ int main(int argc, char ** argv)
 
     DebugIO("Initialization Finished Successfully, Starting Main Loop");
 
-    namedWindow("Robot Image");
+    // namedWindow("Robot Image");
     // namedWindow("Top Match");
     // namedWindow("Weighted Average");
     char key = ' ';
@@ -62,6 +62,9 @@ int main(int argc, char ** argv)
         
         if(!control.SpinOnce())
             continue;
+
+        if(control.exitFlagSet())
+            return -1;
         
         stringstream ss;
         ss << "Generation : " << control.GetActiveParticles().GetGeneration() << ", AvgWeight :  " << control.GetActiveParticles().GetAvgWeight();
@@ -76,6 +79,8 @@ int main(int argc, char ** argv)
         key = waitKey(4);
     }
     destroyAllWindows();
+
+    ros::shutdown();
 
     DebugIO("Initiating Self-Destruct Sequence.. 5 ... 4 .. 3 .. 2 .. 1");
     DebugIO("Booooooom????");

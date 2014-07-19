@@ -137,9 +137,9 @@ namespace MCL
             read(n1, descriptors);
             tmp.surfs = descriptors;
 
-            FileNode n2 = store["SiftDescriptors"];
-            read(n2, descriptors);
-            tmp.sifts = descriptors;
+            // FileNode n2 = store["SiftDescriptors"];
+            // read(n2, descriptors);
+            // tmp.sifts = descriptors;
 
             store.release();
 
@@ -165,7 +165,7 @@ namespace MCL
                 return -1;
             }
             done++;
-            if (done > 4400) 
+            if (done > 1000) 
                 break;
             if ((done * 100) / total > percent)
             {

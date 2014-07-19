@@ -16,7 +16,8 @@ namespace MCL
     starting_move(10),
     finished_move(20),
     handshake(15),
-    readymove(25)
+    readymove(25),
+    robotdata(35)
     {
         rosNodePtr= new ros::NodeHandle();   // now throw the node handle on the stack
         comboWeighting.push_back(1.0); //SURF
@@ -189,9 +190,10 @@ namespace MCL
         // DebugIO(ss.str());
         // tstart = time(0);
         // ss.str("");
-
         this->ap.AnalyzeList();
         robot.SetWeightedPerspective(ap.GetGuess());
+
+        this->PublishData(robotdata, " ");
 
         // duration = time(0) - tstart;
         // ss << "AnalyzeList took " << duration << " seconds.";
@@ -394,8 +396,15 @@ namespace MCL
         std_msgs::String msg;
         stringstream ss;
 
-        // turn the integer code and the string of data into a ros String message
-        ss << code << "_" << str;
+        if(code == robotdata)
+        {
+            vector<float> temp = robot.GetGuessPerspective().ToVector();
+            ss << code << "_" << temp[0] << "_" << temp[1] << "_" << temp[2] << "_" << temp[3] <<
+             temp[4] << "_" << temp[5]; 
+        }
+        else
+            ss << code << "_" << str;
+
         msg.data = ss.str();
 
         // publish the message

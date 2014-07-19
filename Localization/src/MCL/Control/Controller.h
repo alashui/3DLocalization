@@ -67,6 +67,7 @@ namespace MCL
         const int finished_move; // message from robot means they are done moving and what their movement coordinates are.
         const int handshake;     // message from us to the robot signifying a handshake
         const int readymove;     // message from us to the robot meaning we are ready for them to move.
+        const int robotdata;     // message from us to meaning we are sending data about the robot
 
         bool moving;             // Flag that lets us know if the robot is moving.
         bool image_feed_started; // Flag that lets us know when the robot has started publshing camera data.

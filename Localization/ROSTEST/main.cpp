@@ -59,6 +59,7 @@ string toPhotos = pathToData + "/RenderedImages/" + dirName;
 
 const int handshake = 15;
 const int readymove = 25;
+const int guessdata = 35;
 const int starting_move = 10;
 const int finished_move = 20;
 
@@ -68,6 +69,7 @@ const int num_images = 2000;
 vector<Mat> image_list;
 vector<string> image_names;
 int current_image = 0;
+Mat BestGuessImage = imread("../../../Data/RenderedImages/2ndFloorSprague/_0.5_3.25_0.4_0_-1_0_.jpg");
 
 vector<fs::path> ret;
 
@@ -103,15 +105,47 @@ void publish_Move()
  void MyDataCallback(const std_msgs::String msg)
 {
 	string str = msg.data;
+	std::vector<std::string> strs;
+	std::vector<float> vals;
+    boost::split(strs, str, boost::is_any_of("_ "));
 
-	if(atoi(str.c_str())== handshake)
+    int command = atoi(strs[0].c_str());
+
+	if(command == handshake)
 	{
 		handshake_recieved = true;
 	}
-	else if(atoi(str.c_str()) == readymove)
+	else if(command == readymove)
 	{
 		std::cout << "Movement Command Recieved, starting move" << std::endl;
 		publish_Move();
+	}
+	else if(command == guessdata)
+	{
+
+		if(strs.size() != 7)
+		{
+			cout << "Invalid guess data format" << endl;
+			return;
+		}
+		vector<float> vars;
+		float weight;
+
+		for(int i = 1; i < 7 && i < strs.size(); i++)
+		{
+			vars.push_back(atof(strs[i].c_str()));
+		}
+
+		stringstream ss;
+		ss << toPhotos << "_" << vars[0] << "_" << vars[1] << "_" << vars[2] << "_" << vars[3] << "_" << vars[4] << "_" << vars[5] << "_.jpg";
+
+		BestGuessImage = imread(ss.str());
+
+		if(BestGuessImage.empty())
+		{
+			cout << "image data corrupted in guess data callback" << endl;
+			return;
+		}
 	}
 }
 
@@ -146,16 +180,13 @@ int main(int argc, char **argv)
 	
 	movement_publisher = node.advertise<std_msgs::String>("ROBOT_MOVEMENT_PUBLISHER", 4);
 
-	// //data_publisher = node.advertise<sensor_msgs::ImageConstPtr&>(publish_image_data_under, 4);
-	 data_publisher = it.advertise(publish_image_data_under, 4, true);
-	 // image_names.push_back("../../../Data/RenderedImages/2ndFloorSprague/_1.25_4.25_0.4_-1_1_0_.jpg");
-	 // image_names.push_back("../../../Data/RenderedImages/2ndFloorSprague/_0.5_1_0.4_1_1_0_.jpg");
-	 
-	  //for(int i = 0; i < image_names.size(); i++)
-	  	// image_list.push_back(imread(image_names[i]));
+	data_publisher = it.advertise(publish_image_data_under, 4, true);
+
 
 	char key = 'k';
 	namedWindow("Robot Image");
+	namedWindow("Top Match");
+
 	while(ros::ok() && key != 'q')
 	{
 		ros::spinOnce();
@@ -172,6 +203,7 @@ int main(int argc, char **argv)
 		ros::spinOnce();
 
 		imshow("Robot Image", image_list[current_image]);
+		imshow("Top Match", BestGuessImage);
 
 		key = cv::waitKey(2);
 		if(key == ' ')

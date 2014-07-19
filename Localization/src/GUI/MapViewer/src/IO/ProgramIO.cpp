@@ -308,7 +308,6 @@ namespace IO
 
 } // end namespace IO
 
-
 std::vector<Particle> GetParticleList()
 {
     std::string fn = "../../PyViewer/ParticleLists.txt";

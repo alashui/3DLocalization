@@ -49,9 +49,9 @@ int main(int argc, char ** argv)
 
     DebugIO("Initialization Finished Successfully, Starting Main Loop");
 
-    namedWindow("Robot Image");
+    // namedWindow("Robot Image");
     namedWindow("Top Match");
-    // namedWindow("Weighted Average");
+    namedWindow("Weighted Average");
     char key = ' ';
     while(key != 'q' && key != 'Q')
     {
@@ -65,11 +65,10 @@ int main(int argc, char ** argv)
         ss <<",\n  Weighted Guess : " << r.GetWeightedPerspective().ToString(); 
         DebugIO(ss.str());
         // UserIO(ss.str());
-        if (!r.GetCharacterizer().image.empty())
-            imshow("Robot Image", r.GetCharacterizer().image);
         imshow("Top Match", masterMap.at(r.GetGuessPerspective()).image);
-        // imshow("Weighted Average", masterMap.at(r.GetWeightedPerspective()).image);
-        key = waitKey(0);
+        if (masterMap.count(r.GetWeightedPerspective()))
+            imshow("Weighted Average", masterMap.at(r.GetWeightedPerspective()).image);
+        key = waitKey(10);
     }
     destroyAllWindows();
 

@@ -79,7 +79,7 @@ namespace MCL
         //@Function - SnapToGrid
         //@Purpose  - Take a point computed in the continuum of our space, and move (snap) it to the nearest defined grid location
         //            that we image and feature data from.
-        void SnapToGrid(Perspective*);
+        bool SnapToGrid(Perspective*);
 
         //@Function - move(..)
         //@Purpose  - Rotate the particle roate degrees and then translate it along it direction vector ( [dx dy dz] )

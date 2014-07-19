@@ -15,7 +15,7 @@ namespace MCL
 
     ActiveParticles::ActiveParticles() : generation(0), defaultDistributionSize(3000), gd(0.2), dtheta(15) {srand(time(0));}
 
-    Perspective Scatter(Perspective p, float maxtranslation, int prob=32);
+    // Perspective Scatter(Perspective p, float maxtranslation, int prob=32);
     
     Perspective ActiveParticles::MakeGuess()
     {
@@ -96,7 +96,7 @@ namespace MCL
         SnapToGrid(&guess);
         this->guessHistory.push_back(guess);
 
-        cout << "ParticleListSize:" << pList.size() << endl;
+        // cout << "ParticleListSize:" << pList.size() << endl;
 
         return guess;
     }
@@ -148,12 +148,12 @@ namespace MCL
         // uniform_int_distribution<int> dist(0, this->distribution.size() - 1);
         stringstream ss;
         ss << "Distribution Size : " << this->distribution.size();
-        DebugIO(ss.str());
+        // DebugIO(ss.str());
 
-        for (int i = 0; i < 0.9*amount; i++)
+        for (int i = 0; i < 0.8*amount; i++)
         {
             int rndIdx = rand() % this->distribution.size();
-            Perspective P = Scatter(this->distribution[rndIdx], this->gd*2, 64);
+            Perspective P = Scatter(this->distribution[rndIdx], this->gd*3.2, 64);
             // cout << this->distribution[rndIdx].ToString() << "->" << P.ToString();
             SnapToGrid(&P);
             // cout << "->" << P.ToString() << endl;
@@ -165,7 +165,7 @@ namespace MCL
             pList.push_back(Particle(P));
         }
 
-        for (int i = 0; i < 0.1*amount; i++)
+        for (int i = 0; i < 0.2*amount; i++)
         {
             int rndIdx = rand() % perspectives.size();
             Perspective P = perspectives[rndIdx];
@@ -201,7 +201,7 @@ namespace MCL
         return round(dtheta * intmul);
     }
 
-    void ActiveParticles::SnapToGrid(Perspective * p)
+    bool ActiveParticles::SnapToGrid(Perspective * p)
     {
         Perspective refP = perspectives[0];
 
@@ -220,6 +220,7 @@ namespace MCL
 
         p->dx = round(cos(angle * PI / 180.0));
         p->dy = round(sin(angle * PI / 180.0));
+
     }
 
     Perspective ActiveParticles::Scatter(Perspective p, float maxtranslation, int prob)
@@ -235,17 +236,20 @@ namespace MCL
         // cout << "Scattering with prob: " << rnd << "/" << prob << endl;
         if (rnd < prob)
         {
-            if (rnd % 2 != 3)
+            if (rnd % 2)
             { // turn!
                 float curangle = p.GetAngle();
-                curangle += (float) (rand() % 100 - 50) / 25; //(dist(default_random_engine) - 50) / 80.0;
+                int temp = (rand() % 90);
+                curangle += (rand()%2)? -temp : temp; //(dist(default_random_engine) - 50) / 80.0;
                 v[3] = round(cos(curangle * PI / 180.0));
                 v[4] = round(sin(curangle * PI / 180.0));
             }
-            else if(rnd % 2 == 1)
+            else
             { // translate!
-                v[0] += (float) (rand() % 100 - 50) * maxtranslation / 50.0;
-                v[1] += (float) (rand() % 100 - 50) * maxtranslation / 50.0;
+                int temp = (rand() % 100);
+                temp = (rand()%2)? -temp : temp;
+                v[0] += (float) temp * maxtranslation / 50.0;
+                v[1] += (float) temp * maxtranslation / 50.0;
             }
         }
         return Scatter(Perspective(v), maxtranslation, prob/2);

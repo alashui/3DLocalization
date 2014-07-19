@@ -58,6 +58,7 @@ int main(int argc, char ** argv)
     char key = ' ';
     while(key != 'q' && key != 'Q')
     {
+        DebugIO("Start Loop");
         RobotState r = control.GetRobotState();
         
         if(!control.SpinOnce())
@@ -67,16 +68,17 @@ int main(int argc, char ** argv)
             return -1;
         
         stringstream ss;
-        ss << "Generation : " << control.GetActiveParticles().GetGeneration() << ", AvgWeight :  " << control.GetActiveParticles().GetAvgWeight();
-        ss <<",\n  Guess : " << r.GetGuessPerspective().ToString(); 
-        ss <<",\n  Weighted Guess : " << r.GetWeightedPerspective().ToString(); 
-        DebugIO(ss.str());
+        // ss << "Generation : " << control.GetActiveParticles().GetGeneration() << ", AvgWeight :  " << control.GetActiveParticles().GetAvgWeight();
+        // ss <<",\n  Guess : " << r.GetGuessPerspective().ToString(); 
+        // ss <<",\n  Weighted Guess : " << r.GetWeightedPerspective().ToString(); 
+        // DebugIO(ss.str());
         // UserIO(ss.str());
         // imshow("Top Match", masterMap.at(r.GetGuessPerspective()).image);
         // imshow("Robot Image", r.GetCharacterizer().image);
         // if (masterMap.count(r.GetWeightedPerspective()))
             // imshow("Weighted Average", masterMap.at(r.GetWeightedPerspective()).image);
         key = waitKey(4);
+        DebugIO("End Loop");
     }
     destroyAllWindows();
 

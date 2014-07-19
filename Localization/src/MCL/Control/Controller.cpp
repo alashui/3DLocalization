@@ -293,20 +293,20 @@ namespace MCL
         if(state == starting_move)
         {
             moving = true;
-            DebugIO("Starting move value recieved");
+            // DebugIO("Starting move value recieved");
             recentMove.clear();
             return;
         }
         else if(state == finished_move)
         {
-            DebugIO("Finished Move Value Recieved");
+            // DebugIO("Finished Move Value Recieved");
             moving = false;
             for(int i = 1; i < strs.size(); i++)
             {
               float value = atof(strs[i].c_str());
               recentMove.push_back(value);
             }
-            std::cout << "Movedetected : Translation = " << recentMove[0] << " || Rotation = " << recentMove[1] << std::endl;
+            // std::cout << "Movedetected : Translation = " << recentMove[0] << " || Rotation = " << recentMove[1] << std::endl;
         }
         else
         {

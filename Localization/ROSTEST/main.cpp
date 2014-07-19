@@ -62,6 +62,8 @@ const int readymove = 25;
 const int starting_move = 10;
 const int finished_move = 20;
 
+const int num_images = 2500;
+
 
 vector<Mat> image_list;
 vector<string> image_names;
@@ -83,7 +85,8 @@ void publish_Move()
 	std_msgs::String msg;
 	msg.data = "10";
 	movement_publisher.publish(msg);
-	ros::Duration(2).sleep();
+	ros::spinOnce();
+	ros::Duration(1).sleep();
 
 	ss << "20" << " " << temp[0] << " " << temp[1] << " ";
 	msg.data = ss.str();
@@ -126,7 +129,6 @@ int main(int argc, char **argv)
     std::cout << "Waiting for Handshake from Program .." << std::endl;
     while(!handshake_recieved && (time(0) - temptime) < 20)
     {
-    	ros::Duration(0.05).sleep();
     	ros::spinOnce();
     }
     if(handshake_recieved)
@@ -139,13 +141,13 @@ int main(int argc, char **argv)
 	
 	movement_publisher = node.advertise<std_msgs::String>("ROBOT_MOVEMENT_PUBLISHER", 4);
 
-	//data_publisher = node.advertise<sensor_msgs::ImageConstPtr&>(publish_image_data_under, 4);
-	data_publisher = it.advertise(publish_image_data_under, 4, true);
-	 image_names.push_back("../../../Data/RenderedImages/2ndFloorSprague/_2.25_5_0.4_1_1_0_.jpg");
+	// //data_publisher = node.advertise<sensor_msgs::ImageConstPtr&>(publish_image_data_under, 4);
+	 data_publisher = it.advertise(publish_image_data_under, 4, true);
+	 image_names.push_back("../../../Data/RenderedImages/2ndFloorSprague/_1.25_4.25_0.4_-1_1_0_.jpg");
 	 // image_names.push_back("../../../Data/RenderedImages/2ndFloorSprague/_0.5_1_0.4_1_1_0_.jpg");
 	 
-	 for(int i = 0; i < image_names.size(); i++)
-	 	image_list.push_back(imread(image_names[i]));
+	  for(int i = 0; i < image_names.size(); i++)
+	  	image_list.push_back(imread(image_names[i]));
 
 	char key = 'k';
 	// namedWindow("Robot Image");
@@ -160,8 +162,9 @@ int main(int argc, char **argv)
 		out_msg.encoding = sensor_msgs::image_encodings::BGR8;
 		
 		out_msg.image = image_list[current_image];
-
-		data_publisher.publish(out_msg.toImageMsg());
+		
+		if(!out_msg.image.empty())
+			data_publisher.publish(out_msg.toImageMsg());
 		ros::spinOnce();
 
 		key = cv::waitKey(2);
@@ -182,7 +185,7 @@ int main(int argc, char **argv)
         // Get a list of all filenames
         GetAll(pstr, ret);
 
-        for(int i = 0; i < ret.size() && i < 3000; i++)
+        for(int i = 0; i < ret.size() && i < num_images; i++)
         {
         	stringstream ss;
         	ss << toPhotos << ret[i].string();
@@ -237,7 +240,7 @@ int main(int argc, char **argv)
         nangle = atan2(vals[3], vals[4]) * 180.0 / 3.1415;
 
         float theta = (float) ((rand()%5-10))*30;          // -60 60
-		float dist = (float) ((rand()%2)-4)*0.25;
+		float dist = 0;//(float) ((rand()%2)-4)*0.25;
 
 		theta += nangle;
 
@@ -247,13 +250,13 @@ int main(int argc, char **argv)
 		vals[0] += cos(theta*3.14159/180.0)*dist;
 		vals[1] += sin(theta*3.14159/180.0)*dist;
 
-		int xx = vals[0]/.25;
-		vals[0] = round(xx*.25);
-		if(vals[0] == 0)
+		int xx = vals[0]/.249;
+		//vals[0] = round(xx*.25);
+		if(vals[0] == 0.0)
 			vals[0] = ((rand()%4)+1)*.25;
 
-		xx = vals[1]/.25;
-		vals[1] = round(xx*.25);
+		xx = vals[1]/.249;
+		//vals[1] = round(xx*.25);
 
 		vals[3] = round(cos(theta*3.14159/180.0));
 		vals[4] = round(sin(theta*3.14159/180.0));

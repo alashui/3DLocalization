@@ -57,6 +57,7 @@ namespace MCL
         stringstream ss;
         ss << "Bootup.h - Attempting to load " << ret.size() << " images and their characterizers.";
         DebugIO(ss.str()); ss.str("");
+        cout << endl;
 
         // tmp Descriptors
         Mat descriptors;
@@ -165,6 +166,7 @@ namespace MCL
                 break;
             if ((done * 100) / total > percent)
             {
+                cout << "\033[A"; //]
                 percent++;
                 stringstream ss;
                 ss << percent << "\% done.";

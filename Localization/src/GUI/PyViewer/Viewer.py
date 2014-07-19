@@ -120,7 +120,6 @@ def main():
         # print "Point", x - minx, y - miny
 
     win.getMouse()
-    # sleep(5)
     win.close()
 
     return main()

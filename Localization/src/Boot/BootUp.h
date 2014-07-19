@@ -74,9 +74,12 @@ namespace MCL
             // tokens is vector of strings in filename
             vector<string> tokens; 
 
-            if (fn[0] != delimiter.c_str()[0]){
+            if (fn[0] != delimiter.c_str()[0])
+            {
+                cout << "\033[A"; //]
                 ss << " Extraneous file found: " << fn;
                 DebugIO(ss.str());
+                cout << endl;
                 continue;
             }
 

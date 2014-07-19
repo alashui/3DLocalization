@@ -230,6 +230,8 @@ int main(int argc, char **argv)
 	ros::spinOnce();
 	ros::spinOnce();
 
+	ros::Duration(0.1).sleep();
+	ros::spinOnce();
 	ros::shutdown();
 
 }

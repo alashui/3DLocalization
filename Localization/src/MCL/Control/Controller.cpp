@@ -68,12 +68,6 @@ namespace MCL
         }
 
         float w = maxw - minw;
-        if (w=0)
-
-        for (int i = 0; i < this->ap.NumParticles(); i++)
-        {
-
-        }
 
         this->ap.SetParticleList(v);
     }
@@ -145,10 +139,11 @@ namespace MCL
     {
         ros::spinOnce();
         time_t temp = time(NULL);
+        int i = 0;
         // Wait until the flag is true to return
         while((time(NULL) - temp) < waittime)
         {
-            ros::spinOnce();
+            if(i%5 == 0) ros::spinOnce();
             if((this->*foo)())
                 return true;
         }
@@ -172,7 +167,7 @@ namespace MCL
         if(!this->ap.GetConstants(dirName))
             return false;
         this->ap.SetDistribution(perspectives);
-        this->ap.GenerateParticles(800);
+        this->ap.GenerateParticles(100);
         this->ap.AnalyzeList();
 
         return true;
@@ -187,12 +182,14 @@ namespace MCL
 
         CompareFeatures();
 
-        // time_t duration = time(0) - tstart;
-        // stringstream ss;
-        // ss << "CompareFeatures took " << duration << " seconds.";
-        // DebugIO(ss.str());
-        // tstart = time(0);
-        // ss.str("");
+        time_t duration = time(0) - tstart;
+        stringstream ss;
+        ss << "CompareFeatures took " << duration << " seconds.";
+        DebugIO(ss.str());
+        tstart = time(0);
+        ss.str("");
+
+
         this->ap.AnalyzeList();
         robot.SetWeightedPerspective(ap.GetGuess());
 

@@ -40,13 +40,13 @@ namespace MCL
         if(comboweights.size() != 4)
             ErrorIO("CompareAndWeight : Length of comboweight vector must be 4\n");
 
-        if(!(abs(comboweights[0]) < .005))
+        if(!(abs(comboweights[0]) < .05))
             sim += CompareDescriptors(c1.surfs, c2.surfs) *comboweights[0];
-        if(!(abs(comboweights[1]) < .005))
+        if(!(abs(comboweights[1]) < .05))
             sim += CompareDescriptors(c1.sifts, c2.sifts)*comboweights[1];
-        if(!(abs(comboweights[2]) < .005))
+        if(!(abs(comboweights[2]) < .05))
             sim += GetSimilarity(c1.gs, c2.gs)*comboweights[2];
-        if(!(abs(comboweights[3]) < .005))
+        if(!(abs(comboweights[3]) < .05))
             sim += GetSimilarity(c1.bw, c2.bw)*comboweights[3];
 
         // cout
@@ -79,7 +79,7 @@ namespace MCL
         double count = 0.0;
 
         vector<vector<DMatch> > vecmatches;
-        float ratio = 0.8;
+        float ratio = 0.75;
 
         if (desc1.empty() || desc2.empty())
         {

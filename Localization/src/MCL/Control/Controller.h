@@ -128,7 +128,7 @@ namespace MCL
 
         bool init(string);
 
-        bool exitFlagSet(); // check if exit flag is set
+        bool ExitFlagSet(); // check if exit flag is set
 
         // ActiveParticles get and set
         ActiveParticles GetActiveParticles() const;      // Get the ActiveParticles class by value.

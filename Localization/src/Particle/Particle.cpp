@@ -13,19 +13,19 @@ namespace MCL
 {
 
     Particle::Particle() :
-    weightmin(0), weightmax(100), defaultweight(10), perspective()
+    weightmin(0), weightmax(100), defaultweight(3), perspective()
     {
         weight = defaultweight;
     }
 
     Particle::Particle(Perspective p) :
-    weightmin(0), weightmax(100), defaultweight(10), perspective(p)
+    weightmin(0), weightmax(100), defaultweight(3), perspective(p)
     {
         weight = defaultweight;
     }
 
     Particle::Particle(Perspective p, float w) :
-    weightmin(0), weightmax(100), defaultweight(10), perspective(p)
+    weightmin(0), weightmax(100), defaultweight(3), perspective(p)
     {
         if(w >= weightmin && w <= weightmax)
             weight = w;

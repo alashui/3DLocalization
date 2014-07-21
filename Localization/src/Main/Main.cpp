@@ -56,7 +56,7 @@ int main(int argc, char ** argv)
     // namedWindow("Top Match");
     // namedWindow("Weighted Average");
     char key = ' ';
-    while(key != 'q' && key != 'Q')
+    while(key != 'q' && key != 'Q' && !control.ExitFlagSet())
     {   
         stringstream ss; ss.str("");
         static time_t tstart = time(0);
@@ -66,7 +66,7 @@ int main(int argc, char ** argv)
         if(!control.SpinOnce())
             continue;
 
-        if(control.exitFlagSet())
+        if(control.ExitFlagSet())
             return -1;
 
         // ss << "Generation : " << control.GetActiveParticles().GetGeneration() << ", AvgWeight :  " << control.GetActiveParticles().GetAvgWeight();

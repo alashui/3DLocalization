@@ -470,7 +470,7 @@ namespace MCL
         this->robot = rs;
     }
 
-    bool Controller::exitFlagSet()
+    bool Controller::ExitFlagSet()
     {
         return this->EXIT_FLAG;
     }

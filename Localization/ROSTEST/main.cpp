@@ -248,10 +248,21 @@ int main(int argc, char **argv)
 
 		image_names.push_back("../../../Data/RenderedImages/2ndFloorSprague/_0.5_2.75_0.4_0_-1_0_.jpg");
 		image_names.push_back("../../../Data/RenderedImages/2ndFloorSprague/_0.5_2.5_0.4_0.49_-0.86_0_.jpg");
-		// image_names.push_back("../../../Data/RenderedImages/2ndFloorSprague/_-2.75_0.5_0.4_0.5_0.86_0_.jpg");
-		// image_names.push_back("../../../Data/RenderedImages/2ndFloorSprague/_1.5_2.75_0.4_0.86_-0.5_0.jpg");
-		// image_names.push_back("../../../Data/RenderedImages/2ndFloorSprague/_0.75_3.25_0.4_-0.86_0.5_0.jpg");
-
+		image_names.push_back("../../../Data/RenderedImages/2ndFloorSprague/_0.5_8_0.4_-0.86_-0.49_0_.jpg");
+		image_names.push_back("../../../Data/RenderedImages/2ndFloorSprague/_0.25_4.5_0.4_0_1_0_.jpg");
+		image_names.push_back("../../../Data/RenderedImages/2ndFloorSprague/_1.5_5.25_0.4_0_1_0_.jpg");
+		image_names.push_back("../../../Data/RenderedImages/2ndFloorSprague/_1.5_8_0.4_-0.86_-0.49_0_.jpg");
+		image_names.push_back("../../../Data/RenderedImages/2ndFloorSprague/_1.25_1.5_0.4_0.86_-0.5_0_.jpg");
+		image_names.push_back("../../../Data/RenderedImages/2ndFloorSprague/_1.25_1.75_0.4_-1_0_0_.jpg");
+		image_names.push_back("../../../Data/RenderedImages/2ndFloorSprague/_1.25_5.75_0.4_0.86_-0.5_0_.jpg");
+		image_names.push_back("../../../Data/RenderedImages/2ndFloorSprague/_1.75_3.75_0.4_0_-1_0_.jpg");
+		image_names.push_back("../../../Data/RenderedImages/2ndFloorSprague/_1.75_3.25_0.4_0.49_-0.86_0_.jpg");
+		image_names.push_back("../../../Data/RenderedImages/2ndFloorSprague/_1_2.75_0.4_-0.5_-0.86_0_.jpg");
+		image_names.push_back("../../../Data/RenderedImages/2ndFloorSprague/_1_8.25_0.4_0.86_0.49_0_.jpg");
+		image_names.push_back("../../../Data/RenderedImages/2ndFloorSprague/_2.5_0.25_0.4_-0.49_0.86_0_.jpg");
+		image_names.push_back("../../../Data/RenderedImages/2ndFloorSprague/_2.5_2.5_0.4_-0.86_0.5_0_.jpg");
+		image_names.push_back("../../../Data/RenderedImages/2ndFloorSprague/_-2.75_0.5_0.4_0.5_0.86_0_.jpg");
+		image_names.push_back("../../../Data/RenderedImages/2ndFloorSprague/_1.5_2.75_0.4_0.86_-0.5_0.jpg");
 
 		for(int i = 0; i < image_names.size(); i++)
 		{

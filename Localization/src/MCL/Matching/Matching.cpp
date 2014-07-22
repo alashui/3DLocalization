@@ -41,13 +41,11 @@ namespace MCL
             ErrorIO("CompareAndWeight : Length of comboweight vector must be 4\n");
 
         if(!(abs(comboweights[0]) < .05))
-            sim += CompareDescriptors(c1.surfs, c2.surfs) *comboweights[0];
-        if(!(abs(comboweights[1]) < .05))
-            sim += CompareDescriptors(c1.sifts, c2.sifts)*comboweights[1];
+            sim += CompareDescriptors(c1, c2) * comboweights[0];
         if(!(abs(comboweights[2]) < .05))
-            sim += GetSimilarity(c1.gs, c2.gs)*comboweights[2];
+            sim += GetSimilarity(c1.gs, c2.gs) * comboweights[2];
         if(!(abs(comboweights[3]) < .05))
-            sim += GetSimilarity(c1.bw, c2.bw)*comboweights[3];
+            sim += GetSimilarity(c1.bw, c2.bw) * comboweights[3];
 
         // cout
         // << "SURFS: " << 10 * (int) CompareDescriptors(c1.surfs, c2.surfs)
@@ -69,11 +67,14 @@ namespace MCL
     }
 
     // given two sets of keypoints and descriptors, return a similarity score
-    float CompareDescriptors(Mat& desc1, Mat& desc2)
+    float CompareDescriptors(Characterizer c1, Characterizer c2)
     {
         // First match descriptors
         FlannBasedMatcher matcher;
         vector<DMatch> matches;
+
+        Mat desc1 = c1.descs;
+        Mat desc2 = c2.descs;
 
         double total = 0.0;
         double count = 0.0;
@@ -84,7 +85,7 @@ namespace MCL
         if (desc1.empty() || desc2.empty())
         {
             //ErrorIO("Error in Matching.cpp->CompareDescriptors: At least one of the descriptors is empty!");
-            return 1;
+            return -1;
         }
 
         float sim = 0;
@@ -93,11 +94,16 @@ namespace MCL
             if (vecmatches[i][0].distance < ratio * vecmatches[i][1].distance)
                 matches.push_back(vecmatches[i][0]);
 
+        vector<Point2f> obj;
+        vector<Point2f> scene;
+
         for( int i = 0; i < matches.size(); i++ )
         {
             total += matches[i].distance;
-            count += 1.0/(matches[i].distance+1);
+            count += 1.0;
             sim +=  1.0/(matches[i].distance+.8);
+
+            // scene.push_back()
         }
 
         if (count < 2)

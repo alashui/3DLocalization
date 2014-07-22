@@ -145,10 +145,7 @@ int main(int argc, char** argv)
     Mat Descriptors;
 
     SurfFeatureDetector SurfDetector (3000, 6, 2, true, true);
-    SiftFeatureDetector SiftDetector (800);
-
     SurfDescriptorExtractor SurfExtractor;
-    SiftDescriptorExtractor SiftExtractor;
 
     // Load Images
     // First look into the folder to get a list of filenames
@@ -258,12 +255,8 @@ int main(int argc, char** argv)
         SurfDetector.detect(i->second, Keypoints);
         removeBad(Keypoints, i->second, unique_points, skipped);
         SurfExtractor.compute(i->second, Keypoints, Descriptors);
-        write(store,"SurfDescriptors",Descriptors);
-
-        SiftDetector.detect(i->second, Keypoints);
-        removeBad(Keypoints, i->second, unique_points, skipped);
-        SiftExtractor.compute(i->second, Keypoints, Descriptors);
-        write(store,"SiftDescriptors",Descriptors);
+        write(store,"Descriptors",Descriptors);
+        write(store,"Keypoints",Keypoints);
 
         store.release();
 

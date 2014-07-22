@@ -120,7 +120,7 @@ def main():
             l.draw(win)
             # print "Point", x - minx, y - miny
     except:
-        t = Text(Point(285, 285), "Error. Click Screen To Update")
+        t = Text(Point(285, 285), "Error. Click Screen To Update.")
         t.draw(win)
 
     win.getMouse()

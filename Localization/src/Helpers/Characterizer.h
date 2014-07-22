@@ -8,6 +8,8 @@
 #define MCL_CHARACTERIZER_H_
 
 #include "opencv2/core/core.hpp"
+#include "opencv2/features2d/features2d.hpp"
+
 #include <cstdlib>
 
 using namespace cv;
@@ -19,8 +21,8 @@ namespace MCL {
         Mat image;
         Mat bw;
         Mat gs;
-        Mat surfs;
-        Mat sifts;
+        Mat descs;
+        vector<KeyPoint> kps;
     };
 
 }

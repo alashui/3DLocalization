@@ -29,8 +29,8 @@ namespace MCL
     float SimilarityOfDifferentSizedImages(Mat&, Mat&);
 
     // given two sets of keypoints and descriptors, return a similarity score
-    float CompareDescriptors(Mat&, Mat&);
-
+    float CompareDescriptors(Characterizer, Characterizer);
+    
     // Elementwise disance of two images.
     float ElementWiseDistance (Mat&, Mat&);
 

@@ -25,13 +25,8 @@ namespace MCL
         SurfDescriptorExtractor SurfExtractor;
         SurfDetector.detect(img, kps);
         SurfExtractor.compute(img, kps, descs);
-        this->c.surfs = descs;
-
-        SiftFeatureDetector SiftDetector (800);
-        SiftDescriptorExtractor SiftExtractor;
-        SiftDetector.detect(img, kps);
-        SiftExtractor.compute(img, kps, descs);
-        this->c.sifts = descs;
+        this->c.descs = descs;
+        this->c.kps = kps;
 
         Mat grs = averageImage::getPixSumFromImage(img, divs);
 

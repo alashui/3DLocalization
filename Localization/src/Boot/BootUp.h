@@ -13,6 +13,8 @@
 
 #include "opencv2/core/core.hpp"
 #include "opencv2/highgui/highgui.hpp"
+#include "opencv2/features2d/features2d.hpp"
+
 
 #include "../Helpers/Perspective.h"
 #include "../Helpers/Characterizer.h"
@@ -61,6 +63,7 @@ namespace MCL
 
         // tmp Descriptors
         Mat descriptors;
+        vector<KeyPoint> keypoints;
 
         int percent = 0;
         int total = ret.size();
@@ -133,13 +136,13 @@ namespace MCL
             // Create filestorage item to read from and add to map.
             FileStorage store(kpfn, FileStorage::READ);
 
-            FileNode n1 = store["SurfDescriptors"];
+            FileNode n1 = store["Descriptors"];
             read(n1, descriptors);
-            tmp.surfs = descriptors;
+            tmp.descs = descriptors;
 
-            // FileNode n2 = store["SiftDescriptors"];
-            // read(n2, descriptors);
-            // tmp.sifts = descriptors;
+            FileNode n2 = store["Keypoints"];
+            read(n2, keypoints);
+            tmp.kps = keypoints;
 
             store.release();
 
@@ -165,7 +168,7 @@ namespace MCL
                 return -1;
             }
             done++;
-            if (done > 4000) 
+            if (done > 500) 
                 break;
             if ((done * 100) / total > percent)
             {

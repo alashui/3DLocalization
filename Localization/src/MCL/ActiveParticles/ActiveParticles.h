@@ -1,8 +1,10 @@
 /**
 *
-*   @File ActiveParticles.h
-*   @Author Alex Rich and John Allard. Summer 2014
-*   @Info Header for Active Particles
+*   @File   - ActiveParticles.h
+*   @Author - Alex Rich and John Allard. Summer 2014
+*   @Info   - Header file for the ActiveParticles class. This class represents a data structure that holds a list of Particle objects
+*             and functions to work on these Particles. This class will be used as an object inside the Controller class which runs the
+*             MCL algorithm and the 3DLocalization program. 
 *
 **/
 

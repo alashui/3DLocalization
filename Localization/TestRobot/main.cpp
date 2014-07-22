@@ -98,22 +98,28 @@ void publish_Move()
     vector<float> temp = getMoveData();
     stringstream ss;
     std_msgs::String msg;
+
+    // Publish 'Start Move' command (10);
     msg.data = "10";
     movement_publisher.publish(msg);
+
+    // Wait for the 3DL program to get the message and start waiting for the done moving command
     ros::spinOnce();
     ros::Duration(1).sleep();
 
-
+    // Publish the finished moving command and the movement coordinates.
     ss << "20" << " " << temp[0] << " " << temp[1] << " ";
     msg.data = ss.str();
     movement_publisher.publish(msg);
 
-    if(current_image == image_list.size())
-        current_image = 0;
-    // imshow("Robot Image", image_list[current_image]);
+    // if(current_image == image_list.size())
+    //     current_image = 0;
+    // // imshow("Robot Image", image_list[current_image]);
 
 }
 
+// Recieves data from the 3DL program such as the 'HandShake' command, 'ReadyMove' command, and meta data about the hypothosis of
+// the robots location.
  void MyDataCallback(const std_msgs::String msg)
 {
     string str = msg.data;

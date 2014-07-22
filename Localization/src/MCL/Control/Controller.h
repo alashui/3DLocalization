@@ -126,6 +126,8 @@ namespace MCL
         // them call this function, the class will handle the rest internally. 
         bool SpinOnce();
 
+        // Initiate the Controller class. This goes through and connects with the robot, starts of all of the ros::Publishers and 
+        // ros::Subscribers. Fills the Particle vector with a uniform distirbution of particles over our space.
         bool init(string);
 
         bool ExitFlagSet(); // check if exit flag is set

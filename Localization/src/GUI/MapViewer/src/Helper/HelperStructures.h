@@ -26,6 +26,18 @@ namespace Helper
         float shininess;
         int texCount;
     };
+
+
+    struct VERTICES
+    {
+        int X;    
+        int Y;    
+        int Z;   
+        double U;   
+        double V;
+    };
+
+    
 }
 
 #endif

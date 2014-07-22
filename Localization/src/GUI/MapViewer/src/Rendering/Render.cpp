@@ -151,6 +151,8 @@ namespace Render
 
             myMeshes.push_back(aMesh);
         }
+
+
     }
 
 
@@ -185,7 +187,6 @@ namespace Render
             // draw
             glDrawElements(GL_TRIANGLES,myMeshes[nd->mMeshes[n]].numFaces*3,GL_UNSIGNED_INT,0);
 
-            //glutSolidSphere(2, 100, 100);
         }
 
         // draw all children
@@ -199,7 +200,73 @@ namespace Render
 
 
     // Rendering Callback Function
+    void CreateSphere(float radius, float x, float y, float z)
+    { 
+        int rings = 100;
+        int sectors = 100;
 
+        float const R = 1./(float)(rings-1);
+        float const S = 1./(float)(sectors-1);
+        int r, s;
+
+        std::vector<float> vertices;
+        vertices.resize(rings * sectors * 3);
+        std::vector<GLfloat>::iterator v = vertices.begin();
+
+        for(r = 0; r < rings; r++) 
+        {
+            for(s = 0; s < sectors; s++)
+            {
+                float const y1 = sin( -M_PI_2 + M_PI * r * R );
+                float const x1 = cos(2*M_PI * s * S) * sin( M_PI * r * R );
+                float const z1 = sin(2*M_PI * s * S) * sin( M_PI * r * R );
+
+                *v++ = x + x1 * radius;
+                *v++ = y + y1 * radius;
+                *v++ = z + z1 * radius;
+            }
+        }
+
+        float* vertices2 = new float[vertices.size()];
+        for(int i = 0; i < vertices.size(); i++)
+        {
+            vertices2[i] = vertices[i];
+
+            // if(i % 3 == 0)
+            //     vertices2[i] += x;
+            // else if(i != 0 && i % 1 == 0)
+            //     vertices2[i] += y;
+            // else if(i != 0 && i % 2 == 0)
+            //     vertices2[i] += z;
+
+        }
+
+
+        glGenVertexArrays(1, &vaoID[0]); // Create our Vertex Array Object  
+        glBindVertexArray(vaoID[0]); // Bind our Vertex Array Object so we can use it  
+          
+        glGenBuffers(1, vboID); // Generate our Vertex Buffer Object  
+        glBindBuffer(GL_ARRAY_BUFFER, vboID[0]); // Bind our Vertex Buffer Object  
+        glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(float), vertices2, GL_STATIC_DRAW); // Set the size and data of our VBO and set it to STATIC_DRAW  
+          
+        glVertexAttribPointer((GLuint)0, 4, GL_FLOAT, GL_FALSE, 0, 0); // Set up our vertex attributes pointer  
+          
+        glEnableVertexAttribArray(0); // Disable our Vertex Array Object  
+        glBindVertexArray(0); // Disable our Vertex Buffer Object  
+
+
+        glMatrixMode(GL_MODELVIEW);
+        glPushMatrix();
+        glTranslatef(0, 0,.4);
+        glBindVertexArray(vaoID[0]); // Bind our Vertex Array Object  
+        glDrawArrays(GL_TRIANGLES, 0, vertices.size()/3); // Draw our square  
+        glBindVertexArray(0); // Unbind our Vertex Array Object 
+                  
+        delete [] vertices2; // Delete our vertices from memory  
+
+    }
+
+    
     void renderScene(void)
     {
         //std::cout << "render" << std::endl;
@@ -239,13 +306,11 @@ namespace Render
             frame = 0;
             glutSetWindowTitle(s);
         }
-        
-        glMatrixMode(GL_MODELVIEW);
-        pushMatrix();
-        setModelMatrix();
-        glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-        glutSolidSphere(4, 100, 100);
-        popMatrix();
+        //static SolidSphere sphere(1.0, 50, 50);
+        //CreateSphere(.3, -0.1, 0.1, 0.4);
+        // sphere.draw(0, 0, 1);
+        //DisplaySphere(.3, texture[0]);  
+
         // swap buffers
         glutSwapBuffers();
 

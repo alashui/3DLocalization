@@ -63,12 +63,13 @@ namespace MCL
         const std::string ROBOT_IMAGE_PUBLISHER_NAME;// = "ROBOT_IMAGE_DATA";
         const std::string ROBOT_MOVEMENT_PUBLISHER_NAME; // = ROBOT MOVEMENT DATA
 
-        const int starting_move; // message from robot means they are starting to move
-        const int finished_move; // message from robot means they are done moving and what their movement coordinates are.
-        const int handshake;     // message from us to the robot signifying a handshake
-        const int readymove;     // message from us to the robot meaning we are ready for them to move.
-        const int robotdata;     // message from us to meaning we are sending data about the robot
-        const int killflag;      // signal from the robot to shut down
+        const int starting_move;            // message from robot means they are starting to move
+        const int finished_move;            // message from robot means they are done moving and what their movement coordinates are.
+        const int handshake;                // message from us to the robot signifying a handshake
+        const int readymove;                // message from us to the robot meaning we are ready for them to move.
+        const int robotdata;                // message from us to meaning we are sending data about the robot
+        const int killflag;                 // signal from the robot to shut down
+        const int defaultParticleListsize;   // default amount of particles sampled from our distibution
 
         bool moving;             // Flag that lets us know if the robot is moving.
         bool image_feed_started; // Flag that lets us know when the robot has started publshing camera data.

@@ -16,6 +16,7 @@
 #include "../Helper/MathHelp.h"
 #include "../Helper/HelperStructures.h"
 #include "../View/View.h"
+#include "../Helper/SolidSphere.h"
 #include "../IO/ProgramIO.h"
 
 
@@ -42,6 +43,8 @@ namespace Render
     void clearMeshes();
 
     void setModelMatrix();
+
+    void CreateShere();
 
     // The equivalent to glTranslate applied to the model matrix
     void translate(float x, float y, float z);

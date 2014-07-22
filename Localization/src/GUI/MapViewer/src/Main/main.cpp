@@ -31,6 +31,7 @@
 #include "../Rendering/Render.h"
 #include "../Shaders/ShaderFunctions.h"
 #include "../IO/ProgramIO.h"
+#include "../Helper/SolidSphere.h"
 
 
 int init();
@@ -134,6 +135,9 @@ int init()
 
     glEnable(GL_DEPTH_TEST);        
     glClearColor(1.0f, 0.0f, 1.0f, 0.0f);
+
+    texture[0] = LoadTextureRAW("earth raw");
+    CreateSphere(.2,0,0,0);
 
 
     //

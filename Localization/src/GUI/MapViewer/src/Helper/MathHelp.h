@@ -97,6 +97,12 @@ extern std::string modelname;
 extern std::string modelDirectoryName;
 extern std::string pathToModelDataDirectory;
 
+
+
+extern unsigned int vaoID[1]; // Our Vertex Array Object  
+  
+extern unsigned int vboID[1]; // Our Vertex Buffer Object  
+
 extern int main_window;
 
 

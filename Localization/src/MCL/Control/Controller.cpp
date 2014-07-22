@@ -10,6 +10,7 @@
 namespace MCL
 {
     Controller::Controller() :
+    defaultParticleListsize(600),
     MCL_PUBLISHER_NAME("MCL_DATA_PUBLISHER"), // name of the MCL-related data publisher that we must publish under.
     ROBOT_MOVEMENT_PUBLISHER_NAME("ROBOT_MOVEMENT_PUBLISHER"), // Name of the robot movement data publisher we must subscribe to and the user must publish under
     ROBOT_IMAGE_PUBLISHER_NAME("ROBOT_IMAGE_PUBLISHER"),
@@ -182,7 +183,7 @@ namespace MCL
 
         this->ap.SetDistribution(perspectives);
 
-        if(!this->ap.GenerateParticles(200))
+        if(!this->ap.GenerateParticles(defaultParticleListsize))
             return false;
 
         this->ap.AnalyzeList();

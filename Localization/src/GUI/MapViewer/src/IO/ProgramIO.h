@@ -5,6 +5,8 @@
 #include "../Helper/MathHelp.h"
 #include "../View/View.h"
 #include "../Rendering/Render.h"
+#include "../../../Particle/Particle.h"
+#include <boost/algorithm/string.hpp>
 
 #include <cstdlib>
 #include <iostream>
@@ -20,6 +22,8 @@ extern int startX, startY, tracking;
 extern float alpha;
 extern float beta;
 extern float r;
+
+using namespace MCL;
 
 namespace IO
 {

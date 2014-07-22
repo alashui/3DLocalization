@@ -13,7 +13,7 @@
 namespace MCL
 {
 
-    ActiveParticles::ActiveParticles() : generation(0), defaultDistributionSize(3000), gd(0.2), dtheta(15) {srand(time(0));}
+    ActiveParticles::ActiveParticles() : generation(0), defaultDistributionSize(10000), gd(0.2), dtheta(15) {srand(time(0));}
 
     // Perspective Scatter(Perspective p, float maxtranslation, int prob=32);
     
@@ -118,7 +118,7 @@ namespace MCL
 
     bool ActiveParticles::GenerateDistribution()
     {
-        return GenerateDistribution(6000);
+        return GenerateDistribution(defaultDistributionSize);
     }
 
     bool ActiveParticles::GenerateDistribution(int wantedSize)

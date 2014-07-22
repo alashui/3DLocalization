@@ -249,7 +249,7 @@ namespace IO
     void processMouseButtons(int button, int state, int xx, int yy) 
     {
         //glutTimerFunc(50, nextLocation, 1);
-        snapshot = true;
+        //snapshot = true;
     }
 
     // Track mouse motion while buttons are pressed
@@ -311,25 +311,27 @@ namespace IO
 std::vector<Particle> GetParticleList()
 {
     std::string fn = "../../PyViewer/ParticleLists.txt";
-    ifstream file(fn.c_str());
+    std::ifstream file(fn.c_str());
     if ( !file.is_open() )
     {
-        stringstream ss;
+        std::stringstream ss;
         ss << "ParticleLists.txt not found.";
         ErrorIO(ss.str());
-        return std::vector<Particle> v;
+        std::vector<Particle> v;
+        return v;
     }
 
     std::vector<Particle> pList;
+    std::vector<float> v;
 
-    string str;
+    std::string str;
     getline( file, str );
     while (str.compare("\n"))
     {
         std::vector<std::string> strs;
         boost::split(strs, str, boost::is_any_of(" "));
         for (int i = 0; i < strs.size(); i++)
-            v.push_back(atof(strs[i].c_str()))
+            v.push_back(atof(strs[i].c_str()));
 
         float wt = v.back();
         v.pop_back();
@@ -338,3 +340,4 @@ std::vector<Particle> GetParticleList()
     }
     return pList;
 }
+

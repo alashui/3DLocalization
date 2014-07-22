@@ -52,7 +52,7 @@ namespace MCL
     {
         vector<Particle> v = this->ap.GetParticleList();
 
-        float maxw = -1;
+        float maxw = -1000;
         float minw = 10000;
         for(int i = 0; i < this->ap.NumParticles(); i++)
         {   
@@ -68,6 +68,14 @@ namespace MCL
         }
 
         float w = maxw - minw;
+
+        for (int i = 0; i < this->ap.NumParticles(); i++)
+        {
+            float currentw = v[i].GetWeight();
+            v[i].SetWeight((currentw - minw) * 100.0 / w);
+        }
+
+        cout << minw << "\t" << maxw << endl;
 
         this->ap.SetParticleList(v);
     }

@@ -24,7 +24,7 @@ namespace MCL
         if (!masterMap.count(p.GetPerspective()))
         {
             cout << "NOT FOUND: " << p.GetPerspective().ToString() << endl;
-            return -1.0;
+            return -1000.0;
         }
 		Characterizer c1 = masterMap.at(p.GetPerspective());
 		Characterizer c2 = R.GetCharacterizer();
@@ -80,12 +80,12 @@ namespace MCL
         double count = 0.0;
 
         vector<vector<DMatch> > vecmatches;
-        float ratio = 0.75;
+        float ratio = 0.8;
 
         if (desc1.empty() || desc2.empty())
         {
             //ErrorIO("Error in Matching.cpp->CompareDescriptors: At least one of the descriptors is empty!");
-            return -1;
+            return -1000;
         }
 
         float sim = 0;
@@ -94,22 +94,60 @@ namespace MCL
             if (vecmatches[i][0].distance < ratio * vecmatches[i][1].distance)
                 matches.push_back(vecmatches[i][0]);
 
-        vector<Point2f> obj;
-        vector<Point2f> scene;
+        vector<Point2f> obj1;
+        vector<Point2f> scene2;
 
         for( int i = 0; i < matches.size(); i++ )
         {
             total += matches[i].distance;
             count += 1.0;
-            sim +=  1.0/(matches[i].distance+.8);
+            sim += 1/(matches[i].distance+0.8);
 
-            // scene.push_back()
+            obj1.push_back(c1.kps[matches[i].queryIdx].pt);
+            scene2.push_back(c2.kps[matches[i].trainIdx].pt);
         }
+
+        if (obj1.size() < 4)
+            return -1000;
+
+        Mat H = findHomography( obj1, scene2, CV_RANSAC );
+
+        vector<Point2f> results;
+
+        perspectiveTransform(obj1, results, H);
+
+        double dev = 0.0;
+        for( int i = 0; i < matches.size(); i++ )
+        {
+            Point2f a = results[i];
+            Point2f b = scene2[i];
+            Point2f diff = a - b;
+            dev += sqrt(diff.x*diff.x + diff.y*diff.y);
+        }
+
+        Mat img_matches;
+        drawMatches( c1.image, c1.kps, c2.image, c2.kps,
+               matches, img_matches);
+
+        dev /= matches.size();
+
+
+        float score = -0.1 * dev + 5 * sqrt(sqrt(sim*sim*sim));
+
+
+        // stringstream ss;
+        // ss << "Score: " << score << ", dev: "<< dev << ", sim: " << sim;
+        // namedWindow(ss.str());
+        // imshow(ss.str(), img_matches);
+        // waitKey(0);
+        // destroyAllWindows();
+
 
         if (count < 2)
             return 1;
         // cout << total / count << " ";
-        return sqrt(sqrt(sim*sim*sim)); // + count / 2.0;
+        return score;
+        // return sqrt(sqrt(sim*sim*sim)); // + count / 2.0;
     }
 
     // Elementwise disance of two images.
@@ -120,7 +158,7 @@ namespace MCL
             stringstream ss;
             ss << "Error in Matching.h -> ElementWiseDistance! Matrices are not the same size!";
             ErrorIO(ss.str());
-            return -1;
+            return -1000;
         }
 
         float difference = 0.0;

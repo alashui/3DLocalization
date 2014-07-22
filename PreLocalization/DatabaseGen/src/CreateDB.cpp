@@ -226,6 +226,8 @@ int main(int argc, char** argv)
 
     int count = 0;
     int total = imagemap.size();
+    int percent = 0;
+
 
     cout << total << " images found.\nComputing keypoints and coarse images." << endl;
 
@@ -272,9 +274,10 @@ int main(int argc, char** argv)
 
         count++;
 
-        if ((count * 100 / total) % 5 == 0)
+        if ((count * 100 / total) > percent)
         {
-            cout << (float)(100.0*count)/ total << " percent done. Estimated Time Remaining: " << (x-s)/60.0 << " minutes. ";
+            percent ++;
+            cout << (100 * count) / total << " percent done. Estimated Time Remaining: " << (x-s)/60.0 << " minutes. ";
             cout << "Total skipped so far: " << skipped << "." << endl;
         }
     }

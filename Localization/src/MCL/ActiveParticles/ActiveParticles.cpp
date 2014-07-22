@@ -63,7 +63,7 @@ namespace MCL
         float dy = (maxy - avgy) > (avgy - miny) ? (maxy - avgy) : (avgy - miny);
         float dz = (maxz - avgz) > (avgz - minz) ? (maxz - avgz) : (avgz - minz);
 
-        float dist = sqrt(dx * dx + dy * dy + dz * dz) / 10;
+        float dist = sqrt(dx * dx + dy * dy + dz * dz) / 8;
 
         Particle myP(Perspective(avgx, avgy, avgz, 0.0, 0.0, 0.0));
 

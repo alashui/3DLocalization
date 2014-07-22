@@ -80,7 +80,7 @@ namespace MCL
         double count = 0.0;
 
         vector<vector<DMatch> > vecmatches;
-        float ratio = 0.8;
+        float ratio = 0.75;
 
         if (desc1.empty() || desc2.empty())
         {
@@ -132,7 +132,7 @@ namespace MCL
         dev /= matches.size();
 
 
-        float score = -0.1 * dev + 5 * sqrt(sqrt(sim*sim*sim));
+        float score = /*-0.1 * dev + 5 **/ sqrt(sqrt(sim*sim*sim));
 
 
         // stringstream ss;

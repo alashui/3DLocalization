@@ -60,15 +60,15 @@ namespace MCL
         //@Purpose  - Take the list of active particles, consider their respective perspectives and weightings, and generate a 
         //            distribution of perspectives that when sampled will provide perspectives in areas that we think are more likely
         //            to contain our actor.
-        int GenerateDistribution(int wantedSize);
-        int GenerateDistribution();               // Calls the above with this->defaultDistibutionSize as an argument
+        bool GenerateDistribution(int wantedSize);
+        bool GenerateDistribution();               // Calls the above with this->defaultDistibutionSize as an argument
 
         //@Function - GenerateParticles
         //@Purpose  - This function samples the distribution created in the generateDistribution(..) to refill the pList vector
         //            with guesses (which are hopefully more refined) as to where the actor can be in the environment. Makes @param amount
         //            samples
-        void GenerateParticles(int amount);
-        void GenerateParticles();          // Calls the above with this->pList.size() as an argument  
+        bool GenerateParticles(int amount);
+        bool GenerateParticles();          // Calls the above with this->pList.size() as an argument  
 
         //@Function - AnalyzeList()
         //@Purpose  - Called once by the Controller class each iteration of the MCL loop. It computes data about the particle list like

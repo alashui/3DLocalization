@@ -69,15 +69,6 @@ int main(int argc, char ** argv)
         if(control.ExitFlagSet())
             return -1;
 
-        // ss << "Generation : " << control.GetActiveParticles().GetGeneration() << ", AvgWeight :  " << control.GetActiveParticles().GetAvgWeight();
-        // ss <<",\n  Guess : " << r.GetGuessPerspective().ToString(); 
-        // ss <<",\n  Weighted Guess : " << r.GetWeightedPerspective().ToString(); 
-        // DebugIO(ss.str());
-        // UserIO(ss.str());
-        // imshow("Top Match", masterMap.at(r.GetGuessPerspective()).image);
-        // imshow("Robot Image", r.GetCharacterizer().image);
-        // if (masterMap.count(r.GetWeightedPerspective()))
-            // imshow("Weighted Average", masterMap.at(r.GetWeightedPerspective()).image);
         key = waitKey(4);
         time_t temp = time(0) - tstart;
         tstart = time(0);

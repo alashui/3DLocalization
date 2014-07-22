@@ -85,7 +85,7 @@ namespace MCL
         if (desc1.empty() || desc2.empty())
         {
             //ErrorIO("Error in Matching.cpp->CompareDescriptors: At least one of the descriptors is empty!");
-            return -1000;
+            return 3;
         }
 
         float sim = 0;
@@ -108,7 +108,7 @@ namespace MCL
         }
 
         if (obj1.size() < 4)
-            return -1000;
+            return 2;//-1000;
 
         Mat H = findHomography( obj1, scene2, CV_RANSAC );
 
@@ -129,7 +129,8 @@ namespace MCL
         drawMatches( c1.image, c1.kps, c2.image, c2.kps,
                matches, img_matches);
 
-        dev /= matches.size();
+        if(matches.size() > 0)
+            dev /= matches.size();
 
 
         float score = /*-0.1 * dev + 5 **/ sqrt(sqrt(sim*sim*sim));

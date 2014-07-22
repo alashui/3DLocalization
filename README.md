@@ -8,7 +8,7 @@ This project is an small collection of programs that allow a general actor (most
 Written by Alex Rich and John Allard at Harvey Mudd College during the summer of 2014. Special thanks to the following
 * Professor Dodds, our mentor for this project. Without his wisdom, generosity, and  industry connections this project would not have been possible.
 * The National Science Foundation, for funding this project and many other REU programs around the nation.
-* Matterport Inc, and specifically Mike Beebe, the co-founder and current COO, for loaning us a state-of-the-art 3D imaging camera. Without their generosity building the 3D models required for this project wouls have been difficult if not impossible.
+* Matterport Inc, and specifically Mike Beebe, the co-founder and current COO, for loaning us a state-of-the-art 3D imaging camera. Without their generosity building the 3D models required for this project would have been difficult if not impossible.
 
 #### Furthur Information
 

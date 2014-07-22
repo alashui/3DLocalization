@@ -109,46 +109,58 @@ namespace MCL
 
         for (int i = 0; i < totalPs; i++)
         {
-            avg += this->pList[i].GetWeight() / totalPs;
+            if(totalPs != 0)
+                avg += this->pList[i].GetWeight() / (float)totalPs;
         }
         this->weightHistory.push_back(avg);
         return avg;
     }
 
-    int ActiveParticles::GenerateDistribution()
+    bool ActiveParticles::GenerateDistribution()
     {
         return GenerateDistribution(6000);
     }
 
-    int ActiveParticles::GenerateDistribution(int wantedSize)
+    bool ActiveParticles::GenerateDistribution(int wantedSize)
     {
         // Randomly generate a distribution based on 
         // the weights of all elements in pList
         float totalWeight = this->GetAvgWeight() * (float) this->NumParticles();
+        stringstream ss;
+        ss << "total weight " << totalWeight;
         this->distribution.clear();
 
         for (int i = 0; i < this->pList.size(); i++)
         {
             // cout << this->pList[i].GetWeight() << "\t" << wantedSize << "\t" << totalWeight << endl;
+            totalWeight = (totalWeight == 0)? 1 : totalWeight;
             int num = (this->pList[i].GetWeight() * wantedSize) / totalWeight;
             for (; num > -1; num--)
                 this->distribution.push_back(this->pList[i].GetPerspective());
         }
-        return 0;
+
+        ss << "\n distribution size " << distribution.size();
+        
+        DebugIO(ss.str());
+        return true;
     }
 
-    void ActiveParticles::GenerateParticles()
+    bool ActiveParticles::GenerateParticles()
     {
-        GenerateParticles(pList.size());
+        return (GenerateParticles(pList.size()));
     }
 
-    void ActiveParticles::GenerateParticles(int amount)
+    bool ActiveParticles::GenerateParticles(int amount)
     {
         this->pList.clear();
         // uniform_int_distribution<int> dist(0, this->distribution.size() - 1);
         stringstream ss;
-        ss << "Distribution Size : " << this->distribution.size();
-        // DebugIO(ss.str());
+        if(this->distribution.size() == 0)
+        {
+            ss << "Distribution Size : " << this->distribution.size() << " ; Generate Particles Failed";
+            DebugIO(ss.str());
+            return false;
+        }
 
         for (int i = 0; i < 0.8*amount; i++)
         {
@@ -176,6 +188,9 @@ namespace MCL
             }
             pList.push_back(Particle(P));
         }
+
+        return true;
+
     }
 
     Perspective ActiveParticles::AnalyzeList()
@@ -306,6 +321,12 @@ namespace MCL
         // grid density
         getline( file, str );
         this->gd = atof(str.c_str());
+
+        if(gd == 0)
+        {
+            gd = 0.1;
+            return false;
+        }
 
         // Angle difference
         getline( file, str );

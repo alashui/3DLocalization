@@ -84,8 +84,13 @@ namespace MCL
     // distribution to create a new list of active particles.
     bool Controller::GenDistributionAndSample()
     {
-        ap.GenerateDistribution();
-        ap.GenerateParticles((int)(ap.GetParticleList().size()));
+        if(!ap.GenerateDistribution())
+            return false;
+
+        if(!ap.GenerateParticles(ap.GetParticleList().size()))
+            return false;
+
+        return true;
     }
 
     // Start by sending a movement command to the robot, then update every particle in the particle list accordingly
@@ -174,8 +179,12 @@ namespace MCL
 
         if(!this->ap.GetConstants(dirName))
             return false;
+
         this->ap.SetDistribution(perspectives);
-        this->ap.GenerateParticles(200);
+
+        if(!this->ap.GenerateParticles(200))
+            return false;
+
         this->ap.AnalyzeList();
 
         return true;
@@ -203,21 +212,25 @@ namespace MCL
 
         this->PublishData(robotdata, " ");
 
-        // duration = time(0) - tstart;
-        // ss << "AnalyzeList took " << duration << " seconds.";
-        // DebugIO(ss.str());
-        // tstart = time(0);
-        // ss.str("");
+        duration = time(0) - tstart;
+        ss << "AnalyzeList took " << duration << " seconds.";
+        DebugIO(ss.str());
+        tstart = time(0);
+        ss.str("");
 
         ros::spinOnce();
         
-        GenDistributionAndSample();
+        if(!GenDistributionAndSample())
+        {
+            ErrorIO("Failed to generate distribution and sample new particles");
+            return false;
+        }
 
-        // duration = time(0) - tstart;
-        // ss << "GenDistributionAndSample took " << duration << " seconds.";
-        // DebugIO(ss.str());
-        // tstart = time(0);
-        // ss.str("");
+        duration = time(0) - tstart;
+        ss << "GenDistributionAndSample took " << duration << " seconds.";
+        DebugIO(ss.str());
+        tstart = time(0);
+        ss.str("");
 
         ros::spinOnce();
         
@@ -227,9 +240,9 @@ namespace MCL
             return false;
         }
 
-        // duration = time(0) - tstart;
-        // ss << "MoveUpdate took " << duration << " seconds.";
-        // DebugIO(ss.str());
+        duration = time(0) - tstart;
+        ss << "MoveUpdate took " << duration << " seconds.";
+        DebugIO(ss.str());
 
         ros::spinOnce();
 
@@ -404,6 +417,8 @@ namespace MCL
         return ros::ok();
     }
 
+    // Publish a generatic string of data to the robot. the int code will be placed on front of the data string
+    // for the robot to know how to process the command.
     bool Controller::PublishData(int code, std::string str)
     {
         std_msgs::String msg;

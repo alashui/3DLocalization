@@ -1,8 +1,10 @@
 /**
 *
-*   @File BootUp.h
-*   @Author Alex Rich and John Allard
-*   @Info Loads initial data for MCL
+*   @File   - BootUp.h
+*   @Author - Alex Rich and John Allard
+*   @Info   - This file contains functions needed to load all of the data necessary to run the 3DLocalization program. It goes into 
+*             the /Data/FeatureData/ directory and loads all of the feature data that is sourced from the current 3D model that the user
+*             is trying to localize themselves inside.
 *
 **/
 
@@ -168,7 +170,7 @@ namespace MCL
                 return -1;
             }
             done++;
-            if (done > 1000) 
+            if (done > 3000) 
                 break;
             if ((done * 100) / total > percent)
             {

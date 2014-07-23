@@ -94,8 +94,8 @@ namespace MCL
             if (vecmatches[i][0].distance < ratio * vecmatches[i][1].distance)
                 matches.push_back(vecmatches[i][0]);
 
-        vector<Point2f> obj1;
-        vector<Point2f> scene2;
+        // vector<Point2f> obj1;
+        // vector<Point2f> scene2;
 
         for( int i = 0; i < matches.size(); i++ )
         {
@@ -103,34 +103,34 @@ namespace MCL
             count += 1.0;
             sim += 1/(matches[i].distance+0.8);
 
-            obj1.push_back(c1.kps[matches[i].queryIdx].pt);
-            scene2.push_back(c2.kps[matches[i].trainIdx].pt);
+            // obj1.push_back(c1.kps[matches[i].queryIdx].pt);
+            // scene2.push_back(c2.kps[matches[i].trainIdx].pt);
         }
 
-        if (obj1.size() < 4)
-            return 2;//-1000;
+        // if (obj1.size() < 4)
+        //     return 2;//-1000;
 
-        Mat H = findHomography( obj1, scene2, CV_RANSAC );
+        // Mat H = findHomography( obj1, scene2, CV_RANSAC );
 
-        vector<Point2f> results;
+        // vector<Point2f> results;
 
-        perspectiveTransform(obj1, results, H);
+        // perspectiveTransform(obj1, results, H);
 
-        double dev = 0.0;
-        for( int i = 0; i < matches.size(); i++ )
-        {
-            Point2f a = results[i];
-            Point2f b = scene2[i];
-            Point2f diff = a - b;
-            dev += sqrt(diff.x*diff.x + diff.y*diff.y);
-        }
+        // double dev = 0.0;
+        // for( int i = 0; i < matches.size(); i++ )
+        // {
+        //     Point2f a = results[i];
+        //     Point2f b = scene2[i];
+        //     Point2f diff = a - b;
+        //     dev += sqrt(diff.x*diff.x + diff.y*diff.y);
+        // }
 
-        Mat img_matches;
-        drawMatches( c1.image, c1.kps, c2.image, c2.kps,
-               matches, img_matches);
+        // Mat img_matches;
+        // drawMatches( c1.image, c1.kps, c2.image, c2.kps,
+        //        matches, img_matches);
 
-        if(matches.size() > 0)
-            dev /= matches.size();
+        // if(matches.size() > 0)
+        //     dev /= matches.size();
 
 
         float score = /*-0.1 * dev + 5 **/ sqrt(sqrt(sim*sim*sim));

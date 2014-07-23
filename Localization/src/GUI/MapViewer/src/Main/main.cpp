@@ -96,7 +96,7 @@ int main(int argc, char **argv)
 
     // return from main loop
     glutSetOption(GLUT_ACTION_ON_WINDOW_CLOSE, GLUT_ACTION_GLUTMAINLOOP_RETURNS);
-;
+
     glutMainLoop();
 
     // cleaning up
@@ -120,7 +120,7 @@ int init()
         return(0);
     }
     IO::LoadGLTextures();
-
+    
     glGetUniformBlockIndex = (PFNGLGETUNIFORMBLOCKINDEXPROC) glutGetProcAddress("glGetUniformBlockIndex");
     glUniformBlockBinding = (PFNGLUNIFORMBLOCKBINDINGPROC) glutGetProcAddress("glUniformBlockBinding");
     glGenVertexArrays = (PFNGLGENVERTEXARRAYSPROC) glutGetProcAddress("glGenVertexArrays");
@@ -135,10 +135,6 @@ int init()
 
     glEnable(GL_DEPTH_TEST);        
     glClearColor(1.0f, 0.0f, 1.0f, 0.0f);
-
-    texture[0] = LoadTextureRAW("earth raw");
-    CreateSphere(.2,0,0,0);
-
 
     //
     // Uniform Block

@@ -152,6 +152,11 @@ namespace Render
             myMeshes.push_back(aMesh);
         }
 
+        sphere.CreateSphere();
+
+        sphere.LoadTextures();
+
+        sphere.genVAOsAndUniformBuffer();
 
     }
 
@@ -306,10 +311,9 @@ namespace Render
             frame = 0;
             glutSetWindowTitle(s);
         }
-        //static SolidSphere sphere(1.0, 50, 50);
-        //CreateSphere(.3, -0.1, 0.1, 0.4);
-        // sphere.draw(0, 0, 1);
-        //DisplaySphere(.3, texture[0]);  
+
+        sphere.recursive_render(sphere.scene->mRootNode);
+
 
         // swap buffers
         glutSwapBuffers();

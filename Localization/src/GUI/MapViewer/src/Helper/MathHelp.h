@@ -99,6 +99,7 @@ extern std::string pathToModelDataDirectory;
 
 
 
+
 extern unsigned int vaoID[1]; // Our Vertex Array Object  
   
 extern unsigned int vboID[1]; // Our Vertex Buffer Object  

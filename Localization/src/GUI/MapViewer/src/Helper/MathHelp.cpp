@@ -56,11 +56,12 @@ int perspectiveCount = 0;
 bool snapshot = false;
 int imageNum = 0;
 std::string generatedImagesDirectory = "../../../../../Data/RenderedImages/";
-std::string generatedInputDirectory = "../../../../Data/InputData/";
+std::string generatedInputDirectory =  "../../../../../Data/InputData/";
 std::string fileExt = ".jpg";
 std::string modelname = "14db49e526f340dfba81c4a2da23c716.obj";
 std::string modelDirectoryName = "2ndFloorSprague/";
 std::string pathToModelDataDirectory = "../../../../../Data/ModelData/";
+
 
 unsigned int vaoID[1]; // Our Vertex Array Object  
   

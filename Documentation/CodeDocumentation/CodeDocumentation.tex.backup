@@ -30,8 +30,7 @@
 
 % === Section 1, Introduction === %
     \section{Introduction}
-    Accomplishing the task of successfully locating an actor in an environment using CV-derived features and a 3D model requires many individual steps. The success 
-    of the localization attempt depends strongly on the computation and data storage that is done before any attempt is made. With this in mind, we decided to subdivide the task of localizing an actor into three separate programs that must be run individually. Two of them are done before the localization attempt and are only needed to be ran once for each map that an actor is attempting to localize itself in. The 3rd program is the actual localization code that matches features to figure out where the actor is in the given map.
+    Accomplishing the task of successfully locating an actor in an environment using CV-derived features and a 3D model requires many individual steps. The success of the localization attempt depends strongly on the computation and data storage that is done before any attempt is made. With this in mind, we decided to subdivide the task of localizing an actor into a few separate programs that must be run individually. Two of them are done before the localization attempt and are only needed to be ran once for each map that an actor is attempting to localize itself in. The other group of programs are used for the actual localization attempt. This includes the actual 3DLocalization program and some optional GUI programs used for debugging and data-visualization purposes.
     
         % == Subsection 1.1, License and Info == %
        \subsection{License and Info}
@@ -39,39 +38,40 @@
         \item License - No license has been declared on this project, but feel free to download, modify, or distribute this code as you please.
         No warantee expressed or implied exists when you use or alter our code.
         \item Info    - This project was written by John Allard and Alex Rich at Harvey Mudd College for the 2014 Computer Science REU program.
-        Our mentor was the awesome Professor Zachary Dodds, and without him this project would not have been possible to complete.
+        Our mentor was the awesome Professor Zachary Dodds, and without whom this project would not have been possible to complete.
         \item Repository - The official repository for this program is \texttt{https://github.com/jhallard/3DLocalizer}. 
        \end{itemize}
 
         % == Subsection 1.2, prelocalization == %
-        \subsection{Pre-Localization}
-
+        \subsection{Pre-Localization Programs Overview}
+	This section will give a brief overview of the programs that need to be run prior to an attempt at localizing an actor in an environment.
         \begin{enumerate}
         \item PerspectiveGenerator
             \begin{itemize}
-            \item Takes a 3d model and a definition of a bounding box within the 3d map.
-            \item Generates a grid within that bounding box, and makes a list of every grid intersection.
-            \item Renders images from every point listed and saves them in a directory for feature processing. 
+            \item Takes an input file that specifies a user-supplied 3D model, the bounding box on the model, and some other information as input. 
+            \item Generates a grid within that bounding box at a user defined spacing, and makes a list of every grid intersection.
+            \item Renders images from every point enumerated in the list and saves them into the \texttt{/Data/RenderedImages/} directory.
             \item Has been tested with \texttt{Wavefront .obj} model files, should work with other types of files.
+            \item The structure for the input file necessary to run this program is discussed in section 2 of this paper.
+            \item On a decent (by no means fast) computer it renders images at about 20 per second, so if you need to render 5000 images (as our group had to), it's going to take a little while. We did not have the available time to optimize this program.
             \end{itemize}
         \item DatabaseGenerator
             \begin{itemize}
-            \item Generates a database of computer-vision related feature data.
-            \item This feature data can range from greyscale image, black and white image, SURF/SIFT/ORB feature data and descriptors, or even images that are
-            contrast tuned.
-            \item This program does the majority of the work and is the reason this Localization program can run efficiently in real time, it computes mounds of data 
-            and writes it all to file for future use.
+            \item Takes the name of a model directory inside of \texttt{/Data/RenderedImages/} that contains the rendered images from the model that the user would like to generate feature data for as a command line argument.
+            \item Generates a database of computer-vision related feature data from the images rendered by the \texttt{PerspectiveGenerator} program.
+            \item This program does the majority of the work and is the reason this Localization program can run efficiently in real time, it computes mounds of data using many different types of computer vision algorithms. It then organizes and writes all of this data to the \texttt{/Data/FeatureData/} directory for use by the Localization program.
             \end{itemize}
         \end{enumerate}
   
 	 % == Subsection 1.3, during localization == %
-        \subsection{During Localization}
+        \subsection{Localization Programs Overview}
+        This section will give a brief overview of the program directly involved in the localization attempt, as well as some optional-to-run programs to expand our testing and data-visualization capabilities.
         \begin{enumerate}
         \item 3DLocalization Program
             \begin{itemize}
-            \item The purpose of this program is to use the data generated by the \texttt{PerspectiveGenerator} and \texttt{DatabaseGenerator} program to localize
-            an actor in real-time. 
-            \item Start by connecting to an actor and loading the pre-computed feature data about the environment.
+            \item The purpose of this program is to use the data generated by the \texttt{PerspectiveGenerator} and \texttt{DatabaseGenerator} program to localize an actor in real-time. 
+            \item This program starts by loading the data from the \texttt{3DLocalization/Data/FeatureData/} directory into live variables. The most computationally expensive of these processes is generating a master map of feature data given a certain perspective in the map.
+            \item Sends out a handshake to the robot/actor that is attempting to be localized.
             \item Generate a uniform distribution of particles over the map area, each particle represent a guess as to where the actor is.
             \item Take in a sensor reading from the robot in the form of an image. Process the image to extract feature data.
             \item Weigh the particles, generate a distribution according to the particle grouping and weighting.
@@ -79,6 +79,10 @@
             \item Move the robot to a new location and move the particles a corresponding distance in the map.
             \item Iterate the loop from bullet 4 to 7.
             \end{itemize}
+         \item TestRobot Program
+	    \begin{itemize}
+	     \item 
+	    \end{itemize}
         \end{enumerate}
         \newpage
 
@@ -101,21 +105,30 @@
 	 \item Before you can run the program, you must first build it by going into the \texttt{/PerspectiveGenerator/build/} directory and entering
 	 \texttt{cmake ..} then \texttt{make}.
 	 This will generate the \texttt{./PerspectiveGenerator} executable inside the \texttt{/PerspectiveGenerator/build/} folder. 
-	 \item Put a folder containing your 3D model, \texttt{.mtl} files, and texture files into the \texttt{/3DLocalizer/Data/ModelData/} directory. 
-	 \item You will then need to hand type an input file for the program. This file must contain the following, line by line.
+	 \item Create a directory containing your 3D model, \texttt{.mtl} files, and texture files into the \texttt{/3DLocalizer/Data/ModelData/} directory. Name this directory something meaningful because you will need to pass in this directory name as input to a few programs in this project.
+	 \item You will then need to hand type an input file for the program, and place it in the \texttt{PerspectiveGenerator/Inpufiles/} directory. This file must contain the following, line by line.
 	  \begin{itemize}
-	  \item Name of the folder containing your 3D model file.
-	  \item Name of the 3D model file inside the above folder.
-	  \item Bounding box for your 3D model in the following format : \\ \texttt{xmin xmax ymin ymax z gridDensity}. All are floating point numbers. 
-	  The z height must be constant.The gridDensity value determines the spacing between consecutive image renderings.
-	  \end{itemize}
+	  \item Name of the directory containing your 3D model file inside of the  \texttt{/3DLocalizer/Data/ModelData/} directory.
+	  \item Name of the 3D model file inside the above folder (e.g.\texttt{ dog.obj}).
+	  \item Bounding box for your 3D model in the following format : \\ \texttt{xmin xmax ymin ymax z gridDensity dtheta}.
+	  \end{itemize} 
+	As you can see, the height z must be kept contant for this program. This will hopefully be changed in the future. The gridDensity value determines the spacing between consecutive image renderings, it should be in units according to the scale of your 3D model, not the real life space that the actor is in. The dTheta detemines the angle we rotate by when generated images from a single point with different perspectives (e.g. a value of 30 degrees will cause the program to render 12 images at \texttt{0, 30, 60, ..} degrees from every \texttt{[x y z]} point on the grid.
 	\item From the \texttt{/PerspectiveGenerator/build/} folder, call the \texttt{./PerspectiveGenerator} executable and pass in the name of the input file as an argument.
 	\item The program will take 10 seconds or so to load, when it does you will see a window with a rendering from a single point in the map. 
 	\item Click anywhere on the screen and the program will automatically go through all points generated inside your map and render images to the
-	  \texttt{/Data/RenderedImages/} folder
-	under the same name of your folder containing the model data.
+	  \texttt{/Data/RenderedImages/} folder under the same name of your folder containing the model data.
 	\item When the program stops scrolling through the images (at about 20-25 per second), you can close the program.
 	\end{enumerate}
+	
+	\subsection{Issues and Fixes}
+	  \begin{enumerate}
+	  \item Very Important : The .vert and .frag Shader files must have the same name before the extension. This took me like 2-3 days to figure out and I did not see it anywhere inside the documentation for OpenGL.
+          \item The program will only work on more modern OpenGL version. Go to console and type \texttt{glxinfo | grep "OpenGL version"} to find out which version is currently running on your computer. If it is not 3.3 exactly, this program might not run correctly. It would be useful to fix this but it's too lengthy of a process to concentrate on currently.
+          \item The 3D models are not normalized or scaled to proper real world scale. So 0.1 distance in the model might be 3 or 4 foot change in real life. So the program needs to have the \texttt{scale} variable adjusting according to each new model that the user tries to use.
+          \item Sometimes this program runs unbelievably slow for a short while, while it normally runs at a pretty decent rate. I think it has something to do with the older workstation I'm using, it almost seems as if some of the time it is attempting to use the CPU to do the graphics computations.
+          \item It is inconvenient to force the program to render to the window and then take the image from the window to render to the file, and this is obviously not the best programming practice. However, this program was merely seen as a stepping stone to the goal of localizaing a robot and I happen to be quite new to OpenGL, so we had to take version of this program that actually worked. 
+          \item \emph{Feel free to help make this program better!} - Contact me on Github (@jhallard) for contribution rights to master branch.
+         \end{enumerate}
 
 
         \subsection{Directory Tree}
@@ -169,12 +182,6 @@
 	    \end{itemize}
         \end{itemize} % end files
         
-         \subsection{Issues and Fixes}
-	   \begin{enumerate}
-	   \item Very Important : The .vert and .frag Shader files must have the same name before the extension. This took me like 2-3 days to figure out and I did not see it anywhere inside the documentation for OpenGL.
-           \item The program will only work on more modern OpenGL version. Go to console and type \texttt{glxinfo | grep "OpenGL version"} to find out which version is currently running on your computer. If it is not 3.3 exactly, this program might not run correctly. It would be useful to fix this but it's too lengthy of a process to concentrate on currently.
-           \item The 3D models are not normalized or scaled to proper real world scale. So 0.1 distance in the model might be 3 or 4 foot change in real life. So the program needs to have the \texttt{scale} variable adjusting according to each new model that the user tries to use.
-         \end{enumerate}
         
         \newpage
     
@@ -198,7 +205,20 @@
     
   \subsection{Program Flow}
     \begin{enumerate}
-     \item 
+     \item Navigate to the \texttt{PreLocalization/DatabaseGen/build/} folder via the terminal.
+     \item Type \texttt{ cmake .. } followed by \texttt{ make } to build the program. If error messages appear, check in \emph{Section 3.3, Issues and Fixes} for more information. If nothing is there, feel free to open up a bug reguest on Github.
+     \item From the same \texttt{/build/} folder, type \texttt{./CreateDB yourModelNameHere}, where \texttt{yourModelNameHere} is replaced by the name of the directory that contains your 3D model data inside of the \texttt{3DLocalization/Data/ModelData/} directory.
+     \item Press enter and the program will run. It will start by loading the images from the \texttt{3DLocalization/Data/RenderedImages/} directory from file into active memory. A terminal message will be displayed when this is finished (can take up to a few minutes to load 10,000 images).
+     \item The program will loop through each image and calculate a set of feature data for each image, the set of feature data contains the following :
+       \begin{itemize}
+        \item Features derived from the Speeded-Up Robust Features (SURF) algorithm. 
+        \item Feaures derived from the Scale Invariant Feature Transform (SIFT) algorithm.
+        \item A scaled-down black and white image derived from the original rendered image. Used to perform image-distance calculations.
+        \item A scaled-down greyscale image derived from the original image. Also used to perform image-distance calculation.
+       \end{itemize}
+     \item These features will be written to file inside of the \texttt{/3DLocalization/Data/FeatureData/} directory under a folder with the same as the directory containing the 3D model data. The individual files that are written will consist of \texttt{.jpg} and \texttt{.yml} file, and the name will be the \texttt{[x y z dx dy dz} coordinates of the perspective that the feature data corresponds to.
+     \item A progress bar will be displayed via the terminal letting you know how long the process will take. It has taken us 17 minutes to compute and store the feature data corresponding to 6500 rendered \texttt{[600x600]} images.
+
     \end{enumerate}
     
   \subsection{Directory Tree}
@@ -276,7 +296,7 @@
     \begin{itemize}
       \item \texttt{Boot/}
         \begin{itemize}
-	  \item \texttt{Boot.h} - Loads feature data into memory and performs a `hand-shake` with the actor in the evironment.
+	        \item \texttt{Boot.h} - Loads feature data into memory and performs a `hand-shake` with the actor in the evironment.
         \end{itemize}
       \item \texttt{GUI/}
         \begin{itemize}
@@ -286,8 +306,12 @@
       \item \texttt{HelperStructs/}
         \begin{itemize}
           \item \texttt{Characterizer.h} - Defines a data structure to hold different types of features associated with a certain perspective.
-          \item \texttt{Perspective.h} - A data structure that defines a perspective in the enrivonment. In short, an \texttt{[x y z]} vector for position and a
-          \texttt{[dx dy dz]} vector for camera orientation.
+          \item \texttt{Perspective.h} - A data structure that defines a perspective in the enrivonment. In short, a \texttt{[x y z]} vector for position and a 	      \texttt{[dx dy dz]} vector for camera orientation.
+          \item \texttt{Globals/}
+            \begin{itemize}
+	      \item \texttt{Globals.h} - Contains the declaration of the two globals needed for the program : The list of perspectives and the std::map that maps each perspective to a specific collection of feature data about that perspective.
+	      \item \texttt{Globals.cpp} - Definition of the globals declared in the above file.
+	    \end{itemize}
          \end{itemize}
       \item \texttt{IO/}
         \begin{itemize}
@@ -298,40 +322,47 @@
         \begin{itemize}
           \item \texttt{ActiveParticles/}
             \begin{itemize}
-              \item \texttt{ActiveParticles.h} -
-              \item \texttt{ActiveParticles.cpp} -
+              \item \texttt{ActiveParticles.h} - A data structure that wraps the vector of particles needed to run the MCL algorithm with useful functionality and data validation tests. Handles creating a distribution and sampling from that distribution to refill the vector of particles.
+              \item \texttt{ActiveParticles.cpp} - Definition of the functionality defined in \texttt{ActiveParticles.h}.
             \end{itemize}
           \item \texttt{Control/}
             \begin{itemize}
-              \item \texttt{Controller.h} -
-              \item \texttt{Controller.cpp} -
+              \item \texttt{Controller.h} - The master control object for our program. Contains the vector of particles and the data structure that represents the current state of the robot attempting to be localized. The \texttt{main()} function only needs to call \texttt{Controller::SpinOnce()} to execute an entire iteration of the MCL algorithm.
+              \item \texttt{Controller.cpp} - Definition of the functionality defined in \texttt{Controller.h}.
             \end{itemize}
           \item \texttt{Matching/}
             \begin{itemize}
-              \item \texttt{Matching.h} -
+              \item \texttt{Matching.h} - A file that holds functions that compute relations between different images using computer vision algorithms (e.g. SURF, SIFT).
             \end{itemize}
         \end{itemize}
       \item \texttt{Main/}
         \begin{itemize}
-          \item \item{Main.cpp} - The official starting point of the program. Called the boot functions, initializes the Controller class, and starts the main localization loop.
+          \item \texttt{Main.cpp} - The official starting point of the program. Calls the boot functions, initializes the Controller class, and starts the main localization loop.
         \end{itemize}
       \item \texttt{Particle/}
         \begin{itemize}
-          \item \texttt{Particle.h} -
-          \item \texttt{Particle.cpp} -
+          \item \texttt{Particle.h} - Declaration of the \texttt{Particle} class. This data structure represents a single guess as to where the robot could currently be in the environment. 
+          \item \texttt{Particle.cpp} - Definition of all of the functionality declared in the \texttt{Particle} class.
         \end{itemize}
       \item \texttt{Robot/}
         \begin{itemize}
-          \item \texttt{RobotState.h} -
-          \item \texttt{RobotState.cpp} -
-          \item \texttt{RobotInit.h} -
-          \item \texttt{RobotIO.h} -
+          \item \texttt{RobotState.h} - Declaration for the \texttt{RobotState} class. This class holds a model of a general robot and functions to do work on the model. 
+          \item \texttt{RobotState.cpp} - Implementation of the \texttt{RobotState} class.
         \end{itemize}
     \end{itemize}
-    \item \texttt{/Localization/build/} - Where the build files and program executable will go.
+
+    \item \texttt{/Localization/TestRobot/} - 
+      \begin{itemize}
+        \item \texttt{main.cpp} - The entire control program for the test robot. Contains the callback functions and the main function.
+        \item \texttt{package.xml} - Package to build ROS dependencies for the test robot.
+      \end{itemize}
+
+    \item \texttt{/Localization/build/} - Contains build files for the program. Will contain a .gitignore to ignore any build files from being pushed to the repository. 
+
     \item \texttt{/Localization/README.md} - Quick breakdown of the 3DLocalization program.
+
     \item \texttt{/Localization/CMakeLists.txt} - Tells CMake how to create the program and link dependencies.
-  \end{itemize}
+  \end{itemize}*
 
   
   

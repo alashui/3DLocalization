@@ -14,6 +14,9 @@
 #include "../../Helpers/Globals/Globals.h"
 #include "../../Particle/Particle.h"
 #include "../../IO/ProgramIO.h"
+#include <boost/random/normal_distribution.hpp>
+#include <boost/random.hpp>
+
 // #include <boost/random/mersenne_twister.hpp>
 // #include <boost/random/uniform_int_distribution.hpp>
 
@@ -48,7 +51,8 @@ namespace MCL
     /**** Private Functions, Internal Use Only ****/
         Perspective MakeGuess();            // Computes the perspective that represents the best guess as to our actors location       
         float ComputeAvgWeight();           // pretty self explanatory if you ask me..
-        Perspective Scatter(Perspective, float, int);
+        // Perspective Scatter(Perspective, float, int);
+        Perspective Scatter(Perspective);
 
     public:
 

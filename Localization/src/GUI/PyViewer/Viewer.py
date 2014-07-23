@@ -4,7 +4,8 @@ from graphics import *
 
 from time import sleep
 
-def main():
+def main(last):
+
     f = open('ParticleLists.txt')
 
     particles = []
@@ -119,13 +120,27 @@ def main():
             l.setArrow("last")
             l.draw(win)
             # print "Point", x - minx, y - miny
-    except:
-        t = Text(Point(285, 285), "Error. Click Screen To Update.")
-        t.draw(win)
 
-    win.getMouse()
+    except:
+        t = Text(Point(285, 285), "Error. Please wait while I reconfigure.")
+        t.draw(win)
+    
+    new = False
+
+    while not new:
+        f = open('ParticleLists.txt')
+        for line in f:
+            newlast = line
+        if last == newlast:
+            sleep(1)
+        else:
+            last = newlast
+            new = True
+
+        f.close()
+
     win.close()
 
-    return main()
+    return main(last)
 
-if __name__ == "__main__": main()
+if __name__ == "__main__": main("")

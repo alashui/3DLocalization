@@ -3,7 +3,7 @@
 *	@File Matching.cpp
 * 	@Author Alex and John Summer 2014
 * 	@Info Matches different types of feature data between a particle and the current robot state. This involved comparing the
-*         SURF, SIFT, B/W, and Greyscale features of both the image rendering from the particle location and the image coming from 
+*         SURF, B/W, and Greyscale features of both the image rendering from the particle location and the image coming from 
 *         robots camera feed. Different weights are assigned to represent the quality of the matches and then they are weighed once
 *         again based on how important we think each set of features are. (e.g. SURF feature are more accurate than Greyscale so we weight
 *         those more). This file is really at the heart of the MCL algorithm and thus goes through constant updates.
@@ -37,8 +37,8 @@ namespace MCL
         // destroyAllWindows();
 
         // a combination of similarity tests:
-        if(comboweights.size() != 4)
-            ErrorIO("CompareAndWeight : Length of comboweight vector must be 4\n");
+        if(comboweights.size() != 3)
+            ErrorIO("CompareAndWeight : Length of comboweight vector must be 3\n");
 
         if(!(abs(comboweights[0]) < .05))
             sim += CompareDescriptors(c1, c2) * comboweights[0];
@@ -108,7 +108,7 @@ namespace MCL
         }
 
         // if (obj1.size() < 4)
-        //     return 2;//-1000;
+        //     return -200;//-1000;
 
         // Mat H = findHomography( obj1, scene2, CV_RANSAC );
 
@@ -148,7 +148,6 @@ namespace MCL
             return 1;
         // cout << total / count << " ";
         return score;
-        // return sqrt(sqrt(sim*sim*sim)); // + count / 2.0;
     }
 
     // Elementwise disance of two images.

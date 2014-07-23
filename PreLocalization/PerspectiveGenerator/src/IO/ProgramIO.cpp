@@ -190,12 +190,12 @@ namespace IO
         {
             for(int j = 0; j <= (maxy-miny)/dif; j++)
             {
-                if((x >= -1.9 && x <= 0) && (y >= 2.2 && y <= 5.75))
-                    continue;
-                else if((x >= -5 && x <= -3) && (y >= -0.4 && y <= 1.65))
-                    continue;
-                else if((x >= -5 && x <= -3.2) && (y >= 6.7 && y <= 9))
-                    continue;
+                // if((x >= -1.9 && x <= 0) && (y >= 2.2 && y <= 5.75))
+                //     continue;
+                // else if((x >= -5 && x <= -3) && (y >= -0.4 && y <= 1.65))
+                //     continue;
+                // else if((x >= -5 && x <= -3.2) && (y >= 6.7 && y <= 9))
+                //     continue;
 
                 int currentangle = 0;
                 for(int i = 0; i < (360/ntheta); i++)
@@ -227,6 +227,7 @@ namespace IO
     {
         std::stringstream ss;
         ss << pathToModelDataDirectory << modelDirectoryName << modelname;
+        std::cout << ss.str() << std::endl;
         std::string pFile = ss.str();ss.str("");
 
         std::ifstream fin(pFile.c_str());
@@ -240,6 +241,7 @@ namespace IO
             printf("%s\n", importer.GetErrorString());
             return false;
         }
+        std::cout << pFile.c_str() << std::endl;
         scene = importer.ReadFile( pFile.c_str(), aiProcessPreset_TargetRealtime_Quality);
         if((scene == NULL))
         {

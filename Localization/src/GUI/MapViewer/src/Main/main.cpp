@@ -50,18 +50,16 @@ int main(int argc, char **argv)
     glutInitWindowPosition(100,100);
 
 
-    // if(argc == 2)
-    // {
-    //     if(!IO::generatePoints(argv[1]))
-    //     {
-    //         std::cout << "Error Generating Images. Check Input File for Errors or report on Github. \n" << std::endl;
-    //     }
-    // }
-    // else
-    // {
-    //     std::cout << "You need to pass in a file of Input value.\n" << 
-    //     "See /PerspectiveGenerator/ProgramDesign/InputFileFormat.txt for help" << std::endl;
-    // }
+    if(argc == 3)
+    {
+        modelDirectoryName = argv[1];
+        modelname = argv[2];
+    }
+    else
+    {
+        std::cout << "You need to pass in a file of Input value.\n" << 
+        "See /PerspectiveGenerator/ProgramDesign/InputFileFormat.txt for help" << std::endl;
+    }
 
     glutInitWindowSize(width, height);
     main_window = glutCreateWindow("PerspectiveGenerator");

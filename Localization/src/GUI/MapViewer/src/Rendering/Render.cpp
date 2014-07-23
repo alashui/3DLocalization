@@ -274,6 +274,8 @@ namespace Render
     
     void renderScene(void)
     {
+
+        // std::cout << camera[0] << "_" << camera[1] << "_" << camera[2] << "_" << translation[0] << "_" << translation[1] << "_" << translation[2] << "_" << std::endl;
         //std::cout << "render" << std::endl;
         static float step = 0.0f;
 
@@ -339,8 +341,8 @@ namespace Render
             std::stringstream ss;
             ss << generatedImagesDirectory << modelDirectoryName << "_" << camera[0] << "_" << camera[1] << "_" << camera[2] << "_" << 
             translation[0] << "_" <<  translation[1] << "_" <<  translation[2] << "_" << fileExt;
-            std::string z = ss.str();
-            std::cout << "\n" << z << std::endl;
+            // std::string z = ss.str();
+            // std::cout << "\n" << z << std::endl;
             cv::imwrite(z, image);
             imageNum++;
             delete [] pixels;

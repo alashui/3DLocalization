@@ -223,7 +223,7 @@
     \begin{enumerate}
      \item Navigate to the \texttt{PreLocalization/DatabaseGen/build/} folder via the terminal.
      \item Type \texttt{ cmake .. } followed by \texttt{ make } to build the program. If error messages appear, check in \emph{Section 3.3, Issues and Fixes} for more information. If nothing is there, feel free to open up a bug reguest on Github.
-     \item From the same \texttt{/build/} folder, type \texttt{./CreateDB yourModelNameHere}, where \texttt{yourModelNameHere} is replaced by the name of the directory that contains your 3D model data inside of the \texttt{3DLocalization/Data/ModelData/} directory.
+     \item From the same \texttt{/build/} folder, type \texttt{  ./CreateDB ModelName  }, where \texttt{yourModelNameHere} is replaced by the name of the directory that contains your 3D model data inside of the \texttt{3DLocalization/Data/ModelData/} directory.
      \item Press enter and the program will run. It will start by loading the images from the \texttt{3DLocalization/Data/RenderedImages/} directory from file into active memory. A terminal message will be displayed when this is finished (can take up to a few minutes to load 10,000 images).
      \item The program will loop through each image and calculate a set of feature data for each image, the set of feature data contains the following :
        \begin{itemize}
@@ -268,44 +268,84 @@
   %=== Subsection 4.1, 3DLocalization Overview ===%
   \subsection{Localization Program Overview}
   As described earlier, this program is the one that actually uses the Monte Carlo Localization (MCL) algorithm and computer-vision derived feature data to localize an actor in an environment.
-  As also was described earlier, this program can only be ran after all of the pre-localization requirements have been met\footnote{For more information on these, see sections 2 and 3.}.
-  \\ An abstract description of this program would be the following :
+  As also was described earlier, this program can run after all of the pre-localization requirements have been met\footnote{For more information on these, see sections 2 and 3.}.
+  \\ An abstract description of this program would be as follows : \\
   \\ \texttt{1.) Load data necessary to localize the actor and generate guesses about the actors position.} 
-  \\ \texttt{2.) Loop through the MCL algorithm until your guesses converge on a location}
+  \\ \texttt{2.) Connect to the actor via some combination of callback functions.}
+  \\ \texttt{3.) Loop through the MCL algorithm until your guesses converge on a location.} \\
+  
+  Asside from these main points, we have also designed a few graphical programs to help illustrate the process to the user. The help with both debugging and gaining a better understanding of what is happening inside of the program.
 
-  The coding goal of this program was to use practices that are generally accepted to be good\footnote{Practices like Object Oriented Programming, no jump points, proper naming conventions, and inline code documentation}.
-  This means abstracting the problem of localizing a robot into a series of classes and a series of independent functions. We also had to make decisions about adding a GUI
-  to the program, or which libraries we wanted to use for callback functionality. Our solutions to the problems will be documented and illustrated in the following sections.
+  The coding goal of this program was to use practices that are generally accepted to be good\footnote{Practices like Object Oriented Programming, avoiding go-to statments, proper naming conventions, and inline code documentation}. This means abstracting the problem of localizing a robot into a set of classes and a set of independent functions. We also had to make decisions about adding a GUI to the program, or which libraries we wanted to use for callback functionality. Our solutions to the problems will be documented and illustrated in the following sections. All code is lightly documented inline as well as documented inside of this paper. All changes made are consistantly push to Github at our official repository\footnote{https://Github.com/jhallard/3DLocalization}, and thus an entire history of our code is available online.
   
   %=== Subsection 4.2, Directory Tree ===%
   \subsection{Program Flow}
   This section will only provide an overview of how the program runs and will avoid the technical details. A more detailed description of the parts of this program are discussed later in this document.
   
   \begin{enumerate}
-   \item Building the program
-     \begin{itemize}
-       \item Ensure that you have all dependencies listed in \emph{Section 4.3, Building the Program}.
-       \item Navigate to the \texttt{/Localization/build/} folder via the terminal.
-       \item Enter \texttt{cmake ..} follow by \texttt{make} into the terminal to build the program.
-       \item If any errors appear in the previous steps please see the \emph{Errors and Issues} section.
-     \end{itemize}
-   \item Starting the Program
-     \begin{itemize}
-       \item Ensure that your actor has its main control sequence started and that is it publishing image information via a \texttt{ROS::publisher}.
-       \item Navigate to the \texttt{/Localization/build/} directory via the terminal, and type \texttt{./Localize}, this will run the programs executable.
-     \end{itemize}
+  \item Build the program by following the instructions in \emph{Section 4.3, Build the Program}.
+  \item Starting the Program
+    \begin{itemize}
+    \item Navigate to the \texttt{/Localization/build/} directory via the terminal.
+    \item Type \texttt{  ./3DLocalization modelName  } and replace \texttt{modelName} with the name of the directory that contains your 3D model, press enter to start the program.
+    \item The program will attempt to load the feature data associated with the model, this should take under a minute for about 7000 images. When it is finished, the program will pause to let you start your robot control sequence.
+    \end{itemize}
+  \item Connecting to the Actor/Robot
+    \begin{itemize}
+    \item Have your actor control program search for \texttt{ros::Publisher} under the name \texttt{\detokenize{MCL_DATA_PUBLISHER}}. This publisher will publish data of type \texttt{\detokenize{ros::std_msgs::String} }. The recieved string must be split into tokens based on a \texttt{\detokenize{_}} character. 
+    \item When found, subscribe to said publisher with a \texttt{\detokenize{ros::Subscriber}} object.
+    \item Subscribing to our publisher will trigger our program to send a handshake command to your robot. The localization program will then search for the two robot data publishers or go into a loop to wait for them to become live. 
+    \item 
+    \item More information on this process is covered in \emph{Section 4.5, Robot Interface}.
+    \item  
+    \end{itemize}
   \end{enumerate}
   
   
   %=== Subsection 4.3, Building the Program ===%
   \subsection{Building the Program}
-  \begin{itemize}
-   \item Dependencies
+    \begin{itemize}
+    \item Dependencies - Boost 1.46, OpenCV, ROS Hydro, Catkin Libraries for ROS.
+    \item Performing the build
+     \begin{itemize}
+     \item Ensure that you have all dependencies listed above.
+     \item Navigate to the \texttt{/Localization/build/} folder via the terminal.
+     \item Enter \texttt{cmake ..} follow by \texttt{make} into the terminal to build the program.
+     \end{itemize}
+   \item If any errors appear in the previous steps please see the \emph{Errors and Issues} section.
   \end{itemize}
 
+  
+  %=== Subsection 4.4, Classes ===%
+  \subsection{Classes}
+  \begin{itemize}
+   \item 
+  \end{itemize}
+  
+  %=== Subsection 4.5, Robot Interface ===%
+  \subsection{Robot Interface}
+  \begin{itemize}
+   \item 
+  \end{itemize}
+  
+  %=== Subsection 4.6, GUI Programs ===%
+  \subsection{GUI Programs}
+  \begin{enumerate}
+   \item MapViewer - View the active particles of the program inside of the 3D model as they are generated and filtered from the program. The best guess for the robots position is also shown.
+   \item PyViewer  - View the active particles of the program from a birds eye view above the map. Particles are colored in a heat-map style according to likelyhood of being the location of the robot.
+  \end{enumerate}
+  
+
+  
+  
+  %=== Subsection 4.6, Errors and Issues ===%
+  \subsection{Errors and Issues}
+  \begin{enumerate}
+   \item 
+  \end{enumerate}
 
 
-   %=== Subsection 4.4, Directory Tree ===%
+   %=== Subsection 4.7, Directory Tree ===%
   \subsection{Directory Tree}
   \begin{itemize}
     \item \texttt{/Localization/src/} -
@@ -378,23 +418,8 @@
     \item \texttt{/Localization/README.md} - Quick breakdown of the 3DLocalization program.
 
     \item \texttt{/Localization/CMakeLists.txt} - Tells CMake how to create the program and link dependencies.
-  \end{itemize}*
-
-  
-  
-     %=== Subsection 4.4, Classes ===%
-  \subsection{Classes}
-  \begin{itemize}
-   \item 
   \end{itemize}
 
-  
-  
-       %=== Subsection 4.5, Errors and Issues ===%
-  \subsection{Errors and Issues}
-  \begin{enumerate}
-   \item 
-  \end{enumerate}
 
   
   

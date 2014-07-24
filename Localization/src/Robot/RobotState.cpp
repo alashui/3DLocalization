@@ -21,7 +21,7 @@ namespace MCL
         vector<KeyPoint> kps;
         Mat descs;
 
-        SurfFeatureDetector SurfDetector (3000, 6, 2, true, true);
+        SurfFeatureDetector SurfDetector (800, 6, 2, true, true);
         SurfDescriptorExtractor SurfExtractor;
         SurfDetector.detect(img, kps);
         SurfExtractor.compute(img, kps, descs);

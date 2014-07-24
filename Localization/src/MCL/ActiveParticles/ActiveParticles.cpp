@@ -253,7 +253,6 @@ namespace MCL
         boost::variate_generator<boost::mt19937&, boost::normal_distribution<> > var_norxy(rngxy, distributionxy);
         boost::variate_generator<boost::mt19937&, boost::normal_distribution<> > var_northeta(rngtheta, distributiontheta);
 
-
         // change in xy
         v[0] += (float) var_norxy();
         v[1] += (float) var_norxy();

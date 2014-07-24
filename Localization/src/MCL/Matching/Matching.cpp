@@ -47,6 +47,9 @@ namespace MCL
         if(!(abs(comboweights[3]) < .05))
             sim += GetSimilarity(c1.bw, c2.bw) * comboweights[3];
 
+        if (sim == -10000)
+            sim = GetSimilarity(c1.gs, c2.gs);
+
         // cout
         // << "SURFS: " << 10 * (int) CompareDescriptors(c1.surfs, c2.surfs)
         // << "\tSIFTS: " << (int) CompareDescriptors(c1.sifts, c2.sifts) / 3
@@ -82,14 +85,16 @@ namespace MCL
         vector<vector<DMatch> > vecmatches;
         float ratio = 0.75;
 
-        if (desc1.empty() || desc2.empty())
+        if (desc1.empty() || desc2.empty() || desc2.cols < 2 || desc2.rows < 2)
         {
-            //ErrorIO("Error in Matching.cpp->CompareDescriptors: At least one of the descriptors is empty!");
-            return 3;
+            // ErrorIO("Error in Matching.cpp->CompareDescriptors: At least one of the descriptors is empty!");
+            return -10000;
         }
 
         float sim = 0;
+
         matcher.knnMatch(desc1, desc2, vecmatches, 2);
+
         for (int i = 0; i < vecmatches.size(); i++)
             if (vecmatches[i][0].distance < ratio * vecmatches[i][1].distance)
                 matches.push_back(vecmatches[i][0]);
@@ -145,7 +150,7 @@ namespace MCL
 
 
         if (count < 2)
-            return 1;
+            return -10000;
         // cout << total / count << " ";
         return score;
     }

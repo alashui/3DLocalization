@@ -5,6 +5,8 @@
 *              program.
 **/
 
+#define GRIDCONVERSION 1.125 // units of model space / meter
+
 #include "Controller.h"
 
 namespace MCL
@@ -124,7 +126,7 @@ namespace MCL
                 ros::spinOnce();
             }
             DebugIO("Robot has finished moving");
-            this->ap.Move(recentMove[0], recentMove[1]);
+            this->ap.Move(recentMove[0] * GRIDCONVERSION, recentMove[1]);
             return true;
         }
     }

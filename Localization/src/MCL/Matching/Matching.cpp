@@ -48,6 +48,9 @@ namespace MCL
             sim += GetSimilarity(c1.bw, c2.bw) * comboweights[3];
 
         if (sim == -10000)
+            ErrorIO("Descriptors couldn't be compared!");
+
+        if (sim == -10000)
             sim = GetSimilarity(c1.gs, c2.gs);
 
         // cout
@@ -106,11 +109,13 @@ namespace MCL
         {
             total += matches[i].distance;
             count += 1.0;
-            sim += 1/(matches[i].distance+0.8);
+            // sim += 1/(matches[i].distance+0.8);
 
             // obj1.push_back(c1.kps[matches[i].queryIdx].pt);
             // scene2.push_back(c2.kps[matches[i].trainIdx].pt);
         }
+
+        sim = count - 10* total / count;
 
         // if (obj1.size() < 4)
         //     return -200;//-1000;
@@ -142,13 +147,15 @@ namespace MCL
 
 
         // stringstream ss;
-        // ss << "Score: " << score << ", dev: "<< dev << ", sim: " << sim;
+        // ss << "Score: " << score << /*", dev: "<< dev << */", sim: " << sim;
         // namedWindow(ss.str());
         // imshow(ss.str(), img_matches);
         // waitKey(0);
         // destroyAllWindows();
 
 
+        if (count < 2)
+            ErrorIO("Less than 2 matches!");
         if (count < 2)
             return -10000;
         // cout << total / count << " ";

@@ -78,6 +78,7 @@ int main(int argc, char ** argv)
             imshow("Top Match", masterMap.at(r.GetGuessPerspective()).image);
         if (masterMap.count(r.GetWeightedPerspective()))
             imshow("Weighted Average", masterMap.at(r.GetWeightedPerspective()).image);
+        waitKey(1);
     }
     destroyAllWindows();
 

@@ -127,7 +127,7 @@ namespace MCL
         // the weights of all elements in pList
         float totalWeight = this->GetAvgWeight() * (float) this->NumParticles();
         stringstream ss;
-        ss << "Total weight: " << totalWeight;
+        ss << "[AP.cpp] Total weight: " << totalWeight;
         this->distribution.clear();
 
         for (int i = 0; i < this->pList.size(); i++)

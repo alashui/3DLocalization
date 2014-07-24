@@ -71,6 +71,8 @@ namespace MCL
 
         float w = maxw - minw;
 
+        cout << "MAX: " << maxw << ", MIN: " << minw << endl;
+
         for (int i = 0; i < this->ap.NumParticles(); i++)
         {
             float currentw = v[i].GetWeight();
@@ -201,7 +203,7 @@ namespace MCL
 
         time_t duration = time(0) - tstart;
         stringstream ss;
-        ss << "CompareFeatures took " << duration << " seconds.";
+        ss << "[Controller] CompareFeatures took " << duration << " seconds.";
         DebugIO(ss.str());
         tstart = time(0);
         ss.str("");
@@ -213,7 +215,7 @@ namespace MCL
         this->PublishData(robotdata, " ");
 
         duration = time(0) - tstart;
-        ss << "AnalyzeList took " << duration << " seconds.";
+        ss << "[Controller] AnalyzeList took " << duration << " seconds.";
         DebugIO(ss.str());
         tstart = time(0);
         ss.str("");
@@ -222,12 +224,13 @@ namespace MCL
         
         if(!GenDistributionAndSample())
         {
-            ErrorIO("Failed to generate distribution and sample new particles");
+            ErrorIO("[Controller] Failed to generate distribution and sample new particles");
+            this->EXIT_FLAG = true;
             return false;
         }
 
         duration = time(0) - tstart;
-        ss << "GenDistributionAndSample took " << duration << " seconds.";
+        ss << "[Controller] GenDistributionAndSample took " << duration << " seconds.";
         DebugIO(ss.str());
         tstart = time(0);
         ss.str("");
@@ -236,12 +239,12 @@ namespace MCL
         
         if(!MoveUpdate())
         {
-            ErrorIO("MoveUpdate Failed");
+            ErrorIO("[Controller] MoveUpdate Failed");
             return false;
         }
 
         duration = time(0) - tstart;
-        ss << "MoveUpdate took " << duration << " seconds.";
+        ss << "[Controller] MoveUpdate took " << duration << " seconds.";
         DebugIO(ss.str());
 
         ros::spinOnce();

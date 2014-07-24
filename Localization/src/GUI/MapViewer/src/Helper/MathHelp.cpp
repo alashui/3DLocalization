@@ -33,7 +33,7 @@ std::vector<struct Helper::MyMesh> myMeshes;
 std::vector<float *> matrixStack;
 
 // Camera Position
-float camera[3] = {0, 0, 0.8};
+float camera[3] = {0, 0, 1.5};
 
 float theta = 0;
 
@@ -62,10 +62,7 @@ std::string modelname = "14db49e526f340dfba81c4a2da23c716.obj";
 std::string modelDirectoryName = "2ndFloorSprague/";
 std::string pathToModelDataDirectory = "../../../../../Data/ModelData/";
 
-
-unsigned int vaoID[1]; // Our Vertex Array Object  
-  
-unsigned int vboID[1]; // Our Vertex Buffer Object  
+std::vector<MCL::Particle> pList;
 
 int main_window = 0;
 

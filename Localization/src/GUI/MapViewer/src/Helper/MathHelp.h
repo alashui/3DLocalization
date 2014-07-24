@@ -2,6 +2,7 @@
 #define MATHHELP_H_
 
 #include "../Helper/HelperStructures.h"
+#include "../../../Particle/Particle.h"
 #include <IL/il.h>
 #include <GL/glew.h>
 #include <GL/glut.h>
@@ -97,12 +98,8 @@ extern std::string modelname;
 extern std::string modelDirectoryName;
 extern std::string pathToModelDataDirectory;
 
-
-
-
-extern unsigned int vaoID[1]; // Our Vertex Array Object  
-  
-extern unsigned int vboID[1]; // Our Vertex Buffer Object  
+extern std::vector<MCL::Particle> pList;
+ 
 
 extern int main_window;
 

@@ -128,7 +128,7 @@ namespace Render
                 MathHelp::color4_to_float4(&ambient, c);
             memcpy(aMat.ambient, c, sizeof(c));
 
-            MathHelp::set_float4(c, 0.0f, 0.0f, 0.0f, 1.0f);
+            MathHelp::set_float4(c, 0.2f, 0.2f, 0.2f, 1.0f);
             aiColor4D specular;
             if(AI_SUCCESS == aiGetMaterialColor(mtl, AI_MATKEY_COLOR_SPECULAR, &specular))
                 MathHelp::color4_to_float4(&specular, c);
@@ -140,7 +140,7 @@ namespace Render
                 MathHelp::color4_to_float4(&emission, c);
             memcpy(aMat.emissive, c, sizeof(c));
 
-            float shininess = 0.0;
+            float shininess = 2.0;
             unsigned int max;
             aiGetMaterialFloatArray(mtl, AI_MATKEY_SHININESS, &shininess, &max);
             aMat.shininess = shininess;
@@ -152,7 +152,7 @@ namespace Render
             myMeshes.push_back(aMesh);
         }
 
-        sphere.CreateSphere();
+        sphere.CreateSpheres();
 
         sphere.LoadTextures();
 
@@ -204,72 +204,6 @@ namespace Render
     }
 
 
-    // Rendering Callback Function
-    void CreateSphere(float radius, float x, float y, float z)
-    { 
-        int rings = 100;
-        int sectors = 100;
-
-        float const R = 1./(float)(rings-1);
-        float const S = 1./(float)(sectors-1);
-        int r, s;
-
-        std::vector<float> vertices;
-        vertices.resize(rings * sectors * 3);
-        std::vector<GLfloat>::iterator v = vertices.begin();
-
-        for(r = 0; r < rings; r++) 
-        {
-            for(s = 0; s < sectors; s++)
-            {
-                float const y1 = sin( -M_PI_2 + M_PI * r * R );
-                float const x1 = cos(2*M_PI * s * S) * sin( M_PI * r * R );
-                float const z1 = sin(2*M_PI * s * S) * sin( M_PI * r * R );
-
-                *v++ = x + x1 * radius;
-                *v++ = y + y1 * radius;
-                *v++ = z + z1 * radius;
-            }
-        }
-
-        float* vertices2 = new float[vertices.size()];
-        for(int i = 0; i < vertices.size(); i++)
-        {
-            vertices2[i] = vertices[i];
-
-            // if(i % 3 == 0)
-            //     vertices2[i] += x;
-            // else if(i != 0 && i % 1 == 0)
-            //     vertices2[i] += y;
-            // else if(i != 0 && i % 2 == 0)
-            //     vertices2[i] += z;
-
-        }
-
-
-        glGenVertexArrays(1, &vaoID[0]); // Create our Vertex Array Object  
-        glBindVertexArray(vaoID[0]); // Bind our Vertex Array Object so we can use it  
-          
-        glGenBuffers(1, vboID); // Generate our Vertex Buffer Object  
-        glBindBuffer(GL_ARRAY_BUFFER, vboID[0]); // Bind our Vertex Buffer Object  
-        glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(float), vertices2, GL_STATIC_DRAW); // Set the size and data of our VBO and set it to STATIC_DRAW  
-          
-        glVertexAttribPointer((GLuint)0, 4, GL_FLOAT, GL_FALSE, 0, 0); // Set up our vertex attributes pointer  
-          
-        glEnableVertexAttribArray(0); // Disable our Vertex Array Object  
-        glBindVertexArray(0); // Disable our Vertex Buffer Object  
-
-
-        glMatrixMode(GL_MODELVIEW);
-        glPushMatrix();
-        glTranslatef(0, 0,.4);
-        glBindVertexArray(vaoID[0]); // Bind our Vertex Array Object  
-        glDrawArrays(GL_TRIANGLES, 0, vertices.size()/3); // Draw our square  
-        glBindVertexArray(0); // Unbind our Vertex Array Object 
-                  
-        delete [] vertices2; // Delete our vertices from memory  
-
-    }
 
     
     void renderScene(void)
@@ -313,8 +247,10 @@ namespace Render
             frame = 0;
             glutSetWindowTitle(s);
         }
-
-        sphere.recursive_render(sphere.scene->mRootNode);
+        //sphere.recursive_render(sphere.scene->mRootNode);
+        std::cout << "num scenes " << sphere.scenes.size() << std::endl;
+        for(int i = 0; i < sphere.scenes.size(); i++)
+            sphere.recursive_render(sphere.scenes[i]->mRootNode);
 
 
         // swap buffers
@@ -341,8 +277,8 @@ namespace Render
             std::stringstream ss;
             ss << generatedImagesDirectory << modelDirectoryName << "_" << camera[0] << "_" << camera[1] << "_" << camera[2] << "_" << 
             translation[0] << "_" <<  translation[1] << "_" <<  translation[2] << "_" << fileExt;
-            // std::string z = ss.str();
-            // std::cout << "\n" << z << std::endl;
+             std::string z = ss.str();
+             std::cout << "\n" << z << std::endl;
             cv::imwrite(z, image);
             imageNum++;
             delete [] pixels;

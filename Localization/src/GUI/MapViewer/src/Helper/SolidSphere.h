@@ -20,10 +20,12 @@ protected:
 
 public:
 
-	const aiScene* scene;
+	std::vector<aiScene*> scenes;
+	const aiScene * scene;
 	std::vector<struct Helper::MyMesh> myMeshes;
+	aiVector3D * vertices;
 
-    bool CreateSphere();
+    bool CreateSpheres();
 
     int LoadTextures();
 

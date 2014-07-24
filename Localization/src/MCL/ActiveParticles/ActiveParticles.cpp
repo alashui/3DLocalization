@@ -127,7 +127,7 @@ namespace MCL
         // the weights of all elements in pList
         float totalWeight = this->GetAvgWeight() * (float) this->NumParticles();
         stringstream ss;
-        ss << "Total weight: " << totalWeight;
+        ss << "[AP.cpp] Total weight: " << totalWeight;
         this->distribution.clear();
 
         for (int i = 0; i < this->pList.size(); i++)
@@ -252,7 +252,6 @@ namespace MCL
         boost::normal_distribution<> distributiontheta(0, thetastddev);
         boost::variate_generator<boost::mt19937&, boost::normal_distribution<> > var_norxy(rngxy, distributionxy);
         boost::variate_generator<boost::mt19937&, boost::normal_distribution<> > var_northeta(rngtheta, distributiontheta);
-
 
         // change in xy
         v[0] += (float) var_norxy();

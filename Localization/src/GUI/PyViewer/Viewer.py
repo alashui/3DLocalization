@@ -39,6 +39,7 @@ def main(last):
             maxw = p[4]
         elif p[4] < minw and p[4] > 11:
             minw = p[4]
+        last = line
 
     f.close()
 

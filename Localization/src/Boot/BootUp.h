@@ -119,8 +119,6 @@ namespace MCL
 
             Perspective P(ID);
 
-            perspectives.push_back(P);
-
             fn = delimiter;
 
             for (int j = 0; j < ID.size(); j++)
@@ -148,12 +146,16 @@ namespace MCL
 
             store.release();
 
+            if (descriptors.empty())
+                continue;
+
             // Add bw and gs images.
             Mat gstmp = imread(gsfn, CV_LOAD_IMAGE_GRAYSCALE);
             Mat bwtmp = imread(bwfn, CV_LOAD_IMAGE_GRAYSCALE);
             tmp.gs = gstmp;
             tmp.bw = bwtmp;
 
+            perspectives.push_back(P);
             masterMap[P] = tmp;
 
             // Check for invalid input
@@ -171,7 +173,7 @@ namespace MCL
             }
             done++;
 
-            if (done > 1000) 
+            if (done > 500) 
                 break;
             if ((done * 100) / total > percent)
             {

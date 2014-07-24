@@ -127,7 +127,7 @@ namespace MCL
         // the weights of all elements in pList
         float totalWeight = this->GetAvgWeight() * (float) this->NumParticles();
         stringstream ss;
-        ss << "total weight " << totalWeight;
+        ss << "Total weight: " << totalWeight;
         this->distribution.clear();
 
         for (int i = 0; i < this->pList.size(); i++)
@@ -136,10 +136,10 @@ namespace MCL
             totalWeight = (totalWeight == 0)? 1 : totalWeight;
             int num = (this->pList[i].GetWeight() * wantedSize) / totalWeight;
             for (; num > -1; num--)
-                this->distribution.push_back(this->pList[i].GetPerspective());
+                this->distribution.push_back(Scatter(this->pList[i].GetPerspective());
         }
 
-        ss << "\n distribution size " << distribution.size();
+        ss << ", Distribution size: " << distribution.size();
         
         DebugIO(ss.str());
         return true;
@@ -165,7 +165,8 @@ namespace MCL
         for (int i = 0; i < 0.8*amount; i++)
         {
             int rndIdx = rand() % this->distribution.size();
-            Perspective P = Scatter(this->distribution[rndIdx], this->gd*3.2, 64);
+            // Perspective P = Scatter(this->distribution[rndIdx], this->gd*3.2, 64);
+            Perspective P = this->distribution[rndIdx];
             // cout << this->distribution[rndIdx].ToString() << "->" << P.ToString();
             SnapToGrid(&P);
             // cout << "->" << P.ToString() << endl;
@@ -238,37 +239,63 @@ namespace MCL
 
     }
 
-    Perspective ActiveParticles::Scatter(Perspective p, float maxtranslation, int prob)
+    Perspective ActiveParticles::Scatter(Perspective p)
     {
-        if (prob < 2)
-            return p;
-
-        // uniform_int_distribution<int> dist(1, 100);
-
-        int rnd = rand() % 100; // dist(time(0));
         vector<float> v = p.ToVector();
 
-        // cout << "Scattering with prob: " << rnd << "/" << prob << endl;
-        if (rnd < prob)
-        {
-            if (rnd % 2)
-            { // turn!
-                float curangle = p.GetAngle();
-                int temp = (rand() % 90);
-                curangle += (rand()%2)? -temp : temp; //(dist(default_random_engine) - 50) / 80.0;
-                v[3] = round(cos(curangle * PI / 180.0));
-                v[4] = round(sin(curangle * PI / 180.0));
-            }
-            else
-            { // translate!
-                int temp = (rand() % 100);
-                temp = (rand()%2)? -temp : temp;
-                v[0] += (float) temp * maxtranslation / 50.0;
-                v[1] += (float) temp * maxtranslation / 50.0;
-            }
-        }
-        return Scatter(Perspective(v), maxtranslation, prob/2);
+        float xystddev = 1.0
+        float thetastddev = 45.0;
+
+        default_random_engine generator;
+        normal_distribution<double> distributionxy(0, xystddev);
+        normal_distribution<double> distributionxy(0, thetastddev);
+
+        // change in xy
+        v[0] += (float) distributionxy(generator);
+        v[1] += (float) distributionxy(generator);
+
+        // change in theta
+        float curangle = p.GetAngle();
+        curangle += (float) distributiontheta(generator);
+        v[3] = round(cos(curangle * PI / 180.0));
+        v[4] = round(sin(curangle * PI / 180.0));
+
+        Perspective p(v);
+        SnapToGrid(&p);
+        return p;
     }
+
+    // Perspective ActiveParticles::Scatter(Perspective p, float maxtranslation, int prob)
+    // {
+    //     if (prob < 2)
+    //         return p;
+
+    //     // uniform_int_distribution<int> dist(1, 100);
+
+    //     int rnd = rand() % 100; // dist(time(0));
+    //     vector<float> v = p.ToVector();
+
+    //     // cout << "Scattering with prob: " << rnd << "/" << prob << endl;
+    //     if (rnd < prob)
+    //     {
+    //         if (rnd % 2)
+    //         { // turn!
+    //             float curangle = p.GetAngle();
+    //             int temp = (rand() % 90);
+    //             curangle += (rand()%2)? -temp : temp; //(dist(default_random_engine) - 50) / 80.0;
+    //             v[3] = round(cos(curangle * PI / 180.0));
+    //             v[4] = round(sin(curangle * PI / 180.0));
+    //         }
+    //         else
+    //         { // translate!
+    //             int temp = (rand() % 100);
+    //             temp = (rand()%2)? -temp : temp;
+    //             v[0] += (float) temp * maxtranslation / 50.0;
+    //             v[1] += (float) temp * maxtranslation / 50.0;
+    //         }
+    //     }
+    //     return Scatter(Perspective(v), maxtranslation, prob/2);
+    // }
 
     int ActiveParticles::Move(float travel, float turn)
     {

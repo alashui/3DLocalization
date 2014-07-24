@@ -48,7 +48,8 @@ namespace MCL
     /**** Private Functions, Internal Use Only ****/
         Perspective MakeGuess();            // Computes the perspective that represents the best guess as to our actors location       
         float ComputeAvgWeight();           // pretty self explanatory if you ask me..
-        Perspective Scatter(Perspective, float, int);
+        // Perspective Scatter(Perspective, float, int);
+        Perspective Scatter(Perspective);
 
     public:
 

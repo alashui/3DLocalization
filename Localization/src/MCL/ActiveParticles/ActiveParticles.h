@@ -14,7 +14,7 @@
 #include "../../Helpers/Globals/Globals.h"
 #include "../../Particle/Particle.h"
 #include "../../IO/ProgramIO.h"
-#include <boost/math/distributions/normal.hpp>
+#include <boost/random/normal_distribution.hpp>
 #include <boost/random.hpp>
 
 // #include <boost/random/mersenne_twister.hpp>

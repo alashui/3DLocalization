@@ -136,7 +136,7 @@ namespace MCL
             totalWeight = (totalWeight == 0)? 1 : totalWeight;
             int num = (this->pList[i].GetWeight() * wantedSize) / totalWeight;
             for (; num > -1; num--)
-                this->distribution.push_back(Scatter(this->pList[i].GetPerspective());
+                this->distribution.push_back(Scatter(this->pList[i].GetPerspective()));
         }
 
         ss << ", Distribution size: " << distribution.size();
@@ -243,26 +243,30 @@ namespace MCL
     {
         vector<float> v = p.ToVector();
 
-        float xystddev = 1.0
+        float xystddev = 1.0;
         float thetastddev = 45.0;
 
-        default_random_engine generator;
-        normal_distribution<double> distributionxy(0, xystddev);
-        normal_distribution<double> distributionxy(0, thetastddev);
+        boost::mt19937 rngxy;
+        boost::mt19937 rngtheta;
+        boost::normal_distribution<> distributionxy(0, xystddev);
+        boost::normal_distribution<> distributiontheta(0, thetastddev);
+        boost::variate_generator<boost::mt19937&, boost::normal_distribution<> > var_norxy(rngxy, distributionxy);
+        boost::variate_generator<boost::mt19937&, boost::normal_distribution<> > var_northeta(rngtheta, distributiontheta);
+
 
         // change in xy
-        v[0] += (float) distributionxy(generator);
-        v[1] += (float) distributionxy(generator);
+        v[0] += (float) var_norxy();
+        v[1] += (float) var_norxy();
 
         // change in theta
         float curangle = p.GetAngle();
-        curangle += (float) distributiontheta(generator);
+        curangle += (float) var_northeta();
         v[3] = round(cos(curangle * PI / 180.0));
         v[4] = round(sin(curangle * PI / 180.0));
 
-        Perspective p(v);
-        SnapToGrid(&p);
-        return p;
+        Perspective pNew(v);
+        SnapToGrid(&pNew);
+        return pNew;
     }
 
     // Perspective ActiveParticles::Scatter(Perspective p, float maxtranslation, int prob)

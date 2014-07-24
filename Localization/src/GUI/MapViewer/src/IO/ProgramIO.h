@@ -74,6 +74,8 @@ namespace IO
     // process mouse button input
     void processMouseButtons(int button, int state, int xx, int yy);
 
+    std::vector<Particle> GetParticleList();
+
     void processMouseMotion(int xx, int yy);
 
     void mouseWheel(int wheel, int direction, int x, int y);

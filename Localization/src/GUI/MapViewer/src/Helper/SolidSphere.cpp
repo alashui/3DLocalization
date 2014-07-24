@@ -2,7 +2,7 @@
 
 SolidSphere sphere;
 
-bool SolidSphere::CreateSphere()
+bool SolidSphere::CreateSpheres()
 {   
     std::stringstream ss;
     ss << "../Inputfiles/sphere/sphere.obj";
@@ -19,7 +19,31 @@ bool SolidSphere::CreateSphere()
         printf("%s\n", importer.GetErrorString());
         return false;
     }
-    scene = importer.ReadFile( pFile.c_str(), aiProcessPreset_TargetRealtime_Quality);
+    scene = importer.ReadFile(pFile.c_str(), aiProcessPreset_TargetRealtime_Quality);
+
+
+    const aiMesh* mesh = scene->mMeshes[0];
+    if(mesh->HasPositions())
+        vertices = mesh->mVertices;
+    else
+        std::cout << "mesh has no positions" << std::endl;
+
+    std::cout << mesh->mNumVertices << std::endl;
+
+    for(int i = 0; i < mesh->mNumVertices; i++)
+    {
+        aiVector3D * temp = &vertices[i];
+        temp->x/=8.0;
+        temp->y/=8.0;
+        temp->z/=8.0;
+    }
+
+    for(int i = 0; i < mesh->mNumVertices; i++)
+    {
+        aiVector3D * temp = &vertices[i];
+        temp->z += 1.0;
+    }
+
     if((scene == NULL))
     {
         printf("%s\n", importer.GetErrorString());
@@ -28,13 +52,34 @@ bool SolidSphere::CreateSphere()
     // Now we can access the file's contents.
     printf("Import of scene %s succeeded.\n", pFile.c_str());
 
-    // aiVector3D scene_min, scene_max, scene_center;
-    // View::get_bounding_box(&scene_min, &scene_max);
-    // float tmp;
-    // // tmp = scene_max.x-scene_min.x;
-    // // tmp = scene_max.y - scene_min.y > tmp?scene_max.y - scene_min.y:tmp;
-    // // tmp = scene_max.z - scene_min.z > tmp?scene_max.z - scene_min.z:tmp;
-    // // scaleFactor = 10.f / tmp;
+    for(int i = 0; i < pList.size(); i++)
+    {
+        aiScene * temp = new aiScene; *temp = *scene;
+        scenes.push_back(temp);
+    }
+
+    mesh = scenes[1]->mMeshes[0];
+    if(mesh->HasPositions())
+        vertices = mesh->mVertices;
+    for(int i = 0; i < mesh->mNumVertices; i++)
+    {
+        aiVector3D * temp = &vertices[i];
+        temp->x += .5;
+    }
+
+
+    // for(int j = 0; j < scenes.size(); j++)
+    // {
+    //     const aiMesh* mesh = scenes[j]->mMeshes[0];
+    //     vertices = mesh->mVertices;
+    //     for(int i = 0; i < mesh->mNumVertices; i++)
+    //     {
+    //         aiVector3D * temp = &vertices[i];
+    //         temp->x += pList[i].GetPerspective(0);
+    //         temp->y += pList[i].GetPerspective(1);
+    //         temp->z += pList[i].GetPerspective(2);
+    //     }
+    // }
 
 }
 
@@ -51,13 +96,16 @@ bool SolidSphere::CreateSphere()
             std::cout << "scene is null inside load textures\n" << std::endl;
             return -1;
         }
+
+    for(int j = 0; j < scenes.size(); j++)
+    {
         /* scan scene's materials for textures */
-        for (unsigned int m=0; m<scene->mNumMaterials; ++m)
+        for (unsigned int m=0; m<scenes[j]->mNumMaterials; ++m)
         {
             int texIndex = 0;
             aiString path;  // filename
 
-            aiReturn texFound = scene->mMaterials[m]->GetTexture(aiTextureType_DIFFUSE, texIndex, &path);
+            aiReturn texFound = scenes[j]->mMaterials[m]->GetTexture(aiTextureType_DIFFUSE, texIndex, &path);
             while (texFound == AI_SUCCESS)
             {
                 //fill map with textures, OpenGL image ids set to 0
@@ -123,6 +171,7 @@ bool SolidSphere::CreateSphere()
         //Cleanup
         delete [] imageIds;
         delete [] textureIds;
+    }
 
         //return success;
         return true;
@@ -139,15 +188,19 @@ bool SolidSphere::CreateSphere()
         // // save model matrix and apply node transformation
         // pushMatrix();
 
-        // float aux[16];
         // memcpy(aux,&m,sizeof(float) * 16);
         // MathHelp::multMatrix(modelMatrix, aux);
         // setModelMatrix();
 
         // glTranslate(0, 0, .4);
         // draw all meshes assigned to this node
+
+        glPushMatrix();
+        glRotatef(23, 0.0, 1.0, 0.0);
         for (unsigned int n=0; n < nd->mNumMeshes; ++n)
         {
+            glPushMatrix();
+            glTranslatef(0.5, 0.5, 2.5);
             // bind material uniform
             glBindBufferRange(GL_UNIFORM_BUFFER, materialUniLoc, myMeshes[nd->mMeshes[n]].uniformBlockIndex, 0, sizeof(struct Helper::MyMaterial)); 
             // bind texture
@@ -156,15 +209,15 @@ bool SolidSphere::CreateSphere()
             glBindVertexArray(myMeshes[nd->mMeshes[n]].vao);
             // draw
             glDrawElements(GL_TRIANGLES,myMeshes[nd->mMeshes[n]].numFaces*3,GL_UNSIGNED_INT,0);
+            glPopMatrix();
 
         }
-
+        glPopMatrix();
         // draw all children
         for (unsigned int n=0; n < nd->mNumChildren; ++n)
         {
             recursive_render(nd->mChildren[n]);
         }
-        // popMatrix();
 
     }
 
@@ -176,10 +229,12 @@ bool SolidSphere::CreateSphere()
         struct Helper::MyMaterial aMat; 
         GLuint buffer;
         
+    for(int j = 0; j < scenes.size(); j++)
+    {
         // For each mesh
-        for (unsigned int n = 0; n < scene->mNumMeshes; ++n)
+        for (unsigned int n = 0; n < scenes[j]->mNumMeshes; ++n)
         {
-            const aiMesh* mesh = scene->mMeshes[n];
+            const aiMesh* mesh = scenes[j]->mMeshes[n];
 
             // create array with faces
             // have to convert from Assimp format to array
@@ -195,7 +250,7 @@ bool SolidSphere::CreateSphere()
                 faceIndex += 3;
             }
 
-            aMesh.numFaces = scene->mMeshes[n]->mNumFaces;
+            aMesh.numFaces = scenes[j]->mMeshes[n]->mNumFaces;
 
             // generate Vertex Array for mesh
             glGenVertexArrays(1,&(aMesh.vao));
@@ -248,7 +303,7 @@ bool SolidSphere::CreateSphere()
             glBindBuffer(GL_ELEMENT_ARRAY_BUFFER,0);
         
             // create material uniform buffer
-            aiMaterial *mtl = scene->mMaterials[mesh->mMaterialIndex];
+            aiMaterial *mtl = scenes[j]->mMaterials[mesh->mMaterialIndex];
                 
             aiString texPath;   //contains filename of texture
             if(AI_SUCCESS == mtl->GetTexture(aiTextureType_DIFFUSE, 0, &texPath))
@@ -300,6 +355,7 @@ bool SolidSphere::CreateSphere()
 
             myMeshes.push_back(aMesh);
         }
+    }
     }
 
         // gind the updated model matrix to the buffer

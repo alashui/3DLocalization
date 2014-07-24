@@ -126,6 +126,7 @@ int init()
     glBindBufferRange = (PFNGLBINDBUFFERRANGEPROC) glutGetProcAddress("glBindBufferRange");
     glDeleteVertexArrays = (PFNGLDELETEVERTEXARRAYSPROC) glutGetProcAddress("glDeleteVertexArrays");
 
+    IO::GetParticleList();
 
     program = Shaders::setupShaders(vertexfile, fragmentfile);
 

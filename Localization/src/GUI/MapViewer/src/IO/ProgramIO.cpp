@@ -208,6 +208,7 @@ namespace IO
     void processKeys(unsigned char key, int xx, int yy) 
     {
         double f = .05;
+        double temp = .25;
         switch(key)
         {
             case 27: glutLeaveMainLoop();break;
@@ -215,15 +216,15 @@ namespace IO
             
             case 'w':
             {
-                camera[0] += translation[0]*.1;
-                camera[1] += translation[1]*.1;
-                camera[2] += translation[2]*.1;
+                camera[0] += translation[0]*temp;
+                camera[1] += translation[1]*temp;
+                camera[2] += translation[2]*temp;
             }break;
             case 's':
             {
-                camera[0] -= translation[0]*.1;
-                camera[1] -= translation[1]*.1;
-                camera[2] -= translation[2]*.1;
+                camera[0] -= translation[0]*temp;
+                camera[1] -= translation[1]*temp;
+                camera[2] -= translation[2]*temp;
             }break;
             case 'a':
             {
@@ -306,9 +307,6 @@ namespace IO
     }
 
 
-
-} // end namespace IO
-
 std::vector<Particle> GetParticleList()
 {
     std::string fn = "../../PyViewer/ParticleLists.txt";
@@ -321,14 +319,13 @@ std::vector<Particle> GetParticleList()
         std::vector<Particle> v;
         return v;
     }
-
-    std::vector<Particle> pList;
     std::vector<float> v;
 
-    std::string str;
-    getline( file, str );
-    while (str.compare("\n"))
+    std::string str = "ldldldld";
+    while (!file.eof())
     {
+        getline( file, str );
+        std::cout << str << std::endl;
         std::vector<std::string> strs;
         boost::split(strs, str, boost::is_any_of(" "));
         for (int i = 0; i < strs.size(); i++)
@@ -341,4 +338,6 @@ std::vector<Particle> GetParticleList()
     }
     return pList;
 }
+
+} // end namespace IO
 

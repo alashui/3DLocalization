@@ -44,8 +44,6 @@ namespace Render
 
     void setModelMatrix();
 
-    void CreateShere();
-
     // The equivalent to glTranslate applied to the model matrix
     void translate(float x, float y, float z);
 

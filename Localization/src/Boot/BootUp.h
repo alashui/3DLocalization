@@ -188,24 +188,6 @@ namespace MCL
         s << perspectives.size() << " Images Loaded.";
         DebugIO(s.str());
 
-        // namedWindow("IMAGE");
-
-        // for (int i = 0; i < perspectives.size(); i++)
-        // {
-        //     imshow("IMAGE", masterMap.at(perspectives[i]).gs);
-        //     waitKey(0);
-        // }
-        //         destroyAllWindows();
-
-        // for(map<Perspective, Characterizer>::iterator it=masterMap.begin(); it!=masterMap.end(); ++it)
-        // {
-        //     namedWindow("IMAGE");
-        //     imshow("IMAGE", it->second.gs);
-        //     waitKey(0);
-        //     destroyAllWindows();
-        // }
-
-
         return perspectives.size();
     }
 

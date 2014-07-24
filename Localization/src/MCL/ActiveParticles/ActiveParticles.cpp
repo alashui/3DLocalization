@@ -162,7 +162,8 @@ namespace MCL
             return false;
         }
 
-        for (int i = 0; i < 0.8*amount; i++)
+        int m = 0;
+        for (int i = 0; i < 0.9*amount; i++)
         {
             int rndIdx = rand() % this->distribution.size();
             // Perspective P = Scatter(this->distribution[rndIdx], this->gd*3.2, 64);
@@ -173,12 +174,19 @@ namespace MCL
             if (!masterMap.count(P))
             {
                 i--;
+                m++;
+                cout << "Doesn't exist (" << i << ", " << m << "): " << P.ToString() << endl;
+                if (m > 20)
+                {
+                    i++;
+                    m = 0;
+                }
                 continue;
             }
             pList.push_back(Particle(P));
         }
-
-        for (int i = 0; i < 0.2*amount; i++)
+        int total = pList.size();
+        for (int i = 0; i < amount - total; i++)
         {
             int rndIdx = rand() % perspectives.size();
             Perspective P = perspectives[rndIdx];

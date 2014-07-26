@@ -166,20 +166,14 @@ namespace MCL
         for (int i = 0; i < 0.9*amount; i++)
         {
             int rndIdx = rand() % this->distribution.size();
-            // Perspective P = Scatter(this->distribution[rndIdx], this->gd*3.2, 64);
             Perspective P = this->distribution[rndIdx];
-            // cout << this->distribution[rndIdx].ToString() << "->" << P.ToString();
             SnapToGrid(&P);
-            // cout << "->" << P.ToString() << endl;
             if (!masterMap.count(P))
             {
-                i--;
-                m++;
-                cout << "Doesn't exist (" << i << ", " << m << "): " << P.ToString() << endl;
+                i--; m++;
                 if (m > 20)
                 {
-                    i++;
-                    m = 0;
+                    i++; m = 0;
                 }
                 continue;
             }

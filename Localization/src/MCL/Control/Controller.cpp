@@ -12,7 +12,7 @@
 namespace MCL
 {
     Controller::Controller() :
-    defaultParticleListsize(200),
+    defaultParticleListsize(300),
     MCL_PUBLISHER_NAME("MCL_DATA_PUBLISHER"), // name of the MCL-related data publisher that we must publish under.
     ROBOT_MOVEMENT_PUBLISHER_NAME("ROBOT_MOVEMENT_PUBLISHER"), // Name of the robot movement data publisher we must subscribe to and the user must publish under
     ROBOT_IMAGE_PUBLISHER_NAME("ROBOT_IMAGE_PUBLISHER"),
@@ -331,7 +331,10 @@ namespace MCL
         }
         else
         {
-            ErrorIO("Error : State command from robot must be 10 (start move) or 20 (stop move)");
+            stringstream ss; 
+            ss << "Error : State command from robot must be " << starting_move << " (start move), "
+            << finished_move << " (stop move), or " << killflag << " (killflag)"
+            ErrorIO(ss.str());
         }
 
 

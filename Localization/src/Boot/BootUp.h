@@ -146,7 +146,7 @@ namespace MCL
 
             store.release();
 
-            if (descriptors.empty())
+            if (descriptors.empty() || descriptors.rows < 3 || descriptors.cols < 3)
                 continue;
 
             // Add bw and gs images.
@@ -173,7 +173,7 @@ namespace MCL
             }
             done++;
 
-            if (done > 4000) 
+            if (done > 2000) 
                 break;
             if ((done * 100) / total > percent)
             {

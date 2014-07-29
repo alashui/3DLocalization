@@ -62,6 +62,8 @@ std::string modelname = "14db49e526f340dfba81c4a2da23c716.obj";
 std::string modelDirectoryName = "2ndFloorSprague/";
 std::string pathToModelDataDirectory = "../../../../../Data/ModelData/";
 
+std::vector<Helper::MyParticle> particles;
+
 std::vector<MCL::Particle> pList;
 
 int main_window = 0;

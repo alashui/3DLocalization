@@ -325,7 +325,7 @@ std::vector<Particle> GetParticleList()
     while (!file.eof())
     {
         getline( file, str );
-        std::cout << str << std::endl;
+        //std::cout << str << std::endl;
         std::vector<std::string> strs;
         boost::split(strs, str, boost::is_any_of(" "));
         for (int i = 0; i < strs.size(); i++)
@@ -335,6 +335,9 @@ std::vector<Particle> GetParticleList()
         v.pop_back();
 
         pList.push_back(Particle(Perspective(v), wt));
+
+        Helper::MyParticle temp(v[0], v[1], v[2]);
+        particles.push_back(temp);
     }
     return pList;
 }

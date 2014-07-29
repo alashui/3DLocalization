@@ -99,6 +99,7 @@ extern std::string modelDirectoryName;
 extern std::string pathToModelDataDirectory;
 
 extern std::vector<MCL::Particle> pList;
+extern std::vector<Helper::MyParticle> particles;
  
 
 extern int main_window;

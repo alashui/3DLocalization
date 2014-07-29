@@ -152,11 +152,11 @@ namespace Render
             myMeshes.push_back(aMesh);
         }
 
-        sphere.CreateSpheres();
+        // sphere.CreateSpheres();
 
-        sphere.LoadTextures();
+        // sphere.LoadTextures();
 
-        sphere.genVAOsAndUniformBuffer();
+        // sphere.genVAOsAndUniformBuffer();
 
     }
 
@@ -203,15 +203,16 @@ namespace Render
 
     }
 
+    void drawParticles()
+    {    
+         for(int i = 0; i < 1; i++)//particles.size(); i++)
+            particles[i].draw();
+    }
 
 
     
     void renderScene(void)
     {
-        // swap buffers
-         glutSwapBuffers();
-        // std::cout << camera[0] << "_" << camera[1] << "_" << camera[2] << "_" << translation[0] << "_" << translation[1] << "_" << translation[2] << "_" << std::endl;
-        //std::cout << "render" << std::endl;
         static float step = 0.0f;
 
         step+=0.02;
@@ -236,24 +237,16 @@ namespace Render
         // so we have set this uniform separately
         glUniform1i(texUnit,0);
 
-
-        // FPS computation and display
-        frame++;
-        time1=glutGet(GLUT_ELAPSED_TIME);
-        if (time1 - timebase > 1000) 
-        {
-            sprintf(s,"FPS:%4.2f", frame*1000.0/(time1-timebase));
-            timebase = time1;
-            frame = 0;
-            glutSetWindowTitle(s);
-        }
-        
-        for(int i = 0; i < 10; i++)
-            sphere.recursive_render(sphere.scenes[i]->mRootNode, i);
+        // std::cout << "Render " << std::endl;
 
         recursive_render(scene->mRootNode);
-         // sphere.recursive_render(sphere.scenes[0]->mRootNode, 0);
-         // sphere.recursive_render(sphere.scenes[1]->mRootNode, 1);
+
+        // std::cout << "Render1 " << std::endl;
+
+        drawParticles();
+        // // Flush drawing command buffer to make drawing happen as soon as possible.
+        // //glFlush();
+        glutSwapBuffers();
 
 
         if(snapshot)
@@ -283,6 +276,16 @@ namespace Render
             delete [] pixels;
 
             snapshot = false;
+        }
+
+        frame++;
+        time1=glutGet(GLUT_ELAPSED_TIME);
+        if (time1 - timebase > 1000) 
+        {
+            sprintf(s,"FPS:%4.2f", frame*1000.0/(time1-timebase));
+            timebase = time1;
+            frame = 0;
+            glutSetWindowTitle(s);
         }
 
     }

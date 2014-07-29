@@ -208,7 +208,8 @@ namespace Render
     
     void renderScene(void)
     {
-
+        // swap buffers
+         glutSwapBuffers();
         // std::cout << camera[0] << "_" << camera[1] << "_" << camera[2] << "_" << translation[0] << "_" << translation[1] << "_" << translation[2] << "_" << std::endl;
         //std::cout << "render" << std::endl;
         static float step = 0.0f;
@@ -235,7 +236,6 @@ namespace Render
         // so we have set this uniform separately
         glUniform1i(texUnit,0);
 
-        recursive_render(scene->mRootNode);
 
         // FPS computation and display
         frame++;
@@ -247,14 +247,13 @@ namespace Render
             frame = 0;
             glutSetWindowTitle(s);
         }
-        //sphere.recursive_render(sphere.scene->mRootNode);
-        std::cout << "num scenes " << sphere.scenes.size() << std::endl;
-        for(int i = 0; i < sphere.scenes.size(); i++)
-            sphere.recursive_render(sphere.scenes[i]->mRootNode);
+        
+        for(int i = 0; i < 10; i++)
+            sphere.recursive_render(sphere.scenes[i]->mRootNode, i);
 
-
-        // swap buffers
-        glutSwapBuffers();
+        recursive_render(scene->mRootNode);
+         // sphere.recursive_render(sphere.scenes[0]->mRootNode, 0);
+         // sphere.recursive_render(sphere.scenes[1]->mRootNode, 1);
 
 
         if(snapshot)

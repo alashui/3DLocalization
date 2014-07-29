@@ -22,14 +22,14 @@ public:
 
 	std::vector<aiScene*> scenes;
 	const aiScene * scene;
-	std::vector<struct Helper::MyMesh> myMeshes;
+	std::vector<std::vector<struct Helper::MyMesh> > myMeshes;
 	aiVector3D * vertices;
 
     bool CreateSpheres();
 
     int LoadTextures();
 
-    void recursive_render(const aiNode* nd);
+    void recursive_render(const aiNode* nd, int);
 
     void genVAOsAndUniformBuffer();
 

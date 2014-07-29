@@ -33,7 +33,7 @@ std::vector<struct Helper::MyMesh> myMeshes;
 std::vector<float *> matrixStack;
 
 // Camera Position
-float camera[3] = {0, 0, 1.5};
+float camera[3] = {0, 0, 1.4};
 
 float theta = 0;
 

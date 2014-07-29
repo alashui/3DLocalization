@@ -88,15 +88,17 @@
 %===== Section 3, Computing Features from the Map ===== %
 %=======================================================%
   \section{Computing Features from the Map}
-  Having a database of images rendered from different locations in our map is only half of the battle. The next step is to go through each image and compute a large set of general feature data about each picture. The purpose of doing the during the pre-localization phase is that it will save us a large amount of computation from occuring during run-time. Computing and cataloging this data now will allow us to load it into a map during the boot phase of the localization process and simply look it up when needed at run-time.
+Once we have a database of images, we must go through each image and compute a set of general feature data about each picture. This is done before localization because computing features is fairly computationally intensive, and doing so during runtime slows localization down. During the boot phase of localization, we load all features into a map.
 
   \subsection{Types of Features}
-  % Talk about SIFT, SURF, B&W, greyscale, etc. types of features that are computed from the map.
-  There are a variety of features that can be used when comparing two images. In its current state, the project uses extracted features via SURF and SIFT as well as grayscale and black and white images.
+There are a variety of features that can be used when describing an image. In its current state, the project uses extracted SURF features as well as grayscale and black and white images.
+
+SURF (Speeded Up Robust Features) is a feature detection algorithm that detects similar features as SIFT (Scale-Invariant Feature Transform). SURF detects interesting keypoints in an image. Using OpenCV, we can detect these points, describe them, and eventually compare two keypoints.
+
+The Grayscale image is a highly coarse image that simply splits an image into a grid, then computes the average intensity inside each grid square. From this image, we can compute the black and white ``above below" image. This is created by finding the average intensity of the grayscale, then determining if a square is either higher or lower than this. If a square is higher, it is colored white, otherwise it is colored black.
 
   \subsection{Storing the Features}
-  %Talk about how we store the features (whats a yml file, how are they names, etc.)
-
+Once we precompute the features, we store them in a yaml file. OpenCV has built in storage methods, which makes this a simple process.
 
 
 

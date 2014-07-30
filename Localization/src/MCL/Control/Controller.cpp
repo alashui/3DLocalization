@@ -331,7 +331,10 @@ namespace MCL
         }
         else
         {
-            ErrorIO("Error : State command from robot must be 10 (start move) or 20 (stop move)");
+            stringstream ss; 
+            ss << "Error : State command from robot must be " << starting_move << " (start move), "
+            << finished_move << " (stop move), or " << killflag << " (killflag)"
+            ErrorIO(ss.str());
         }
 
 

@@ -79,40 +79,39 @@ bool exists(vector<KeyPoint> kps, KeyPoint kp)
     return false;
 }
 
-
-void removeBad(vector<KeyPoint> kps, Mat& img, vector<KeyPoint> unique_points, int skipped)
+bool nearbyColor(Point2f p, int r, int g, int b, Mat& img)
 {
+    #define d 3 // pixels to look away from the detected keypoint
+    for (int i = -d; i < d; i++)
+    {
+        for (int j = -d; j < d; j++)
+        {
+            int x = p.x + i;
+            int y = p.y + j;
+            if (x < 0 || x > img.cols - 1 || y < 0 || y > img.rows - 1)
+                continue;
+            Vec3b v = img.at<Vec3b>(Point2f(x, y));
+            if (v == Vec3b(r, g, b))
+                return true;
+        }
+    }
+    return false;
+}
+
+void removeBad(vector<KeyPoint> kps, Mat& img)
+{
+    #define r 255
+    #define g 0
+    #define b 255
+    
     for (int i = 0; i < kps.size(); ) 
     {
-        // if (find(unique_points.begin(), unique_points.end(), kps[i]) != unique_points.end())
-        if (!exists(unique_points, kps[i]))
-            unique_points.push_back(kps[i]);
-        else
-            skipped++;
         Vec3b v = img.at<Vec3b>(kps[i].pt);
-        if (v == Vec3b(255, 0, 255))
-        {
+        if (v == Vec3b(r, g, b) || nearbyColor(kps[i].pt, r, g, b, img))
             kps.erase(kps.begin() + i);
-        }
         else
             ++i;
     }
-    // vector<KeyPoint>::iterator iter;
-    // for (iter = kps.begin(); iter != kps.end(); ) 
-    // {
-    //     if (!exists(unique_points, kps[iter-kps.begin()]))
-    //         unique_points.push_back(*iter);
-    //     else
-    //         skipped++;
-    //     Vec3b v = img.at<Vec3b>(iter->pt);
-    //     if (v == Vec3b(255, 0, 255))
-    //     {
-    //         iter = kps.erase(iter);
-    //         cout << "found a bad one" << endl;
-    //     }
-    //     else
-    //         ++iter;
-    // }
 }
 
 int main(int argc, char** argv)
@@ -231,9 +230,6 @@ int main(int argc, char** argv)
 
     cout << total << " images found.\nComputing keypoints and coarse images." << endl;
 
-    int skipped = 0;
-    vector<KeyPoint> unique_points;
-
     for (map<vector<float>, Mat>::iterator i = imagemap.begin(); i != imagemap.end(); ++i)
     {
         // Create image name and storagename
@@ -255,7 +251,7 @@ int main(int argc, char** argv)
         FileStorage store(kdir + kpfn, cv::FileStorage::WRITE);
 
         SurfDetector.detect(i->second, Keypoints);
-        removeBad(Keypoints, i->second, unique_points, skipped);
+        removeBad(Keypoints, i->second);
         SurfExtractor.compute(i->second, Keypoints, Descriptors);
         write(store,"Descriptors",Descriptors);
         write(store,"Keypoints",Keypoints);
@@ -277,8 +273,7 @@ int main(int argc, char** argv)
         if ((count * 100 / total) > percent)
         {
             percent ++;
-            cout << (100 * count) / total << " percent done. Estimated Time Remaining: " << (x-s)/60.0 << " minutes. ";
-            cout << "Total skipped so far: " << skipped << "." << endl;
+            cout << (100 * count) / total << " percent done. Estimated Time Remaining: " << (x-s)/60.0 << " minutes. " << endl;
         }
     }
 
@@ -288,7 +283,6 @@ int main(int argc, char** argv)
     cout << "\nLoading took " << load << " seconds for " << imagemap.size() << " images (" 
         << (int) imagemap.size()/load << " images per second)." << endl;
 cout << "Analysis took " << analysis << " seconds (" << (int) imagemap.size()/analysis << " images per second)." << endl; 
-cout << "Skipped " << skipped << " keypoints, leaving " << unique_points.size() << " unique points." << endl;
 
 return 0;
 }

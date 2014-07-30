@@ -333,7 +333,7 @@ namespace MCL
         {
             stringstream ss; 
             ss << "Error : State command from robot must be " << starting_move << " (start move), "
-            << finished_move << " (stop move), or " << killflag << " (killflag)"
+            << finished_move << " (stop move), or " << killflag << " (killflag)";
             ErrorIO(ss.str());
         }
 

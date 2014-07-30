@@ -146,7 +146,7 @@ namespace MCL
 
             store.release();
 
-            if (descriptors.empty())
+            if (descriptors.empty() || descriptors.rows < 3 || descriptors.cols < 3)
                 continue;
 
             // Add bw and gs images.

@@ -24,26 +24,6 @@ vector<vector<float> > GetParticleList();
 bool isIn(vector<float>, vector<vector<float> >);
 void UpdateView();
 
-
-// // return the filenames of all files that have the specified extension
-// // in the specified directory and all subdirectories
-// void GetAll(const fs::path& root, vector<fs::path>& ret)
-// {  
-//     if (!fs::exists(root)) return;
-
-//     if (fs::is_directory(root))
-//   .  {
-//         fs::recursive_directory_iterator it(root);
-//         fs::recursive_directory_iterator endit;
-//         while(it != endit)
-//         {
-//             if (fs::is_regular_file(*it) && it->path().extension() == ".obj")
-//                 ret.push_back(it->path().filename());
-//             ++it;
-//         }
-//     }
-// }
-
 void kbcb (const pcl::visualization::KeyboardEvent &event, void* viewer_void)
 {
     if (event.getKeySym () == "n" && event.keyDown ())
@@ -60,7 +40,6 @@ int main(int argc, char** argv)
 
     stringstream toOBJ;
     toOBJ << "../../../../../Data/ModelData/" << argv[1];
-    cout << toOBJ.str()<< endl;
     string name = "";
 
     // Load Images
@@ -76,7 +55,6 @@ int main(int argc, char** argv)
         fs::recursive_directory_iterator endit;
         while (it != endit)
         {
-            cout << it->path().extension() << endl;
             if (fs::is_regular_file(*it) && it->path().extension().string() ==".obj")
                 name = it->path().filename().string();
             ++it;
@@ -88,16 +66,7 @@ int main(int argc, char** argv)
         return -1;
     }
     toOBJ << "/" << name;
-
-    cout << toOBJ.str() << endl;
-
     
-    // Go into folder and get OBJ File.
-    // vector<fs::path> ret;
-    // const char * pstr = toOBJ.c_str();
-    // fs::path p(pstr);
-    // // Get OBJ Filename
-    // GetAll(pstr, ret);
     maxw = 0.0;
     minw = 10000.0;
 

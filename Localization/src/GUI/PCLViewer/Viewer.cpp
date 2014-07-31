@@ -90,14 +90,22 @@ void UpdateView()
     vector<vector<float> > pl = GetParticleList();
 
     viz.removeAllShapes();
-    vector<vector<float> > done;
+    vector<vector<float> > todo;
 
     for (int i = 0; i < pl.size(); i++)
     {
         vector<float> cur = pl[i];
-        if (isIn(cur, done))
+        if (isIn(cur, todo))
             continue;
-        done.push_back(cur);
+        todo.push_back(cur);
+    }
+
+    minw = 0;
+    maxw = todo.size();
+
+    for (int i = 0; i < maxw; i++)
+    {
+        vector<float> cur = todo[i];
 
         PointXYZ p; 
         p.x=cur[0]; 
@@ -108,12 +116,15 @@ void UpdateView()
         int r = max(0, min(255, (int) ((wt - minw) * 255/(maxw - minw))));
         int b = max(0, min(255, (int) (255 - (wt - minw) * 255/(maxw - minw))));
 
+        // cout << wt << "\t" << cur.back() << "\t" << maxw << "\t" << minw << "\t" << r << "\t" << b << endl;
+
         stringstream ss; 
         ss << "s" << i;
-
-        viz.addSphere(p, 0.05, r, 0, b, ss.str());
+        viz.addSphere(p, 0.05, (float) r / 255, 0.0, (float) b / 255, ss.str());
     }
 }
+
+bool compareweight(vector<float> a, vector<float> b) {return a.back() < b.back(); }
 
 vector<vector<float> > GetParticleList()
 {
@@ -143,13 +154,10 @@ vector<vector<float> > GetParticleList()
         boost::split(strs, str, boost::is_any_of(" "));
         for (int i = 0; i < strs.size(); i++)
             v.push_back(atof(strs[i].c_str()));
-
-        maxw = (v.back() > maxw && v.back() < 100) ? v.back() : maxw;
-        minw = (v.back() < minw && v.back() > 0) ? v.back() : minw;
-
         pList.push_back(v);
     }
 
+    sort(pList.begin(), pList.end(), compareweight);
     return pList;
 }
 

@@ -144,8 +144,8 @@ vector<vector<float> > GetParticleList()
         for (int i = 0; i < strs.size(); i++)
             v.push_back(atof(strs[i].c_str()));
 
-        maxw = v.back() > maxw ? v.back() : maxw;
-        minw = v.back() < minw ? v.back() : minw;
+        maxw = (v.back() > maxw && v.back() < 100) ? v.back() : maxw;
+        minw = (v.back() < minw && v.back() > 0) ? v.back() : minw;
 
         pList.push_back(v);
     }

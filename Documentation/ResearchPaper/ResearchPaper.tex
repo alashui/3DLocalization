@@ -2,6 +2,8 @@
 \usepackage{amsmath}
 \usepackage{fancyhdr}
 \usepackage{graphicx}
+\usepackage{url}
+
 \usepackage[top=.6in, bottom=.8in, left=.8in, right=.8in]{geometry}
 %==== Insert cool image between title and authors ====%
 \title{Using 3D Models and Computer Vision Algorithms to \\ Implement Monte Carlo Localization}
@@ -95,7 +97,7 @@ There are a variety of features that can be used when describing an image. In it
 
 SURF (Speeded Up Robust Features) is a feature detection algorithm that detects similar features as SIFT (Scale-Invariant Feature Transform). SURF detects interesting keypoints in an image. Using OpenCV, we can detect these points, describe them, and eventually compare two keypoints.
 
-The Grayscale image is a highly coarse image that simply splits an image into a grid, then computes the average intensity inside each grid square. From this image, we can compute the black and white "above below" image. This is created by finding the average intensity of the grayscale, then determining if a square is either higher or lower than this. If a square is higher, it is colored white, otherwise it is colored black.
+The Grayscale image is a highly coarse image that simply splits an image into a grid, then computes the average intensity inside each grid square. From this image, we can compute the black and white ``above below" image. This is created by finding the average intensity of the grayscale, then determining if a square is either higher or lower than this. If a square is higher, it is colored white, otherwise it is colored black.
 
   \subsection{Storing the Features}
 The precomputed features are stored in a yaml file. OpenCV has built in storage methods, which makes this a simple process. Because each perspective has its own file for storing keypoints|in addition to its own file for grayscale and black and white images|the filename contains the meta information about each description. The program is able to load all features and know their corresponding location and orientation by first looking inside the folder to see what perspectives are available, then load into the map.
@@ -108,13 +110,30 @@ The precomputed features are stored in a yaml file. OpenCV has built in storage 
  \subsection{Actor}
 The actor in our MCL implementation satisfies three constraints: communicate with the Robot Operating System (ROS), move autonomously, and publish image data from a camera. During our testing, we used several robots, including the Parrot AR Drone, the iCreate Robot, and a virtual robot. The actor also should be able to navigate in its environment. In our implementation, simple point to point navigation was sufficient, however a future goal is to implement the ability to make smart paths allowing the robot to go through doors and around or over tables.
 
+\subsection{Assigning Weights}
+Each possible location in the environment is described by a discrete particle. The particle contains a weight associated with the probability that the actor is currently at that particle in the real world. When the robot moves, every particle moves as well. During each iteration, the program reevaluates by weighing every particle sampled from the distribution. Using the stored features, computer vision algorithms determine the similarity between the actor image data and the image data at each particle.
+
+There are several possible ways two images can be compared to each other. Issues with scaling, lighting, and photo quality can make comparing images difficult. In its current implementation, our algorithm only uses computed SURF features. OpenCV has methods to match descriptors in two images. Using the $k$ nearest neighbors matching algorithm with $k = 2$ and the ratio test\footnote{See Lowe, David G. ``Distinctive Image Features from Scale-Invariant Keypoints." {\it International Journal of Computer Vision} (2004). pg 19-20.  \url{http://www.cs.ubc.ca/~lowe/keypoints/}.} we get some set of matched keypoints. We want to get some kind of score for how ``good" the matches are. Each match (stored as a \verb.DMatch. in OpenCV) contains a member (\verb.distance.) that indicates the goodness of a single match. A weighting for each pair of images can be determined by
+\[
+	\mathtt{weight} = \sum_{i} \frac1{\mathtt{matches}[i].\mathtt{distance} + 0.8}
+\]
+where \verb.matches. is a vector of \verb.DMatches.. This formula has several benefits. First, it rewards pairs of images that have many good matches. Recall that the higher the similarity, the higher the probability that the two images are the same. If two images have many matches (as two similar images ought to), \verb`matches.size()` will be high and there will be many terms in the summation. Secondly, it rewards matches that are {\it good}. If a match is a good match, it will have a low \verb.distance.. 
+
+Another formula that does well is the following:
+\[
+\mathtt{weight} = \mathtt{matches.size()} - 10 \times \frac{\sum_{i} \mathtt{matches}[i].\mathtt{distance}}{\mathtt{matches.size()} + 1}
+\]
+This also rewards images that have many good matches with the first term, then penalizes pairs of images where the average match distance is high.
+
+\subsection{Determing the Location}
+Once we have
 
 
 \section{Results}
-We have a dumb robot.
+What a dumb robot.
 
 \section{Conclusions}
-We have a dumb robot.
+What a dumb robot.
 
 
 

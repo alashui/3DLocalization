@@ -115,7 +115,7 @@ namespace MCL
             // scene2.push_back(c2.kps[matches[i].trainIdx].pt);
         }
 
-        sim = count - 10* total / (count + 1);
+        // sim = count - 10* total / (count + 1);
         
         // if (obj1.size() < 4)
         //     return -200;//-1000;

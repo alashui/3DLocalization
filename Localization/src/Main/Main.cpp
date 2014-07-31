@@ -52,8 +52,8 @@ int main(int argc, char ** argv)
 
     DebugIO("Initialization Finished Successfully, Starting Main Loop");
 
-    // namedWindow("Top Match");
-    // namedWindow("Weighted Average");
+    namedWindow("Top Match");
+    namedWindow("Weighted Average");
     char key = ' ';
     while(key != 'q' && key != 'Q' && !control.ExitFlagSet())
     {   
@@ -74,11 +74,11 @@ int main(int argc, char ** argv)
         ss << "End of Loop -- " << temp << " ms ";
         DebugIO(ss.str());
                 
-        // if (masterMap.count(r.GetGuessPerspective()))
-        //     imshow("Top Match", masterMap.at(r.GetGuessPerspective()).image);
-        // if (masterMap.count(r.GetWeightedPerspective()))
-        //     imshow("Weighted Average", masterMap.at(r.GetWeightedPerspective()).image);
-        // waitKey(1);
+        if (masterMap.count(r.GetGuessPerspective()))
+            imshow("Top Match", masterMap.at(r.GetGuessPerspective()).image);
+        if (masterMap.count(r.GetWeightedPerspective()))
+            imshow("Weighted Average", masterMap.at(r.GetWeightedPerspective()).image);
+        waitKey(1);
     }
     destroyAllWindows();
 

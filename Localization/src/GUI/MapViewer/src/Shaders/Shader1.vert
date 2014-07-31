@@ -8,15 +8,21 @@ layout (std140) uniform Matrices {
 };
 
 in vec3 position;
+in vec3 normal;
 layout(location = 1) in vec3 vertexColor;
 
-out vec3 fragmentColor;
+out vec4 fragmentColor;
 out vec4 vertexPos;
+out vec3 Normal;
  
 void main(){
  
     // The color of each vertex will be interpolated
     // to produce the color of each fragment
-    fragmentColor = vertexColor;
+    fragmentColor = vec4(vertexColor, 1.0);
     gl_Position = projMatrix * viewMatrix * modelMatrix * vec4(position,1.0);
+    Normal = normalize(vec3(viewMatrix * modelMatrix * vec4(normal,0.0)));  
+
 }
+
+

@@ -334,6 +334,8 @@ std::vector<Particle> GetParticleList()
         std::vector<Particle> v;
         return v;
     }
+
+    std::vector<std::vector<float> > parts;
     float minweight = 1000, maxweight = 0;
     std::vector<float> v;
     std::string str = "ldldldld";
@@ -344,18 +346,34 @@ std::vector<Particle> GetParticleList()
         boost::split(strs, str, boost::is_any_of(" "));
         for (int i = 0; i < strs.size(); i++)
             v.push_back(atof(strs[i].c_str()));
-        float wt = v.back();
+        float wt = v[6];
         
+        if(v.size() == 0)
+            continue;
+
         if(wt > maxweight)
             maxweight = wt;
         else if(wt < minweight)
             minweight = wt;
 
-        Helper::MyParticle temp(v[0], v[1], v[2], wt);
-        particles.push_back(temp);
+        v[6] = wt;
+
+        // for(int i = 0; i < v.size(); i++)
+        //     std::cout << " " << v[i] << " ";
+        // std::cout << std::endl;
+
+        parts.push_back(v);
         v.clear();
     }
 
+    std::map<std::pair<float, float>, int> Map;
+    for(int i = 0; i < parts.size(); i++)
+    {
+        std::vector<float> v = parts[i];
+        std::pair<float, float> temppair(v[0], v[1]);
+        Helper::MyParticle temp(v[0], v[1], v[2], v[3], v[4], 0, v[6]);
+        particles.push_back(temp);
+    }
 
     return pList;
 }

@@ -227,7 +227,7 @@ int main(int argc, char **argv)
             data_publisher.publish(out_msg.toImageMsg());
         ros::spinOnce();
 
-        std::cout << "hererer" << std::endl;
+        // std::cout << "hererer" << std::endl;
         imshow("Robot Image", image_list[current_image]);
         imshow("Top Match", BestGuessImage);
 

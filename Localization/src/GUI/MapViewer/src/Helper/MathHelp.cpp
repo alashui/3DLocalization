@@ -41,7 +41,7 @@ float camera[3] = {0, 0, 1.4};
 float theta = 0;
 
 // mesh tranlation
-float translation[3] = {cos(3.14159*theta/180.0),  sin(2.14159*theta/180.0),  0};
+float translation[3] = {cos(3.14159*theta/180.0),  sin(3.14159*theta/180.0),  0};
 
 // Model Matrix (part of the OpenGL Model View Matrix)
 float modelMatrix[16];
@@ -71,8 +71,8 @@ std::vector<MCL::Particle> pList;
 
 int main_window = 0;
 
-int width = 1000;
-int height = 800;
+int width = 1200;
+int height = 900;
 
 
 std::map<std::string, GLuint> textureIdMap;

@@ -52,7 +52,7 @@ void main()
     amb = color * 0.33;
     
 
-    float x = (intensity+intensity2);//+intensity3+intensity4+intensity5);
+    float x = (intensity);//+intensity2);//+intensity3+intensity4+intensity5);
 
     output = (color * x) + amb;
     //output = vec4(texCount,0.0,0.0,1.0);

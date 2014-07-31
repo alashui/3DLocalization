@@ -214,10 +214,12 @@ namespace Render
     void renderScene(void)
     {
         static float step = 0.0f;
-        static int framecount = 0;
+        static int framecount = 1;
 
-        if(framecount % 30 == 0)
+        if(framecount % 15 == 0)
             IO::GetParticleList();
+
+        framecount++;
         
 
         step+=0.02;

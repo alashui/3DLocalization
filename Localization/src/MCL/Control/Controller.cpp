@@ -189,6 +189,11 @@ namespace MCL
 
         this->ap.AnalyzeList();
 
+        ofstream mdFile;
+        mdFile.open("../src/GUI/MetaData.txt");
+        mdFile << "";
+        mdFile.close();
+
         return true;
     }
 

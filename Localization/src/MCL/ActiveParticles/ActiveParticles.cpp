@@ -438,5 +438,15 @@ namespace MCL
         }
 
         pListFile.close();
+
+        g = GetGuess().ToVector();
+
+        // Now write metadata to a different file!
+        ofstream mdFile;
+        mdFile.open("../src/GUI/MetaData.txt", ios_base::app);
+        
+        mdFile << GetGeneration() << " " << GetAvgWeight() << " " << g[0] << " " << g[1] << "\n";
+
+        mdFile.close();
     }
 }

@@ -8,21 +8,20 @@
 %\usepackage[top=.6in, bottom=.8in, left=.8in, right=.8in]{geometry}
 %==== Insert cool image between title and authors ====%
 \title{Using 3D Models and Computer Vision Algorithms to \\ Implement Monte Carlo Localization}
-\author{ \\[7in]  John Allard, Alex Rich \\ 2014 Summer Computer Science REU, Harvey Mudd College}
-\date{July 6th, 2014 \\}
-
+\author{ \\[7in]  John Allard, Alex Rich \\ 2014 Summer Computer Science REU, Harvey Mudd College\thanks{Funded By The NSA}}
+%\date{July 6th, 2014 \\}
 
 \begin{document}
 
 % ==== Title Page ==== %
   \maketitle   
+  %\thispagestyle{empty}
   \newpage  
   
 % ==== Table Of Contents ==== %
   \tableofcontents
-  
   \newpage
- 
+
   % ==  Paper Abstract   == %
   \begin{abstract}  
   Our research group attempts to implement the Monte Carlo Localization algorithm using a 3D model of an environment and a stream of images from a robot in that environment. This entails the use of various computer vision algorithms to find and compare features between the image feed and our 3D model. Objectives of the project include runtime speed, accuracy, versatility, and ease of use. This paper outlines the process that our research group has undertaken to accomplish this task and an analysis of our resulting program. 
@@ -41,17 +40,15 @@ The selection of a camera as the sensor reflects the cheapness and availability 
 %  \emph{This section is for those unfamiliar with the Monte Carlo Localization algorithm.}
 
 The overall process of having an actor\footnote{An actor is any device that has sensors and can move around an environment, e.g. a robot.} localize itself in an environment via the MCL algorithm is comprised of many steps.
-%\\\\  
-%{\bf  Pre-Localization}
 \subsection{Pre-Localization}
-  
+ These are requirements that must be satisfied for MCL to work.
   \begin{enumerate}
   \item A map of the environment needs to be imported or constructed.
   \item Some set of quantifiable features about the map must be chosen. This enables a comparison between sensor readings from the actor and expected sensor readings from different places in the map.
   % \item This step is optional.  Features from the map are computed from many different reference points and are stored for use during the localization attempt. This limits the possible particle locations compared to generating feature data at run-time, but it reduces the computational resources needed significantly and allows one to simply look up the data in a map or container. Pre-computing features also significantly reduces the complexity of the localization source code.
   \end{enumerate}
-\subsection{ During Localization}
-  
+\subsection{During Localization}
+  These are the steps that the Monte Carlo Localization goes through to determine the location of an actor. Each step can be implemented in many different ways.
   \begin{enumerate}
   \item An actor is placed in the environment, and some number of guesses of where it might be are randomly generated.\footnote{The uniformity of this distribution depends on the user's previous knowledge of the actors location.} These `guesses' we will call particles, and each particle is a data structure that contains information about its own current perspective in the environment and the sensor data it would expect to read from that perspective.
   \item The program compares the current sensor readings from the actor to the expected sensor readings for each particle, and assigns a weight to each particle based on how strongly the readings correspond to one another.
@@ -141,14 +138,29 @@ Using ROS, the Localization program publishes several commands: location data an
 For the user to see how the localization program is working, various visualization assistants were constructed to accompany the program. A user is able to see what the robot sees, a top-down view of the map showing the location and relative weights of each particle, the Top Match and Weighted Average chosen by the program, and a three dimensional visualizer showing all the particles within the actual map.
 
 \section{Results}
-What a dumb robot.
+We can analyze how our program performs for each of the initial objectives.
+
+\subsection{Runtime Speed}
+Depending on the type of feature matching being performed and the number of particles currently active, our algorithm takes less than one second to determine a guess for the location of the actor. When the number of particles surpass 700, this time begins to noticably take longer than a second. We consider the algorithm to be working in real time because it usually takes longer for the robot to make its move than the algorithm takes in each iteration.
+
+\subsection{Accuracy}
+
+
+\subsection{Versatility}
+Our algorithm is versatile to the extent that a map exists. It works with any robot that communicates with ROS. As long as a map of an environment exists in .obj file format, the program is able to localize a stream of image data to the best of its ability.
+
+\subsection{Ease of Use}
+
 
 \section{Issues}
-\subsection{Dynamic Environment}
-In our implementation we assume a static environment. This is not always the case, as there are often people inhabiting the same space as robots. Also, things like chairs, coffee cups, and even tables are not guaranteed to remain in the same position. Future work might involve locating objects that are deemed nonstatic and ignoring them in the weighing process. Moving objects, such as a person walking, ought to be ignored.
+\subsection{Dynamic Environments}
+In our implementation we assume a static environment. This is not always the case, as there are often people inhabiting the same space as robots. Also, objects like chairs, coffee cups, and even tables are not guaranteed to remain in the same position for any period of time. Future work will involve locating objects that are deemed nonstatic and ignoring them in the weighing process. Moving objects, such as a person walking, ought to also be ignored.
 
 \subsection{Navigation}
 It is certainly possible to implement a smarter navigation algorithm in which a robot knows where walls, doors, and tables are. In our current implementation the robot merely travels in a straight line from its location to the destination, however this can cause it to bump into tables or crash into walls. A smart navigation algorithm would allow the robot to pass throuh a door and, if it were a drone, to fly over tables.
+
+\subsection{Weighing}
+When each particle's image data is compared with that of the robot, there are many different ways to arrive at a similarity score. Currently we use only the number of feature matches and the ``goodness" of each match. There are, however ways to incorporate algorithms such as RANSAC (Random Sample Consensus) to consider how well the matches align with each other. In our attempts at using this strategy, however, we found it was difficult to find one formula that will consistently weigh pairs of images with different match quantities. In addition, there may be quick image comparison techniques available to relate the black and white and gray scale images.
 
 \section{Conclusions}
 What a dumb robot.

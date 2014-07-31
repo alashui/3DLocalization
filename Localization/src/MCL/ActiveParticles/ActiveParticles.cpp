@@ -246,15 +246,15 @@ namespace MCL
     {
         vector<float> v = p.ToVector();
 
-        float xystddev = 1.0;
-        float thetastddev = 45.0;
+        static float xystddev = 1.0;
+        static float thetastddev = 70.0;
 
-        boost::mt19937 rngxy;
-        boost::mt19937 rngtheta;
-        boost::normal_distribution<> distributionxy(0, xystddev);
-        boost::normal_distribution<> distributiontheta(0, thetastddev);
-        boost::variate_generator<boost::mt19937&, boost::normal_distribution<> > var_norxy(rngxy, distributionxy);
-        boost::variate_generator<boost::mt19937&, boost::normal_distribution<> > var_northeta(rngtheta, distributiontheta);
+        static boost::mt19937 rngxy;
+        static boost::mt19937 rngtheta;
+        static boost::normal_distribution<> distributionxy(0, xystddev);
+        static boost::normal_distribution<> distributiontheta(0, thetastddev);
+        static boost::variate_generator<boost::mt19937&, boost::normal_distribution<> > var_norxy(rngxy, distributionxy);
+        static boost::variate_generator<boost::mt19937&, boost::normal_distribution<> > var_northeta(rngtheta, distributiontheta);
 
         // change in xy
         v[0] += (float) var_norxy();
@@ -263,6 +263,8 @@ namespace MCL
         // change in theta
         float curangle = p.GetAngle();
         curangle += (float) var_northeta();
+        // std::cout << diff << std::endl;
+        // curangle = diff;
         v[3] = round(cos(curangle * PI / 180.0));
         v[4] = round(sin(curangle * PI / 180.0));
 

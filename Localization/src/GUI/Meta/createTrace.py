@@ -7,9 +7,11 @@ def main():
 	pos = []
 	for line in f:
 		line = line.split()
-		avgwt += [float(line[1])]
+		# avgwt += [float(line[1])]
 		pos += [[float(line[2]), float(line[2])]]
 
+	f.close()
+	
 	[minx, maxx] = AnalyzeListOfList(pos, 0)
 	[miny, maxy] = AnalyzeListOfList(pos, 1)
 

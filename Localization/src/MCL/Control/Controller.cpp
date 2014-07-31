@@ -56,9 +56,16 @@ namespace MCL
 
         float maxw = -1000;
         float minw = 10000;
+
+        map<Perspective, float, ComparePerspectives> cachedPs;
+
         for(int i = 0; i < this->ap.NumParticles(); i++)
-        {   
-            float wt = CompareAndWeigh(v[i], this->robot, this->comboWeighting);
+        {               
+            Perspective cp = v[i].GetPerspective();
+            if (!cachedPs.count(v[i].GetPerspective()))
+                cachedPs[cp] = CompareAndWeigh(v[i], this->robot, this->comboWeighting);
+            float wt = cachedPs[cp];
+
             v[i].SetWeight(wt);
             if (wt > maxw)
             {

@@ -205,7 +205,7 @@ namespace Render
 
     void drawParticles()
     {    
-         for(int i = 0; i < 1; i++)//particles.size(); i++)
+         for(int i = 0; i < particles.size(); i++)//particles.size(); i++)
             particles[i].draw();
     }
 
@@ -243,6 +243,8 @@ namespace Render
 
         // std::cout << "Render1 " << std::endl;
 
+
+        glUseProgram(program1);
         drawParticles();
         // // Flush drawing command buffer to make drawing happen as soon as possible.
         // //glFlush();

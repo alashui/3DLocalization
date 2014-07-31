@@ -7,6 +7,7 @@ GLuint matricesUniBuffer = 0;
 
  // Program and Shader Identifiers
 GLuint program = 0;
+GLuint program1 = 0;
 GLuint vertexShader = 0;
 GLuint fragmentShader = 0;
 
@@ -26,6 +27,8 @@ float scaleFactor = 1;
 // Shader Names
 char *vertexfile = "../src/Shaders/Shader.vert";
 char *fragmentfile = "../src/Shaders/Shader.frag";
+char *vertexfile1 = "../src/Shaders/Shader1.vert";
+char *fragmentfile1 = "../src/Shaders/Shader1.frag";
 
 std::vector<struct Helper::MyMesh> myMeshes;
 

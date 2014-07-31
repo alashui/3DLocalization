@@ -47,9 +47,11 @@ extern GLuint texCoordLoc;
 
 // Program and Shader Identifiers
 extern GLuint program;
+extern GLuint program1;
 extern GLuint vertexShader;
 extern GLuint fragmentShader;
-
+extern char *vertexfile1;
+extern char *fragmentfile1;
 extern GLuint texUnit;
 
 // the global Assimp scene object

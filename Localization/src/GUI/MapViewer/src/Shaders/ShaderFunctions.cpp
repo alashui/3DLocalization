@@ -41,7 +41,7 @@ namespace Shaders
 
 
 
-    GLuint setupShaders(char * vertexfile, char * fragmentfile) 
+    GLuint setupShaders(char * vertexfile, char * fragmentfile, GLuint * program) 
     {
 
         char *vs = NULL,*fs = NULL,*fs2 = NULL;
@@ -75,27 +75,27 @@ namespace Shaders
         printShaderInfoLog(vertexShader);
         printShaderInfoLog(fragmentShader);
 
-        program = glCreateProgram();
-        glAttachShader(program,vertexShader);
-        glAttachShader(program,fragmentShader);
+        *program = glCreateProgram();
+        glAttachShader(*program,vertexShader);
+        glAttachShader(*program,fragmentShader);
 
-        glBindFragDataLocation(program, 0, "output");
+        glBindFragDataLocation(*program, 0, "output");
 
-        glBindAttribLocation(program,vertexLoc,"position");
-        glBindAttribLocation(program,normalLoc,"normal");
-        glBindAttribLocation(program,texCoordLoc,"texCoord");
+        glBindAttribLocation(*program,vertexLoc,"position");
+        glBindAttribLocation(*program,normalLoc,"normal");
+        glBindAttribLocation(*program,texCoordLoc,"texCoord");
 
-        glLinkProgram(program);
-        glValidateProgram(program);
-        IO::printProgramInfoLog(program);
+        glLinkProgram(*program);
+        glValidateProgram(*program);
+        IO::printProgramInfoLog(*program);
 
-        GLuint k = glGetUniformBlockIndex(program,"Matrices");
-        glUniformBlockBinding(program, k, matricesUniLoc);
-        glUniformBlockBinding(program, glGetUniformBlockIndex(program,"Material"), materialUniLoc);
+        GLuint k = glGetUniformBlockIndex(*program,"Matrices");
+        glUniformBlockBinding(*program, k, matricesUniLoc);
+        glUniformBlockBinding(*program, glGetUniformBlockIndex(*program,"Material"), materialUniLoc);
 
-        texUnit = glGetUniformLocation(program,"texUnit");
+        texUnit = glGetUniformLocation(*program,"texUnit");
 
-        return(program);
+        return(*program);
     }
 
 

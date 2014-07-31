@@ -16,7 +16,7 @@ namespace Shaders
 
     void printShaderInfoLog(GLuint obj);
 
-    GLuint setupShaders(char * vertexfile, char * fragmentfile);
+    GLuint setupShaders(char * vertexfile, char * fragmentfile, GLuint *);
 
 }// end namespace
 

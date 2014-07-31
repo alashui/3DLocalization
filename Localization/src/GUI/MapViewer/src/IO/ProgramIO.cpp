@@ -240,6 +240,20 @@ namespace IO
                 translation[1] = sin(3.14159*theta/180.0);
                 translation[2] = 0;
             }break;
+            case 'n' :
+            {
+                IO::GetParticleList();
+            }break;
+
+             case 't' :
+            {
+                camera[2] += 0.1;
+            }break;
+
+             case 'y' :
+            {
+                camera[2] -= 0.1;
+            }break;
 
         }
         // camera[0] = r * sin(alpha * 3.14f / 180.0f) * cos(beta * 3.14f / 180.0f);
@@ -309,6 +323,7 @@ namespace IO
 
 std::vector<Particle> GetParticleList()
 {
+    particles.clear();
     std::string fn = "../../PyViewer/ParticleLists.txt";
     std::ifstream file(fn.c_str());
     if ( !file.is_open() )
@@ -319,26 +334,29 @@ std::vector<Particle> GetParticleList()
         std::vector<Particle> v;
         return v;
     }
+    float minweight = 1000, maxweight = 0;
     std::vector<float> v;
-
     std::string str = "ldldldld";
     while (!file.eof())
     {
         getline( file, str );
-        //std::cout << str << std::endl;
         std::vector<std::string> strs;
         boost::split(strs, str, boost::is_any_of(" "));
         for (int i = 0; i < strs.size(); i++)
             v.push_back(atof(strs[i].c_str()));
-
         float wt = v.back();
-        v.pop_back();
+        
+        if(wt > maxweight)
+            maxweight = wt;
+        else if(wt < minweight)
+            minweight = wt;
 
-        pList.push_back(Particle(Perspective(v), wt));
-
-        Helper::MyParticle temp(v[0], v[1], v[2]);
+        Helper::MyParticle temp(v[0], v[1], v[2], wt);
         particles.push_back(temp);
+        v.clear();
     }
+
+
     return pList;
 }
 

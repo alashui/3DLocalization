@@ -16,7 +16,6 @@
 #include "../Helper/MathHelp.h"
 #include "../Helper/HelperStructures.h"
 #include "../View/View.h"
-#include "../Helper/SolidSphere.h"
 #include "../IO/ProgramIO.h"
 
 

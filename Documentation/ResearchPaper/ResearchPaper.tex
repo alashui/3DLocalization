@@ -67,7 +67,7 @@
  Our team took 42 scans of the space we work in, a roughly 3500 sqft floor consisting of 7-8 rooms and a large amount of non-static objects, such as chairs, robots, and whiteboards. The Matterport software allows about 100 scans for a single model, and the software bundled with the camera automatically merges these scans into one textured mesh. The software also automatically converts the data to a .obj file format for viewing on their site. We were then able to use this object file to determine features about our map.
 
   \subsection{Filling In the Gaps}
-  Our model was inevitably left with gaps from places that were obstructed from the view of our camera. To help improve the overall quality of our map we used the Meshlab software. This allowed us to remove disconnected pieces, remove unreferenced vertices, and smoothen out some jagged areas. on top of this, we rendered the background color pink to allow us to single out features on these areas and remove them from the program (See Section \ref{sec:removeBad}).
+  Our model was inevitably left with gaps from places that were obstructed from the view of our camera. To help improve the overall quality of our map we used the Meshlab software. This allowed us to remove disconnected pieces, remove unreferenced vertices, and smoothen out some jagged areas. on top of this, we rendered the background color pink to allow us to single out features on these areas and remove them from the program.
   
   \subsection{Creating a Database of Images from the Map}
   Our goal is to use computer vision algorithms that compare between 2D images, which meant that we had to represent our 3D map in 2D for our feature matching algorithms to work properly. To represent our 3D map as 2D information, we decided to render images from thousands of different perspectives within our map. The following steps were taken to accomplish this.
@@ -95,24 +95,26 @@ There are a variety of features that can be used when describing an image. In it
 
 SURF (Speeded Up Robust Features) is a feature detection algorithm that detects similar features as SIFT (Scale-Invariant Feature Transform). SURF detects interesting keypoints in an image. Using OpenCV, we can detect these points, describe them, and eventually compare two keypoints.
 
-The Grayscale image is a highly coarse image that simply splits an image into a grid, then computes the average intensity inside each grid square. From this image, we can compute the black and white ``above below" image. This is created by finding the average intensity of the grayscale, then determining if a square is either higher or lower than this. If a square is higher, it is colored white, otherwise it is colored black.
+The Grayscale image is a highly coarse image that simply splits an image into a grid, then computes the average intensity inside each grid square. From this image, we can compute the black and white "above below" image. This is created by finding the average intensity of the grayscale, then determining if a square is either higher or lower than this. If a square is higher, it is colored white, otherwise it is colored black.
 
   \subsection{Storing the Features}
-Once we precompute the features, we store them in a yaml file. OpenCV has built in storage methods, which makes this a simple process.
-
-
-
-
-
-
-
+The precomputed features are stored in a yaml file. OpenCV has built in storage methods, which makes this a simple process. Because each perspective has its own file for storing keypoints|in addition to its own file for grayscale and black and white images|the filename contains the meta information about each description. The program is able to load all features and know their corresponding location and orientation by first looking inside the folder to see what perspectives are available, then load into the map.
 
 %========================================%
 %===== Section 4, MCL Implementation ====% 
 %========================================%
   \section{MCL Implementation}
    
-  
+ \subsection{Actor}
+The actor in our MCL implementation satisfies three constraints: communicate with the Robot Operating System (ROS), move autonomously, and publish image data from a camera. During our testing, we used several robots, including the Parrot AR Drone, the iCreate Robot, and a virtual robot. The actor also should be able to navigate in its environment. In our implementation, simple point to point navigation was sufficient, however a future goal is to implement the ability to make smart paths allowing the robot to go through doors and around or over tables.
+
+
+
+\section{Results}
+We have a dumb robot.
+
+\section{Conclusions}
+We have a dumb robot.
 
 
 

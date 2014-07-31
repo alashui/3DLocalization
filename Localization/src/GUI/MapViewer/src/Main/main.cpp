@@ -31,7 +31,6 @@
 #include "../Rendering/Render.h"
 #include "../Shaders/ShaderFunctions.h"
 #include "../IO/ProgramIO.h"
-#include "../Helper/SolidSphere.h"
 
 
 int init();
@@ -48,6 +47,9 @@ int main(int argc, char **argv)
     glutInitContextFlags (GLUT_COMPATIBILITY_PROFILE );
 
     glutInitWindowPosition(100,100);
+
+    glEnableClientState(GL_VERTEX_ARRAY);
+    glEnableClientState(GL_COLOR_ARRAY);
 
 
     if(argc == 3)
@@ -128,7 +130,8 @@ int init()
 
     IO::GetParticleList();
 
-    program = Shaders::setupShaders(vertexfile, fragmentfile);
+    Shaders::setupShaders(vertexfile, fragmentfile, &program);
+    Shaders::setupShaders(vertexfile1, fragmentfile1, &program1);
 
     Render::genVAOsAndUniformBuffer();
 

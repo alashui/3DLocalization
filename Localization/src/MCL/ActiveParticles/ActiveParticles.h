@@ -50,7 +50,7 @@ namespace MCL
 
     /**** Private Functions, Internal Use Only ****/
         Perspective MakeGuess();            // Computes the perspective that represents the best guess as to our actors location       
-        float ComputeAvgWeight();           // pretty self explanatory if you ask me..
+        float ComputeAvgWeight(int);           // pretty self explanatory if you ask me..
         // Perspective Scatter(Perspective, float, int);
         Perspective Scatter(Perspective);
 
@@ -107,7 +107,8 @@ namespace MCL
         float GetAvgWeight();       // Get the average weight for the current particle list
         int GetGeneration();      // Get the iteration count of the algorithm, how many times we have re-sampled particles
         int NumParticles();
-        void writePoints();
+        void WritePoints();
+        void WriteMeta();
        
 
         bool GetConstants(string);      // Get the grid density and rotation interval from the generated input file (Data/InputFiles/$ModelName/InputFile.txt)

@@ -101,7 +101,7 @@ namespace MCL
         return guess;
     }
 
-    float ActiveParticles::ComputeAvgWeight()
+    float ActiveParticles::ComputeAvgWeight(int save = 0)
     {
         double avg = 0;
 
@@ -112,7 +112,8 @@ namespace MCL
             if(totalPs != 0)
                 avg += this->pList[i].GetWeight() / (float)totalPs;
         }
-        this->weightHistory.push_back(avg);
+        if (save == 0)
+            this->weightHistory.push_back(avg);
         return avg;
     }
 
@@ -201,7 +202,7 @@ namespace MCL
         this->ComputeAvgWeight();
         this->generation++;
         Perspective p = this->MakeGuess();
-        writePoints();
+        WritePoints();
         return p;
     }
 
@@ -401,7 +402,7 @@ namespace MCL
     int ActiveParticles::NumParticles()
     { return this->pList.size(); }
 
-    void ActiveParticles::writePoints()
+    void ActiveParticles::WritePoints()
     {
         ofstream pListFile;
         pListFile.open("../src/GUI/PyViewer/ParticleLists.txt");
@@ -438,15 +439,14 @@ namespace MCL
         }
 
         pListFile.close();
+    }
 
-        g = GetGuess().ToVector();
-
-        // Now write metadata to a different file!
+    void ActiveParticles::WriteMeta()
+    {
+        vector<float> g = GetGuess().ToVector();
         ofstream mdFile;
-        mdFile.open("../src/GUI/MetaData.txt", ios_base::app);
-        
-        mdFile << GetGeneration() << " " << GetAvgWeight() << " " << g[0] << " " << g[1] << "\n";
-
+        mdFile.open("../src/GUI/Meta/MetaData.txt", ios_base::app);
+        mdFile << GetGeneration() << " " << ComputeAvgWeight(1) << " " << g[0] << " " << g[1] << "\n";
         mdFile.close();
     }
 }

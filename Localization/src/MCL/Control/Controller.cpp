@@ -70,6 +70,9 @@ namespace MCL
         }
 
         float w = maxw - minw;
+        this->ap.SetParticleList(v);
+        this->ap.WriteMeta();
+
 
         cout << "MAX: " << maxw << ", MIN: " << minw << endl;
 
@@ -190,7 +193,7 @@ namespace MCL
         this->ap.AnalyzeList();
 
         ofstream mdFile;
-        mdFile.open("../src/GUI/MetaData.txt");
+        mdFile.open("../src/GUI/Meta/MetaData.txt");
         mdFile << "";
         mdFile.close();
 

@@ -1,6 +1,4 @@
-# Viewer.py
 from __future__ import division
-
 from graphics import *
 
 def main():
@@ -13,6 +11,7 @@ def main():
     f.close()
 
     win = GraphWin('Points', 600, 600)
+    win.setBackground("white")
 
     l = Line(Point(20, 20), Point(20,650))
     l.setArrow("first")
@@ -25,7 +24,16 @@ def main():
     l = Line(Point(15, 300), Point(25, 300))
     l.draw(win)
 
-    t = Text(Point(40, 300), str(round(sum(avgwt)/len(avgwt), 2)))
+    t = Text(Point(40, 300), str(round((max(avgwt) + min(avgwt))/2, 1)))
+    t.setTextColor("blue")
+    t.draw(win)
+
+    t = Text(Point(35, 570), str(round(min(avgwt), 1)))
+    t.setTextColor("blue")
+    t.draw(win)
+
+    t = Text(Point(40, 20), str(round(max(avgwt), 1)))
+    t.setTextColor("blue")
     t.draw(win)
 
     mulx = 560 / len(avgwt)
@@ -43,6 +51,6 @@ def transform(x, minx, maxx, newmax):
 
 def round(num, p):
     num = num * 10 ** p
-    return int(num) / 10 ** p
+    return int(num + 0.5) / 10 ** p
 
 if __name__ == "__main__": main()

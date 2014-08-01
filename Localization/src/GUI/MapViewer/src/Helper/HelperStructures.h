@@ -60,7 +60,7 @@ namespace Helper
       GLfloat g_color_buffer_data[VERTICES];
       GLuint g_normal_buffer_data[VERTICES];
 
-      MyParticle(float x, float y, float z, float dx, float dy, float dz, float weight)
+      MyParticle(float x, float y, float z, float dx, float dy, float dz, float weight, float count)
       {
         srand(time(0));
         float dxx = (rand()%100-50)/10.0;
@@ -127,7 +127,7 @@ namespace Helper
           {
             g_vertex_buffer_data[j++] = (hold[j]/16.0)+x;
             g_vertex_buffer_data[j++] = (hold[j]/16.0)+y;
-            g_vertex_buffer_data[j++] = (hold[j]/32.0)+z;
+            g_vertex_buffer_data[j++] = (hold[j]/55.0)+z + count*0.03;
           }
           // Generate 1 buffer, put the resulting identifier in vertexbuffer
           glGenBuffers(1, &vertexbuffer);
@@ -138,7 +138,7 @@ namespace Helper
           // Give our vertices to OpenGL.
           glBufferData(GL_ARRAY_BUFFER, sizeof(g_vertex_buffer_data), g_vertex_buffer_data, GL_STATIC_DRAW);
 
-          float max = 55;
+          float max = 60;
           float min = 0;
 
           if(weight < min)
@@ -146,71 +146,94 @@ namespace Helper
           if(weight > max)
             weight = 39.5;
 
-          for(int i = 0, j = 0; i < VERTICES; i+=3)
+          if(weight >= 0 && weight <= max/3)
           {
-            g_color_buffer_data[j++] = ((weight/max)*255)/255.0;
-            g_color_buffer_data[j++] = 0;
-            g_color_buffer_data[j++] = (255 - 255*(weight/max))/255.0;
+              for(int i = 0, j = 0; i < VERTICES; i+=3)
+                {
+                  g_color_buffer_data[j++] = weight/(2*max);
+                  g_color_buffer_data[j++] = 0;
+                  g_color_buffer_data[j++] = 1 - weight/max;
+                }
           }
+          else if(weight > max/3 && weight < 2*max/3)
+          {
+              for(int i = 0, j = 0; i < VERTICES; i+=3)
+              {
+                g_color_buffer_data[j++] = weight/max;
+                g_color_buffer_data[j++] = 0;
+                g_color_buffer_data[j++] = 1 - weight/max;
+              }
+          }
+          else
+          {
+              for(int i = 0, j = 0; i < VERTICES; i+=3)
+              {
+                g_color_buffer_data[j++] = weight/max;
+                g_color_buffer_data[j++] = 0;
+                g_color_buffer_data[j++] = 1 - 2*weight/max;
+              }
+          }
+
+          
 
           glGenBuffers(1, &colorbuffer);
           glBindBuffer(GL_ARRAY_BUFFER, colorbuffer);
           glBufferData(GL_ARRAY_BUFFER, sizeof(g_color_buffer_data), g_color_buffer_data, GL_STATIC_DRAW);
 
             static const GLfloat holdn[] = {
-            -1.0, 0.0, 0.0,
-            -1.0, 0.0, 0.0,
-            -1.0, 0.0, 0.0,
-            0.0, 0.0, -1.0,
-            0.0, 0.0, -1.0,
-            0.0, 0.0, -1.0,
-            0.0, -1.0, 0.0,
-            0.0, -1.0, 0.0,
-            0.0, -1.0, 0.0,
-            0.0, 0.0, -1.0,
-            0.0, 0.0, -1.0,
-            0.0, 0.0, -1.0,
-            -1.0, 0.0, 0.0,
-            -1.0, 0.0, 0.0,
-            -1.0, 0.0, 0.0,
-            0.0, -1.0, 0.0,
-            0.0, -1.0, 0.0,
-            0.0, -1.0, 0.0,
-            0.0, 0.0, 1.0,
-            0.0, 0.0, 1.0,
-            0.0, 0.0, 1.0,
-            1.0, 0.0, 0.0,
-            1.0, 0.0, 0.0,
-            1.0, 0.0, 0.0,
-            1.0, 0.0, 0.0,
-            1.0, 0.0, 0.0,
-            1.0, 0.0, 0.0,
-            0.0, 1.0, 0.0,
-            0.0, 1.0, 0.0,
-            0.0, 1.0, 0.0,
-            0.0, 1.0, 0.0,
-            0.0, 1.0, 0.0,
-            0.0, 1.0, 0.0,
-            0.0, 0.0, 1.0,
-            0.0, 0.0, 1.0,
-            0.0, 0.0, 1.0,
-            0.0, 0.0, 1.0,
-            0.0, 0.0, 1.0,
-            0.0, 0.0, 1.0,
-            0.0, 0.0, 1.0,
-            0.0, 0.0, 1.0,
-            0.0, 0.0, 1.0,
-            1.0, 0.0, 0.0,
-            1.0, 0.0, 0.0,
-            1.0, 0.0, 0.0,
-            -1.0, 0.0, 0.0,
-            -1.0, 0.0, 0.0,
-            -1.0, 0.0, 0.0,
+            -1.0f,-1.0f,-1.0f, // triangle 1 : begin
+              -1.0f,-1.0f, 1.0f,
+              -1.0f, 1.0f, 1.0f, // triangle 1 : end
+              1.0f, 1.0f,-1.0f, // triangle 2 : begin
+              -1.0f,-1.0f,-1.0f,
+              -1.0f, 1.0f,-1.0f, // triangle 2 : end
+              1.0f,-1.0f, 1.0f,  // t3 b
+              -1.0f,-1.0f,-1.0f,
+              1.0f,-1.0f,-1.0f,  // t3 e
+              1.0f, 1.0f,-1.0f,  // t4 b
+              1.0f,-1.0f,-1.0f,
+              -1.0f,-1.0f,-1.0f, // t4 e
+              -1.0f,-1.0f,-1.0f, // t5 b
+              -1.0f, 1.0f, 1.0f, 
+              -1.0f, 1.0f,-1.0f, // t5 e
+              1.0f,-1.0f, 1.0f,  // t6 b
+              -1.0f,-1.0f, 1.0f,
+              -1.0f,-1.0f,-1.0f, // t6 e
+              -1.0f, 1.0f, 1.0f, // t7 b
+              -1.0f,-1.0f, 1.0f,
+              1.0f,-1.0f, 1.0f,  // t7 e
+              1.0f, 1.0f, 1.0f,  // t8 b
+              1.0f,-1.0f,-1.0f,
+              1.0f, 1.0f,-1.0f, // t8 e
+              1.0f,-1.0f,-1.0f, // t9 b
+              1.0f, 1.0f, 1.0f,
+              1.0f,-1.0f, 1.0f, // t9 e
+              1.0f, 1.0f, 1.0f, // t10 b
+              1.0f, 1.0f,-1.0f,
+              -1.0f, 1.0f,-1.0f,// t10 e
+              1.0f, 1.0f, 1.0f, // t11 b
+              -1.0f, 1.0f,-1.0f,
+              -1.0f, 1.0f, 1.0f,// t11 e
+              1.0f, 1.0f, 1.0f, // t12 b
+              -1.0f, 1.0f, 1.0f,
+              1.0f,-1.0f, 1.0f,  // t12 e
+              0.5, 0.5, -0.4,    // lower arrow
+              -0.5, -0.5, -0.4,
+              5*dx, 5*dy, 0.0,
+              0.5, 0.5, 0.4,     // upper arrow
+              -0.5, -0.5, 0.4,   
+              5*dx, 5*dy, 0.0,
+              -0.5, -0.5, -0.4,
+              -0.5, -0.5, 0.4,
+              5*dx, 5*dy, 0.0,
+              0.5, 0.5, -0.4,
+              0.5, 0.5, 0.4,
+              5*dx, 5*dy, 0.0
 
           };
 
           for(int i = 0; i < VERTICES; i++)
-            g_normal_buffer_data[i] = holdn[i];
+            g_normal_buffer_data[i] = -1.0*holdn[i];
 
           glGenBuffers(1, &normalbuffer);
           glBindBuffer(GL_ARRAY_BUFFER, normalbuffer);

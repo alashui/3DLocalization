@@ -209,8 +209,8 @@ int main(int argc, char **argv)
 
 
     char key = 'k';
-    namedWindow("Robot Image");
-    namedWindow("Top Match");
+    // namedWindow("Robot Image");
+    // namedWindow("Top Match");
 
     while(ros::ok() && key != 'q')
     {
@@ -227,11 +227,11 @@ int main(int argc, char **argv)
             data_publisher.publish(out_msg.toImageMsg());
         ros::spinOnce();
 
-        // std::cout << "hererer" << std::endl;
-        imshow("Robot Image", image_list[current_image]);
-        imshow("Top Match", BestGuessImage);
+        std::cout << "hererer" << std::endl;
+        // imshow("Robot Image", image_list[current_image]);
+        // imshow("Top Match", BestGuessImage);
 
-        key = cv::waitKey(2);
+        // key = cv::waitKsey(2);
         if(key == ' ')
             current_image++;
         if(current_image == image_list.size())

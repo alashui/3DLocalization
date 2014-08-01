@@ -214,6 +214,11 @@ namespace Render
     void renderScene(void)
     {
         static float step = 0.0f;
+        static int framecount = 0;
+
+        if(framecount % 30 == 0)
+            IO::GetParticleList();
+        
 
         step+=0.02;
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);

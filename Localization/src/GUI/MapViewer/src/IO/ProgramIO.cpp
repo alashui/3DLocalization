@@ -370,8 +370,19 @@ std::vector<Particle> GetParticleList()
     for(int i = 0; i < parts.size(); i++)
     {
         std::vector<float> v = parts[i];
+
         std::pair<float, float> temppair(v[0], v[1]);
-        Helper::MyParticle temp(v[0], v[1], v[2], v[3], v[4], 0, v[6]);
+
+        if(!Map.count(temppair))
+        {
+            Map[temppair] = 1;
+        }
+        else
+            Map[temppair]++;
+
+        int x = Map.at(temppair);
+
+        Helper::MyParticle temp(v[0], v[1], v[2], v[3], v[4], v[5], v[6], x-1);
         particles.push_back(temp);
     }
 

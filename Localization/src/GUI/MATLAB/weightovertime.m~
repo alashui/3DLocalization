@@ -1,0 +1,29 @@
+fid = fopen('../Meta/MetaData.txt','r');  % Open text file
+InputText=textscan(fid,'%s',1000,'delimiter','\n');
+input = InputText{1};
+
+weights = zeros(length(input) - 1);
+xs = zeros(length(input) - 1);
+ys = zeros(length(input) - 1);
+
+for kk = 2 : length(input)
+    C = strsplit(char(input(kk)));
+    weights(kk - 1) = str2num(char(C(2)));
+    xs(kk - 1) = str2num(char(C(3)));
+    ys(kk - 1) = str2num(char(C(4)));
+end
+
+figure('Color', [1 1 1]);
+plot(weights);
+ylabel('Average Weight');
+xlabel('Iteration');
+
+t=1:length(input) - 1;
+h=uicontrol(gcf,'style','slider','units','pix','position',[100 5 300 20]);
+set(h,'min',min(t),'max',max(t));
+set(h,'callback','i=find(t==nearest(get(h,''value'')));plot3(x(:,i),y(:,i),z(:,i))');
+for i=1:length(t)
+    plot3(x(:,i),y(:,i),z(:,i));
+    pause(1);
+    set(h,'value',t(i));
+end

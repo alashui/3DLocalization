@@ -130,11 +130,11 @@ namespace MCL
         stringstream ss;
         ss << "[AP.cpp] Total weight: " << totalWeight;
         this->distribution.clear();
+        totalWeight = (totalWeight == 0) ? 1 : totalWeight;
 
         for (int i = 0; i < this->pList.size(); i++)
         {
             // cout << this->pList[i].GetWeight() << "\t" << wantedSize << "\t" << totalWeight << endl;
-            totalWeight = (totalWeight == 0)? 1 : totalWeight;
             int num = (this->pList[i].GetWeight() * wantedSize) / totalWeight;
             for (; num > -1; num--)
                 this->distribution.push_back(Scatter(this->pList[i].GetPerspective()));
@@ -256,9 +256,14 @@ namespace MCL
         static boost::variate_generator<boost::mt19937&, boost::normal_distribution<> > var_norxy(rngxy, distributionxy);
         static boost::variate_generator<boost::mt19937&, boost::normal_distribution<> > var_northeta(rngtheta, distributiontheta);
 
+        cout << v[0] << "\t" << v[1];
+        float a = (float) var_norxy();
+        float b = (float) var_norxy();
         // change in xy
-        v[0] += (float) var_norxy();
-        v[1] += (float) var_norxy();
+        v[0] += a;//(float) var_norxy();
+        v[1] += b;//(float) var_norxy();
+
+        // cout << "\tShift: " << v[0] << "\t" << v[1];
 
         // change in theta
         float curangle = p.GetAngle();
@@ -270,6 +275,9 @@ namespace MCL
 
         Perspective pNew(v);
         SnapToGrid(&pNew);
+
+        cout << "\t" << pNew.x << "\t" << pNew.y << endl;
+
         return pNew;
     }
 

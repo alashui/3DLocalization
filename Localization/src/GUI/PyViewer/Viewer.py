@@ -48,7 +48,6 @@ def main(last):
 
         f.close()
 
-
         try:
             w = maxx - minx
             h = maxy - miny

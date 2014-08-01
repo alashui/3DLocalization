@@ -57,14 +57,14 @@ namespace MCL
         float maxw = -1000;
         float minw = 10000;
 
-        // map<Perspective, float, ComparePerspectives> cachedPs;
+        map<Perspective, float, ComparePerspectives> cachedPs;
 
         for(int i = 0; i < this->ap.NumParticles(); i++)
         {               
-            // Perspective cp = v[i].GetPerspective();
-            // if (!cachedPs.count(v[i].GetPerspective()))
-                float wt = /*cachedPs[cp] =*/ CompareAndWeigh(v[i], this->robot, this->comboWeighting);
-            // float wt = cachedPs[cp];
+            Perspective cp = v[i].GetPerspective();
+            if (!cachedPs.count(v[i].GetPerspective()))
+                cachedPs[cp] = CompareAndWeigh(v[i], this->robot, this->comboWeighting);
+            float wt = cachedPs[cp];
 
             v[i].SetWeight(wt);
             if (wt > maxw)
@@ -81,7 +81,7 @@ namespace MCL
         this->ap.WriteMeta();
 
 
-        cout << "MAX: " << maxw << ", MIN: " << minw << endl;
+        // cout << "MAX: " << maxw << ", MIN: " << minw << endl;
 
         for (int i = 0; i < this->ap.NumParticles(); i++)
         {

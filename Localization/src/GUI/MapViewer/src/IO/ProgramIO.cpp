@@ -1,5 +1,6 @@
 #include "ProgramIO.h"
 #include "boost/filesystem.hpp"
+#include "../Helper/Particles.h"
 
 
 Assimp::Importer importer;
@@ -323,7 +324,14 @@ namespace IO
 
 std::vector<Particle> GetParticleList()
 {
+        std::vector<std::vector<float> > parts;
+    float minweight = 1000, maxweight = 0;
+    std::vector<float> v;
+    std::string str;
+
     particles.clear();
+
+    // --- Open the file of the particle positions -- //
     std::string fn = "../../PyViewer/ParticleLists.txt";
     std::ifstream file(fn.c_str());
     if ( !file.is_open() )
@@ -335,10 +343,7 @@ std::vector<Particle> GetParticleList()
         return v;
     }
 
-    std::vector<std::vector<float> > parts;
-    float minweight = 1000, maxweight = 0;
-    std::vector<float> v;
-    std::string str = "ldldldld";
+    // -- Go through the file and add the particles to a map --//
     while (!file.eof())
     {
         getline( file, str );
@@ -356,18 +361,13 @@ std::vector<Particle> GetParticleList()
         else if(wt < minweight)
             minweight = wt;
 
-        v[6] = wt;
-
-        // for(int i = 0; i < v.size(); i++)
-        //     std::cout << " " << v[i] << " ";
-        // std::cout << std::endl;
-
         parts.push_back(v);
         v.clear();
     }
 
+    // -- Go through
     std::map<std::pair<float, float>, int> Map;
-    for(int i = 0; i < parts.size(); i++)
+    for(int i = 2; i < parts.size(); i++)
     {
         std::vector<float> v = parts[i];
 
@@ -382,9 +382,19 @@ std::vector<Particle> GetParticleList()
 
         int x = Map.at(temppair);
 
-        Helper::MyParticle temp(v[0], v[1], v[2], v[3], v[4], v[5], v[6], x-1);
+        MyParticle temp(v[0], v[1], v[2], v[3], v[4], v[5], v[6], x-1, 0);
         particles.push_back(temp);
     }
+
+    v.clear();
+    v = parts[0];
+    MyParticle temp(v[0], v[1], v[2], v[3], v[4], v[5], v[6], 0, 1);
+    particles.push_back(temp);
+
+    v.clear();
+    v = parts[1];
+    MyParticle temp1(v[0], v[1], v[2], v[3], v[4], v[5], v[6], 0, 2);
+    particles.push_back(temp1);
 
     return pList;
 }

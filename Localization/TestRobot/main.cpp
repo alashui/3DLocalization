@@ -261,11 +261,11 @@ int main(int argc, char **argv)
 
         // if(dirName == "BirchLab/")
         // {
-            image_names.push_back("../../../Data/RenderedImages/BirchLab/_-0.5_-0.4_1.5_-0.49_0.86_0_.jpg");
-            image_names.push_back("../../../Data/RenderedImages/BirchLab/_1_0.6_1.5_-0.86_0.5_0_.jpg");
-            image_names.push_back("../../../Data/RenderedImages/BirchLab/_1_0.6_1.5_0.86_-0.5_0_.jpg");
-            image_names.push_back("../../../Data/RenderedImages/BirchLab/_1.5_5.6_1.5_-0.49_0.86_0_.jpg");
-            image_names.push_back("../../../Data/RenderedImages/BirchLab/_1.5_5.6_1.5_0.49_-0.86_0_.jpg");
+            image_names.push_back("../../../Data/RenderedImages/BirchLab/_-0.5_-0.4_1.5_-0.5_0.86_0_.jpg");
+            image_names.push_back("../../../Data/RenderedImages/BirchLab/_1_0.6_1.5_-0.5_0.5_0_.jpg");
+            image_names.push_back("../../../Data/RenderedImages/BirchLab/_1_0.6_1.5_0.5_-0.5_0_.jpg");
+            image_names.push_back("../../../Data/RenderedImages/BirchLab/_1.5_5.6_1.5_-0.5_0.86_0_.jpg");
+            image_names.push_back("../../../Data/RenderedImages/BirchLab/_1.5_5.6_1.5_0.5_-0.86_0_.jpg");
             image_names.push_back("../../../Data/RenderedImages/BirchLab/_1.5_5.6_1.5_-0.5_-0.86_0_.jpg ");
             image_names.push_back("../../../Data/RenderedImages/BirchLab/_1.5_5.6_1.5_0.5_0.86_0_.jpg");
         // }

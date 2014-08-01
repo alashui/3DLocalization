@@ -17,6 +17,7 @@
 #include "../Helper/HelperStructures.h"
 #include "../View/View.h"
 #include "../IO/ProgramIO.h"
+#include "../Helper/Particles.h"
 
 
 namespace Render 

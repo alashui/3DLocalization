@@ -45,11 +45,7 @@ namespace Helper
         float nx, ny, nz;     //Normal
         float s0, t0;         //Texcoord0
       };
-
-
-   
-
-    
+ 
 }
 
 #endif

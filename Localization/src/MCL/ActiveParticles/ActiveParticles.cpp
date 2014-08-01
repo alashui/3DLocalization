@@ -168,7 +168,7 @@ namespace MCL
         {
             int rndIdx = rand() % this->distribution.size();
             Perspective P = this->distribution[rndIdx];
-            SnapToGrid(&P);
+            //SnapToGrid(&P);
             if (!masterMap.count(P))
             {
                 i--; m++;

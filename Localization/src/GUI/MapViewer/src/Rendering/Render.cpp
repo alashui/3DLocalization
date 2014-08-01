@@ -309,6 +309,11 @@ namespace Render
             glDeleteTextures(1,&(myMeshes[i].texIndex));
             glDeleteBuffers(1,&(myMeshes[i].uniformBlockIndex));
         }
+
+        for(int i = 0; i < particles.size(); i++)
+        {
+            glDeleteBuffers(1, &(particles[i].vertexbuffer));
+        }
     }
 
     // gind the updated model matrix to the buffer

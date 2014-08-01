@@ -1,5 +1,5 @@
- #ifndef HELPERSTRUCTURES_H_
-#define HELPERSTRUCTURES_H_
+#ifndef PARTICLES_H_
+#define PARTICLES_H_
 
 #include <IL/il.h>
 #include <GL/glew.h>
@@ -11,6 +11,10 @@
       #define MEMBER_OFFSET(s,m) ((char *)NULL + (offsetof(s,m)))
       #define BUFFER_OFFSET(i) ((char *)NULL + (i))
       #define VERTICES 144
+
+        static const int PARTICLE = 0;
+        static const int BESTGUESS = 1;
+        static const int AVGGUESS = 2;
       GLuint vertexbuffer;
       GLuint colorbuffer;
       GLuint normalbuffer;
@@ -19,7 +23,7 @@
       GLfloat g_color_buffer_data[VERTICES];
       GLuint g_normal_buffer_data[VERTICES];
 
-      MyParticle(float x, float y, float z, float dx, float dy, float dz, float weight, float count)
+      MyParticle(float x, float y, float z, float dx, float dy, float dz, float weight, float count, int state)
       {
         srand(time(0));
         float dxx = (rand()%100-50)/10.0;
@@ -80,21 +84,36 @@
 
           // std::cout << dx << " " << dy << std::endl;
 
-
-
-          for(int i = 0, j = 0; i < VERTICES; i+=3)
+          if(state == BESTGUESS)
           {
-            g_vertex_buffer_data[j++] = (hold[j]/16.0)+x;
-            g_vertex_buffer_data[j++] = (hold[j]/16.0)+y;
-            g_vertex_buffer_data[j++] = (hold[j]/55.0)+z + count*0.03;
+            for(int i = 0, j = 0; i < VERTICES; i+=3)
+            {
+              g_vertex_buffer_data[j++] = (hold[j]/7.0)+x;
+              g_vertex_buffer_data[j++] = (hold[j]/7.0)+y;
+              g_vertex_buffer_data[j++] = (hold[j]/2)+1;
+            }
           }
-          // Generate 1 buffer, put the resulting identifier in vertexbuffer
+          else if(state == AVGGUESS)
+          {
+            for(int i = 0, j = 0; i < VERTICES; i+=3)
+            {
+              g_vertex_buffer_data[j++] = (hold[j]/7.0)+x;
+              g_vertex_buffer_data[j++] = (hold[j]/7.0)+y;
+              g_vertex_buffer_data[j++] = (hold[j]/2)+1;
+            }
+          }
+          else
+          {
+            for(int i = 0, j = 0; i < VERTICES; i+=3)
+            {
+              g_vertex_buffer_data[j++] = (hold[j]/16.0)+x;
+              g_vertex_buffer_data[j++] = (hold[j]/16.0)+y;
+              g_vertex_buffer_data[j++] = (hold[j]/55.0)+z + count*0.03;
+            }
+          }
+
           glGenBuffers(1, &vertexbuffer);
-           
-          // The following commands will talk about our 'vertexbuffer' buffer
           glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer);
-           
-          // Give our vertices to OpenGL.
           glBufferData(GL_ARRAY_BUFFER, sizeof(g_vertex_buffer_data), g_vertex_buffer_data, GL_STATIC_DRAW);
 
           float max = 60;
@@ -105,31 +124,52 @@
           if(weight > max)
             weight = 39.5;
 
-          if(weight >= 0 && weight <= max/3)
+          if(state == BESTGUESS)
           {
-              for(int i = 0, j = 0; i < VERTICES; i+=3)
-                {
-                  g_color_buffer_data[j++] = weight/(2*max);
-                  g_color_buffer_data[j++] = 0;
-                  g_color_buffer_data[j++] = 1 - weight/max;
-                }
+            for(int i = 0, j = 0; i < VERTICES; i+=3)
+            {
+              g_color_buffer_data[j++] = 0;
+              g_color_buffer_data[j++] = 1;
+              g_color_buffer_data[j++] = 0;
+            }
           }
-          else if(weight > max/3 && weight < 2*max/3)
+          else if(state == AVGGUESS)
           {
-              for(int i = 0, j = 0; i < VERTICES; i+=3)
-              {
-                g_color_buffer_data[j++] = weight/max;
-                g_color_buffer_data[j++] = 0;
-                g_color_buffer_data[j++] = 1 - weight/max;
-              }
+            for(int i = 0, j = 0; i < VERTICES; i+=3)
+            {
+              g_color_buffer_data[j++] = 0.9;
+              g_color_buffer_data[j++] =  0.9;
+              g_color_buffer_data[j++] = 0.9;
+            }
           }
           else
           {
-              for(int i = 0, j = 0; i < VERTICES; i+=3)
+              if(weight >= 0 && weight <= max/3)
               {
-                g_color_buffer_data[j++] = weight/max;
-                g_color_buffer_data[j++] = 0;
-                g_color_buffer_data[j++] = 1 - 2*weight/max;
+                  for(int i = 0, j = 0; i < VERTICES; i+=3)
+                    {
+                      g_color_buffer_data[j++] = weight/(2*max);
+                      g_color_buffer_data[j++] = 0;
+                      g_color_buffer_data[j++] = 1 - weight/max;
+                    }
+              }
+              else if(weight > max/3 && weight < 2*max/3)
+              {
+                  for(int i = 0, j = 0; i < VERTICES; i+=3)
+                  {
+                    g_color_buffer_data[j++] = weight/max;
+                    g_color_buffer_data[j++] = 0;
+                    g_color_buffer_data[j++] = 1 - weight/max;
+                  }
+              }
+              else
+              {
+                  for(int i = 0, j = 0; i < VERTICES; i+=3)
+                  {
+                    g_color_buffer_data[j++] = weight/max;
+                    g_color_buffer_data[j++] = 0;
+                    g_color_buffer_data[j++] = 1 - 2*weight/max;
+                  }
               }
           }
 
@@ -192,7 +232,7 @@
           };
 
           for(int i = 0; i < VERTICES; i++)
-            g_normal_buffer_data[i] = -1.0*holdn[i];
+            g_normal_buffer_data[i] = g_vertex_buffer_data[i];
 
           glGenBuffers(1, &normalbuffer);
           glBindBuffer(GL_ARRAY_BUFFER, normalbuffer);

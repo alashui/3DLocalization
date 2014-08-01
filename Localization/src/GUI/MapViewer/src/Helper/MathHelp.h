@@ -3,6 +3,7 @@
 
 #include "../Helper/HelperStructures.h"
 #include "../../../Particle/Particle.h"
+#include "Particles.h"
 #include <IL/il.h>
 #include <GL/glew.h>
 #include <GL/glut.h>
@@ -101,7 +102,7 @@ extern std::string modelDirectoryName;
 extern std::string pathToModelDataDirectory;
 
 extern std::vector<MCL::Particle> pList;
-extern std::vector<Helper::MyParticle> particles;
+extern std::vector<MyParticle> particles;
  
 
 extern int main_window;

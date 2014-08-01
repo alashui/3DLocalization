@@ -57,14 +57,14 @@ namespace MCL
         float maxw = -1000;
         float minw = 10000;
 
-        map<Perspective, float, ComparePerspectives> cachedPs;
+        // map<Perspective, float, ComparePerspectives> cachedPs;
 
         for(int i = 0; i < this->ap.NumParticles(); i++)
         {               
-            Perspective cp = v[i].GetPerspective();
-            if (!cachedPs.count(v[i].GetPerspective()))
-                cachedPs[cp] = CompareAndWeigh(v[i], this->robot, this->comboWeighting);
-            float wt = cachedPs[cp];
+            // Perspective cp = v[i].GetPerspective();
+            // if (!cachedPs.count(v[i].GetPerspective()))
+                float wt = /*cachedPs[cp] =*/ CompareAndWeigh(v[i], this->robot, this->comboWeighting);
+            // float wt = cachedPs[cp];
 
             v[i].SetWeight(wt);
             if (wt > maxw)
@@ -218,6 +218,15 @@ namespace MCL
         mdFile.open("../src/GUI/Meta/MetaData.txt");
         mdFile << minx << " " << maxx << " " << miny << " " << maxy << "\n";
         mdFile.close();
+
+        ofstream File;
+        File.open("../src/GUI/PyViewer/Perspectives.txt");
+        for (int i = 0; i < perspectives.size(); i++)
+        {
+            Perspective p = perspectives[i];
+            File << p.x << " " << p.y << " " << p.z << " " << p.dx << " " << p.dy << " " << p.dz << " " << i << "\n";
+        }
+        File.close();
 
         return true;
     }
@@ -438,7 +447,7 @@ namespace MCL
 
         // wait max 10 seconds for the subscriber to connect.
         connect_flag = &Controller::imageFeedStarted;
-        connection_succeded = this->PauseState(connect_flag, 10);
+        connection_succeded = this->PauseState(connect_flag, 20);
 
         if(!connection_succeded)
         {

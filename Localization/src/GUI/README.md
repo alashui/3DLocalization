@@ -1,1 +1,0 @@
-README for the GUI for the 3DLocalization program.

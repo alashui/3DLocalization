@@ -82,6 +82,9 @@ namespace MCL
         Mat desc1 = c1.descs;
         Mat desc2 = c2.descs;
 
+        if (desc2.empty())
+            return rand() % 2;
+
         double total = 0.0;
         double count = 0.0;
 
@@ -91,7 +94,7 @@ namespace MCL
         if (desc1.empty() || desc2.empty() || desc2.cols < 2 || desc2.rows < 2)
         {
             // ErrorIO("Error in Matching.cpp->CompareDescriptors: At least one of the descriptors is empty!");
-            return 0;//-10000;
+            return rand() % 2;//-10000;
         }
 
         float sim = 0;
@@ -156,7 +159,7 @@ namespace MCL
         if (count < 2)
             ErrorIO("Less than 2 matches!");
         if (count < 2)
-            return 0;//-10000;
+            return -1;//-10000;
         // cout << total / count << " ";
         return score;
     }

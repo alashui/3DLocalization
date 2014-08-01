@@ -6,13 +6,25 @@ def main():
     f = open('MetaData.txt')
     avgwt = []
     pos = []
+    passed = False
+    minx = 0
+    miny = 0
+    maxx = 0
+    maxy = 0
     for line in f:
         line = line.split()
+        if not passed:
+            minx = float(line[0])
+            maxx = float(line[1])
+            miny = float(line[2])
+            maxy = float(line[3])
+            passed = True
+            continue
         pos += [[float(line[2]), float(line[3])]]
     f.close()
     
-    [minx, maxx] = AnalyzeListOfList(pos, 0)
-    [miny, maxy] = AnalyzeListOfList(pos, 1)
+    # [minx, maxx] = AnalyzeListOfList(pos, 0)
+    # [miny, maxy] = AnalyzeListOfList(pos, 1)
 
     win = GraphWin('Points', 600, 600)
     win.setBackground("white")
@@ -60,10 +72,18 @@ def main():
     circ.setFill('red')
     circ.draw(win)
 
+    origin = Circle(Point(20 + transform(0, minx, maxx, 560), 580 - transform(0, miny, maxy, 560)), 2)
+    origin.setFill('black')
+    origin.draw(win)
+
+    t = Text(Point(28 + transform(0, minx, maxx, 560), 588 - transform(0, miny, maxy, 560)), "O")
+    t.setStyle("italic")
+    t.draw(win)
+
+
     NUMTIMES = 10
 
     for i in range(len(pos) - 1):
-        win.delItem(l)
         pt1 = Point(20 + transform(pos[i][0], minx, maxx, 560), \
             580-transform(pos[i][1], miny, maxy, 560))
         pt2 = Point(20 + transform(pos[i+1][0], minx, maxx, 560), \
@@ -72,10 +92,19 @@ def main():
         # l.setArrow("last")
         l.draw(win)
 
+        pta = Point(2+i*600/len(pos), 2)
+        ptb = Point(2+(i+1)*600/len(pos), 2)
+        l = Line(pta, ptb)
+        l.draw(win)
+
         for i in range(NUMTIMES):
             circ.move((pt2.x - pt1.x)/NUMTIMES, (pt2.y - pt1.y)/NUMTIMES)
             sleep(0.05/NUMTIMES)
 
+    p = Polygon(Point(0,1.5), Point(600,1.5), Point(600,2.5), Point(0, 2.5))
+    p.setFill("white")
+    p.setOutline("white")
+    p.draw(win)
     win.getMouse()
 
 def AnalyzeListOfList(L, i):

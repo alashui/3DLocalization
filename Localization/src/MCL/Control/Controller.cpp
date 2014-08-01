@@ -192,9 +192,24 @@ namespace MCL
 
         this->ap.AnalyzeList();
 
+        // For MetaData!
+        float minx = 10000;
+        float maxx = -10000;
+        float miny = 10000;
+        float maxy = -10000;
+
+        for (int i = 0; i < perspectives.size(); i++)
+        {
+            Perspective p = perspectives[i];
+            minx = p.x < minx ? p.x : minx;
+            maxx = p.x > maxx ? p.x : maxx;
+            miny = p.y < miny ? p.y : miny;
+            maxy = p.y > maxy ? p.y : maxy;
+        }
+
         ofstream mdFile;
         mdFile.open("../src/GUI/Meta/MetaData.txt");
-        mdFile << "";
+        mdFile << minx << " " << maxx << " " << miny << " " << maxy << "\n";
         mdFile.close();
 
         return true;

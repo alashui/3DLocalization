@@ -6,7 +6,7 @@
     This package attempts to show the features of ROS step-by-step,
   </description>
   <maintainer email="example@example.com">John Allard</maintainer>
-  <author>Morgan Quigley</author>
+  <author>John Allard</author>
   <license>BSD</license>
 
   <buildtool_depend>catkin</buildtool_depend>

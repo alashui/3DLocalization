@@ -78,7 +78,7 @@ namespace MCL
 
         float w = maxw - minw;
         this->ap.SetParticleList(v);
-        this->ap.WriteMeta();
+        this->ap.WriteMeta(maxw);
 
 
         // cout << "MAX: " << maxw << ", MIN: " << minw << endl;

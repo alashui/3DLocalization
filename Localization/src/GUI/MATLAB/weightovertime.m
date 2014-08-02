@@ -2,9 +2,9 @@ fid = fopen('../Meta/MetaData.txt','r');  % Open text file
 InputText=textscan(fid,'%s',1000,'delimiter','\n');
 input = InputText{1};
 
-weights = zeros(length(input) - 1);
-xs = zeros(length(input) - 1);
-ys = zeros(length(input) - 1);
+weights = zeros(length(input) - 1, 1);
+xs = zeros(length(input) - 1, 1);
+ys = zeros(length(input) - 1, 1);
 
 for kk = 2 : length(input)
     C = strsplit(char(input(kk)));

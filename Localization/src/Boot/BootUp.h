@@ -147,7 +147,10 @@ namespace MCL
             store.release();
 
             if (descriptors.empty() || descriptors.rows < 3 || descriptors.cols < 3)
+            {
+                done++;
                 continue;
+            }
 
             // Add bw and gs images.
             Mat gstmp = imread(gsfn, CV_LOAD_IMAGE_GRAYSCALE);

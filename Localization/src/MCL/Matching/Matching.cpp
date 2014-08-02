@@ -155,9 +155,6 @@ namespace MCL
         // waitKey(0);
         // destroyAllWindows();
 
-
-        if (count < 2)
-            ErrorIO("Less than 2 matches!");
         if (count < 2)
             return -1;//-10000;
         // cout << total / count << " ";

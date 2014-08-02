@@ -108,7 +108,7 @@ namespace MCL
         int GetGeneration();      // Get the iteration count of the algorithm, how many times we have re-sampled particles
         int NumParticles();
         void WritePoints();
-        void WriteMeta();
+        void WriteMeta(float);
        
 
         bool GetConstants(string);      // Get the grid density and rotation interval from the generated input file (Data/InputFiles/$ModelName/InputFile.txt)

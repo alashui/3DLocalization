@@ -73,10 +73,12 @@
             \item This program starts by loading the data from the \texttt{3DLocalization/Data/FeatureData/} directory into live variables. The most computationally expensive of these processes is generating a master map that returns feature data given a certain perspective in the map.
             \item Establish a connection with the robot/actor :
               \begin{enumerate}
-              \item Then it begins publishing data under our \texttt{ros::Publisher} object and waits for the robot control program to subscribe to this publisher.
-              \item When a subscriber is detected, a handshake code is sent out over our data publisher, letting the robot know that we are ready to begin the  localization process.
-              \item Next, the localization program searches for the robots data publisher and subscribes to it when found. This connection will allow our algorithm to know the movement of the robot and other information to help in the localization process.
+              \item The program starts a \texttt{ros::Publisher} object and waits for the robot control program to subscribe to this publisher.
+              \item When a subscriber is detected, a handshake code is sent out over our data publisher, letting the robot know that we are ready to begin the localization process.
+              \item Next, the localization program searches for the robot's data publisher and subscribes to it when found. This connection will allow our algorithm to know the movement of the robot and other information to help in the localization process.
+              \item Finally, we search for the robot's image data publisher, and subscribe to it when found. When we detect the first image come through the main localization loop is started.
              \end{enumerate}
+            All of the above processes are on timers, if any take more than 30 seconds the program exits and must be restarted. 
             \item Begin the main localization loop :
               \begin{enumerate}
                 \item Generate a uniform distribution of particles over the map area, each particle represent a guess as to where the actor is.
@@ -85,7 +87,7 @@
                 \item Sample from the distribution for new particles.
                 \item Move the robot to a new location and move the particles a corresponding distance in the map.
               \end{enumerate}
-            \item Iterate the loop from bullet 4 to 7.
+            \item Iterate the above loop until the connection with the robot is lost or a \texttt{kill-flag} is sent by the robot to our program. Without either of these two things happening our program will continue to attempt to localize the robot.
             \end{itemize}
          \item TestRobot Program
 	    \begin{itemize}

@@ -209,7 +209,7 @@ namespace MCL
     // Rounds to second decimal place
     float round(float x)
     {
-        return (float) ((int) (x*100))/100.0;
+        return (float) ((int) (x*100 + 0.5))/100.0;
     }
 
     float ActiveParticles::GetAngle(float x, float y)
@@ -232,8 +232,8 @@ namespace MCL
         int nearestMulx = floor(mulx + 0.5);
         int nearestMuly = floor(muly + 0.5);
 
-        p->x = nearestMulx * this->gd + refP.x;
-        p->y = nearestMuly * this->gd + refP.y;
+        p->x = round(nearestMulx * this->gd + refP.x);
+        p->y = round(nearestMuly * this->gd + refP.y);
 
         float angle = GetAngle(p->dx, p->dy);
 
@@ -256,27 +256,23 @@ namespace MCL
         static boost::variate_generator<boost::mt19937&, boost::normal_distribution<> > var_norxy(rngxy, distributionxy);
         static boost::variate_generator<boost::mt19937&, boost::normal_distribution<> > var_northeta(rngtheta, distributiontheta);
 
-        cout << v[0] << "\t" << v[1];
-        float a = (float) var_norxy();
-        float b = (float) var_norxy();
-        // change in xy
-        v[0] += a;//(float) var_norxy();
-        v[1] += b;//(float) var_norxy();
+        // cout << v[0] << "\t" << v[1];
 
-        // cout << "\tShift: " << v[0] << "\t" << v[1];
+        // change in xy
+        v[0] += (float) var_norxy();
+        v[1] += (float) var_norxy();
 
         // change in theta
         float curangle = p.GetAngle();
         curangle += (float) var_northeta();
-        // std::cout << diff << std::endl;
-        // curangle = diff;
+
         v[3] = round(cos(curangle * PI / 180.0));
         v[4] = round(sin(curangle * PI / 180.0));
 
         Perspective pNew(v);
         SnapToGrid(&pNew);
 
-        cout << "\t" << pNew.x << "\t" << pNew.y << endl;
+        // cout << "\t" << pNew.x << "\t" << pNew.y << endl;
 
         return pNew;
     }

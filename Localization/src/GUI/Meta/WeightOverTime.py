@@ -10,37 +10,46 @@ def main():
 
     f.close()
 
-    win = GraphWin('Points', 600, 600)
+    sl = 40 # shift left
+    sd = 20  # shift down
+
+    win = GraphWin('Points', 600+sl, 600 + sd)
     win.setBackground("white")
 
-    l = Line(Point(20, 20), Point(20,650))
+    t = Text(Point((600+sl)/2, 10), "Average Weight Over Time")
+    t.draw(win)
+
+    t = Text(Point(sl/2 + 10, 300 + sd), "Avg\nWeight")
+    t.draw(win)
+
+    l = Line(Point(20+sl, 20+sd), Point(20+sl,650+sd))
     l.setArrow("first")
     l.draw(win)
 
-    l = Line(Point(0, 580), Point(580,580))
+    l = Line(Point(0+sl, 580+sd), Point(580+sl,580+sd))
     l.setArrow("last")
     l.draw(win)
 
-    l = Line(Point(15, 300), Point(25, 300))
+    l = Line(Point(15+sl, 300+sd), Point(25+sl, 300+sd))
     l.draw(win)
 
-    t = Text(Point(40, 300), str(round((max(avgwt) + min(avgwt))/2, 1)))
+    t = Text(Point(40+sl, 300+sd), str(round((max(avgwt) + min(avgwt))/2, 1)))
     t.setTextColor("blue")
     t.draw(win)
 
-    t = Text(Point(35, 570), str(round(min(avgwt), 1)))
+    t = Text(Point(35+sl, 570+sd), str(round(min(avgwt), 1)))
     t.setTextColor("blue")
     t.draw(win)
 
-    t = Text(Point(40, 20), str(round(max(avgwt), 1)))
+    t = Text(Point(40+sl, 20+sd), str(round(max(avgwt), 1)))
     t.setTextColor("blue")
     t.draw(win)
 
     mulx = 560 / len(avgwt)
 
     for i in range(len(avgwt) - 1):
-        pt1 = Point(20+i * mulx, 580-transform(avgwt[i], min(avgwt), max(avgwt), 560))
-        pt2 = Point(20+(i+1) * mulx, 580-transform(avgwt[i + 1], min(avgwt), max(avgwt), 560))
+        pt1 = Point(20+sl+i * mulx, sd+580-transform(avgwt[i], min(avgwt), max(avgwt), 560))
+        pt2 = Point(20+sl+(i+1) * mulx, sd+580-transform(avgwt[i + 1], min(avgwt), max(avgwt), 560))
         l = Line(pt1, pt2)
         l.draw(win)
 

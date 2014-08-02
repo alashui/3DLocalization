@@ -124,10 +124,14 @@ The Grayscale image is a highly coarse image that simply splits an image into a 
   \subsection{Storing the Features}
 The precomputed features are stored in a yaml file. OpenCV has built in storage methods, which makes this a simple process. Because each perspective has its own file for storing keypoints|in addition to its own file for grayscale and black and white images|the filename contains the meta information about each description. The program is able to load all features and know their corresponding location and orientation by first looking inside the folder to see what perspectives are available, then load into the map.
 
+\newpage
 %========================================%
 %===== Section 4, MCL Implementation ====% 
 %========================================%
   \section{Implementation}
+
+ \subsection{Overview}
+ This section will describe our implementation of the localization program. 
    
  \subsection{Actor Specifications}
 \begin{itemize}
@@ -142,6 +146,12 @@ One of the main goals for our project was to be able to localize a \emph{general
   \end{itemize} 
 \end{itemize}
 
+\subsection{Particle Generation}
+\begin{itemize}
+  \item \textbf{Generating a Distribution}
+  \item \textbf{Sampling from the Distribution}
+\end{itemize}
+
 \subsection{Weighing the Particles}
 Some dense but discrete subset of possible perspectives in the environment are described by our master list of perspectives. A particle can be generated at any one of these perspectives as a guess to the actor's location in the environment. The particle contains a weight associated with the probability that the actor is currently at that particle in the real world. This weight is determined by comparing the precomputed feature data for the perspective associated with the particle to the feature data computed in real-time from the actor's image feed. The weight assigned to the particle will proportionally affect the probability of another particle being sampled from near that perspective in the environment during the next loop iteration.
 
@@ -149,11 +159,11 @@ There are several different ways that two images can be compared to one another.
 
 \[  \mathtt{n} = \verb.total feature pairs for one image.  \]
 \[  \boldsymbol{m} = \mathtt{ \texttt{[keypoint, keypoint]} } \texttt{, }
-    \boldsymbol{M} = \mathtt{ [m_0, m_1, m_2, .., m_n] }    \] 
+    \boldsymbol{M} = \mathtt{ [\boldsymbol{m_0, m_1, m_2, ... , m_n}] }    \] 
 \[  f(\boldsymbol{M}_i) \to \mathtt{d} \in R   \]
 \[  \mathtt{weight} = \sum_{i=0}^{n} \frac 1{f(\boldsymbol{M}_i) + 0.8} \]
 
-What this algorithm does is iterate through all \texttt{n} pairs of keypoint matches in our vector of matches (\textbf{M})and sum up a number that gets larger when the distance between the keypoints in an individual pair are small and smaller when that distance in large. This accomplishes two traits that are beneficial for our algorithm
+What this algorithm does is iterate through all \texttt{n} pairs of keypoint matches in our vector of matches (\textbf{M}) and sum up a number that gets larger when the distance between the keypoints in an individual pair are small and smaller when that distance in large. This accomplishes two traits that are beneficial for our algorithm
 \begin{itemize}
   \item The value of the \texttt{weight} variable increases as the number of keypoint matches increases. This is desired, an image pair with many matches has a higher chance of being a good match than an image pair with few matches.
   \item Keypoint pairs with a high distance (are not very alike) will contribute a small amount to the sum, while keypoints pairs with low distance (are quite similar) will contribute a larger amount to the sum. This will cause images with very similar keypoints to be weighted higher than images with non-similar keypoints.

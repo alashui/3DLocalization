@@ -447,12 +447,12 @@ namespace MCL
         pListFile.close();
     }
 
-    void ActiveParticles::WriteMeta()
+    void ActiveParticles::WriteMeta(float maxw)
     {
         vector<float> g = GetGuess().ToVector();
         ofstream mdFile;
         mdFile.open("../src/GUI/Meta/MetaData.txt", ios_base::app);
-        mdFile << GetGeneration() << " " << ComputeAvgWeight(1) << " " << g[0] << " " << g[1] << "\n";
+        mdFile << GetGeneration() << " " << ComputeAvgWeight(1) << " " << g[0] << " " << g[1] << " " << maxw << "\n";
         mdFile.close();
     }
 }

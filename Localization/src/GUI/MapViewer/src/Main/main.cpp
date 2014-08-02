@@ -48,9 +48,6 @@ int main(int argc, char **argv)
 
     glutInitWindowPosition(100,100);
 
-    glEnableClientState(GL_VERTEX_ARRAY);
-    glEnableClientState(GL_COLOR_ARRAY);
-
 
     if(argc == 3)
     {

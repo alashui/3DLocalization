@@ -8,8 +8,9 @@ layout (std140) uniform Matrices {
 };
 
 in vec3 position;
+layout(location = 2) in vec3 vertexColor;
 in vec3 normal;
-layout(location = 1) in vec3 vertexColor;
+
 
 out vec4 fragmentColor;
 out vec4 vertexPos;

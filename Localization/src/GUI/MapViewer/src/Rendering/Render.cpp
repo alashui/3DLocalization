@@ -205,7 +205,7 @@ namespace Render
 
     void drawParticles()
     {    
-         for(int i = 0; i < particles.size(); i++)//particles.size(); i++)
+         for(int i = 0; i < particles.size()-1; i++)//particles.size(); i++)//particles.size(); i++)
             particles[i].draw();
     }
 

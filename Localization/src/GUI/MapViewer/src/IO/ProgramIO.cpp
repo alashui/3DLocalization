@@ -210,6 +210,7 @@ namespace IO
     {
         double f = .05;
         double temp = .25;
+        // std::cout << "HERE " << key << std::endl;
         switch(key)
         {
             case 27: glutLeaveMainLoop();break;

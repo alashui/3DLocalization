@@ -155,23 +155,32 @@ One of the main goals for our project was to be able to localize a \emph{general
 \subsection{Weighing the Particles}
 Some dense but discrete subset of possible perspectives in the environment are described by our master list of perspectives. A particle can be generated at any one of these perspectives as a guess to the actor's location in the environment. The particle contains a weight associated with the probability that the actor is currently at that particle in the real world. This weight is determined by comparing the precomputed feature data for the perspective associated with the particle to the feature data computed in real-time from the actor's image feed. The weight assigned to the particle will proportionally affect the probability of another particle being sampled from near that perspective in the environment during the next loop iteration.
 
-Before a particle can be weighed, it must have its image features matched with the image features from the actors image. This entails going through the features for both images and seeing which features match best to eachother. In its current implementation, our algorithm only uses SURF features to do the matching between image pairs. We set up the project to also do matching with SIFT and greyscale features, but these methods didn't seem to help our matching attemps so they are currently disabled. Thankfully for us, the SURF feature matching process has already been implemented and is built in standard with the \texttt{OpenCV} libraries. Using the $k$ nearest neighbors matching algorithm with $k = 2$ and the ratio test\footnote{See Lowe, David G. ``Distinctive Image Features from Scale-Invariant Keypoints." {\it International Journal of Computer Vision} (2004). pg 19-20.  \url{http://www.cs.ubc.ca/~lowe/keypoints/}.} we generate some vector of matched keypoints between two images that we have deemed good enough to make it into our weight calculation. Now we need to get some kind of score for how ``good" the matches are, and use the scores to determine how closely the image from the actor and the image from the particle's perspective match with each other. Each pair of matching keypoints has a `distance` score that can be calculated. This value tells us roughly how similar that pair of keypoints are to one another. Using the vector of matching keypoint pairs, the overall weight for a particle is determined as follows
+Before a particle can be weighed, it must have its image features matched with the image features from the actors image. This entails going through the features for both images and seeing which features match best to eachother. In its current implementation, our algorithm only uses SURF features to do the matching between image pairs. We set up the project to also do matching with SIFT and greyscale features, but these methods didn't seem to help our matching attemps so they are currently disabled. Thankfully for us, the SURF feature matching process has already been implemented and is built in standard with the \texttt{OpenCV} libraries. Our group decided to use a \texttt{OpenCV FlannMatcher} object to generate an initial vector of matched features between the two images.
+ \[ \verb. Given two vectors of SURF features. \]
+ \[ \boldsymbol{F_r} = \verb. [. \mathtt{f_{r1}} \verb., . \mathtt{f_{r2}} \verb-, ..., - \mathtt{f_{rn}} \verb.], .         \mathtt{f_{r}} = \verb. robot image feature . \]
+ \[ \boldsymbol{F_p} = \verb. [. \mathtt{f_{p1}} \verb., . \mathtt{f_{p2}} \verb-, ..., - \mathtt{f_{pn}} \verb.], .        \mathtt{f_{p}} = \verb. particle image feature .\]
+ \[ Flann(\boldsymbol{F_r} \verb., . \boldsymbol{F_p}) \to \boldsymbol{M} \]
+ \[ \verb.Where . \boldsymbol{M} = \mathtt{ [\boldsymbol{m}_0, \boldsymbol{m}_1, ... , \boldsymbol{m}_n]} \verb. and . \boldsymbol{m_i} = \mathtt{ \mathtt{[f_{pi}, f_{ri}]} } \]
 
-\[  \mathtt{n} = \verb.total feature pairs, . \mathtt{w} = \verb.particle weight.  \]
-\[  \mathtt{f_p} = \verb.particle image feature, . \mathtt{f_r} = \verb.actor image feature.  \]
-\[  \boldsymbol{match} = \mathtt{ \mathtt{[f_p, f_r]} } \texttt{, }
-    \boldsymbol{M} = \mathtt{ [\boldsymbol{match_0, match_1, ... , match_n}] }    \] 
+ The \emph{Flann} function will give us a vector of feature matches, but these matches still need to be refined. Using the $k$ nearest neighbors matching algorithm with $k = 2$ and the ratio test\footnote{See Lowe, David G. ``Distinctive Image Features from Scale-Invariant Keypoints." {\it International Journal of Computer Vision} (2004). pg 19-20.  \url{http://www.cs.ubc.ca/~lowe/keypoints/}.} we refine the vector to filter out matches that are below a certain theshold.
+
+ \textbf{INSERT MATH HERE SHOWING THE RATIO TEST}
+
+  Now we need to get some kind of score for how well the matches correspond to each other, and use this score to determine how closely the image from the actor and the image from the particle's perspective match with each other. Each pair of matching keypoints has a `distance` score that can be calculated. This value tells us roughly how similar that pair of keypoints are to one another. Using the vector of matching keypoint pairs, the overall weight for a particle is determined as follows
+
+\[  \verb. Given a vector of . \mathtt{n} \verb. matching feature pairs. \]
+\[  \boldsymbol{M} = \mathtt{ [\boldsymbol{match}_0, \boldsymbol{match}_1, ... , \boldsymbol{match}_n} ]    \]
 \[  f(\boldsymbol{M}_i) \to \mathtt{distance} \in \mathtt{R^+}   \]
-\[  \mathtt{w} = \sum_{i=0}^{n} \frac 1{f(\boldsymbol{M}_i) + 0.8} \]
+\[  \verb.Particle Weight . \mathtt{w} = \sum_{i=0}^{n} \frac 1{f(\boldsymbol{M}_i) + 0.8} \]
 
 In summary, this algorithm iterates through all \texttt{n} pairs of keypoint matches in our vector of matches (\textbf{M}) and sum up a value that gets larger when the distance between the keypoints in an individual pair are small and smaller when that distance in large. The added 0.8 in the denominator is to stop a feature pair with a very low distance from having a disproportionally high influence on the overall weighting of the particle. For example,
 \[ \verb.If . f(\boldsymbol{M}_i) \to \mathtt{distance} = \verb, 0.001 ., \]
 Without the added contant (0.8) in the denominator
 \[ \frac 1{f(\boldsymbol{M}_i)} = 1000\]
 
-1000 is much too high of a value for a single match to contribute to the sum, so adding the extra contstant in the denominator makes it so even the best key point values only add a value slightly greater than one to our sum. This algorithm possesses a few traits that are beneficial for the accuracy and speed of our program.
+1000 is much too high of a value for a single match to contribute to the sum, so adding the extra contstant in the denominator makes it so even the best key point matches only add a value slightly greater than one to our sum. This algorithm possesses a few traits that are beneficial for the accuracy and speed of our program.
 \begin{itemize}
-  \item The value of the \texttt{w} variable increases as the number of keypoint matches increases. This is desired, an image pair with many matches has a higher chance of being a good match than an image pair with few matches.
+  \item The value of the \texttt{w} variable increases as the number of keypoint matches increases. This is desired, an image pair with many feature matches has a higher chance of being them being similar images than an image pair with very few  feature matches.
   \item Keypoint pairs with a high distance (are not very alike) will contribute a small amount to the sum, while keypoints pairs with low distance (are quite similar) will contribute a larger amount to the sum. This will cause images with very similar keypoints to be weighted higher than images with non-similar keypoints.
 \end{itemize}
 

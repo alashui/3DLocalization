@@ -133,9 +133,12 @@ namespace MCL
         {
             DebugIO("Robot has Started Moving");
             ros::spinOnce();
+            time_t temp = time(NULL);
             while(moving)
             {
                 ros::spinOnce();
+                if (time(NULL) - temp > 3)
+                    break;
             }
             DebugIO("Robot has finished moving");
             this->ap.Move(recentMove[0] * GRIDCONVERSION, recentMove[1]);

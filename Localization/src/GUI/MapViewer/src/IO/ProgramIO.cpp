@@ -60,7 +60,7 @@ namespace IO
         tmp = scene_max.x-scene_min.x;
         tmp = scene_max.y - scene_min.y > tmp?scene_max.y - scene_min.y:tmp;
         tmp = scene_max.z - scene_min.z > tmp?scene_max.z - scene_min.z:tmp;
-        scaleFactor = 10.f / tmp;
+        scaleFactor = 10.0f / tmp;
 
         return true;
     }
@@ -209,13 +209,12 @@ namespace IO
     void processKeys(unsigned char key, int xx, int yy) 
     {
         double f = .05;
-        double temp = .25;
+        double temp = .1;
         // std::cout << "HERE " << key << std::endl;
         switch(key)
         {
             case 27: glutLeaveMainLoop();break;
             case ' ': snapshot = true;break;
-            
             case 'w':
             {
                 camera[0] += translation[0]*temp;

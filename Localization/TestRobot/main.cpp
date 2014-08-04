@@ -65,8 +65,8 @@ const std::string mcl_data_publisher_name = "MCL_DATA_PUBLISHER";
 
 string dirName = "BirchLab/";//2ndFloorSprague/";
 string pathToData = "../../../Data";
-string toFeatures = pathToData + "/FeatureData/" + dirName;
-string toPhotos = pathToData + "/RenderedImages/" + dirName;
+string toFeatures;// = pathToData + "/FeatureData/" + dirName;
+string toPhotos;// = pathToData + "/RenderedImages/" + dirName;
 
 const int handshake = 15;
 const int readymove = 25;
@@ -81,8 +81,8 @@ const int num_images = 2000;
 vector<Mat> image_list;
 vector<string> image_names;
 int current_image = 0;
-Mat BestGuessImage = imread("../../../Data/RenderedImages/BirchLab/_-0.5_-0.4_1.5_-0.49_0.86_0_.jpg");///2ndFloorSprague/_0.5_3.25_0.4_0_-1_0_.jpg");
-
+// Mat BestGuessImage = imread("../../../Data/RenderedImages/BirchLab/_-0.5_-0.4_1.5_-0.49_0.86_0_.jpg");///2ndFloorSprague/_0.5_3.25_0.4_0_-1_0_.jpg");
+Mat BestGuessImage = imread("../../../Data/RenderedImages/2ndFloorSprague/_0.5_3.25_0.4_0_-1_0_.jpg");
 vector<fs::path> ret;
 
 bool handshake_recieved = false;
@@ -122,6 +122,7 @@ void publish_Move()
 // the robots location.
  void MyDataCallback(const std_msgs::String msg)
 {
+
     string str = msg.data;
     std::vector<std::string> strs;
     std::vector<float> vals;
@@ -168,7 +169,8 @@ void publish_Move()
         if(BestGuessImage.empty())
         {
             cout << "image data corrupted in guess data callback" << endl;
-            BestGuessImage = imread("../../../Data/RenderedImages/BirchLab/-1_0.6_1.5_0.86_-0.5_0_.jpg");
+            BestGuessImage = imread("../../../Data/RenderedImages/2ndFloorSprague/_0.5_3.25_0.4_0_-1_0_.jpg");
+
             return;
         }
     }
@@ -177,6 +179,9 @@ void publish_Move()
 
 int main(int argc, char **argv)
 {
+    dirName = argv[1];
+    toFeatures = pathToData + "/FeatureData/" + dirName;
+    toPhotos = pathToData + "/RenderedImages/" + dirName;
     srand(time(0));
     ros::init(argc ,argv, "ROS_Publisher");
     NodeHandle node;
@@ -209,8 +214,8 @@ int main(int argc, char **argv)
 
 
     char key = 'k';
-    // namedWindow("Robot Image");
-    // namedWindow("Top Match");
+    namedWindow("Robot Image");
+    namedWindow("Top Match");
 
     while(ros::ok() && key != 'q')
     {
@@ -227,11 +232,11 @@ int main(int argc, char **argv)
             data_publisher.publish(out_msg.toImageMsg());
         ros::spinOnce();
 
-        std::cout << "hererer" << std::endl;
-        // imshow("Robot Image", image_list[current_image]);
-        // imshow("Top Match", BestGuessImage);
+        // std::cout << "hererer" << std::endl;
+        imshow("Robot Image", image_list[current_image]);
+        imshow("Top Match", BestGuessImage);
 
-        // key = cv::waitKsey(2);
+        key = cv::waitKey(2);
         if(key == ' ')
             current_image++;
         if(current_image == image_list.size())
@@ -260,40 +265,40 @@ int main(int argc, char **argv)
     image_list.clear();
 
         // if(dirName == "BirchLab/")
-        // {
-            image_names.push_back("../../../Data/RenderedImages/BirchLab/_-0.5_-0.4_1.5_-0.5_0.86_0_.jpg");
-            image_names.push_back("../../../Data/RenderedImages/BirchLab/_1_0.6_1.5_-0.5_0.5_0_.jpg");
-            image_names.push_back("../../../Data/RenderedImages/BirchLab/_1_0.6_1.5_0.5_-0.5_0_.jpg");
-            image_names.push_back("../../../Data/RenderedImages/BirchLab/_1.5_5.6_1.5_-0.5_0.86_0_.jpg");
-            image_names.push_back("../../../Data/RenderedImages/BirchLab/_1.5_5.6_1.5_0.5_-0.86_0_.jpg");
-            image_names.push_back("../../../Data/RenderedImages/BirchLab/_1.5_5.6_1.5_-0.5_-0.86_0_.jpg ");
-            image_names.push_back("../../../Data/RenderedImages/BirchLab/_1.5_5.6_1.5_0.5_0.86_0_.jpg");
+        // // {
+        //     image_names.push_back("../../../Data/RenderedImages/BirchLab/_-0.5_-0.4_1.5_-0.5_0.86_0_.jpg");
+        //     image_names.push_back("../../../Data/RenderedImages/BirchLab/_1_0.6_1.5_-0.5_0.5_0_.jpg");
+        //     image_names.push_back("../../../Data/RenderedImages/BirchLab/_1_0.6_1.5_0.5_-0.5_0_.jpg");
+        //     image_names.push_back("../../../Data/RenderedImages/BirchLab/_1.5_5.6_1.5_-0.5_0.86_0_.jpg");
+        //     image_names.push_back("../../../Data/RenderedImages/BirchLab/_1.5_5.6_1.5_0.5_-0.86_0_.jpg");
+        //     image_names.push_back("../../../Data/RenderedImages/BirchLab/_1.5_5.6_1.5_-0.5_-0.86_0_.jpg ");
+        //     image_names.push_back("../../../Data/RenderedImages/BirchLab/_1.5_5.6_1.5_0.5_0.86_0_.jpg");
         // }
 
         // else
         //     {
-        //     image_names.push_back("../../../Data/RenderedImages/2ndFloorSprague/_0.5_3.25_0.4_0.86_-0.5_0_.jpg");
-        //     image_names.push_back("../../../Data/RenderedImages/2ndFloorSprague/_0.5_3.25_0.4_0.49_-0.86_0_.jpg");
-        //     image_names.push_back("../../../Data/RenderedImages/2ndFloorSprague/_0.5_3.25_0.4_0_-1_0_.jpg");
-        //     image_names.push_back("../../../Data/RenderedImages/2ndFloorSprague/_0.5_3.25_0.4_1_0_0_.jpg");
-        //     image_names.push_back("../../../Data/RenderedImages/2ndFloorSprague/_0.5_3.25_0.4_-0.5_-0.86_0_.jpg");
-        //     image_names.push_back("../../../Data/RenderedImages/2ndFloorSprague/_0.5_2.75_0.4_0_-1_0_.jpg");
-        //     image_names.push_back("../../../Data/RenderedImages/2ndFloorSprague/_0.5_2.5_0.4_0.49_-0.86_0_.jpg");
-        //     image_names.push_back("../../../Data/RenderedImages/2ndFloorSprague/_0.5_8_0.4_-0.86_-0.49_0_.jpg");
-        //     image_names.push_back("../../../Data/RenderedImages/2ndFloorSprague/_0.25_4.5_0.4_0_1_0_.jpg");
-        //     image_names.push_back("../../../Data/RenderedImages/2ndFloorSprague/_1.5_5.25_0.4_0_1_0_.jpg");
-        //     image_names.push_back("../../../Data/RenderedImages/2ndFloorSprague/_1.5_8_0.4_-0.86_-0.49_0_.jpg");
-        //     image_names.push_back("../../../Data/RenderedImages/2ndFloorSprague/_1.25_1.5_0.4_0.86_-0.5_0_.jpg");
-        //     image_names.push_back("../../../Data/RenderedImages/2ndFloorSprague/_1.25_1.75_0.4_-1_0_0_.jpg");
-        //     image_names.push_back("../../../Data/RenderedImages/2ndFloorSprague/_1.25_5.75_0.4_0.86_-0.5_0_.jpg");
-        //     image_names.push_back("../../../Data/RenderedImages/2ndFloorSprague/_1.75_3.75_0.4_0_-1_0_.jpg");
-        //     image_names.push_back("../../../Data/RenderedImages/2ndFloorSprague/_1.75_3.25_0.4_0.49_-0.86_0_.jpg");
-        //     image_names.push_back("../../../Data/RenderedImages/2ndFloorSprague/_1_2.75_0.4_-0.5_-0.86_0_.jpg");
-        //     image_names.push_back("../../../Data/RenderedImages/2ndFloorSprague/_1_8.25_0.4_0.86_0.49_0_.jpg");
-        //     image_names.push_back("../../../Data/RenderedImages/2ndFloorSprague/_2.5_0.25_0.4_-0.49_0.86_0_.jpg");
-        //     image_names.push_back("../../../Data/RenderedImages/2ndFloorSprague/_2.5_2.5_0.4_-0.86_0.5_0_.jpg");
-        //     image_names.push_back("../../../Data/RenderedImages/2ndFloorSprague/_-2.75_0.5_0.4_0.5_0.86_0_.jpg");
-        //     image_names.push_back("../../../Data/RenderedImages/2ndFloorSprague/_1.5_2.75_0.4_0.86_-0.5_0.jpg");
+            image_names.push_back("../../../Data/RenderedImages/2ndFloorSprague/_0.5_3.25_0.4_0.86_-0.5_0_.jpg");
+            image_names.push_back("../../../Data/RenderedImages/2ndFloorSprague/_0.5_3.25_0.4_0.49_-0.86_0_.jpg");
+            image_names.push_back("../../../Data/RenderedImages/2ndFloorSprague/_0.5_3.25_0.4_0_-1_0_.jpg");
+            image_names.push_back("../../../Data/RenderedImages/2ndFloorSprague/_0.5_3.25_0.4_1_0_0_.jpg");
+            image_names.push_back("../../../Data/RenderedImages/2ndFloorSprague/_0.5_3.25_0.4_-0.5_-0.86_0_.jpg");
+            image_names.push_back("../../../Data/RenderedImages/2ndFloorSprague/_0.5_2.75_0.4_0_-1_0_.jpg");
+            image_names.push_back("../../../Data/RenderedImages/2ndFloorSprague/_0.5_2.5_0.4_0.49_-0.86_0_.jpg");
+            image_names.push_back("../../../Data/RenderedImages/2ndFloorSprague/_0.5_8_0.4_-0.86_-0.49_0_.jpg");
+            image_names.push_back("../../../Data/RenderedImages/2ndFloorSprague/_0.25_4.5_0.4_0_1_0_.jpg");
+            image_names.push_back("../../../Data/RenderedImages/2ndFloorSprague/_1.5_5.25_0.4_0_1_0_.jpg");
+            image_names.push_back("../../../Data/RenderedImages/2ndFloorSprague/_1.5_8_0.4_-0.86_-0.49_0_.jpg");
+            image_names.push_back("../../../Data/RenderedImages/2ndFloorSprague/_1.25_1.5_0.4_0.86_-0.5_0_.jpg");
+            image_names.push_back("../../../Data/RenderedImages/2ndFloorSprague/_1.25_1.75_0.4_-1_0_0_.jpg");
+            image_names.push_back("../../../Data/RenderedImages/2ndFloorSprague/_1.25_5.75_0.4_0.86_-0.5_0_.jpg");
+            image_names.push_back("../../../Data/RenderedImages/2ndFloorSprague/_1.75_3.75_0.4_0_-1_0_.jpg");
+            image_names.push_back("../../../Data/RenderedImages/2ndFloorSprague/_1.75_3.25_0.4_0.49_-0.86_0_.jpg");
+            image_names.push_back("../../../Data/RenderedImages/2ndFloorSprague/_1_2.75_0.4_-0.5_-0.86_0_.jpg");
+            image_names.push_back("../../../Data/RenderedImages/2ndFloorSprague/_1_8.25_0.4_0.86_0.49_0_.jpg");
+            image_names.push_back("../../../Data/RenderedImages/2ndFloorSprague/_2.5_0.25_0.4_-0.49_0.86_0_.jpg");
+            image_names.push_back("../../../Data/RenderedImages/2ndFloorSprague/_2.5_2.5_0.4_-0.86_0.5_0_.jpg");
+            image_names.push_back("../../../Data/RenderedImages/2ndFloorSprague/_-2.75_0.5_0.4_0.5_0.86_0_.jpg");
+            image_names.push_back("../../../Data/RenderedImages/2ndFloorSprague/_1.5_2.75_0.4_0.86_-0.5_0.jpg");
         // }
 
         for(int i = 0; i < image_names.size(); i++)

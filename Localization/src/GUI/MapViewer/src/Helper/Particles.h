@@ -32,6 +32,7 @@
         minweight = 0;
         srand(time(0));
 
+        x *= 2; y *= 2;
         // // ================================= //
         // // ========== VERTICES =========== //
         // // ================================= //
@@ -78,7 +79,7 @@
             {
               g_vertex_buffer_data[j++] = (hold[j]/16.0)+x;
               g_vertex_buffer_data[j++] = (hold[j]/16.0)+y;
-              g_vertex_buffer_data[j++] = (hold[j]/60.0)+z + count*0.03;
+              g_vertex_buffer_data[j++] = (hold[j]/60.0)+ z + count*0.03;
             }
           }
 

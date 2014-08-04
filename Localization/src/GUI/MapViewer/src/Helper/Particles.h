@@ -8,9 +8,9 @@
 
  struct MyParticle
     {
-      #define MEMBER_OFFSET(s,m) ((char *)NULL + (offsetof(s,m)))
-      #define BUFFER_OFFSET(i) ((char *)NULL + (i))
-      #define VERTICES 144
+#define MEMBER_OFFSET(s,m) ((char *)NULL + (offsetof(s,m)))
+#define BUFFER_OFFSET(i) ((char *)NULL + (i))
+#define VERTICES 144
 
         static const int PARTICLE = 0;
         static const int BESTGUESS = 1;
@@ -32,27 +32,26 @@
         minweight = 0;
         srand(time(0));
 
-
         // // ================================= //
-        // // ==========   VERTICES =========== //
+        // // ========== VERTICES =========== //
         // // ================================= //
         const GLfloat hold[] = {
-                        1, 1, 1,  -1, 1, 1,  -1,-1, 1,      // v0-v1-v2 (front)
-                       -1,-1, 1,   1,-1, 1,   1, 1, 1,      // v2-v3-v0
-                        1, 1, 1,   1,-1, 1,   1,-1,-1,      // v0-v3-v4 (right)
-                        1,-1,-1,   1, 1,-1,   1, 1, 1,      // v4-v5-v0
-                        1, 1, 1,   1, 1,-1,  -1, 1,-1,      // v0-v5-v6 (top)
-                       -1, 1,-1,  -1, 1, 1,   1, 1, 1,      // v6-v1-v0
-                       -1, 1, 1,  -1, 1,-1,  -1,-1,-1,      // v1-v6-v7 (left)
-                       -1,-1,-1,  -1,-1, 1,  -1, 1, 1,      // v7-v2-v1
-                       -1,-1,-1,   1,-1,-1,   1,-1, 1,      // v7-v4-v3 (bottom)
-                        1,-1, 1,  -1,-1, 1,  -1,-1,-1,      // v3-v2-v7
-                        1,-1,-1,  -1,-1,-1,  -1, 1,-1,      // v4-v7-v6 (back)
-                       -1, 1,-1,   1, 1,-1,   1,-1,-1,      // v6-v5-v4
-                       0.5, 0.5, -0.2,   -0.5, -0.5, -0.2,   5*dx, 5*dy, 0.0, // bottom
-                       0.5, 0.5, 0.2,    -0.5, -0.5, 0.2,    5*dx, 5*dy, 0.0, // top
-                      -0.5, -0.5, -0.2,  -0.5, -0.5, 0.2,    5*dx, 5*dy, 0.0, // left 
-                       0.5, 0.5, -0.2,    0.5, 0.5, 0.2,     5*dx, 5*dy, 0.0  // right
+                        1, 1, 1, -1, 1, 1, -1,-1, 1, // v0-v1-v2 (front)
+                       -1,-1, 1, 1,-1, 1, 1, 1, 1, // v2-v3-v0
+                        1, 1, 1, 1,-1, 1, 1,-1,-1, // v0-v3-v4 (right)
+                        1,-1,-1, 1, 1,-1, 1, 1, 1, // v4-v5-v0
+                        1, 1, 1, 1, 1,-1, -1, 1,-1, // v0-v5-v6 (top)
+                       -1, 1,-1, -1, 1, 1, 1, 1, 1, // v6-v1-v0
+                       -1, 1, 1, -1, 1,-1, -1,-1,-1, // v1-v6-v7 (left)
+                       -1,-1,-1, -1,-1, 1, -1, 1, 1, // v7-v2-v1
+                       -1,-1,-1, 1,-1,-1, 1,-1, 1, // v7-v4-v3 (bottom)
+                        1,-1, 1, -1,-1, 1, -1,-1,-1, // v3-v2-v7
+                        1,-1,-1, -1,-1,-1, -1, 1,-1, // v4-v7-v6 (back)
+                       -1, 1,-1, 1, 1,-1, 1,-1,-1, // v6-v5-v4
+                       0.5, 0.5, -0.2, -0.5, -0.5, -0.2, 5*dx, 5*dy, 0.0, // bottom
+                       0.5, 0.5, 0.2, -0.5, -0.5, 0.2, 5*dx, 5*dy, 0.0, // top
+                      -0.5, -0.5, -0.2, -0.5, -0.5, 0.2, 5*dx, 5*dy, 0.0, // left
+                       0.5, 0.5, -0.2, 0.5, 0.5, 0.2, 5*dx, 5*dy, 0.0 // right
                      };
 
           if(state == BESTGUESS)
@@ -89,7 +88,7 @@
 
 
           // ================================== //
-          // ========  COLOR DATA!!! ========== //
+          // ======== COLOR DATA!!! ========== //
           // ================================== //
           if(weight < minweight)
             weight = 1;
@@ -110,7 +109,7 @@
             for(int i = 0, j = 0; i < VERTICES; i+=3)
             {
               g_color_buffer_data[j++] = 0.9;
-              g_color_buffer_data[j++] =  0.9;
+              g_color_buffer_data[j++] = 0.9;
               g_color_buffer_data[j++] = 0.9;
             }
           }
@@ -129,101 +128,89 @@
 
 
           // ==================================== //
-          // ========  NORMALS DATA!!! ========== //
+          // ======== NORMALS DATA!!! ========== //
           // ==================================== //
           // normal array
-          GLfloat normals1[]  = { 
-                0, 0, 1,   0, 0, 1,   0, 0, 1,      // v0-v1-v2 (front)
-                0, 0, 1,   0, 0, 1,   0, 0, 1,      // v2-v3-v0
-                1, 0, 0,   1, 0, 0,   1, 0, 0,      // v0-v3-v4 (right)
-                1, 0, 0,   1, 0, 0,   1, 0, 0,      // v4-v5-v0
-                0, 1, 0,   0, 1, 0,   0, 1, 0,      // v0-v5-v6 (top)
-                0, 1, 0,   0, 1, 0,   0, 1, 0,      // v6-v1-v0
-               -1, 0, 0,  -1, 0, 0,  -1, 0, 0,      // v1-v6-v7 (left)
-               -1, 0, 0,  -1, 0, 0,  -1, 0, 0,      // v7-v2-v1
-                0,-1, 0,   0,-1, 0,   0,-1, 0,      // v7-v4-v3 (bottom)
-                0,-1, 0,   0,-1, 0,   0,-1, 0,      // v3-v2-v7
-                0, 0,-1,   0, 0,-1,   0, 0,-1,      // v4-v7-v6 (back)
-                0, 0,-1,   0, 0,-1,   0, 0,-1,    // v6-v5-v4
-                0, 0,-1,   0, 0,-1,   0, 0,-1,
-                0, 0, 1,   0, 0, 1,   0, 0, 1,
-               -1, 0, 0,  -1, 0, 0,  -1, 0, 0,
-                1, 0, 0,   1, 0, 0,   1, 0, 0
+          GLfloat normals1[] = {
+                0, 0, 1, 0, 0, 1, 0, 0, 1, // v0-v1-v2 (front)
+                0, 0, 1, 0, 0, 1, 0, 0, 1, // v2-v3-v0
+                1, 0, 0, 1, 0, 0, 1, 0, 0, // v0-v3-v4 (right)
+                1, 0, 0, 1, 0, 0, 1, 0, 0, // v4-v5-v0
+                0, 1, 0, 0, 1, 0, 0, 1, 0, // v0-v5-v6 (top)
+                0, 1, 0, 0, 1, 0, 0, 1, 0, // v6-v1-v0
+               -1, 0, 0, -1, 0, 0, -1, 0, 0, // v1-v6-v7 (left)
+               -1, 0, 0, -1, 0, 0, -1, 0, 0, // v7-v2-v1
+                0,-1, 0, 0,-1, 0, 0,-1, 0, // v7-v4-v3 (bottom)
+                0,-1, 0, 0,-1, 0, 0,-1, 0, // v3-v2-v7
+                0, 0,-1, 0, 0,-1, 0, 0,-1, // v4-v7-v6 (back)
+                0, 0,-1, 0, 0,-1, 0, 0,-1, // v6-v5-v4
+                0, 0,-1, 0, 0,-1, 0, 0,-1,
+                0, 0, 1, 0, 0, 1, 0, 0, 1,
+               -1, 0, 0, -1, 0, 0, -1, 0, 0,
+                1, 0, 0, 1, 0, 0, 1, 0, 0
               };
 
 
           for(int i = 0; i < VERTICES; i++)
-            g_normal_buffer_data[i] = rand()%50-25;//normals1[i];
+            g_normal_buffer_data[i] = normals1[i];
 
-          // glGenBuffers(1, &normalbuffer);
-          // glBindBuffer(GL_ARRAY_BUFFER, normalbuffer);
-          // glBufferData(GL_ARRAY_BUFFER, sizeof(g_normal_buffer_data), g_normal_buffer_data, GL_STATIC_DRAW);
+          glGenBuffers(1, &normalbuffer);
+          glBindBuffer(GL_ARRAY_BUFFER, normalbuffer);
+          glBufferData(GL_ARRAY_BUFFER, sizeof(g_normal_buffer_data), g_normal_buffer_data, GL_STATIC_DRAW);
 
       }
 
         void draw()
         {
-          glColorMaterial( GL_FRONT, GL_AMBIENT_AND_DIFFUSE);
-          glEnable(GL_COLOR_MATERIAL); 
-            glEnableVertexAttribArray(0);
+    
+    // enble and specify pointers to vertex arrays
+    glEnableClientState(GL_NORMAL_ARRAY);
+    glEnableClientState(GL_COLOR_ARRAY);
+    // glEnableClientState(GL_VERTEX_ARRAY);
+
+                glEnableVertexAttribArray(0);
             glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer);
             glVertexAttribPointer(
-               0,                  // attribute 0. No particular reason for 0, but must match the layout in the shader.
-               3,                  // size
-               GL_FLOAT,           // type
-               GL_FALSE,           // normalized?
-               0,                  // stride
-               (void*)0            // array buffer offset
+               0, // attribute 0. No particular reason for 0, but must match the layout in the shader.
+               3, // size
+               GL_FLOAT, // type
+               GL_FALSE, // normalized?
+               0, // stride
+               (void*)0 // array buffer offset
             );
 
+            // glNormalPointer(GL_FLOAT, 0, &(g_normal_buffer_data[0]));
 
-          glEnableVertexAttribArray(2);
-          glBindBuffer(GL_ARRAY_BUFFER, colorbuffer);
+          glEnableVertexAttribArray(1);
+          glBindBuffer(GL_ARRAY_BUFFER, normalbuffer);
           glVertexAttribPointer(
-              2,                                // attribute. No particular reason for 1, but must match the layout in the shader.
-              3,                                // size
-              GL_FLOAT,                         // type
-              GL_FALSE,                         // normalized?
-              0,                                // stride
-              (void*)0                          // array buffer offset
+              1, // attribute. No particular reason for 1, but must match the layout in the shader.
+              3, // size
+              GL_FLOAT, // type
+              GL_FALSE, // normalized?
+              0, // stride
+              (void*)0 // array buffer offset
           );
 
-          // // // 3rd attribute buffer : normals
-          // glEnableVertexAttribArray(1);
-          // glBindBuffer(GL_ARRAY_BUFFER, normalbuffer);
-          // glVertexAttribPointer(
-          //     1,                                // attribute
-          //     3,                                // size
-          //     GL_FLOAT,                         // type
-          //     GL_FALSE,                         // normalized?
-          //     0,                                // stride
-          //     (void*)0                          // array buffer offset
-          // );
+             glEnableVertexAttribArray(2);
+          glBindBuffer(GL_ARRAY_BUFFER, colorbuffer);
+          glVertexAttribPointer(
+              2, // attribute. No particular reason for 1, but must match the layout in the shader.
+              3, // size
+              GL_FLOAT, // type
+              GL_FALSE, // normalized?
+              0, // stride
+              (void*)0 // array buffer offset
+          );
 
-          GLfloat normals1[]  = { 
-                0, 0, 1,   0, 0, 1,   0, 0, 1,      // v0-v1-v2 (front)
-                0, 0, 1,   0, 0, 1,   0, 0, 1,      // v2-v3-v0
-                1, 0, 0,   1, 0, 0,   1, 0, 0,      // v0-v3-v4 (right)
-                1, 0, 0,   1, 0, 0,   1, 0, 0,      // v4-v5-v0
-                0, 1, 0,   0, 1, 0,   0, 1, 0,      // v0-v5-v6 (top)
-                0, 1, 0,   0, 1, 0,   0, 1, 0,      // v6-v1-v0
-               -1, 0, 0,  -1, 0, 0,  -1, 0, 0,      // v1-v6-v7 (left)
-               -1, 0, 0,  -1, 0, 0,  -1, 0, 0,      // v7-v2-v1
-                0,-1, 0,   0,-1, 0,   0,-1, 0,      // v7-v4-v3 (bottom)
-                0,-1, 0,   0,-1, 0,   0,-1, 0,      // v3-v2-v7
-                0, 0,-1,   0, 0,-1,   0, 0,-1,      // v4-v7-v6 (back)
-                0, 0,-1,   0, 0,-1,   0, 0,-1,    // v6-v5-v4
-                0, 0,-1,   0, 0,-1,   0, 0,-1,
-                0, 0, 1,   0, 0, 1,   0, 0, 1,
-               -1, 0, 0,  -1, 0, 0,  -1, 0, 0,
-                1, 0, 0,   1, 0, 0,   1, 0, 0
-              };
-            glEnableClientState(GL_NORMAL_ARRAY);
-            glNormalPointer(GL_FLOAT, 0, normals1);             
-            // Draw the triangle !
-            glDrawArrays(GL_TRIANGLES, 0, VERTICES); // Starting from vertex 0; 3 vertices total -> 1 triangle
-            glDisableVertexAttribArray(0);
-            glDisableClientState(GL_NORMAL_ARRAY);
+
+    glDrawArrays(GL_TRIANGLES, 0, VERTICES);
+
+
+    // glDisableClientState(GL_VERTEX_ARRAY);  // disable vertex arrays
+    glDisableClientState(GL_COLOR_ARRAY);
+    glDisableClientState(GL_NORMAL_ARRAY);
+
         }
 
         void destroy()
@@ -234,4 +221,4 @@
     };
 
 
-    #endif
+#endif

@@ -8,7 +8,7 @@ layout (std140) uniform Matrices {
 };
 
 in vec3 position;
-layout(location = 2) in vec3 vertexColor;
+in vec3 vertexColor;
 in vec3 normal;
 
 
@@ -22,7 +22,7 @@ void main(){
     // to produce the color of each fragment
     fragmentColor = vec4(vertexColor, 1.0);
     gl_Position = projMatrix * viewMatrix * modelMatrix * vec4(position,1.0);
-    Normal = normalize(vec3(viewMatrix * modelMatrix * vec4(normal,0.0)));  
+    Normal = normalize(vec3(viewMatrix * modelMatrix * vec4(normal,0.0)));
 
 }
 

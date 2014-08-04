@@ -205,5 +205,4 @@ namespace MathHelp
         f[2] = c->b;
         f[3] = c->a;
     }
-
 } // end nameapce MathHelp

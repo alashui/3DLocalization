@@ -105,7 +105,9 @@ The power of this algorithm comes from a few key characterstics.
   \item Define the scale of a grid imposed on this plane.
   \item Go to each grid location and render images from 8 perspectives, rotating from 0 to 360 degrees.
   \item Name the images according to their location in the map and store them for later use.
-  \end{enumerate}
+  \end{enumerate} 
+
+  \textbf{Insert image explaining visually the process stated above} \\
 
   This process allows us to turn our 3D model into a catalogued database of 2D images from a large amount of places within our model. From here we can use existing computer vision related algorithms (SURF, SIFT, ORB, etc.) to do the keypoint detection and feature description needed to match images with one another.
 
@@ -126,14 +128,15 @@ The Grayscale image is a highly coarse image that simply splits an image into a 
   \subsection{Storing the Features}
 The precomputed features are stored in a yaml file. OpenCV has built in storage methods, which makes this a simple process. Because each perspective has its own file for storing keypoints|in addition to its own file for grayscale and black and white images|the filename contains the meta information about each description. The program is able to load all features and know their corresponding location and orientation by first looking inside the folder to see what perspectives are available, then load into the map.
 
-%\newpage
+\newpage
 %========================================%
 %===== Section 4, MCL Implementation ====% 
 %========================================%
   \section{Implementation}
 
  \subsection{Overview}
- This section will describe our implementation of the localization program. 
+ This section will overview our implementation of the MCL algorithm, as well as the interface that the actor must implement to be compatible with our program. The heart of our implementation lies in both the acts of generating a distribution of particles and weighing the particles to compare them against the sensor data from the actor. 
+
    
  \subsection{Actor Specifications}
 \begin{itemize}
@@ -141,6 +144,7 @@ The precomputed features are stored in a yaml file. OpenCV has built in storage 
 One of the main goals for our project was to be able to localize a \emph{general} actor in a \emph{general} environment. With this in mind, we tried to limit the number of requirements we impose on the movement and control of the actor. In summary, the actor must send us data from a camera and let us know its local movement coordinates, as well as listen for its global coordinates from our localization progran. All other control aspects of the actor are up to the user to decide. We have used this program successfully with both the ARDrone quad-copters and the ICreate robots, two very different robots. In our implementation, simple point to point navigation was sufficient, however a future goal is to implement the ability to make smart paths allowing the robot to go through doors and around or over tables.
 
 \item \textbf{Communication} \\
+The following functionality must be implemented by the robot
   \begin{itemize}
   \item Publish data via two \texttt{ros::Publisher} objects. The first is for sending image data to our program, the second is to send its current movement commands to our program. 
   \item Subscribe to our data feed via a \texttt{ros::Subscriber} object. We will use this data feed to send localization data to the actor.
@@ -155,25 +159,29 @@ One of the main goals for our project was to be able to localize a \emph{general
 \end{itemize}
 
 \subsection{Weighing the Particles}
-Some dense but discrete subset of possible perspectives in the environment are described by our master list of perspectives. A particle can be generated at any one of these perspectives as a guess to the actor's location in the environment. The particle contains a weight associated with the probability that the actor is currently at that particle in the real world. This weight is determined by comparing the precomputed feature data for the perspective associated with the particle to the feature data computed in real-time from the actor's image feed. The weight assigned to the particle will proportionally affect the probability of another particle being sampled from near that perspective in the environment during the next loop iteration.
+Each particle in our particle vector contains a weight associated with it that represents the probability that the actor is currently at that particle's location in the real world. This weight is determined by comparing the precomputed feature data for the perspective associated with the particle to the feature data computed in real-time from the actor's image feed. The weight assigned to the particle will proportionally affect the probability of another particle being sampled from near that perspective in the environment during the next loop iteration of the algorithm.
 
-Before a particle can be weighed, it must have its image features matched with the image features from the actors image. This entails going through the features for both images and seeing which features match best to eachother. In its current implementation, our algorithm only uses SURF features to do the matching between image pairs. We set up the project to also do matching with SIFT and greyscale features, but these methods didn't seem to help our matching attemps so they are currently disabled. Thankfully for us, the SURF feature matching process has already been implemented and is built in standard with the \texttt{OpenCV} libraries. Our group decided to use a \texttt{OpenCV FlannMatcher} object to generate an initial vector of matched features between the two images.
- \\ \\ \verb. Given two vectors of SURF features and a distance function . 
- \[ \boldsymbol{F_r} = \verb. [. \mathtt{f_{r1}} \verb., . \mathtt{f_{r2}} \verb-, ... , - \mathtt{f_{rn}} \verb.] where . \mathtt{f_{r}} = \verb. robot image feature . \]
- \[ \boldsymbol{F_p} = \verb. [. \mathtt{f_{p1}} \verb., . \mathtt{f_{p2}} \verb-, ... , - \mathtt{f_{pn}} \verb.] where .        \mathtt{f_{p}} = \verb. particle image feature .\]
-  %\verb. And a distance function that determines how similar two features are .
- \[  f(\mathtt{[f_{pj}, f_{rk}]}) \to \mathtt{distance} \in \mathtt{R^+}   \] \\
-  \verb. A match between two features is defined as . 
- \[ \boldsymbol{m} = \mathtt{ \mathtt{[f_{pj}, f_{rk}]} } \verb. such that . \]
- \[ f(\mathtt{[f_{pj}, f_{rk}]}) < f(\mathtt{[f_{pj}, f_{rx}]}) \verb. . \forall \mathtt{ f_{rx}} \in  \boldsymbol{F_r} \verb. . \land \verb. . f(\mathtt{[f_{pj}, f_{rk}]}) < f(\mathtt{[f_{px}, f_{rk}]}) \verb. . \forall  \mathtt{f_{px}} \in \boldsymbol{F_p} \] \\
- % \verb. Conflicts are resolved by taking the match with the lowest total distance . \\ \\
- \verb. The Flann matching function is then defined as .
- \[ Flann(\boldsymbol{F_r} \verb., . \boldsymbol{F_p}) \to \boldsymbol{M} = \mathtt{ [\boldsymbol{m}_0, \boldsymbol{m}_1, ... , \boldsymbol{m}_n ]} \]
- % \[  \verb. Where . \boldsymbol{m_i} = \mathtt{ \mathtt{[f_{pi}, f_{ri}]} }   \]
- % \[ \verb.Where . \boldsymbol{M} = \mathtt{ [\boldsymbol{m_0} \verb., . \boldsymbol{m_1} } \]% \verb., . ... \verb., . \boldsymbol{m_n}]} \verb. and . \boldsymbol{m_i} = \mathtt{ \mathtt{ [f_{pi}, f_{ri}] } } \]
+Before a particle can be weighed, it must have its image features matched with the features from the actors image. This entails going through the features for both images and seeing which features match best to eachother. To begin, we will define what information is needed to start the feature matching process.
+ \\ \\ 
+  \[ \verb. Two vectors of SURF features. \] 
+  \[ \boldsymbol{F_{robot}} \verb., . \boldsymbol{F_{particle}} \verb. where . \boldsymbol{F} = \verb. [. \mathtt{f_{1}} \verb., . \mathtt{f_{2}} \verb-, ... , - \mathtt{f_{n}} \verb. ]. \]
+  \[ \verb. A distance function that compares two features. \]
+ \[ f(\mathtt{[f_{pj}, f_{rk}]}) \to \mathtt{distance} \in \mathtt{R^+}\]
 
- The \emph{Flann} function will give us a vector of feature matches, but these matches still need to be refined. Using the $k$ nearest neighbors matching algorithm with $k = 2$ and the ratio test\footnote{See Lowe, David G. ``Distinctive Image Features from Scale-Invariant Keypoints." {\it International Journal of Computer Vision} (2004). pg 19-20.  \url{http://www.cs.ubc.ca/~lowe/keypoints/}.} we refine the vector to filter out matches that are below a certain theshold.
-\\
+  % In its current implementation, our algorithm only uses SURF features to do the matching between image pairs. We set up the project to also do matching with SIFT and greyscale features, but these methods didn't seem to help our matching attemps so they are currently disabled.
+   Our group decided to use an \texttt{OpenCV FlannMatcher} object to generate an initial matrix of matched features between the two images. The \texttt{FlannMatcher} object has a built-in function \emph{KnnMatch} that return a matrix of matching pairs. Each row of this matrix is a matching vector consisting of \texttt{n} columns, defines as follows.
+
+ \[ \boldsymbol{m} = \mathtt{ [f_{j}} \verb., . \mathtt{f_{k1}} \verb., . \mathtt{f_{k2}} \verb-, ... ,- \mathtt{f_{kn}} ] \verb. such that . \]
+ \[ f(\mathtt{[f_{j}, f_{k1}]}) < f(\mathtt{[f_{j}, f_{x}]}) \verb. . \forall \mathtt{ f_{x}} \in  \boldsymbol{F_r} \verb. . \]
+ \[ f(\mathtt{[f_{j}, f_{k2}]}) < f(\mathtt{[f_{j}, f_{x}]}) \verb. . \forall \mathtt{ f_{x}} \in  [\boldsymbol{F_r} - \mathtt{f_{k1}]}  \verb, ... , \]
+ \[ f(\mathtt{[f_{j}, f_{kn}]}) < f(\mathtt{[f_{j}, f_{x}]}) \verb. . \forall \mathtt{ f_{x}} \in  [\boldsymbol{F_r} - \mathtt{f_{k1} - \mathtt{f_{k2}} -} \verb,...,- \mathtt{f_{kn-1}}  ]  \verb. . \] 
+
+ Thus a matching vector of length \texttt{n} contains a feature and the \texttt{n} features that are most similar to it. The \emph{KnnMatch} function of order \texttt{n} return a matrix with a matching vector of order \texttt{n} for each feature in both the robot and particle feature vectors. For our purposes, we ran the \emph{KnnMatch} function with \texttt{n = 2}. This gave us the two best matches for each feature.
+ \[ Flann.KnnMatch(\boldsymbol{F_r} \verb., . \boldsymbol{F_p} \verb., . 2) \to \boldsymbol{M} = \mathtt{ [\boldsymbol{m}_0, \boldsymbol{m}_1, ... , \boldsymbol{m}_n ]} \]
+ \[ \verb. Where . \boldsymbol{m_i} = \mathtt{ [f_{j}} \verb., . \mathtt{f_{k1}} \verb., . \mathtt{f_{k2}} ]\]
+
+ The \emph{Flann} function will give us a matrix of feature matches, but these matches still need to be refined. the ratio test\footnote{See Lowe, David G. ``Distinctive Image Features from Scale-Invariant Keypoints." {\it International Journal of Computer Vision} (2004). pg 19-20.  \url{http://www.cs.ubc.ca/~lowe/keypoints/}.} we refine the matrix of top-two matches into a smaller vector of best matches. The ratio test is described below.
+\\ \\
  \textbf{INSERT MATH HERE SHOWING THE RATIO TEST}
 \\
   Now we need to get some kind of score for how well the matches correspond to each other, and use this score to determine how closely the image from the actor and the image from the particle's perspective match with each other. Each pair of matching keypoints has a `distance` score that can be calculated. This value tells us roughly how similar that pair of keypoints are to one another. Using the vector of matching keypoint pairs, the overall weight for a particle is determined as follows

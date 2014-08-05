@@ -177,7 +177,7 @@ namespace MCL
             done++;
 
 
-            if (done > 1000) 
+            if (done > 2500) 
                 break;
             if ((done * 100) / total > percent)
             {

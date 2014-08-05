@@ -79,6 +79,7 @@ int main(int argc, char **argv)
 
 //  Mouse and Keyboard Callbacks
     glutKeyboardFunc(IO::processKeys);
+    glutSpecialFunc(IO::processSpecialKey); // process special key pressed
     glutMouseFunc(IO::processMouseButtons);
     glutMotionFunc(IO::processMouseMotion);
     glutMouseWheelFunc ( IO::mouseWheel ) ;

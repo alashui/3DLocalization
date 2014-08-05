@@ -94,6 +94,7 @@ extern int perspectiveCount;
 extern bool snapshot;
 extern int imageNum;
 extern float theta;
+extern float thetaz;
 extern std::string generatedImagesDirectory;
 extern std::string generatedInputDirectory;
 extern std::string fileExt;

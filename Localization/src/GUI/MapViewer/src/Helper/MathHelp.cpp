@@ -39,9 +39,10 @@ std::vector<float *> matrixStack;
 float camera[3] = {0, 0, 1.4};
 
 float theta = 0;
+float thetaz = 0;
 
 // mesh tranlation
-float translation[3] = {cos(3.14159*theta/180.0),  sin(3.14159*theta/180.0),  0};
+float translation[3] = {cos(3.14159*theta/180.0),  sin(3.14159*theta/180.0),  sin(3.14159*thetaz/180.0)};
 
 // Model Matrix (part of the OpenGL Model View Matrix)
 float modelMatrix[16];
@@ -58,7 +59,7 @@ int currentPerspective = 0;
 int perspectiveCount = 0;
 bool snapshot = false;
 int imageNum = 0;
-std::string generatedImagesDirectory = "../../../../../Data/RenderedImages/";
+std::string generatedImagesDirectory = "../../../../../Documentation/Artifacts/";
 std::string generatedInputDirectory =  "../../../../../Data/InputData/";
 std::string fileExt = ".jpg";
 std::string modelname = "14db49e526f340dfba81c4a2da23c716.obj";

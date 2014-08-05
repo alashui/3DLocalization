@@ -205,7 +205,7 @@ namespace Render
 
     void drawParticles()
     {    
-         for(int i = 0; i < particles.size()-1; i++)//particles.size(); i++)//particles.size(); i++)
+         for(int i = 0; i < particles.size(); i++)//particles.size(); i++)//particles.size(); i++)
             particles[i].draw();
     }
 
@@ -276,7 +276,7 @@ namespace Render
             }
 
             std::stringstream ss;
-            ss << generatedImagesDirectory << modelDirectoryName << "_" << camera[0] << "_" << camera[1] << "_" << camera[2] << "_" << 
+            ss << generatedImagesDirectory <<  "_" << camera[0] << "_" << camera[1] << "_" << camera[2] << "_" << 
             translation[0] << "_" <<  translation[1] << "_" <<  translation[2] << "_" << fileExt;
              std::string z = ss.str();
              std::cout << "\n" << z << std::endl;

@@ -205,16 +205,52 @@ namespace IO
         return retCode;
     }
 
+    void processSpecialKey(int key, int xx, int yy)
+    {
+         double temp = .1;
+        switch (key) {
+            case GLUT_KEY_UP :
+            // thetaz += 4;
+            // translation[2] = sin(thetaz*3.14159/180.0);
+            camera[2] += temp;
+            break;
+
+            case GLUT_KEY_DOWN : 
+            // thetaz -= 4;
+            // translation[2] = sin(thetaz*3.14159/180.0);
+            camera[2] -= temp;
+            break;
+
+            // case GLUT_KEY_RIGHT :
+            // theta -= 5;
+            // translation[0] = cos(3.14159*theta/180.0);
+            // translation[1] = sin(3.14159*theta/180.0);
+            // break;
+
+            // case GLUT_KEY_LEFT :
+            // theta += 5;
+            // translation[0] = cos(3.14159*theta/180.0);
+            // translation[1] = sin(3.14159*theta/180.0);
+            // break;
+
+        }
+    } 
 
     void processKeys(unsigned char key, int xx, int yy) 
     {
         double f = .05;
         double temp = .1;
-        // std::cout << "HERE " << key << std::endl;
+         // std::cout << "HERE " << key << std::endl;
         switch(key)
         {
-            case 27: glutLeaveMainLoop();break;
-            case ' ': snapshot = true;break;
+            case 27: 
+            case 'q' :
+            glutLeaveMainLoop();break;
+
+            case ' ': 
+            snapshot = true;
+            break;
+
             case 'w':
             {
                 camera[0] += translation[0]*temp;
@@ -232,30 +268,20 @@ namespace IO
                 theta += 5;
                 translation[0] = cos(3.14159*theta/180.0);
                 translation[1] = sin(3.14159*theta/180.0);
-                translation[2] = 0;
             }break;
             case 'd':
             {
                 theta -= 5;
                 translation[0] = cos(3.14159*theta/180.0);
                 translation[1] = sin(3.14159*theta/180.0);
-                translation[2] = 0;
-            }break;
-            case 'n' :
-            {
-                IO::GetParticleList();
             }break;
 
              case 't' :
             {
-                camera[2] += 0.1;
+                std::stringstream ss;
+                ss << camera[0] << " " << camera[1] << " " << camera[2] << " " << translation[0] << " " << translation[1] << " " << translation[2];
+                std::cout << ss.str() << std::endl;
             }break;
-
-             case 'y' :
-            {
-                camera[2] -= 0.1;
-            }break;
-
         }
         // camera[0] = r * sin(alpha * 3.14f / 180.0f) * cos(beta * 3.14f / 180.0f);
         // camera[1] = r * cos(alpha * 3.14f / 180.0f) * cos(beta * 3.14f / 180.0f);
@@ -388,13 +414,16 @@ std::vector<Particle> GetParticleList()
 
     v.clear();
     v = parts[0];
-    MyParticle temp(v[0], v[1], v[2], v[3], v[4], v[5], v[6], 0, 1);
+    MyParticle temp(v[0], v[1], v[2], v[3], v[4], v[5], v[6], 0, 2);
     particles.push_back(temp);
 
     v.clear();
     v = parts[1];
-    MyParticle temp1(v[0], v[1], v[2], v[3], v[4], v[5], v[6], 0, 2);
+    MyParticle temp1(v[0], v[1], v[2], v[3], v[4], v[5], v[6], 0, 1);
     particles.push_back(temp1);
+
+    MyParticle temp2(0.0, 0.0, -50.0, 0.0, 1.0, 0.0, 0, 0, 0);
+    particles.push_back(temp2);
 
     return pList;
 }

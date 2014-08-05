@@ -32,7 +32,7 @@
         minweight = 0;
         srand(time(0));
 
-        x *= 2; y *= 2;
+        x *= 2.5; y *= 2.5; z *= 2.5;
         // // ================================= //
         // // ========== VERTICES =========== //
         // // ================================= //
@@ -61,7 +61,7 @@
             {
               g_vertex_buffer_data[j++] = (hold[j]/10.0)+x;
               g_vertex_buffer_data[j++] = (hold[j]/10.0)+y;
-              g_vertex_buffer_data[j++] = (hold[j]/3)+1;
+              g_vertex_buffer_data[j++] = (hold[j]/7)+1;
             }
           }
           else if(state == AVGGUESS)
@@ -70,15 +70,15 @@
             {
               g_vertex_buffer_data[j++] = (hold[j]/10.0)+x;
               g_vertex_buffer_data[j++] = (hold[j]/10.0)+y;
-              g_vertex_buffer_data[j++] = (hold[j]/3)+1;
+              g_vertex_buffer_data[j++] = (hold[j]/7)+1;
             }
           }
           else
           {
             for(int i = 0, j = 0; i < VERTICES; i+=3)
             {
-              g_vertex_buffer_data[j++] = (hold[j]/16.0)+x;
-              g_vertex_buffer_data[j++] = (hold[j]/16.0)+y;
+              g_vertex_buffer_data[j++] = (hold[j]/20.0)+x;
+              g_vertex_buffer_data[j++] = (hold[j]/20.0)+y;
               g_vertex_buffer_data[j++] = (hold[j]/60.0)+ z + count*0.03;
             }
           }
@@ -109,9 +109,9 @@
           {
             for(int i = 0, j = 0; i < VERTICES; i+=3)
             {
-              g_color_buffer_data[j++] = 0.9;
-              g_color_buffer_data[j++] = 0.9;
-              g_color_buffer_data[j++] = 0.9;
+              g_color_buffer_data[j++] = 1;
+              g_color_buffer_data[j++] = 1;
+              g_color_buffer_data[j++] = 0;
             }
           }
           else
@@ -164,12 +164,12 @@
         void draw()
         {
     
-    // enble and specify pointers to vertex arrays
-    glEnableClientState(GL_NORMAL_ARRAY);
-    glEnableClientState(GL_COLOR_ARRAY);
-    // glEnableClientState(GL_VERTEX_ARRAY);
+            // enble and specify pointers to vertex arrays
+            glEnableClientState(GL_NORMAL_ARRAY);
+            glEnableClientState(GL_COLOR_ARRAY);
+            // glEnableClientState(GL_VERTEX_ARRAY);
 
-                glEnableVertexAttribArray(0);
+            glEnableVertexAttribArray(0);
             glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer);
             glVertexAttribPointer(
                0, // attribute 0. No particular reason for 0, but must match the layout in the shader.
@@ -205,12 +205,12 @@
           );
 
 
-    glDrawArrays(GL_TRIANGLES, 0, VERTICES);
+          glDrawArrays(GL_TRIANGLES, 0, VERTICES);
 
 
-    // glDisableClientState(GL_VERTEX_ARRAY);  // disable vertex arrays
-    glDisableClientState(GL_COLOR_ARRAY);
-    glDisableClientState(GL_NORMAL_ARRAY);
+          // glDisableClientState(GL_VERTEX_ARRAY);  // disable vertex arrays
+          glDisableClientState(GL_COLOR_ARRAY);
+          glDisableClientState(GL_NORMAL_ARRAY);
 
         }
 

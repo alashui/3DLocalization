@@ -77,12 +77,14 @@ const int finished_move = 20;
 
 const int num_images = 2000;
 
+float moves[16][2];
+
 
 vector<Mat> image_list;
 vector<string> image_names;
 int current_image = 0;
-// Mat BestGuessImage = imread("../../../Data/RenderedImages/BirchLab/_-0.5_-0.4_1.5_-0.49_0.86_0_.jpg");///2ndFloorSprague/_0.5_3.25_0.4_0_-1_0_.jpg");
 Mat BestGuessImage = imread("../../../Data/RenderedImages/2ndFloorSprague/_0.5_3.25_0.4_0_-1_0_.jpg");
+// Mat BestGuessImage;// = imread("../inputimages/square1/1.JPG");
 vector<fs::path> ret;
 
 bool handshake_recieved = false;
@@ -109,6 +111,7 @@ void publish_Move()
 
     // Publish the finished moving command and the movement coordinates.
     ss << "20" << " " << temp[0] << " " << temp[1] << " ";
+    std::cout << ss.str() << std::endl;
     msg.data = ss.str();
     movement_publisher.publish(msg);
 
@@ -169,7 +172,7 @@ void publish_Move()
         if(BestGuessImage.empty())
         {
             cout << "image data corrupted in guess data callback" << endl;
-            BestGuessImage = imread("../../../Data/RenderedImages/2ndFloorSprague/_0.5_3.25_0.4_0_-1_0_.jpg");
+            BestGuessImage = image_list[0];
 
             return;
         }
@@ -237,10 +240,10 @@ int main(int argc, char **argv)
         imshow("Top Match", BestGuessImage);
 
         key = cv::waitKey(2);
-        if(key == ' ')
-            current_image++;
-        if(current_image == image_list.size())
-            current_image = 0;
+        // if(key == ' ')
+        //     current_image++;
+        // if(current_image == image_list.size())
+        //     current_image = 0;
         //ros::Duration(0.1).sleep();
     }
 
@@ -275,6 +278,65 @@ int main(int argc, char **argv)
         //     image_names.push_back("../../../Data/RenderedImages/BirchLab/_1.5_5.6_1.5_0.5_0.86_0_.jpg");
         // }
 
+        //     for(int i = 1; i <= 16; i++)
+        //     {
+        //         std::stringstream ss;
+        //         ss << "../inputimages/square1/" << i << ".JPG";
+        //         image_names.push_back(ss.str());
+        //     }
+
+        //     for(int i = 0; i < 3; i++)
+        //     {
+        //         moves[i][0] = 1;
+        //         moves[i][1] = 0;
+        //     }
+
+        //     moves[3][0] = 0;
+        //     moves[3][1] = 90;
+
+        //     for(int i = 4; i < 7; i++)
+        //     {
+        //         moves[i][0] = 1;
+        //         moves[i][1] = 0;
+        //     }
+
+        //     moves[7][0] = 0;
+        //     moves[7][1] = 90;
+
+        //     for(int i = 8; i < 11; i++)
+        //     {
+        //         moves[i][0] = 1;
+        //         moves[i][1] = 0;
+        //     }
+
+        //     moves[11][0] = 0;
+        //     moves[11][1] = 90;
+
+        //     for(int i = 12; i < 15; i++)
+        //     {
+        //         moves[i][0] = 1;
+        //         moves[i][1] = 0;
+        //     }
+
+        //     moves[15][0] = 0;
+        //     moves[15][1] = 90;
+
+
+        // Size size(804, 600);
+        // for(int i = 0; i < image_names.size(); i++)
+        // {
+        //     Mat temp = imread(image_names[i]);
+        //     Mat dest;
+        //     resize(temp, dest, size);
+        //     image_list.push_back(dest);
+        // }
+
+        // return true;
+
+
+
+
+
         // else
         //     {
             image_names.push_back("../../../Data/RenderedImages/2ndFloorSprague/_0.5_3.25_0.4_0.86_-0.5_0_.jpg");
@@ -301,12 +363,17 @@ int main(int argc, char **argv)
             image_names.push_back("../../../Data/RenderedImages/2ndFloorSprague/_1.5_2.75_0.4_0.86_-0.5_0.jpg");
         // }
 
+        // Size size(804, 600);
         for(int i = 0; i < image_names.size(); i++)
         {
+            // Mat temp = imread(image_names[i]);
+            // Mat dest;
+            // resize(temp, dest, size);
             image_list.push_back(imread(image_names[i]));
         }
 
         return true;
+
 
         // string delimiter = "_";
 
@@ -350,81 +417,18 @@ int main(int argc, char **argv)
 
     vector<float> getMoveData()
     { 
-        // string str = image_names[current_image];
+        float trans = moves[current_image][0];
+        float rotate = moves[current_image][1];
 
-        // std::vector<std::string> strs;
-        // std::vector<float> vals;
-        // str = str.substr(1,str.size()-1);
-  //       boost::split(strs, str, boost::is_any_of("_"));
+        current_image++;
+        if(current_image == image_list.size())
+            current_image = 0;
 
-  //       // for(int i = 0; i < strs.size(); i++)
-  //       //   std::cout << "[ " << strs[i] << " ]" << endl;
+        vector<float> temp;
+        temp.push_back(trans);
+        temp.push_back(rotate);
 
-  //       for(int i = 1; i < strs.size()-1; i++)
-  //       {
-  //        vals.push_back(atof(strs[i].c_str()));
-  //        std::cout << vals[i-1] << ", ";
-  //       }
-  //       cout <<endl;
-
-  //       float nangle = 0;
-  //       nangle = atan2(vals[3], vals[4]) * 180.0 / 3.1415;
-
-  //       float theta = (float) ((rand()%5)-10)*30;          // -60 60
-        // float dist = (float) ((rand()%2)-4)*0.25;
-
-        // theta += nangle;
-
-        // int yy = theta/30;
-        // theta = (int) yy*30;
-
-        // vals[0] += cos(theta*3.14159/180.0)*dist;
-        // vals[1] += sin(theta*3.14159/180.0)*dist;
-
-        // int xx = vals[0]/.249;
-        // vals[0] = round(xx*.25);
-        // if(vals[0] == 0.0)
-        //  vals[0] = ((rand()%4)+1)*.25;
-
-        // xx = vals[1]/.249;
-        // vals[1] = round(xx*.25);
-
-        // vals[3] = round(cos(theta*3.14159/180.0));
-        // vals[4] = round(sin(theta*3.14159/180.0));
-
-        // for(int i = 0; i < vals.size(); i++)
-  //       {
-  //        std::cout << vals[i] << " ";
-  //       }
-  //       cout <<endl;
-
-  //       std::vector<float> ret;
-        // stringstream ss;
-        // ss << toPhotos << "_" << vals[0] << "_" << vals[1] << "_" << vals[2] << "_" << round(vals[3]) << "_" << round(vals[4]) << "_" << round(vals[5]) << "_" << ".jpg";
-        // std::cout << ss.str() << endl;
-
-        // for(int i = 0; i < image_names.size(); i++)
-        // {
-        //  if(!image_names[i].compare(ss.str()))
-        //  {
-        //      current_image = i;
-        //      cout << "image name from vector #" << i << "  " <<image_names[i] << endl;
-        //      ret.push_back(dist);
-  //            ret.push_back(theta);
-  //            return ret;
-        //  }
-        // }
-        vector<float> ret;
-        ret.push_back(0);
-        ret.push_back(0);
-
-
-
-        // MCL::Perspective P(vals);
-
-        return ret;
-
-
+        return temp;
     }
 
     float round(float x)

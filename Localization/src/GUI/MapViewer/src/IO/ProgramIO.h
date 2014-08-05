@@ -68,6 +68,8 @@ namespace IO
     // at that index in the perspectiveList vector.
     void nextLocation(int);
 
+    void processSpecialKey(int key, int xx, int yy);
+
     // process keyboard input
     void processKeys(unsigned char key, int xx, int yy);
 

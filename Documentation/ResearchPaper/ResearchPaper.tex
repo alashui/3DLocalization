@@ -44,7 +44,7 @@ We chose to implement the MCL algorithm using 3D models and image data because w
  The official repository for everything related to this project, included pre-localization and during-localization programs, code documentation, and various graphical programs for viewing data related to a localization attempt is hosted here : \\
 \texttt{https://github.com/jhallard/3DLocalization}
 
-\newpage
+%\newpage
 
 % ==   1.1 Process Overview  == %
   \section{Monte Carlo Localization Process Overview}
@@ -59,7 +59,7 @@ The overall process of having an actor\footnote{An actor is any device that has 
   \item This step is optional.  Features from the map are computed from many different reference points and are stored for use during the localization attempt. This limits the possible particle locations compared to generating feature data at run-time, but it reduces the computational resources needed significantly and allows one to simply look up the data in a map or container. Pre-computing features also significantly reduces the complexity of the localization source code.
   \end{enumerate}
 \subsection{During Localization}
-  These are the steps that the Monte Carlo Localization algorithm goes through to determine the location of an actor. Each step can be implemented in many different ways.
+  The MCL algorithm iterates through a series of steps to determine the location of an actor. Each step can be implemented in many different ways.
   \begin{enumerate}
   \item An actor is placed in the environment, and some number of guesses of where it might be are randomly generated.\footnote{The uniformity of this distribution depends on the user's previous knowledge of the actor's location.} These `guesses' we will call particles, and each particle is a data structure that contains information about its own current perspective in the environment and the sensor data it would expect to read from that perspective.
   \item The program compares the current sensor readings from the actor to the expected sensor readings for each particle, and assigns a weight to each particle based on how strongly the readings correspond to one another.
@@ -75,7 +75,7 @@ The power of this algorithm comes from a few key characterstics.
  \item Secondly, from the mobility of the particles. When the actor moves, the particles move, and thus they store the probability that the actor has traveled in the path that the particle has taken. Over time, impossible paths will cause incorrect particles to be removed from the current set of guesses, leaving room for better guesses to take their place. This results in the gradual merging of particles in space to the correct location.
 \end{itemize}
 
-\newpage
+%\newpage
 
 %=====================================%
 %===== Section 2, 3D Map Building ====%
@@ -124,7 +124,7 @@ The Grayscale image is a highly coarse image that simply splits an image into a 
   \subsection{Storing the Features}
 The precomputed features are stored in a yaml file. OpenCV has built in storage methods, which makes this a simple process. Because each perspective has its own file for storing keypoints|in addition to its own file for grayscale and black and white images|the filename contains the meta information about each description. The program is able to load all features and know their corresponding location and orientation by first looking inside the folder to see what perspectives are available, then load into the map.
 
-\newpage
+%\newpage
 %========================================%
 %===== Section 4, MCL Implementation ====% 
 %========================================%
@@ -210,7 +210,7 @@ Depending on the type of feature matching being performed and the number of part
 \subsection{Versatility}
 Our algorithm is versatile to the extent that a map exists. It works with any robot that communicates with ROS. As long as a map of an environment exists in .obj file format, the program is able to localize a stream of image data to the best of its ability.
 
-\subsection{Ease of Use}
+\subsection{Ease of Use}%\begin{multicols}{2}
 
 
 \section{Issues}

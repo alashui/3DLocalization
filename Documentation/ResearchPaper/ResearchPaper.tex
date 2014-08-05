@@ -6,13 +6,15 @@
 \usepackage{float}
 \usepackage{amsmath}
 \usepackage[margin=1in]{geometry}
+
+\newcommand{\suchthat}{\;\ifnum\currentgrouptype=16 \middle\fi|\;}
 %\usepackage[top=.6in, bottom=.8in, left=.8in, right=.8in]{geometry}
 
 % \floatstyle{boxed}
 % \restylefloat{figure}
 %==== Insert cool image between title and authors ====%
 \title{Using 3D Models and Computer Vision Algorithms to \\ Implement Monte Carlo Localization}
-\author{ \\[7in]  John Allard, Alex Rich \\ 2014 Summer Computer Science REU, Harvey Mudd College\thanks{Funded By The NSA}}
+\author{ \\[7in]  John Allard, Alex Rich \\ 2014 Summer Computer Science REU, Harvey Mudd College\thanks{Funded By The National Science Foundation, mentored by Professor Dodds}}
 %\date{July 6th, 2014 \\}
 
 \begin{document}
@@ -156,20 +158,28 @@ One of the main goals for our project was to be able to localize a \emph{general
 Some dense but discrete subset of possible perspectives in the environment are described by our master list of perspectives. A particle can be generated at any one of these perspectives as a guess to the actor's location in the environment. The particle contains a weight associated with the probability that the actor is currently at that particle in the real world. This weight is determined by comparing the precomputed feature data for the perspective associated with the particle to the feature data computed in real-time from the actor's image feed. The weight assigned to the particle will proportionally affect the probability of another particle being sampled from near that perspective in the environment during the next loop iteration.
 
 Before a particle can be weighed, it must have its image features matched with the image features from the actors image. This entails going through the features for both images and seeing which features match best to eachother. In its current implementation, our algorithm only uses SURF features to do the matching between image pairs. We set up the project to also do matching with SIFT and greyscale features, but these methods didn't seem to help our matching attemps so they are currently disabled. Thankfully for us, the SURF feature matching process has already been implemented and is built in standard with the \texttt{OpenCV} libraries. Our group decided to use a \texttt{OpenCV FlannMatcher} object to generate an initial vector of matched features between the two images.
- \[ \verb. Given two vectors of SURF features. \]
- \[ \boldsymbol{F_r} = \verb. [. \mathtt{f_{r1}} \verb., . \mathtt{f_{r2}} \verb-, ..., - \mathtt{f_{rn}} \verb.], .         \mathtt{f_{r}} = \verb. robot image feature . \]
- \[ \boldsymbol{F_p} = \verb. [. \mathtt{f_{p1}} \verb., . \mathtt{f_{p2}} \verb-, ..., - \mathtt{f_{pn}} \verb.], .        \mathtt{f_{p}} = \verb. particle image feature .\]
- \[ Flann(\boldsymbol{F_r} \verb., . \boldsymbol{F_p}) \to \boldsymbol{M} \]
- \[ \verb.Where . \boldsymbol{M} = \mathtt{ [\boldsymbol{m}_0, \boldsymbol{m}_1, ... , \boldsymbol{m}_n]} \verb. and . \boldsymbol{m_i} = \mathtt{ \mathtt{[f_{pi}, f_{ri}]} } \]
+ \\ \\ \verb. Given two vectors of SURF features and a distance function . 
+ \[ \boldsymbol{F_r} = \verb. [. \mathtt{f_{r1}} \verb., . \mathtt{f_{r2}} \verb-, ... , - \mathtt{f_{rn}} \verb.] where . \mathtt{f_{r}} = \verb. robot image feature . \]
+ \[ \boldsymbol{F_p} = \verb. [. \mathtt{f_{p1}} \verb., . \mathtt{f_{p2}} \verb-, ... , - \mathtt{f_{pn}} \verb.] where .        \mathtt{f_{p}} = \verb. particle image feature .\]
+  %\verb. And a distance function that determines how similar two features are .
+ \[  f(\mathtt{[f_{pj}, f_{rk}]}) \to \mathtt{distance} \in \mathtt{R^+}   \] \\
+  \verb. A match between two features is defined as . 
+ \[ \boldsymbol{m} = \mathtt{ \mathtt{[f_{pj}, f_{rk}]} } \verb. such that . \]
+ \[ f(\mathtt{[f_{pj}, f_{rk}]}) < f(\mathtt{[f_{pj}, f_{rx}]}) \verb. . \forall \mathtt{ f_{rx}} \in  \boldsymbol{F_r} \verb. . \land \verb. . f(\mathtt{[f_{pj}, f_{rk}]}) < f(\mathtt{[f_{px}, f_{rk}]}) \verb. . \forall  \mathtt{f_{px}} \in \boldsymbol{F_p} \] \\
+ % \verb. Conflicts are resolved by taking the match with the lowest total distance . \\ \\
+ \verb. The Flann matching function is then defined as .
+ \[ Flann(\boldsymbol{F_r} \verb., . \boldsymbol{F_p}) \to \boldsymbol{M} = \mathtt{ [\boldsymbol{m}_0, \boldsymbol{m}_1, ... , \boldsymbol{m}_n ]} \]
+ % \[  \verb. Where . \boldsymbol{m_i} = \mathtt{ \mathtt{[f_{pi}, f_{ri}]} }   \]
+ % \[ \verb.Where . \boldsymbol{M} = \mathtt{ [\boldsymbol{m_0} \verb., . \boldsymbol{m_1} } \]% \verb., . ... \verb., . \boldsymbol{m_n}]} \verb. and . \boldsymbol{m_i} = \mathtt{ \mathtt{ [f_{pi}, f_{ri}] } } \]
 
  The \emph{Flann} function will give us a vector of feature matches, but these matches still need to be refined. Using the $k$ nearest neighbors matching algorithm with $k = 2$ and the ratio test\footnote{See Lowe, David G. ``Distinctive Image Features from Scale-Invariant Keypoints." {\it International Journal of Computer Vision} (2004). pg 19-20.  \url{http://www.cs.ubc.ca/~lowe/keypoints/}.} we refine the vector to filter out matches that are below a certain theshold.
-
+\\
  \textbf{INSERT MATH HERE SHOWING THE RATIO TEST}
-
+\\
   Now we need to get some kind of score for how well the matches correspond to each other, and use this score to determine how closely the image from the actor and the image from the particle's perspective match with each other. Each pair of matching keypoints has a `distance` score that can be calculated. This value tells us roughly how similar that pair of keypoints are to one another. Using the vector of matching keypoint pairs, the overall weight for a particle is determined as follows
 
 \[  \verb. Given a vector of . \mathtt{n} \verb. matching feature pairs. \]
-\[  \boldsymbol{M} = \mathtt{ [\boldsymbol{match}_0, \boldsymbol{match}_1, ... , \boldsymbol{match}_n} ]    \]
+\[  \boldsymbol{M} = \mathtt{ [\boldsymbol{m}_0, \boldsymbol{m}_1, ... , \boldsymbol{m}_n} ]  \verb. where . \boldsymbol{m_i} = \mathtt{ \mathtt{[f_{pi}, f_{ri}]} }   \]
 \[  f(\boldsymbol{M}_i) \to \mathtt{distance} \in \mathtt{R^+}   \]
 \[  \verb.Particle Weight . \mathtt{w} = \sum_{i=0}^{n} \frac 1{f(\boldsymbol{M}_i) + 0.8} \]
 

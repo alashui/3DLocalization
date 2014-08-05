@@ -8,6 +8,7 @@ filename = 'ParticleLists.txt'
 def main(last):
 
     win = GraphWin('Points', 570, 570)
+    win.setBackground("white")
 
     while True:
 

@@ -13,7 +13,7 @@ def main():
     sl = 40 # shift left
     sd = 20  # shift down
 
-    win = GraphWin('Points', 600+sl, 600 + sd)
+    win = GraphWin('Weight Over time', 600+sl, 600 + sd)
     win.setBackground("white")
 
     t = Text(Point((600+sl)/2, 10), "Average Weight Over Time")

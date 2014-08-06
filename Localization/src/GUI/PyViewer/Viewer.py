@@ -13,7 +13,6 @@ def main(last):
 
     it = 0
 
-    displayAll = False
     n = 10
 
     while True:
@@ -94,16 +93,16 @@ def main(last):
             t = Text(Point(10+(avgx - minx) * 550/w, 540), str(avgx))
             t.draw(win)
 
-            # x = 10+(particles[0][0] - minx) * 550/w 
-            # y = 570 - (10+(particles[0][1] - miny) * 550/h)
-            # c = Circle(Point(x, y), 8)
-            # c.setFill("green")
-            # c.draw(win)
-            # dx = 10 + ( particles[0][0] + particles[0][2] * 0.2 - minx) * 550 / w
-            # dy = 570 - (10 + ( particles[0][1] + particles[0][3] * 0.2 - miny) * 550 / h)
-            # l = Line(Point(x, y), Point(dx, dy))
-            # l.setArrow("last")
-            # l.draw(win)
+            x = 10+(particles[0][0] - minx) * 550/w 
+            y = 570 - (10+(particles[0][1] - miny) * 550/h)
+            c = Circle(Point(x, y), 8)
+            c.setFill("green")
+            c.draw(win)
+            dx = 10 + ( particles[0][0] + particles[0][2] * 0.2 - minx) * 550 / w
+            dy = 570 - (10 + ( particles[0][1] + particles[0][3] * 0.2 - miny) * 550 / h)
+            l = Line(Point(x, y), Point(dx, dy))
+            l.setArrow("last")
+            l.draw(win)
             
             particles.pop(0)
 
@@ -119,42 +118,24 @@ def main(last):
             # l.draw(win)
             
             particles.pop(0)
+            index = 0
+            for point in particles[0:n]:
+                x = 10+(point[0] - minx) * 550/w 
+                y = 570 - (10+(point[1] - miny) * 550/h)
 
-            if displayAll:
-                for point in particles:
-                    x = 10+(point[0] - minx) * 550/w 
-                    y = 570 - (10+(point[1] - miny) * 550/h)
-                    dx = 10 + ( point[0] + point[2] * 0.2 - minx) * 550 / w
-                    dy = 570 - (10 + ( point[1] + point[3] * 0.2 - miny) * 550 / h)
+                wt = point[4]
 
-                    wt = point[4]
-
-                    c = Circle(Point(x, y), 4)
-                    c.setFill(color_rgb(max(0, min(255, (wt - minw) * 255/(maxw - minw))), 0, max(0, min(255, 255 - (wt - minw) * 255/(maxw - minw)))))
-                    c.draw(win)
+                c = Circle(Point(x, y), getradius(index))
+                c.setFill(color_rgb(max(0, min(255, (wt - minw) * 255/(maxw - minw))), 0, max(0, min(255, 255 - (wt - minw) * 255/(maxw - minw)))))
+                c.draw(win)
+                if index < len(particles) / 2:
+                    m = getradius(index) / getradius(0) + 0.5
+                    dx = 10 + ( point[0] + m * point[2] * 0.2 - minx) * 550 / w
+                    dy = 570 - (10 + ( point[1] + m * point[3] * 0.2 - miny) * 550 / h)
                     l = Line(Point(x, y), Point(dx, dy))
                     l.setArrow("last")
                     l.draw(win)
-            else:
-                print n
-                index = 0
-                for point in particles[0:n]:
-                    x = 10+(point[0] - minx) * 550/w 
-                    y = 570 - (10+(point[1] - miny) * 550/h)
-                    dx = 10 + ( point[0] + point[2] * 0.2 - minx) * 550 / w
-                    dy = 570 - (10 + ( point[1] + point[3] * 0.2 - miny) * 550 / h)
-
-                    wt = point[4]
-
-                    c = Circle(Point(x, y), getradius(index))
-                    c.setFill(color_rgb(max(0, min(255, (wt - minw) * 255/(maxw - minw))), 0, max(0, min(255, 255 - (wt - minw) * 255/(maxw - minw)))))
-                    c.draw(win)
-                    if index < len(particles) / 2:
-                        l = Line(Point(x, y), Point(dx, dy))
-                        l.setArrow("last")
-                        l.draw(win)
-                    index += 1
-                # print "Point", x - minx, y - miny
+                index += 1
 
         except:
             t = Text(Point(285, 285), "Error. Please wait while for the next iteration.")
@@ -179,10 +160,9 @@ def main(last):
             sleep(0.2)
 
             xy = win.checkMouse()
-
+            done = False
             if xy != None:
-                if xy.y < 50:
-                    done = False
+                if xy.y < 250:
                     n = int(xy.x * len(particles) / 570)
                     print n
                     break
@@ -197,7 +177,6 @@ def main(last):
 
 def getradius(i):
     return max(10/log(i+10, 10) - 3, 1)
-    return max(500/(i+10) - 2,1)
 
 def cmpParts(p1, p2):
     return int(p2[4] - p1[4])

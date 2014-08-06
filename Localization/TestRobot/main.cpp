@@ -83,8 +83,8 @@ float moves[16][2];
 vector<Mat> image_list;
 vector<string> image_names;
 int current_image = 0;
-Mat BestGuessImage = imread("../../../Data/RenderedImages/2ndFloorSprague/_0.5_3.25_0.4_0_-1_0_.jpg");
-// Mat BestGuessImage;// = imread("../inputimages/square1/1.JPG");
+Mat BestGuessImage = imread("../inputimages/error.jpg");
+// Mat BestGuessImage;// = imread("../inputimages/square3/1.JPG");
 vector<fs::path> ret;
 
 bool handshake_recieved = false;
@@ -172,7 +172,7 @@ void publish_Move()
         if(BestGuessImage.empty())
         {
             cout << "image data corrupted in guess data callback" << endl;
-            BestGuessImage = image_list[0];
+            BestGuessImage = imread("../inputimages/error.jpg");//image_list[0];
 
             return;
         }
@@ -278,60 +278,60 @@ int main(int argc, char **argv)
         //     image_names.push_back("../../../Data/RenderedImages/BirchLab/_1.5_5.6_1.5_0.5_0.86_0_.jpg");
         // }
 
-        //     for(int i = 1; i <= 16; i++)
-        //     {
-        //         std::stringstream ss;
-        //         ss << "../inputimages/square1/" << i << ".JPG";
-        //         image_names.push_back(ss.str());
-        //     }
+            for(int i = 1; i <= 16; i++)
+            {
+                std::stringstream ss;
+                ss << "../inputimages/square3/" << i << ".JPG";
+                image_names.push_back(ss.str());
+            }
 
-        //     for(int i = 0; i < 3; i++)
-        //     {
-        //         moves[i][0] = 1;
-        //         moves[i][1] = 0;
-        //     }
+            for(int i = 0; i < 3; i++)
+            {
+                moves[i][0] = 0.25;
+                moves[i][1] = 0;
+            }
 
-        //     moves[3][0] = 0;
-        //     moves[3][1] = 90;
+            moves[3][0] = 0;
+            moves[3][1] = 90;
 
-        //     for(int i = 4; i < 7; i++)
-        //     {
-        //         moves[i][0] = 1;
-        //         moves[i][1] = 0;
-        //     }
+            for(int i = 4; i < 7; i++)
+            {
+                moves[i][0] = 0.25;
+                moves[i][1] = 0;
+            }
 
-        //     moves[7][0] = 0;
-        //     moves[7][1] = 90;
+            moves[7][0] = 0;
+            moves[7][1] = 90;
 
-        //     for(int i = 8; i < 11; i++)
-        //     {
-        //         moves[i][0] = 1;
-        //         moves[i][1] = 0;
-        //     }
+            for(int i = 8; i < 11; i++)
+            {
+                moves[i][0] = 0.25;
+                moves[i][1] = 0;
+            }
 
-        //     moves[11][0] = 0;
-        //     moves[11][1] = 90;
+            moves[11][0] = 0;
+            moves[11][1] = 90;
 
-        //     for(int i = 12; i < 15; i++)
-        //     {
-        //         moves[i][0] = 1;
-        //         moves[i][1] = 0;
-        //     }
+            for(int i = 12; i < 15; i++)
+            {
+                moves[i][0] = 0.25;
+                moves[i][1] = 0;
+            }
 
-        //     moves[15][0] = 0;
-        //     moves[15][1] = 90;
+            moves[15][0] = 0;
+            moves[15][1] = 90;
 
 
-        // Size size(804, 600);
-        // for(int i = 0; i < image_names.size(); i++)
-        // {
-        //     Mat temp = imread(image_names[i]);
-        //     Mat dest;
-        //     resize(temp, dest, size);
-        //     image_list.push_back(dest);
-        // }
+        Size size(804, 600);
+        for(int i = 0; i < image_names.size(); i++)
+        {
+            Mat temp = imread(image_names[i]);
+            Mat dest;
+            resize(temp, dest, size);
+            image_list.push_back(dest);
+        }
 
-        // return true;
+        return true;
 
 
 
@@ -339,40 +339,40 @@ int main(int argc, char **argv)
 
         // else
         //     {
-            image_names.push_back("../../../Data/RenderedImages/2ndFloorSprague/_0.5_3.25_0.4_0.86_-0.5_0_.jpg");
-            image_names.push_back("../../../Data/RenderedImages/2ndFloorSprague/_0.5_3.25_0.4_0.49_-0.86_0_.jpg");
-            image_names.push_back("../../../Data/RenderedImages/2ndFloorSprague/_0.5_3.25_0.4_0_-1_0_.jpg");
-            image_names.push_back("../../../Data/RenderedImages/2ndFloorSprague/_0.5_3.25_0.4_1_0_0_.jpg");
-            image_names.push_back("../../../Data/RenderedImages/2ndFloorSprague/_0.5_3.25_0.4_-0.5_-0.86_0_.jpg");
-            image_names.push_back("../../../Data/RenderedImages/2ndFloorSprague/_0.5_2.75_0.4_0_-1_0_.jpg");
-            image_names.push_back("../../../Data/RenderedImages/2ndFloorSprague/_0.5_2.5_0.4_0.49_-0.86_0_.jpg");
-            image_names.push_back("../../../Data/RenderedImages/2ndFloorSprague/_0.5_8_0.4_-0.86_-0.49_0_.jpg");
-            image_names.push_back("../../../Data/RenderedImages/2ndFloorSprague/_0.25_4.5_0.4_0_1_0_.jpg");
-            image_names.push_back("../../../Data/RenderedImages/2ndFloorSprague/_1.5_5.25_0.4_0_1_0_.jpg");
-            image_names.push_back("../../../Data/RenderedImages/2ndFloorSprague/_1.5_8_0.4_-0.86_-0.49_0_.jpg");
-            image_names.push_back("../../../Data/RenderedImages/2ndFloorSprague/_1.25_1.5_0.4_0.86_-0.5_0_.jpg");
-            image_names.push_back("../../../Data/RenderedImages/2ndFloorSprague/_1.25_1.75_0.4_-1_0_0_.jpg");
-            image_names.push_back("../../../Data/RenderedImages/2ndFloorSprague/_1.25_5.75_0.4_0.86_-0.5_0_.jpg");
-            image_names.push_back("../../../Data/RenderedImages/2ndFloorSprague/_1.75_3.75_0.4_0_-1_0_.jpg");
-            image_names.push_back("../../../Data/RenderedImages/2ndFloorSprague/_1.75_3.25_0.4_0.49_-0.86_0_.jpg");
-            image_names.push_back("../../../Data/RenderedImages/2ndFloorSprague/_1_2.75_0.4_-0.5_-0.86_0_.jpg");
-            image_names.push_back("../../../Data/RenderedImages/2ndFloorSprague/_1_8.25_0.4_0.86_0.49_0_.jpg");
-            image_names.push_back("../../../Data/RenderedImages/2ndFloorSprague/_2.5_0.25_0.4_-0.49_0.86_0_.jpg");
-            image_names.push_back("../../../Data/RenderedImages/2ndFloorSprague/_2.5_2.5_0.4_-0.86_0.5_0_.jpg");
-            image_names.push_back("../../../Data/RenderedImages/2ndFloorSprague/_-2.75_0.5_0.4_0.5_0.86_0_.jpg");
-            image_names.push_back("../../../Data/RenderedImages/2ndFloorSprague/_1.5_2.75_0.4_0.86_-0.5_0.jpg");
+        //     image_names.push_back("../../../Data/RenderedImages/2ndFloorSprague/_0.5_3.25_0.4_0.86_-0.5_0_.jpg");
+        //     image_names.push_back("../../../Data/RenderedImages/2ndFloorSprague/_0.5_3.25_0.4_0.49_-0.86_0_.jpg");
+        //     image_names.push_back("../../../Data/RenderedImages/2ndFloorSprague/_0.5_3.25_0.4_0_-1_0_.jpg");
+        //     image_names.push_back("../../../Data/RenderedImages/2ndFloorSprague/_0.5_3.25_0.4_1_0_0_.jpg");
+        //     image_names.push_back("../../../Data/RenderedImages/2ndFloorSprague/_0.5_3.25_0.4_-0.5_-0.86_0_.jpg");
+        //     image_names.push_back("../../../Data/RenderedImages/2ndFloorSprague/_0.5_2.75_0.4_0_-1_0_.jpg");
+        //     image_names.push_back("../../../Data/RenderedImages/2ndFloorSprague/_0.5_2.5_0.4_0.49_-0.86_0_.jpg");
+        //     image_names.push_back("../../../Data/RenderedImages/2ndFloorSprague/_0.5_8_0.4_-0.86_-0.49_0_.jpg");
+        //     image_names.push_back("../../../Data/RenderedImages/2ndFloorSprague/_0.25_4.5_0.4_0_1_0_.jpg");
+        //     image_names.push_back("../../../Data/RenderedImages/2ndFloorSprague/_1.5_5.25_0.4_0_1_0_.jpg");
+        //     image_names.push_back("../../../Data/RenderedImages/2ndFloorSprague/_1.5_8_0.4_-0.86_-0.49_0_.jpg");
+        //     image_names.push_back("../../../Data/RenderedImages/2ndFloorSprague/_1.25_1.5_0.4_0.86_-0.5_0_.jpg");
+        //     image_names.push_back("../../../Data/RenderedImages/2ndFloorSprague/_1.25_1.75_0.4_-1_0_0_.jpg");
+        //     image_names.push_back("../../../Data/RenderedImages/2ndFloorSprague/_1.25_5.75_0.4_0.86_-0.5_0_.jpg");
+        //     image_names.push_back("../../../Data/RenderedImages/2ndFloorSprague/_1.75_3.75_0.4_0_-1_0_.jpg");
+        //     image_names.push_back("../../../Data/RenderedImages/2ndFloorSprague/_1.75_3.25_0.4_0.49_-0.86_0_.jpg");
+        //     image_names.push_back("../../../Data/RenderedImages/2ndFloorSprague/_1_2.75_0.4_-0.5_-0.86_0_.jpg");
+        //     image_names.push_back("../../../Data/RenderedImages/2ndFloorSprague/_1_8.25_0.4_0.86_0.49_0_.jpg");
+        //     image_names.push_back("../../../Data/RenderedImages/2ndFloorSprague/_2.5_0.25_0.4_-0.49_0.86_0_.jpg");
+        //     image_names.push_back("../../../Data/RenderedImages/2ndFloorSprague/_2.5_2.5_0.4_-0.86_0.5_0_.jpg");
+        //     image_names.push_back("../../../Data/RenderedImages/2ndFloorSprague/_-2.75_0.5_0.4_0.5_0.86_0_.jpg");
+        //     image_names.push_back("../../../Data/RenderedImages/2ndFloorSprague/_1.5_2.75_0.4_0.86_-0.5_0.jpg");
+        // // }
+
+        // // Size size(804, 600);
+        // for(int i = 0; i < image_names.size(); i++)
+        // {
+        //     // Mat temp = imread(image_names[i]);
+        //     // Mat dest;
+        //     // resize(temp, dest, size);
+        //     image_list.push_back(imread(image_names[i]));
         // }
 
-        // Size size(804, 600);
-        for(int i = 0; i < image_names.size(); i++)
-        {
-            // Mat temp = imread(image_names[i]);
-            // Mat dest;
-            // resize(temp, dest, size);
-            image_list.push_back(imread(image_names[i]));
-        }
-
-        return true;
+        // return true;
 
 
         // string delimiter = "_";
@@ -428,6 +428,8 @@ int main(int argc, char **argv)
         temp.push_back(trans);
         temp.push_back(rotate);
 
+        // vector<float> temp;
+        // temp.push_back(0); temp.push_back(0);
         return temp;
     }
 

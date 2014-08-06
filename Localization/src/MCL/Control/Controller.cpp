@@ -142,7 +142,7 @@ namespace MCL
             }
             DebugIO("Robot has finished moving");
             std::stringstream sss;
-            sss << "Movement - " << recentMove[0] << "_" << recentMove[1] << std::endl;
+            sss << "Movement - " << recentMove[0] << "_" << recentMove[1];;
             DebugIO(sss.str());
             this->ap.Move(recentMove[0] * GRIDCONVERSION, recentMove[1]);
             return true;

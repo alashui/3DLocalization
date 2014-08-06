@@ -246,7 +246,7 @@ namespace MCL
     {
         vector<float> v = p.ToVector();
 
-        static float xystddev = 0.5;
+        static float xystddev = 0.2;
         static float thetastddev = 50.0;
 
         static boost::mt19937 rngxy;

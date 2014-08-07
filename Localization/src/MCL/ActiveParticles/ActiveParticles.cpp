@@ -111,7 +111,7 @@ namespace MCL
         float avgz = 0.0;
 
         int totalPs = this->NumParticles();
-        int topn = 10;
+        int topn = min(10, totalPs);
         float totalwt = 0;
 
         // vector<Particle> pList2(pList);
@@ -172,12 +172,16 @@ namespace MCL
     {
         double avg = 0;
 
-        float totalPs = (float) this->pList.size();
+        // float totalPs = (float) this->pList.size();
 
-        for (int i = 0; i < totalPs; i++)
+        int topn = min(20, (int) this->pList.size());
+
+        sort(pList.begin(), pList.end(), cmpParts);
+
+        for (int i = 0; i < topn; i++)
         {
-            if(totalPs != 0)
-                avg += this->pList[i].GetWeight() / (float)totalPs;
+            if(topn != 0)
+                avg += this->pList[i].GetWeight() / topn;
         }
         if (save == 0)
             this->weightHistory.push_back(avg);

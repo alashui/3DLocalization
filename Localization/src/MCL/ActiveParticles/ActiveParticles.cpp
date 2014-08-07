@@ -17,6 +17,92 @@ namespace MCL
 
     // Perspective Scatter(Perspective p, float maxtranslation, int prob=32);
     
+    // Perspective ActiveParticles::MakeGuess()
+    // {
+    //     // First Determine Location
+    //     float avgx = 0.0;
+    //     float avgy = 0.0;
+    //     float avgz = 0.0;
+
+    //     int totalPs = this->NumParticles();
+
+    //     float maxx = 0.0;
+    //     float maxy = 0.0;
+    //     float maxz = 0.0;
+    //     float minx = 1000.0;
+    //     float miny = 1000.0;
+    //     float minz = 1000.0;
+
+    //     for (int i = 0; i < totalPs; i++)
+    //     {
+    //         Particle p(this->pList[i]);
+    //         float x = p.GetPerspective(0);
+    //         float y = p.GetPerspective(1);
+    //         float z = p.GetPerspective(2);
+    //         float w = p.GetWeight();
+    //         avgx += w * x;
+    //         avgy += w * y;
+    //         avgz += w * z;
+
+    //         maxx = x > maxx ? x : maxx;
+    //         minx = x < minx ? x : minx;
+    //         maxy = y > maxy ? y : maxy;
+    //         miny = y < miny ? y : miny;
+    //         maxz = z > maxz ? z : maxz;
+    //         minz = z < minz ? z : minz;
+    //     }
+    //     string t = "\t";
+
+    //     // cout << totalPs << t << this->GetAvgWeight() << t << avgx << "\t" << avgy << "\t" << avgz << endl;
+
+    //     avgx = avgx / (this->GetAvgWeight() * (float) totalPs);
+    //     avgy = avgy / (this->GetAvgWeight() * (float) totalPs);
+    //     avgz = avgz / (this->GetAvgWeight() * (float) totalPs);
+
+    //     float dx = (maxx - avgx) > (avgx - minx) ? (maxx - avgx) : (avgx - minx);
+    //     float dy = (maxy - avgy) > (avgy - miny) ? (maxy - avgy) : (avgy - miny);
+    //     float dz = (maxz - avgz) > (avgz - minz) ? (maxz - avgz) : (avgz - minz);
+
+    //     float dist = sqrt(dx * dx + dy * dy + dz * dz) / 8;
+
+    //     Particle myP(Perspective(avgx, avgy, avgz, 0.0, 0.0, 0.0));
+
+    //     double avgdx = 0;
+    //     double avgdy = 0;
+    //     double avgdz = 0;
+
+    //     int inRange = 0;
+
+    //     for (int i = 0; i < totalPs; i++)
+    //     {
+    //         if (myP.Distance(pList[i]) < dist)
+    //         {
+    //             float w = myP.GetWeight();
+    //             avgdx = w * pList[i].GetPerspective(3);
+    //             avgdy = w * pList[i].GetPerspective(4);
+    //             avgdz = w * pList[i].GetPerspective(5);
+    //             inRange++;
+    //         }
+    //     }
+
+    //     this->guessQualityHistory.push_back((float) inRange / (float) totalPs);
+
+    //     avgdx = avgdx / (this->GetAvgWeight() * totalPs);
+    //     avgdy = avgdy / (this->GetAvgWeight() * totalPs);
+    //     avgdz = avgdz / (this->GetAvgWeight() * totalPs);
+        
+
+    //     Perspective guess(avgx, avgy, avgz, avgdx, avgdy, avgdz);
+    //     SnapToGrid(&guess);
+    //     this->guessHistory.push_back(guess);
+
+    //     // cout << "ParticleListSize:" << pList.size() << endl;
+
+    //     return guess;
+    // }
+
+    bool cmpParts (Particle a, Particle b) { return (a.GetWeight() < b.GetWeight()); }
+
     Perspective ActiveParticles::MakeGuess()
     {
         // First Determine Location
@@ -25,15 +111,14 @@ namespace MCL
         float avgz = 0.0;
 
         int totalPs = this->NumParticles();
+        int topn = 10;
+        float totalwt = 0;
 
-        float maxx = 0.0;
-        float maxy = 0.0;
-        float maxz = 0.0;
-        float minx = 1000.0;
-        float miny = 1000.0;
-        float minz = 1000.0;
+        sort(pList.begin(), pList.end(), cmpParts);
 
-        for (int i = 0; i < totalPs; i++)
+        vector<float> angles;
+
+        for (int i = 0; i < topn; i++)
         {
             Particle p(this->pList[i]);
             float x = p.GetPerspective(0);
@@ -43,54 +128,30 @@ namespace MCL
             avgx += w * x;
             avgy += w * y;
             avgz += w * z;
-
-            maxx = x > maxx ? x : maxx;
-            minx = x < minx ? x : minx;
-            maxy = y > maxy ? y : maxy;
-            miny = y < miny ? y : miny;
-            maxz = z > maxz ? z : maxz;
-            minz = z < minz ? z : minz;
+            totalwt += w;
+            angles.push_back(GetAngle(x, y));
         }
-        string t = "\t";
 
-        // cout << totalPs << t << this->GetAvgWeight() << t << avgx << "\t" << avgy << "\t" << avgz << endl;
+        avgx = avgx / totalwt; //((float) topn * totalwt);
+        avgy = avgy / totalwt; //((float) topn * totalwt);
+        avgz = avgz / totalwt; //((float) topn * totalwt);
 
-        avgx = avgx / (this->GetAvgWeight() * (float) totalPs);
-        avgy = avgy / (this->GetAvgWeight() * (float) totalPs);
-        avgz = avgz / (this->GetAvgWeight() * (float) totalPs);
-
-        float dx = (maxx - avgx) > (avgx - minx) ? (maxx - avgx) : (avgx - minx);
-        float dy = (maxy - avgy) > (avgy - miny) ? (maxy - avgy) : (avgy - miny);
-        float dz = (maxz - avgz) > (avgz - minz) ? (maxz - avgz) : (avgz - minz);
-
-        float dist = sqrt(dx * dx + dy * dy + dz * dz) / 8;
-
-        Particle myP(Perspective(avgx, avgy, avgz, 0.0, 0.0, 0.0));
-
-        double avgdx = 0;
-        double avgdy = 0;
-        double avgdz = 0;
-
-        int inRange = 0;
-
-        for (int i = 0; i < totalPs; i++)
+        float old_mode = 0;
+        int old_count = 0;
+        for (size_t i = 0; i < angles.size(); i++)
         {
-            if (myP.Distance(pList[i]) < dist)
+            float mode = angles[i];
+            int c = count(angles.begin(), angles.end(), mode);
+            if (c > old_count)
             {
-                float w = myP.GetWeight();
-                avgdx = w * pList[i].GetPerspective(3);
-                avgdy = w * pList[i].GetPerspective(4);
-                avgdz = w * pList[i].GetPerspective(5);
-                inRange++;
+                old_mode = mode;
+                old_count = c;
             }
         }
 
-        this->guessQualityHistory.push_back((float) inRange / (float) totalPs);
-
-        avgdx = avgdx / (this->GetAvgWeight() * totalPs);
-        avgdy = avgdy / (this->GetAvgWeight() * totalPs);
-        avgdz = avgdz / (this->GetAvgWeight() * totalPs);
-        
+        float avgdx = round(cos(old_mode * PI / 180.0));
+        float avgdy = round(sin(old_mode * PI / 180.0));
+        float avgdz = pList[0].GetPerspective(5);
 
         Perspective guess(avgx, avgy, avgz, avgdx, avgdy, avgdz);
         SnapToGrid(&guess);

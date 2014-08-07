@@ -11,21 +11,34 @@ def main(last):
     win = GraphWin('Points', 570, 570)
     win.setBackground("white")
 
-    it = 0
+    f = open('../Meta/MetaData.txt')
+    passed = False
+    for line in f:
+        line = line.split()
+        if not passed:
+            minx = float(line[0])
+            maxx = float(line[1])
+            miny = float(line[2])
+            maxy = float(line[3])
+            passed = True
+            break
+    f.close()
 
+    print minx, maxx, miny, maxy
+
+    it = 0
     n = 10
 
     while True:
-
         f = open(filename)
 
         particles = []
         top = []
 
-        minx = 200
-        maxx = 0
-        miny = 200
-        maxy = 0
+        # minx = 200
+        # maxx = 0
+        # miny = 200
+        # maxy = 0
 
         maxw = 0
         minw = 100
@@ -39,17 +52,17 @@ def main(last):
             p.pop(4)
             particles += [p]
 
-            if p[0] < minx:
-                minx = p[0]
-            elif p[0] > maxx:
-                maxx = p[0]
-            if p[1] < miny:
-                miny = p[1]
-            elif p[1] > maxy: 
-                maxy = p[1]
+            # if p[0] < minx:
+            #     minx = p[0]
+            # elif p[0] > maxx:
+            #     maxx = p[0]
+            # if p[1] < miny:
+            #     miny = p[1]
+            # elif p[1] > maxy: 
+            #     maxy = p[1]
             if p[4] > maxw:
                 maxw = p[4]
-            elif p[4] < minw and p[4] > 11:
+            if p[4] < minw and p[4] > 11:
                 minw = p[4]
             last = line
 

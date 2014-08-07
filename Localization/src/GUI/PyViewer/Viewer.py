@@ -54,8 +54,6 @@ def main(last):
             last = line
 
         f.close()
-
-        particles = sorted(particles, cmp=cmpParts)
         
         try:
             w = maxx - minx
@@ -118,6 +116,9 @@ def main(last):
             # l.draw(win)
             
             particles.pop(0)
+
+            particles = sorted(particles, cmp=cmpParts)
+
             index = 0
             for point in particles[0:n]:
                 x = 10+(point[0] - minx) * 550/w 

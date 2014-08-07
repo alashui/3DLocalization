@@ -101,7 +101,7 @@ namespace MCL
     //     return guess;
     // }
 
-    bool cmpParts (Particle a, Particle b) { return (a.GetWeight() < b.GetWeight()); }
+    bool cmpParts (const Particle a, const Particle b) { return (a.GetWeight() > b.GetWeight()); }
 
     Perspective ActiveParticles::MakeGuess()
     {
@@ -114,13 +114,17 @@ namespace MCL
         int topn = 10;
         float totalwt = 0;
 
+        // vector<Particle> pList2(pList);
+
         sort(pList.begin(), pList.end(), cmpParts);
 
         vector<float> angles;
 
+        // string t = "\t";
+
         for (int i = 0; i < topn; i++)
         {
-            Particle p(this->pList[i]);
+            Particle p(pList[i]);
             float x = p.GetPerspective(0);
             float y = p.GetPerspective(1);
             float z = p.GetPerspective(2);
@@ -130,11 +134,13 @@ namespace MCL
             avgz += w * z;
             totalwt += w;
             angles.push_back(GetAngle(x, y));
+
+            // cout << x << t << y << t << w << endl;
         }
 
-        avgx = avgx / totalwt; //((float) topn * totalwt);
-        avgy = avgy / totalwt; //((float) topn * totalwt);
-        avgz = avgz / totalwt; //((float) topn * totalwt);
+        avgx = avgx / totalwt; // ((float) topn * totalwt);
+        avgy = avgy / totalwt; // ((float) topn * totalwt);
+        avgz = avgz / totalwt; // ((float) topn * totalwt);
 
         float old_mode = 0;
         int old_count = 0;

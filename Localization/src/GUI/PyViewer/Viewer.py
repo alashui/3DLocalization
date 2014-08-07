@@ -93,7 +93,7 @@ def main(last):
 
             x = 10+(particles[0][0] - minx) * 550/w 
             y = 570 - (10+(particles[0][1] - miny) * 550/h)
-            c = Circle(Point(x, y), 8)
+            c = Circle(Point(x, y), 10)
             c.setFill("green")
             c.draw(win)
             dx = 10 + ( particles[0][0] + particles[0][2] * 0.2 - minx) * 550 / w

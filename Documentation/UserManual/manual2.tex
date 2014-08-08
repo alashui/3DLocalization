@@ -37,10 +37,26 @@
 
  \subsection{Running the Program}
   To start the program, open up the terminal and navigate to the \texttt{/3DLocalization/PreLocalization/PerspectiveGenerator/build} directory. Now type \texttt{  cmake ..  } followed by \texttt{  make  }. If an error appears in either of these steps please visit the \texttt{PerspectiveGenerator} section of the Code Documentation document to look for common errors and fixes. Next, type the following. \\
-  \texttt{./PerspectiveGenerator $input_file_name$} \\
+  \texttt{./PerspectiveGenerator }\verb.$input_file_name. \\
   Where you have replaced the 2nd word by the name of the input file that you created.
 
-  The program will now open up a viewer of the map, and will wait for you to click anywhere in the window. When you do click, it will begin to go through all of the points defined on your grid and render a \texttt{[600x600] .jpg} image. These images will be names according to their location in the environment and will be stored inside of the \texttt{/3DLocalization/Data/FeatureData/} directory.
+  The program will now open up a viewer of the map, and will wait for you to click anywhere in the window. When you do click, it will begin to go through all of the points defined on your grid and render a \texttt{[600x600] .jpg} image. These images will be names according to their location in the environment and will be stored inside of the \texttt{/3DLocalization/Data/FeatureData/} directory. When the program stops moving around from location to location inside the map it will be done and you can close the window.
+
+  \section{MapViewer}
+  This program doesn't have anything to do with the localization attempt, all that it does is visualize the particles in the 3D model and show how they change over time.
+
+  \subsection{Program Set-Up}
+  There isn't much that needs to be done to start this program. To start, navigate via the terminal to \texttt{/3DLocalization/Localization/src/GUI/MapViewer/build/} folder. Once again, type \texttt{  cmake ..  } followed by \texttt{ make }. This will build the program, and once again if any errors show up please check the Code Documentation document for common errors and fixes. If everything succeeds, go to the next sections.
+
+  \subsection{Running the Program}
+  Now you need to decide what environment you want to run the map viewer program in. If you want to run it in the 2nd Floor Sprague environment, you can go ahead and type \texttt{ ./MapViewer } and the program will start. 
+  If you wish to run it with another 3D model, you will need to type the following into the terminal \\
+  \verb, ./MapViewer $Model_Directory $OBJ_FILE, \\
+  Where \verb.$Model_Directory. is the name of the directory inside of the \texttt{ModelData/} directory that contains your model data and \verb.$OBJ_FILE. is the name of your 3D model file inside the your model directory.
+
+  When the program is started, the map will open up. Use the \texttt{[W A S D]} keys to navigate the environment, and the up and down arrow keys to change your Z height. You can press the spacebar at any time to save a picture of your current view in the environment. Press the escape key to leave the program.
+
+  If this program is run while the localization program is running, the particles will be automatically drawn and updated in the environment in real time.
 
 
 

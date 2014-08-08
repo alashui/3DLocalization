@@ -1,1 +1,78 @@
-%This will act as a user manual. It will document how to use the prelocalization programs to generate the necessary information and the actual localization process. This is different than the code documentation in this doesn't cover our data structures or algorithms, it just tells the user how to install everything, build everything, and everything else to get connected to and localize their robots.
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{url}
+
+%\setcounter{secnumdepth}{-2}
+
+\begin{document}
+\newcommand\ohm{\ensuremath{\Omega} }
+\begin{flushright}
+Alex Rich and John Allard \\
+Harvey Mudd College \\
+Summer 2014 REU
+\end{flushright}
+
+\begin{center}
+\LARGE
+Using the 3D Localization Program
+\end{center}
+
+\section{Locations}
+The 3D Localization programs are located at \url{github.com/jhallard/3DLocalization}. 
+\\
+Some example Robot Control Programs are located at \url{github.com/aarich/ROS-Controllers}.
+\section{Quick Start}
+See the next section on how to visualize what's happening.
+To run the program using the already present database of images, open three terminal windows (or tabs):
+\begin{enumerate}
+\item \verb.roscore.
+\item \verb.cd. into \verb.3DLocalization/Localization/build/. If needed, compile the code using the command \verb.make.. If this is done already, run 
+\[	\verb`./devel/lib/localization/3DLocalization 2ndFloorSprague`		\]
+\item \verb.cd. into \verb.3DLocalization/Localization/RobotTest/build/.. Again, \verb.make. as necessary. Run \verb`./robot 2ndFloorSprague`.
+\item Once you allow these programs to run, they should stop. The first will tell you to press enter, and the second will say ``Done Loading Images." You should press enter on the first, then press enter on the second. This initializes the handshake.
+\end{enumerate}
+The program runs, displaying the virtual robot image and the top match if found. Debug statements are printed, and can be turned off in ProgramIO.cpp.
+
+\section{Visualization}
+All visualizers are in the \verb.3DLocalization/Localization/src/GUI/. folder.
+\subsection{MapViewer}
+BLAHBLAH
+\subsection{MATLAB}
+This is run after the localization is done. Run \verb.weightovertime. to get a graph of the top weight over the iterations as well as a graph of the average of the top 20 particles.
+\subsection{Meta}
+In here you can run \verb`python createTrace.py` or \verb`python WeightOverTime.py`. The first animates the path of the localization guess, and can be run at any time during the localization or after. The second graphs the same as the matlab, but less pretty.
+\subsection{PCLViewer}
+Run \verb`./pcl_viewer 2ndFloorSprague` to view a PCL visualization of the particles. Each particle is colored according to its weight. Only one particle is shown even if multiple particles exist at a certain spot.
+\subsection{PyViewer}
+This is located in \verb.GUI/PyViewer/. Simply run \verb`python Viewer.py`. To adjust the number of particles displayed, click on the top section of the visualizer. Clicking towards the right increases the number of particles shown, while clicking towards the left decreases it. To close the window, click on the lower portion of the window.
+
+\section{PreLocalization}
+\subsection{Start with an Object File}
+We will refer to the object file with ``ModelName." You should decide on a model name for your map, then be consistent. Changing the ModelName will mean that the program won't be able to find files. Open object in MeshLab, select ``Remove Unreferenced Vertices," then export as obj file.
+
+\subsection{Rendering Images}
+
+\subsection{Creating the Database of Features}
+Run CreateDB: \verb`./CreateDB ModelName`.
+CreateDB does the following:
+\begin{enumerate}
+\item Reads images from directory in Data/RenderedImages.
+\item Computes various features, including.
+\item SURF Descriptors.
+\item Average Pixel Sum images of size $50\times 50$.
+\item Above/Below images of same size.
+\item Save images to corresponding folder.
+\item Both descriptors are saved in yaml files.
+\item Images are stored to gsimages and bwimages.
+\end{enumerate}
+
+\section{Localization}
+Once the database has been created, simply run the MCL program with the name of the file:
+\[	\verb`./devel/lib/localization/3DLocalization 2ndFloorSprague`		\]
+The 
+
+\section{Using an established ROS-Controllers program}
+Connect to respective robots, then run the ROS-Controller program after running the main MCL Program, as instructed above.
+
+
+\end{document}

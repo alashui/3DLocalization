@@ -1,0 +1,47 @@
+\documentclass[a4paper,11pt]{article}
+\usepackage{amsmath}
+\usepackage{fancyhdr}
+\usepackage{graphicx}
+\usepackage{url}
+\usepackage{float}
+\usepackage{amsmath}
+\usepackage[margin=1in]{geometry}
+
+\newcommand{\suchthat}{\;\ifnum\currentgrouptype=16 \middle\fi|\;}
+%\usepackage[top=.6in, bottom=.8in, left=.8in, right=.8in]{geometry}
+
+% \floatstyle{boxed}
+% \restylefloat{figure}
+%==== Insert cool image between title and authors ====%
+\title{Using 3D Models and Computer Vision Algorithms to \\ Implement Monte Carlo Localization}
+\author{ \\[7in]  John Allard, Alex Rich \\ 2014 Summer Computer Science REU, Harvey Mudd College\thanks{Funded By The National Science Foundation, mentored by Professor Dodds}}
+%\date{July 6th, 2014 \\}
+
+\begin{document}
+
+
+\section{Perspective Generator}
+ This program serves the purpose of taking the 3D model and generating a large library of 2D images from the model. These images are then processed for computer vision related features, for use during the localization attempt. This program will take about 5-20 minutes to run depending on the size of the 3D model, the speed of your computer, and the density of the images rendered from the environment.
+ \subsection{Program Set-Up}
+ First, you need to make sure that you have created a folder under the \texttt{/3DLocalizaton/Data/ModelData/} directory. This folder that you've made must contain all of the 3D model data for the environment that you wish to localize the actor in. For an example of this, look at either the \texttt{/Modeldata/2ndFloorSprague/} or \texttt{/ModelData/BirchLab/} folders. The perspective generator will need to use this folder to load the model data that it needs to render images. 
+
+ The final thing that you need to do before you start the program is to make an input file for this program. Create a text file inside of the \texttt{/PreLocalization/PerspectiveGenerator/Inputfiles/} directory. This text file must specify the following information, line by line.
+
+ \begin{itemize}
+ \item Name of the folder that contains your model data inside of the  \texttt{/3DLocalizaton/Data/ModelData/} directory.
+ \item Name of the \texttt{Wavefront .obj} file inside of the directory listed above.
+ \item [x1 x2 y1 y2 z gd dtheta]
+ \end{itemize}
+
+ An example input file can be seen inside of the \texttt{/3DLocalization/PreLocalization/PerspectiveGenerator/Inputfiles} directory. The 3rd line defines the x and y bounds of the map, the z height that images should be rendered from, how dense you would like the grid to be that the images are rendered from, and the theta (in degrees) that you would like the camera to rotate between consecutive image renders.
+
+ \subsection{Running the Program}
+  To start the program, open up the terminal and navigate to the \texttt{/3DLocalization/PreLocalization/PerspectiveGenerator/build} directory. Now type \texttt{  cmake ..  } followed by \texttt{  make  }. If an error appears in either of these steps please visit the \texttt{PerspectiveGenerator} section of the Code Documentation document to look for common errors and fixes. Next, type the following. \\
+  \texttt{./PerspectiveGenerator $input_file_name$} \\
+  Where you have replaced the 2nd word by the name of the input file that you created.
+
+  The program will now open up a viewer of the map, and will wait for you to click anywhere in the window. When you do click, it will begin to go through all of the points defined on your grid and render a \texttt{[600x600] .jpg} image. These images will be names according to their location in the environment and will be stored inside of the \texttt{/3DLocalization/Data/FeatureData/} directory.
+
+
+
+\end{document}

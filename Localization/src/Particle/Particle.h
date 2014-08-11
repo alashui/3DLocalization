@@ -18,29 +18,17 @@ namespace MCL
 
     class Particle
     {
-
     private:
-
-    //*****-- Private Member Fields --*****//
         MCL::Perspective perspective;         // the current perspective associated with the particle
         float weight;                         // the weighting assigned to the particle based on its match with the actors image.
-
-    //*****-- Private Member Functions --*****//
-
-
     public:
-
-    //*****-- Public Functions --*****//
-
         //====Constructor====//
         Particle();                              // Default constructor, initializes members to default values.
         Particle(Perspective);                   // Initialize with a perspective abject.
         Particle(Perspective, float);             // Initialize with a perspective and a weight.
-
         //====Destructor====//
         ~Particle();                             // Place holder for a destructor, not needed right now.
  
-
         //====Get and Set====//
         bool SetPerspective(Perspective);
         MCL::Perspective GetPerspective() const; // Get the perspective associated with this particle
@@ -53,9 +41,7 @@ namespace MCL
 
         std::string ToString();
 
-    //********-----------------------------------------------*******//
-    //*****-- Public Definitions, Constants, and other Fields--*****//
-        
+
          float weightmin;                   // minimum weight that can be assigned to a particle
          float weightmax;                    // maximum weight that can be assigned to a particle
          float defaultweight;               // default weight for a particle (current 10, out of 100)

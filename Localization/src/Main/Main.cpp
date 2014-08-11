@@ -2,8 +2,10 @@
 *
 *   @File   Main.cpp
 *   @Author Alex Rich and John Allard, Summer 2014 @ HMC
-*   @Info   Starts up the MCL algorithm by loading features, then passes control
-*           of program to the controller object.
+*   @Info   Main start-up file for the Localization program. This file serves to combine all of the separate parts of the localization
+*           program and actually localize a robot in an environment! The function main() will start off by loading all of the
+*           necessary data from the datbase, connecting to the robot, and then running the main MCL loop until the robot is localized
+*           or an error occurs.
 *
 **/
 
@@ -36,14 +38,19 @@ int main(int argc, char ** argv)
 
     string modelName = argv[1];
 
+    // attempt to load all of the model data from the database.
     if (BootUp(modelName) < 0)
         return PrintError("Model Directory Name not found inside /3DLocalization/Data/ModelData/.");
 
+    // at this points, your robot control program should be started and looking for our programs main MCL data publish, under
+    // the name MCL_DATA_PUBLISHER. Once your robot control program is attempting to subscribe to our publisher, hit any key to continue.
     UserIO("Boot Up is Finished. Be ready to start your robot control program.");
     UserIO("Press any key to continue");
     getchar();
     Controller control;
 
+    // We now initiate the controller, this will go through the process of connecting to the robot, generating the initial particles,
+    // and allocating memory for various processes.
     if (!control.init(modelName))
     {
         return PrintError("Could Not Properly Initialize Controller.");
@@ -55,6 +62,8 @@ int main(int argc, char ** argv)
     // namedWindow("Top Match");
     // namedWindow("Weighted Average");
     char key = ' ';
+
+    // Main MCL Loop! It will run until the robot sends an EXIT_FLAG (666) or the user presses Q in the OpenCV rinwo.
     while(key != 'q' && key != 'Q' && !control.ExitFlagSet())
     {   
         stringstream ss; ss.str("");

@@ -101,8 +101,13 @@ namespace MCL
     //     return guess;
     // }
 
+    // function used to compare to particles based on weight. Used only in the MakeGuess() function.
     bool cmpParts (const Particle a, const Particle b) { return (a.GetWeight() > b.GetWeight()); }
 
+    // The make guess function takes in the current list of weighted particles distributed throughout the environment
+    // and makes an educated guess as to where the robot is most likely to be. Currently we are taking the weighted average 
+    // of the locations of the top 50 particles in the environment, but the number 50 can be changed depending on the number 
+    // of particles currently active in the environment.
     Perspective ActiveParticles::MakeGuess()
     {
         // First Determine Location
@@ -168,6 +173,7 @@ namespace MCL
         return guess;
     }
 
+    // Computes the average weight of the currently active particles.
     float ActiveParticles::ComputeAvgWeight(int save = 0)
     {
         double avg = 0;
@@ -193,6 +199,10 @@ namespace MCL
         return GenerateDistribution(defaultDistributionSize);
     }
 
+    // Generated a distribution of particles from which to be sampled in the next stage of the MCL process.
+    // This function takes a look at the location, orientation, and weighting of all of the current particles in the
+    // program, and from this is makes a giant list of particles from which to randomly sample from. This list will be biased
+    // towards selecting particles from locations that previously had particles with high weights in that location.
     bool ActiveParticles::GenerateDistribution(int wantedSize)
     {
         // Randomly generate a distribution based on 
@@ -222,6 +232,9 @@ namespace MCL
         return (GenerateParticles(pList.size()));
     }
 
+    // This function is called after the GenerateDistribution function. It serves to sample from the distribution created
+    // in that function and obtain a new list of particles which hopefully have converged on the location of the robot in
+    // the environment. 
     bool ActiveParticles::GenerateParticles(int amount)
     {
         this->pList.clear();

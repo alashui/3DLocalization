@@ -18,11 +18,11 @@ using namespace std;
 namespace MCL {
 
     struct Characterizer {
-        Mat image;
-        Mat bw;
-        Mat gs;
-        Mat descs;
-        vector<KeyPoint> kps;
+        Mat image;             // rendered image from the associated perspective in the map
+        Mat bw;	               // black and white version of above image
+        Mat gs;                // grayscale version of original image
+        Mat descs;             // SURF descriptors for the image
+        vector<KeyPoint> kps;  // SURF keypoints computed on the image
     };
 
 }

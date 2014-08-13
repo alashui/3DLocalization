@@ -64,12 +64,12 @@ The overall process of having an actor\footnote{An actor is any device that has 
 \subsection{During Localization}
   The MCL algorithm iterates through a series of steps to determine the location of an actor. Each step can be implemented in a variety of different ways.
   \begin{enumerate}
-  \item An actor is placed somewhere in the environment, and some number of guesses as to where it might be are randomly generated.\footnote{The uniformity of this distribution depends on the user's knowledge of the actor's initial location.} These `guesses' we will call particles, and each particle is a data structure that contains information about its own current perspective in the environment and the sensor data it would expect to read from that perspective.
+  \item An actor is placed in the environment, and some number of guesses of where it might be are randomly generated.\footnote{The uniformity of this distribution depends on the user's previous knowledge of the actor's location.} These `guesses' we will call particles, and each particle is a data structure that contains information about its own current perspective in the environment and the sensor data it would expect to read from that perspective.
   \item The program compares the current sensor readings from the actor to the expected sensor readings for each particle, and assigns a weight to each particle based on how strongly the readings correspond to one another.
-  \item A distribution is created according to the grouping and weighting of particles active in the program. The more heavily weighted a particle is, the higher probability it or one of its close neighbors will be sampled from our distribution during the next step.
+  \item A distribution is created according to the grouping and weighting of particle in the program. The more heavily weighted a particle is, the higher probability it or one of its close neighbors will be sampled from our distribution.
   \item A new set of particles are sampled from this distibution, as well as a small amount are sampled from a uniform distribution across the map. After this step the total number of particles in the program is the same as in the last step.
-  \item The actor is moved to a new point in the environment via some movement command from the actor control program. Each particle has its perspective updated according to the same commands, plus some statistical error from the uncertainty in the actor's movements. The expected sensor readings for each particle are also updated to correspond to its new perspective of the environment.
-  \item Steps 2-4 are repeated until we recieve an \texttt{end-program} command or we otherwise lose contact with the actor. As long as there is a connection our program will attempt to compute the actors location and relay this data to the actor. The general idea is as we weigh and resample the particles, the locations of the particles should converge on the actor's location in the environment.
+  \item The actor is moved to a new point in the environment via some movement command from the program. Each particle has its perspective updated according to the same commands, plus some statistical error from the uncertainty in the actors movements. The expected sensor readings for each particle are also updated to correspond to its new perspective of the environment.
+  \item Steps 2-4 are repeated until the actor sends an \texttt{end-program} command over a publisher or we otherwise lose contact with the actor. As long as there is a connection our program will attempt to compute the actors location and relay this data to the actor.
   \end{enumerate} 
   
 The power of this algorithm comes from a few key characterstics. 
@@ -84,10 +84,10 @@ The power of this algorithm comes from a few key characterstics.
 %===== Section 2, 3D Map Building ====%
 %=====================================%
   \section{Building the 3D Map}
-  Our research team used 3 dimensional models to serve as maps of the actor's environment for the localization process. These models were fully textured, high-quality laser scans of a room or series of rooms and hallways. The 3D map was built using a high quality Matterport camera and range scanner donated by Matterport Inc. This camera is placed on top of a tripod and placed somewhere in an enclosed environment, it then uses an internal motor to rotate 360 degrees and take a scan of the space using both RGB and laser-range data. After the next scan of the space is taken, the software internal to the camera automatically merges this new scan with the old scans, allowing one to continuously build a larger and more detailed model of an environment.
+  Our research team used 3 dimensional models to serve as maps of the actor's environment for the localization process. These models were fully textured, high-quality laser scans of a room or series of rooms and hallways. The 3D map was built using a high quality Matterport camera and range scanner donated by Matterport Inc. This camera is placed on top of a tripod and placed somewhere in an enclosed environment, it then uses an internal motor to rotate 360 degrees and take a scan of space using both RGB and laser-range data. After the next scan of the space is taken, the software internal to the camera automatically merges this new scan with the old scans, allowing one to continuously build a larger and more detailed model of an environment.
   
   \subsection{Taking the Scans}
- Our team took scans of various places on the Harvey Mudd campus, but the main environment that we wished to localize ourselves in was the 2nd floor of the Sprague building, where we work. We took 42 scans of this space, a roughly 3500 sqft floor consisting of 7-8 rooms and a large amount of non-static objects, such as chairs, laptops, and people. The Matterport software allows about 100 scans for a single model, and the software bundled with the camera automatically merges these scans into one textured mesh. The software also automatically converts the data to a \texttt{Wavefront .obj} file format for viewing on their site. We were then able to download this file to use it in our own 3D model viewers. 
+ Our team took scans of various places on the Harvey Mudd campus, but the main environment that we wished to localize ourselves in was the 2nd floor of the Sprague building, where we work. We took 42 scans of this space, a roughly 3500 sqft floor consisting of 7-8 rooms and a large amount of non-static objects, such as chairs, robots, and whiteboards. The Matterport software allows about 100 scans for a single model, and the software bundled with the camera automatically merges these scans into one textured mesh. The software also automatically converts the data to a .obj file format for viewing on their site. We were then able to download this file to use it in our own 3D model viewers. 
 
  \begin{figure}[h!]
    \centering
@@ -99,20 +99,16 @@ The power of this algorithm comes from a few key characterstics.
   Our model was inevitably left with gaps from places that were obstructed from the view of our camera. To help improve the overall quality of our map we used the Meshlab software. This allowed us to remove disconnected pieces, remove unreferenced vertices, and smoothen out some jagged areas. on top of this, we rendered the background color pink to allow us to single out features on these areas and remove them from the program. 
   
   \subsection{Creating a Database of Images from the Map}
-  Our goal is to use computer vision algorithms that perform comparisons between 2D images, which meant that we had to represent our 3D map in 2D for our feature matching algorithms to work properly. To represent our 3D map as 2D information, we decided to render images from thousands of different perspectives within our map. The following steps were taken to accomplish this.
+  Our goal is to use computer vision algorithms that compare between 2D images, which meant that we had to represent our 3D map in 2D for our feature matching algorithms to work properly. To represent our 3D map as 2D information, we decided to render images from thousands of different perspectives within our map. The following steps were taken to accomplish this.
   \begin{enumerate}
   \item Establish a bounding box around our map.
-  \item Define a plane, bounded by the box defined above, that sits above and parallel to the x-y plane of our map at some constant z height.
-  \item Define the a grid of a certain density on this plane (e.g. \texttt{[0.2 x 0.2]} grid squares).
-  \item Go to each grid intersection and render images from \texttt{n} perspectives, where \texttt{n} is some number that cleanly divides 360. Our group used \texttt{n = 8}, rendering pictures from an angle of \texttt{[0, 45, 90, ..., 315, 360]} degrees in the x-y plane at each grid intersection.
+  \item Define a plane that sits above and parallel to the x-y plane of our map.
+  \item Define the scale of a grid imposed on this plane.
+  \item Go to each grid location and render images from 8 perspectives, rotating from 0 to 360 degrees.
   \item Name the images according to their location in the map and store them for later use.
   \end{enumerate} 
 
-  \begin{figure}[h!]
-   \centering
-     \includegraphics[height=2.3in,width=5.5in,angle=0]{../Artifacts/RenderImages}
-   \caption{Turning a 3D model into 2D images.}
-  \end{figure}
+  \textbf{Insert image explaining visually the process stated above} \\
 
   This process allows us to turn our 3D model into a catalogued database of 2D images from a large amount of places within our model. From here we can use existing computer vision related algorithms (SURF, SIFT, ORB, etc.) to do the keypoint detection and feature description needed to match images with one another.
 
@@ -207,7 +203,7 @@ Before a particle can be weighed, it must have its image features matched with t
  The \emph{Flann} function will give us a matrix of feature matches, but these matches still need to be refined. the ratio test\footnote{See Lowe, David G. ``Distinctive Image Features from Scale-Invariant Keypoints." {\it International Journal of Computer Vision} (2004). pg 19-20.  \url{http://www.cs.ubc.ca/~lowe/keypoints/}.} we refine the matrix of top-two matches into a smaller vector of best matches. The ratio test is described below.
 \\ \\
  \textbf{INSERT MATH HERE SHOWING THE RATIO TEST}
--\\
+\\
   Now we need to get some kind of score for how well the matches correspond to each other, and use this score to determine how closely the image from the actor and the image from the particle's perspective match with each other. Each pair of matching keypoints has a `distance` score that can be calculated. This value tells us roughly how similar that pair of keypoints are to one another. Using the vector of matching keypoint pairs, the overall weight for a particle is determined as follows
 
 \[  \verb. Given a vector of . \mathtt{n} \verb. matching feature pairs. \]

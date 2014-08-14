@@ -55,7 +55,7 @@
 
 The overall process of having an actor\footnote{An actor is any device that has sensors and can move around an environment, e.g. a robot.} localize itself in an environment via the MCL algorithm is comprised of many steps. A general outline of these steps is given below.
 \subsection{Pre-Localization}
- These are requirements that must be satisfied to begin the MCL algorithm.
+ These are the requirements that must be satisfied to begin the MCL algorithm.
   \begin{enumerate}
   \item A map of the environment needs to be imported or constructed. 
   \item Some type of quantifiable features present in the map that can be detected with a sensor on the robot must be chosen (image features, range data, etc). This enables a comparison between sensor readings from the actor and the expected sensor readings from different places in the map.
@@ -72,34 +72,46 @@ The overall process of having an actor\footnote{An actor is any device that has 
   \item Steps 2-4 are repeated until we recieve an \texttt{end-program} command or we otherwise lose contact with the actor. As long as there is a connection our program will attempt to compute the actors location and relay this data to the actor. The general idea is as we weigh and resample the particles, the locations of the particles should converge on the actor's location in the environment.
   \end{enumerate} 
   
-The power of this algorithm comes from a few key characterstics. 
+ The power of this algorithm comes from a few key characterstics. 
 \begin{itemize}
  \item The algorithm is very general and leaves a large amount of the implementation details for the user to decide. As was stated before, this algorithm has been used in the past with both laser and sonar range data and a 2D map of an environment, in our case it was used with images from the robot and a 3D model of the environment. This algorithm is applicabile to virtually any type of sensor data, as long as this data can be compared to the expected sensor readings that various places in a map. 
  \item Secondly, from the mobility of the particles. When the actor moves, the particles move, and thus they store the probability that the actor has traveled in the path that the particle has taken. Over time, impossible paths will cause incorrect particles to be removed from the current set of guesses, leaving room for better guesses to take their place. This results in the gradual merging of particles in space to the correct location.
 \end{itemize}
 
-%\newpage
+\newpage
 
 %=====================================%
 %===== Section 2, 3D Map Building ====%
 %=====================================%
   \section{Building the 3D Map}
-  Our research team used 3 dimensional models to serve as maps of the actor's environment for the localization process. These models were fully textured, high-quality laser scans of a room or series of rooms and hallways. The 3D map was built using a high quality Matterport camera and range scanner donated by Matterport Inc. This camera is placed on top of a tripod and placed somewhere in an enclosed environment, it then uses an internal motor to rotate 360 degrees and take a scan of the space using both RGB and laser-range data. After the next scan of the space is taken, the software internal to the camera automatically merges this new scan with the old scans, allowing one to continuously build a larger and more detailed model of an environment.
+   \subsection{Overview}
+  Our research team used three dimensional models to serve as maps of the actor's environment for the localization process. These models were fully textured, high-quality laser scans of a room or series of rooms and hallways. The 3D map was built using a high quality Matterport camera and range scanner donated by Matterport Inc. This camera is placed on top of a tripod and placed somewhere in an enclosed environment, it then uses an internal motor to rotate 360 degrees and take a scan of the space using both an RGB camera and laser-range sensors. 
+
+   \begin{figure}[h!]
+   \centering
+     \includegraphics[height=2.3in,width=5.5in,angle=0]{../Artifacts/rp1}
+   \caption{3D model of the Sprague environment.}
+  \end{figure}
   
   \subsection{Taking the Scans}
  Our team took scans of various places on the Harvey Mudd campus, but the main environment that we wished to localize ourselves in was the 2nd floor of the Sprague building, where we work. We took 42 scans of this space, a roughly 3500 sqft floor consisting of 7-8 rooms and a large amount of non-static objects, such as chairs, laptops, and people. The Matterport software allows about 100 scans for a single model, and the software bundled with the camera automatically merges these scans into one textured mesh. The software also automatically converts the data to a \texttt{Wavefront .obj} file format for viewing on their site. We were then able to download this file to use it in our own 3D model viewers. 
 
- \begin{figure}[h!]
-   \centering
-     \includegraphics[height=2.3in,width=5.5in,angle=0]{../Artifacts/rp1}
- \caption{3D model of the Sprague environment.}
-\end{figure}
-
   \subsection{Filling In the Gaps}
   Our model was inevitably left with gaps from places that were obstructed from the view of our camera. To help improve the overall quality of our map we used the Meshlab software. This allowed us to remove disconnected pieces, remove unreferenced vertices, and smoothen out some jagged areas. on top of this, we rendered the background color pink to allow us to single out features on these areas and remove them from the program. 
   
-  \subsection{Creating a Database of Images from the Map}
-  Our goal is to use computer vision algorithms that perform comparisons between 2D images, which meant that we had to represent our 3D map in 2D for our feature matching algorithms to work properly. To represent our 3D map as 2D information, we decided to render images from thousands of different perspectives within our map. The following steps were taken to accomplish this.
+  \newpage
+
+   \section{Creating a Database of Images from the Map}
+  Our goal is to use computer vision algorithms that perform comparisons between 2D images, which meant that we had to represent our 3D map in 2D for our feature matching algorithms to work properly. To represent our 3D map as 2D information, we decided to render images from thousands of different perspectives within our map.
+
+  \begin{figure}[h!]
+   \centering
+     \includegraphics[height=1.8in,width=4.5in,angle=0]{../Artifacts/RenderImages}
+   \caption{Turning a 3D model into 2D images.}
+  \end{figure}
+ 
+  There are of course many different ways to decide which subset of points within the map will be chosen to render images from. The method our group used is outlined below.
+
   \begin{enumerate}
   \item Establish a bounding box around our map.
   \item Define a plane, bounded by the box defined above, that sits above and parallel to the x-y plane of our map at some constant z height.
@@ -108,15 +120,10 @@ The power of this algorithm comes from a few key characterstics.
   \item Name the images according to their location in the map and store them for later use.
   \end{enumerate} 
 
-  \begin{figure}[h!]
-   \centering
-     \includegraphics[height=2.3in,width=5.5in,angle=0]{../Artifacts/RenderImages}
-   \caption{Turning a 3D model into 2D images.}
-  \end{figure}
 
   This process allows us to turn our 3D model into a catalogued database of 2D images from a large amount of places within our model. From here we can use existing computer vision related algorithms (SURF, SIFT, ORB, etc.) to do the keypoint detection and feature description needed to match images with one another.
 
-
+ \newpage
 %=======================================================%
 %===== Section 3, Computing Features from the Map ===== %
 %=======================================================%

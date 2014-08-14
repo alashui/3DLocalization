@@ -33,6 +33,22 @@
   Our research group attempts to implement the Monte Carlo Localization algorithm using a 3D model of an environment and a stream of images from a robot in that environment. This entails the use of various computer vision algorithms to find and compare features between the image feed and our 3D model. The objectives of this project are to be able to localize a general actor in any 3D modeled environment quickly and accurately. This paper outlines the process that our research group has undertaken to accomplish this task and an analysis of our resulting program. 
   \end{abstract}
   
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 %====================================%
 %===== Section 1, Introduction ===== %
 %====================================%
@@ -80,33 +96,67 @@ The overall process of having an actor\footnote{An actor is any device that has 
 
 \newpage
 
+
+
+
+
+
+
+
+
+
+
+
+
+
 %=====================================%
 %===== Section 2, 3D Map Building ====%
 %=====================================%
   \section{Building the 3D Map}
    \subsection{Overview}
-  Our research team used three dimensional models to serve as maps of the actor's environment for the localization process. These models were fully textured, high-quality laser scans of a room or series of rooms and hallways. The 3D map was built using a high quality Matterport camera and range scanner donated by Matterport Inc. This camera is placed on top of a tripod and placed somewhere in an enclosed environment, it then uses an internal motor to rotate 360 degrees and take a scan of the space using both an RGB camera and laser-range sensors. 
+  Our research team used three dimensional models to serve as maps of the actor's environment for the localization process. These models were fully textured, high-quality scans of a room or series of rooms and hallways. The 3D maps were built using a Matterport 3D imaging camera donated to our research group by Matterport Inc. This camera is attached to the top of a tripod and placed somewhere in an enclosed environment, it then uses an internal motor to rotate 360 degrees and take a scan of the space using both an RGB camera and laser-range sensors. Subsequent scans are merged with the existing model, allowing one to walk the camera around a space and progressively build a larger and more detailed model.
 
    \begin{figure}[h!]
    \centering
-     \includegraphics[height=2.3in,width=5.5in,angle=0]{../Artifacts/rp1}
+     \includegraphics[height=1.9in,width=4.9in,angle=0]{../Artifacts/rp1}
    \caption{3D model of the Sprague environment.}
   \end{figure}
   
   \subsection{Taking the Scans}
- Our team took scans of various places on the Harvey Mudd campus, but the main environment that we wished to localize ourselves in was the 2nd floor of the Sprague building, where we work. We took 42 scans of this space, a roughly 3500 sqft floor consisting of 7-8 rooms and a large amount of non-static objects, such as chairs, laptops, and people. The Matterport software allows about 100 scans for a single model, and the software bundled with the camera automatically merges these scans into one textured mesh. The software also automatically converts the data to a \texttt{Wavefront .obj} file format for viewing on their site. We were then able to download this file to use it in our own 3D model viewers. 
+ Our team built models of various places on the Harvey Mudd campus, but the main environment that we wished to localize an actor in was the 2nd floor of the Sprague building, where we work. We took 42 scans of this space (Seen in \emph{Figure 1}), a roughly 3500 sqft floor consisting of 7-8 rooms and a large amount of non-static objects, such as chairs, laptops, and people. The Matterport software allows up-to 100 separate scans to form a single model, and the software bundled with the camera automatically merges these scans into one textured mesh. The software also automatically converts the data to a \texttt{Wavefront .obj} file format for viewing on their site. We were then able to download this file to use it in our own 3D model viewers. 
 
   \subsection{Filling In the Gaps}
   Our model was inevitably left with gaps from places that were obstructed from the view of our camera. To help improve the overall quality of our map we used the Meshlab software. This allowed us to remove disconnected pieces, remove unreferenced vertices, and smoothen out some jagged areas. on top of this, we rendered the background color pink to allow us to single out features on these areas and remove them from the program. 
   
   \newpage
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ %==================================================================%
+ %===== Section 3, Creating a Database of Images from the Map ===== %
+ %==================================================================%
    \section{Creating a Database of Images from the Map}
   Our goal is to use computer vision algorithms that perform comparisons between 2D images, which meant that we had to represent our 3D map in 2D for our feature matching algorithms to work properly. To represent our 3D map as 2D information, we decided to render images from thousands of different perspectives within our map.
 
   \begin{figure}[h!]
    \centering
-     \includegraphics[height=1.8in,width=4.5in,angle=0]{../Artifacts/RenderImages}
+     \includegraphics[height=2.1in,width=5.3in,angle=0]{../Artifacts/RenderImages}
    \caption{Turning a 3D model into 2D images.}
   \end{figure}
  
@@ -124,8 +174,30 @@ The overall process of having an actor\footnote{An actor is any device that has 
   This process allows us to turn our 3D model into a catalogued database of 2D images from a large amount of places within our model. From here we can use existing computer vision related algorithms (SURF, SIFT, ORB, etc.) to do the keypoint detection and feature description needed to match images with one another.
 
  \newpage
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 %=======================================================%
-%===== Section 3, Computing Features from the Map ===== %
+%===== Section 4, Computing Features from the Map ===== %
 %=======================================================%
   \section{Computing Features from the Map}
 After generating a database of images and labeling them according to their perspective in the environment, we had to go through and compute various types of image features from each one. This is done before localization because computing features is a computationally intensive process, and doing so during runtime significantly slows down the localization process. The information catalogued during this stage is loaded during the boot phase of the localization program.
@@ -141,34 +213,41 @@ The Grayscale image is a highly coarse image that simply splits an image into a 
 The precomputed features are stored in a yaml file. OpenCV has built in storage methods, which makes this a simple process. Because each perspective has its own file for storing keypoints|in addition to its own file for grayscale and black and white images|the filename contains the meta information about each description. The program is able to load all features and know their corresponding location and orientation by first looking inside the folder to see what perspectives are available, then load into the map.
 
 \newpage
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 %========================================%
-%===== Section 4, MCL Implementation ====% 
+%===== Section 5, MCL Implementation ====% 
 %========================================%
   \section{Implementation}
 
  \subsection{Overview}
- Our implementation of the Monte Carlo Localization algorithm is contained inside of a program called \texttt{3DLocalization}, which relies directly on the pre-computation performed by the programs discussed in sections 3 and 4 of this document. 
-  Below is a visual overview of the 3DLocalization program.
-  \begin{figure}[h!]
-   \centering
-     \includegraphics[height=5in,width=7in,angle=0]{../Artifacts/FlowChart}
- \caption{Data and control flow of the 3DLocalization program}
-\end{figure}
-
-Some of the main goals when designing this program are as follows 
+ Our implementation of the Monte Carlo Localization algorithm is contained inside of a program called \texttt{3DLocalization} \footnote{See \texttt{https://github.com/jhallard/3DLocalization/Localization}}. This program is written entirely in C++, using various open-source libraries like \texttt{OpenCV}, \texttt{ROS}, and \texttt{Boost} to aid in development. All of the data that was computed by the programs described in sections 3 and 4 of this document is used by this program. \\
+ Some of the main goals when designing this program are as follows 
  \begin{itemize}
  \item Make the program relatively light-weight as to not redirect computational resources from the main robot-control program.
  \item Be able to run in the background with no user input needed after the initial starting of the program. 
  \item Impose as few restrictions on the characteristics of the actor as possible (e.g. dimensions of freedom, movement timing, wheeled vs airborne).
- \item Make the program robust to environment changes (e.g. chairs being moved, lights being dimmed).
+ \item Make the program robust to environmental changes (e.g. chairs being moved, lights being dimmed).
  \end{itemize}
-  These goals are be tough to achieve, and are some what contradictory in their implementation. For instance, making the program robust to enironment changes entails adding more particles to the program which in turn makes it less light-weight. 
-
- % The toughest aspect of realizing these goals is in making the program light-weight while still being robust to changes in the environment. Designing a robust MCL program entails adding more active particles to the environment, which has a linear increase the time it takes to finish one iteration of the main MCL loop.
- % The heart of our implementation lies in both the acts of generating a distribution of particles and weighing the particles to compare them against the sensor data from the actor. 
+  Given the time frame of our research project, completing all of the above goals would be tough. Thus we used them mostly as guidelines for our team to follow as opposed to points marking the finish line of our project.
  
 
-   
+
  \subsection{Actor Specifications}
 \begin{itemize}
 \item \textbf{Overview} \\
@@ -177,11 +256,21 @@ One of the main goals for our project was to be able to localize a \emph{general
 \item \textbf{Communication} \\
 The following functionality must be implemented by the robot
   \begin{itemize}
-  \item Publish data via two \texttt{ros::Publisher} objects. The first is for sending image data to our program, the second is to send its current movement commands to our program. 
-  \item Subscribe to our data feed via a \texttt{ros::Subscriber} object. We will use this data feed to send localization data to the actor.
-  \item The control code for the actor must be developed separately, the user chooses how to move the robot, we only care about localizing it in the given environment.
+  \item Send two different types of data to our program. First, it must send us images from the robot's current position. The rate at which it publishes these images is not specified, but generally faster is better. Secondly, the robot must send us it's movement commands after it performs a move. These movement commands are relative to it's local coordinate system.
+  \item `Subscribe` to a single data feed from our program. This data feed will tell the robot where we currently think it is in the environment, and how confident we are in our guess.
+  \item The control code for the actor must be developed separately. The user chooses which robot to use, how to move the robot, and how to connect to our program. Our program only cares about localizing a general actor in a general environment.
   \end{itemize} 
 \end{itemize}
+
+
+ \subsection{Command Flow}
+  Below is a visual overview of our implementation of the MCL algorithm, 3DLocalization.
+  \begin{figure}[h!]
+   \centering
+     \includegraphics[height=5in,width=7in,angle=0]{../Artifacts/FlowChart}
+ \caption{Data and control flow of the 3DLocalization program}
+\end{figure}
+
 
 \subsection{Particle Generation}
 \begin{itemize}
@@ -247,6 +336,17 @@ The second option is the Weighted Average, which sums up all of the locations, w
 \subsection{Visualization}
 For the user to see how the localization program is working, various visualization assistants were constructed to accompany the program. A user is able to see what the robot sees, a top-down view of the map showing the location and relative weights of each particle, the Top Match and Weighted Average chosen by the program, and a three dimensional visualizer showing all the particles within the actual map.
 
+
+
+
+
+
+
+
+
+
+
+
 \section{Results}
 We can analyze how our program performs for each of the initial objectives.
 
@@ -260,6 +360,19 @@ Depending on the type of feature matching being performed and the number of part
 Our algorithm is versatile to the extent that a map exists. It works with any robot that communicates with ROS. As long as a map of an environment exists in .obj file format, the program is able to localize a stream of image data to the best of its ability.
 
 \subsection{Ease of Use}%\begin{multicols}{2}
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 \section{Issues}

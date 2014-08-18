@@ -27,20 +27,20 @@ See the next section on how to visualize what's happening.
 To run the program using the already present database of images, open three terminal windows (or tabs):
 \begin{enumerate}
 \item \verb.roscore.
-\item \verb.cd. into \verb.3DLocalization/Localization/build/. If needed, compile the code using the command \verb.make.. If this is done already, run 
+\item \verb.cd. into \verb.3DLocalization/Localization/build/.. Run 
 \[	\verb`./devel/lib/localization/3DLocalization 2ndFloorSprague`		\]
-\item \verb.cd. into \verb.3DLocalization/Localization/RobotTest/build/.. Again, \verb.make. as necessary. Run \verb`./robot 2ndFloorSprague`.
-\item Once you allow these programs to run, they should stop. The first will tell you to press enter, and the second will say ``Done Loading Images." You should press enter on the first, then press enter on the second. This initializes the handshake.
+\item \verb.cd. into \verb.3DLocalization/Localization/TestRobot/build/.. Run 
+\[	\verb`./robot 2ndFloorSprague`.	\]
+\item Once you allow these programs to run, they should stop. The first will tell you to press enter, and the second will say ``\verb.Done Loading Images.." Press enter on the first, then enter on the second. This initializes the handshake.
 \end{enumerate}
-The program runs, displaying the virtual robot image and the top match if found. Debug statements are printed, and can be turned off in \path{ProgramIO.cpp}.
+The program runs, displaying the virtual robot image and the top match if found. Debug statements are printed but can be turned off in \path{ProgramIO.cpp}.
 
 \section{Visualization}
 All visualizers are in the \verb.3DLocalization/Localization/src/GUI/. folder.
 \subsection{MapViewer}
-  Now you need to decide what environment you want to run the map viewer program in. If you want to run it in the 2nd Floor Sprague environment, you can type \texttt{./MapViewer} and the program will start. 
   
   If you wish to run it with another 3D model, you will need to type the following into the terminal \\
-  \verb,./MapViewer ModelName OBJ_FILE, where \verb.OBJ_FILE. is the name of your 3D model file inside the your model directory.
+  \verb,./MapViewer ModelName ObjFile, where \verb.ObjFile. is the name of your 3D object file inside the your model directory (\path{ModelName}).
 
   When the program is started, the map will open up. Use the \texttt{[W A S D]} keys to navigate the environment, and the up and down arrow keys to change your $z$ height. You can press the spacebar at any time to save a picture of your current view in the environment. Press the escape key to leave the program.
 
@@ -53,66 +53,69 @@ In here you can run \verb`python createTrace.py` or \verb`python WeightOverTime.
 \subsection{PCLViewer}
 Run \verb`./pcl_viewer ModelName` to view a PCL visualization of the particles. Each particle is colored according to its weight. Only one particle is shown even if multiple particles exist at a certain spot. If running in real time, press ``n" to update the scene.
 \subsection{PyViewer}
-This is located in \verb.GUI/PyViewer/. Simply run \verb`python Viewer.py`. To adjust the number of particles displayed, click on the top section of the visualizer. Clicking towards the right increases the number of particles shown, while clicking towards the left decreases it. To close the window, click on the lower portion of the window.
+Simply run \verb`python Viewer.py`. To adjust the number of particles displayed, click on the top section of the visualizer. Clicking towards the right increases the number of particles shown, while clicking towards the left decreases it. To close the window, click on the lower portion of the window.
 
 \section{PreLocalization}
 
-We will refer to the object file map as ``ModelName." You should decide on a model name for your map, then be consistent. Changing the ModelName will mean that the program won't be able to find files. Open object in MeshLab, select ``Remove Unreferenced Vertices," then export as obj file.
+We will refer to the object file map as ``ModelName." You should decide on a model name for your map, then be consistent. Changing the ModelName will mean that the program won't be able to find files. 
+
+First, open object file in MeshLab, select ``Remove Unreferenced Vertices," then export it as obj file. Use this new object file from now on.
 
 \subsection{Rendering Images with the Perspective Generator}
 
-This program serves the purpose of taking the 3D model and generating a large library of 2D images from the model. These images are then processed for computer vision related features, for use during the localization attempt. This program will take about 5-20 minutes to run depending on the size of the 3D model, the speed of your computer, and the density of the images rendered from the environment.
+This program takes the 3D model and generates a large library of 2D images. These images are later processed for computer vision related features for use during the localization attempt. This program will take 5 - 20 minutes to run depending on the size of the 3D model, the speed of your computer, and the density of the images rendered from the environment.
 
 \subsubsection{Program Set-Up}
- First, you need to make sure that you have created a folder under the \path{/3DLocalizaton/Data/ModelData/} directory. This folder that you've made must contain all of the 3D model data for the environment that you wish to localize the actor in. For an example of this, look at either the \path{/Modeldata/2ndFloorSprague/} or \path{/ModelData/BirchLab/} folders. The perspective generator will need to use this folder to load the model data that it needs to render images. 
+First, create a folder in the \path{/3DLocalizaton/Data/ModelData/} directory. This folder must contain all of the 3D model data for the environment that you wish to localize the actor in. For an example of this, look at either the \path{Modeldata/2ndFloorSprague/} or \path{/ModelData/BirchLab/} folders. The perspective generator will need to use this folder to load the model data that it needs to render images.
  
  The final thing that you need to do before you start the program is to make an input file for this program. Create a text file inside of the \path{/PreLocalization/PerspectiveGenerator/Inputfiles/} directory. This text file must specify the following information, line by line.
 
  \begin{itemize}
  \item Name of the folder that contains your model data inside of the  \path{/3DLocalizaton/Data/ModelData/} directory.
- \item Name of the \path{Wavefront .obj} file inside of the directory listed above.
- \item \texttt{[x1 x2 y1 y2 z gd dtheta]}
+ \item Name of the Wavefront .obj file inside of the directory listed above.
+ \item \texttt{[x1 x2 y1 y2 z gd dtheta]}, where the first four represent the bounding box, $z$ is the height to take all images at, \verb.gd. is the grid density, and \verb.dtheta. is the change in orientation between images rendered from the same point. This must divide evenly into 90 degrees.
  \end{itemize}
 
- An example input file can be seen inside of the \path{/3DLocalization/PreLocalization/PerspectiveGenerator/Inputfiles} directory. The 3rd line defines the x and y bounds of the map, the z height that images should be rendered from, how dense you would like the grid to be that the images are rendered from, and the theta (in degrees) that you would like the camera to rotate between consecutive image renders.
+ An example input file is in the \path{Inputfiles} directory.
 
  \subsubsection{Running the Program}
   To start the program, open up the terminal and navigate to the \path{/3DLocalization/PreLocalization/PerspectiveGenerator/build} directory. Now type \texttt{cmake ..} followed by \texttt{make}. If an error appears in either of these steps please visit the \texttt{PerspectiveGenerator} section of the Code Documentation document to look for common errors and fixes. Next, type the following: \\\verb`./PerspectiveGenerator ModelName`.
 
-  The program will now open up a viewer of the map, and will wait for you to click anywhere in the window. When you do click, it will begin to go through all of the points defined on your grid and render a [600x600] jpeg image. These images will be names according to their location in the environment and will be stored inside of the \path{/3DLocalization/Data/FeatureData/} directory. When the program stops moving around from location to location inside the map it will be done and you can close the window.
+  The program will now open up a viewer of the map, and will wait for you to click anywhere in the window. When you do click, it will begin to go through all of the points defined on your grid and render a [600x600] jpeg image. These images will be named according to their location in the environment and will be stored inside of the \path{/3DLocalization/Data/FeatureData/} directory. When the program stops moving around from location to location inside the map it will be done and you can close the window. Do not change any of the generated file or folder names!
 
 \subsection{Creating the Database of Features}
 Run CreateDB: \verb`./CreateDB ModelName`.
 CreateDB does the following:
 \begin{enumerate}
 \item Reads images from directory in \path{Data/RenderedImages}.
-\item Computes various features, including.
-\item SURF Descriptors.
-\item Average Pixel Sum images of size $50\times 50$.
-\item Above/Below images of same size.
+\item Computes various features, including:
+\begin{itemize}
+	\item SURF Keypoints and Descriptors.
+	\item Average Pixel Sum images of size $50\times 50$.
+	\item Above/Below images of same size.
+\end{itemize}
 \item Save images to corresponding folder.
-\item Both descriptors are saved in yaml files.
-\item Images are stored to gsimages and bwimages.
+\item Descriptors are saved in yaml files.
 \end{enumerate}
 
 \section{Localization}
-Once the database has been created, simply run the MCL program with the name of the file:
+Once the database has been created, simply run the MCL program with the name of the file from inside \path{Localization/build}:
 \[	\verb`./devel/lib/localization/3DLocalization ModelName`		\]
-The program will initially load all available images and their descriptors, which may take some time. When it is finished, it will wait for the user key press before continuing. At this point, you should start the robot program (see below), then press enter to continue the Localization program. This allows the two programs to have a handshake, then set up all ROS publishers and subscribers.
+The program will initially load all available images and their descriptors, which may take some time. When it is finished, it will wait for a user key press before continuing. At this point, you should start the robot program (see below), then press enter to continue the Localization program. This allows the two programs to have a handshake, then set up all ROS publishers and subscribers.
 
-While 3DLocalization runs, you can run the MapViewer, PyViewer, and PCL Viewer to get a sense of where the robot thinks it is.
+While 3DLocalization runs, you can run the MapViewer, PyViewer, and/or PCL Viewer to get a sense of where the robot thinks it is.
 
 \section{Robot Controllers}
 \subsection{Using an established ROS Controller}
 The ROS Controllers are located at \url{github.com/aarich/ROS-Controllers}.
 
-Connect to respective robots (depending on which ROS Controller you are using), then run the ROS-Controller program after running the main MCL Program, as instructed above. For the established controllers, use the following drivers to connect:
+Connect to respective robots (depending on which ROS Controller you are using), then run the ROS Controller program after running the main MCL Program, as instructed above. For the established controllers, use the following drivers to connect:
 \begin{itemize}
 \item iRobot Create: \verb,irobot_mudd.py,
 \item ARDrone: \verb.ardrone_autonomy.
 \end{itemize}
 
 \subsection{Making your own ROS Controller}
-Start with one of the example ROS Controllers, then modify it to fit your needs!
+Start with one of the example ROS Controllers (see \path{3DLocalization/Localization/TestRobot}), then modify it to fit your needs!
 
 \end{document}

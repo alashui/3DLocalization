@@ -152,6 +152,7 @@ The overall process of having an actor\footnote{An actor is any device that has 
  %===== Section 3, Creating a Database of Images from the Map ===== %
  %==================================================================%
    \section{Creating a Database of Images from the Map}
+   \subsection{Overview}
   Our goal is to use computer vision algorithms that perform comparisons between 2D images, which meant that we had to represent our 3D map in 2D for our feature matching algorithms to work properly. To represent our 3D map as 2D information, we decided to render images from thousands of different perspectives within our map.
 
   \begin{figure}[h!]
@@ -160,6 +161,7 @@ The overall process of having an actor\footnote{An actor is any device that has 
    \caption{Turning a 3D model into 2D images.}
   \end{figure}
  
+ \subsection{Process}
   There are of course many different ways to decide which subset of points within the map will be chosen to render images from. The method our group used is outlined below.
 
   \begin{enumerate}
@@ -254,7 +256,7 @@ The precomputed features are stored in a yaml file. OpenCV has built in storage 
 One of the main goals for our project was to be able to localize a \emph{general} actor in a \emph{general} environment. With this in mind, we tried to limit the number of requirements we impose on the movement and control of the actor. In summary, the actor must send us data from a camera and let us know its local movement coordinates, as well as listen for its global coordinates from our localization progran. All other control aspects of the actor are up to the user to decide. We have used this program successfully with both the ARDrone quad-copters and the ICreate robots, two very different robots. In our implementation, simple point to point navigation was sufficient, however a future goal is to implement the ability to make smart paths allowing the robot to go through doors and around or over tables.
 
 \item \textbf{Communication} \\
-The following functionality must be implemented by the robot
+The following functionality must be implemented by the robot to work with our program
   \begin{itemize}
   \item Send two different types of data to our program. First, it must send us images from the robot's current position. The rate at which it publishes these images is not specified, but generally faster is better. Secondly, the robot must send us it's movement commands after it performs a move. These movement commands are relative to it's local coordinate system.
   \item `Subscribe` to a single data feed from our program. This data feed will tell the robot where we currently think it is in the environment, and how confident we are in our guess.
@@ -263,13 +265,17 @@ The following functionality must be implemented by the robot
 \end{itemize}
 
 
- \subsection{Command Flow}
+ \subsection{Program Flowchart}
   Below is a visual overview of our implementation of the MCL algorithm, 3DLocalization.
   \begin{figure}[h!]
    \centering
      \includegraphics[height=5in,width=7in,angle=0]{../Artifacts/FlowChart}
  \caption{Data and control flow of the 3DLocalization program}
 \end{figure}
+
+The 3DLocalization program consists of a start-up process and a loop that continues until the program is told to end. During the various localization steps, are program must also communicate with two outside entities. The first is the robot, for the reasons listed in the above section. The second entity our program must communicate with is our database. During the start-up process, we read in the map and feature data from the database into our program. During the main localization loop, we document various aspects of our program by writing data to the database. 
+
+
 
 
 \subsection{Particle Generation}
@@ -386,7 +392,8 @@ It is certainly possible to implement a smarter navigation algorithm in which a 
 When each particle's image data is compared with that of the robot, there are many different ways to arrive at a similarity score. Currently we use only the number of feature matches and the ``goodness" of each match. There are, however ways to incorporate algorithms such as RANSAC (Random Sample Consensus) to consider how well the matches align with each other. In our attempts at using this strategy, however, we found it was difficult to find one formula that will consistently weigh pairs of images with different match quantities. In addition, there may be quick image comparison techniques available to relate the black and white and gray scale images.
 
 \section{Conclusions}
-What a dumb robot.
+\subsection{What a dumb robot}
+Our robot was quite dumb
 
 
 

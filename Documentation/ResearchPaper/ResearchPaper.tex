@@ -15,7 +15,7 @@
 %==== Insert cool image between title and authors ====%
 \title{Using 3D Models and Computer Vision Algorithms to \\ Implement Monte Carlo Localization}
 \author{ \\[7in]  John Allard, Alex Rich \\ 2014 Summer Computer Science REU, Harvey Mudd College\thanks{Funded By The National Science Foundation and mentored by Professor Zachary Dodds}}
-%\date{July 6th, 2014 \\}
+%\date{July 6th, 2014 \\ }
 
 \begin{document}
 
@@ -25,6 +25,7 @@
   
 % ==== Table Of Contents ==== %
   \tableofcontents
+  
   \newpage
 
   % ==  Paper Abstract   == %
@@ -54,21 +55,22 @@
   \section{Introduction} 
 
   \subsection{Project Overview}
-  The Monte Carlo Localization (MCL) algorithm has been used in the past\footnote{ Dieter Fox, et al. Carnegie Mellon University, University of Bonn.} to successfully localize robots using 2D maps of an environment and a stream of range sensor information. Our goal was to build off of these successes and implement a similar algorithm using a 3D map and color images from the robot as sensor data. The end goal of this project was to be able to place a robot anywhere inside of a mapped environment, have our program quickly and reliably localize the robot, then continue to localize the robot as it moves around the environment in attempt of accomplishing its programmed goals (fetching coffee, cleaning the floor, etc).
+  The Monte Carlo Localization (MCL) algorithm has been used in the past\footnote{ Dieter Fox, et al. Carnegie Mellon University, University of Bonn.} to successfully localize robots using 2D maps of an environment and a stream of range sensor information. Our goal was to build off of these successes and implement a similar algorithm using a 3D map and color images from the robot as sensor data. The end goal of this project was to be able to place a robot anywhere inside of a mapped environment, have our program quickly and reliably localize the robot, then continue to localize the robot as it moves around the environment while accomplishing its programmed goals (fetching coffee, cleaning the floor, etc).
 
- We chose to implement the MCL algorithm using 3D models and a live image-feed from the robot because it appears that this will be a common goal for robots to be able to perform in the near future. 3D models of an environment might be difficult to curently obtain, but they are constantly getting easier and cheaper to create. Our camera was donated by a new start-up company called Matterport, as companies like this grow we should see a proliferation of 3D-imaging cameras accompanied by a general decrease in price and increase in scan-quality. The reason we decided to use a camera as a sensor device instead of a range sensor is because cameras have continued following the trend in recent years of becoming cheaper and more portable, and the extra information present in an image compared to a set of range sensor data could make the localization process easier and more robust. The combination of these two trends suggests that the need for research related to localizing a robot using 3D models and image data is going to grow in the upcoming years, which is why we decided to undertake on this project.
+We chose to implement the MCL algorithm using 3D models and a live image-feed from the robot because  this is something robots should be able to do with current technology. 3D models of an environment might be difficult to obtain, but they are constantly getting easier and cheaper to create. Our 3D map making camera was donated by a company called Matterport. 
+ 
+We decided to use a camera instead of a range sensor because cameras are cheap, portable, and common and the information present in an image ought to be enough to localize. Localizing by vision is certainly something humans can do.
 
  \subsection{About}
- This project was undertaken by Alex Rich and John Allard during the Summer of 2014 at Harvey Mudd College, under the mentorship of Professor Zach Dodds. Our project was part of the Harvey Mudd Computer Science REU, with funding that originated from the National Science Fondation. The website/blog that organizes everything related to this project (including our code repository, code documentation, and research artifacts) is hosted here : \\
-\texttt{https://jhallard.github.io/3DLocalization}
+ This project was undertaken by Alex Rich and John Allard during the Summer of 2014 at Harvey Mudd College, under the mentorship of Professor Zach Dodds. Our project was part of the Harvey Mudd Computer Science REU, with funding that originated from the National Science Foundation. The website/blog that organizes everything related to this project (including our code repository, code documentation, and research artifacts) is hosted at \\\url{https://jhallard.github.io/3DLocalization}.
 
-\newpage
+%\newpage
 
 % ==   1.1 Process Overview  == %
   \section{Monte Carlo Localization Process Overview}
 %  \emph{This section is for those unfamiliar with the Monte Carlo Localization algorithm.}
 
-The overall process of having an actor\footnote{An actor is any device that has sensors and can move around an environment, e.g. a robot.} localize itself in an environment via the MCL algorithm is comprised of many steps. A general outline of these steps is given below.
+The overall process of having an actor\footnote{An actor is any device that has sensors and can move around an environment, e.g. a robot.} localize itself in an environment via the MCL algorithm is comprised of several steps. These steps can be broken into two parts: steps taken before localization, and steps taken during localization.
 \subsection{Pre-Localization}
  These are the requirements that must be satisfied to begin the MCL algorithm.
   \begin{enumerate}
@@ -77,23 +79,22 @@ The overall process of having an actor\footnote{An actor is any device that has 
   \item This step is optional.  Features from the map are computed from many different reference points and are stored for use during the localization attempt. This significantly narrows the set of locations that the robot can be determined to be at compared to generating feature data at run-time, but it reduces the computational resources needed significantly and allows one to simply look up the data in a map or container as opposed to computing it in real-time. Pre-computing features also significantly reduces the complexity of the localization source code.
   \end{enumerate}
 \subsection{During Localization}
-  The MCL algorithm iterates through a series of steps to determine the location of an actor. Each step can be implemented in a variety of different ways.
+  The MCL algorithm iterates through a series of steps to determine the location of an actor. Each step can be implemented in a variety of ways.
   \begin{enumerate}
   \item An actor is placed somewhere in the environment, and some number of guesses as to where it might be are randomly generated.\footnote{The uniformity of this distribution depends on the user's knowledge of the actor's initial location.} These `guesses' we will call particles, and each particle is a data structure that contains information about its own current perspective in the environment and the sensor data it would expect to read from that perspective.
   \item The program compares the current sensor readings from the actor to the expected sensor readings for each particle, and assigns a weight to each particle based on how strongly the readings correspond to one another.
   \item A distribution is created according to the grouping and weighting of particles active in the program. The more heavily weighted a particle is, the higher probability it or one of its close neighbors will be sampled from our distribution during the next step.
-  \item A new set of particles are sampled from this distibution, as well as a small amount are sampled from a uniform distribution across the map. After this step the total number of particles in the program is the same as in the last step.
+  \item A new set of particles are sampled from this distribution, as well as a small amount are sampled from a uniform distribution across the map. After this step the total number of particles in the program is the same as in the last step.
   \item The actor is moved to a new point in the environment via some movement command from the actor control program. Each particle has its perspective updated according to the same commands, plus some statistical error from the uncertainty in the actor's movements. The expected sensor readings for each particle are also updated to correspond to its new perspective of the environment.
-  \item Steps 2-4 are repeated until we recieve an \texttt{end-program} command or we otherwise lose contact with the actor. As long as there is a connection our program will attempt to compute the actors location and relay this data to the actor. The general idea is as we weigh and resample the particles, the locations of the particles should converge on the actor's location in the environment.
+  \item Steps 2-4 are repeated until we receive an \texttt{end-program} command or we otherwise lose contact with the actor. As long as there is a connection our program will attempt to compute the actors location and relay this data to the actor. The general idea is as we weigh and resample the particles, the locations of the particles should converge on the actor's location in the environment.
   \end{enumerate} 
-  
- The power of this algorithm comes from a few key characterstics. 
+ The power of this algorithm comes from a few key characteristics. 
 \begin{itemize}
- \item The algorithm is very general and leaves a large amount of the implementation details for the user to decide. As was stated before, this algorithm has been used in the past with both laser and sonar range data and a 2D map of an environment, in our case it was used with images from the robot and a 3D model of the environment. This algorithm is applicabile to virtually any type of sensor data, as long as this data can be compared to the expected sensor readings that various places in a map. 
- \item Secondly, from the mobility of the particles. When the actor moves, the particles move, and thus they store the probability that the actor has traveled in the path that the particle has taken. Over time, impossible paths will cause incorrect particles to be removed from the current set of guesses, leaving room for better guesses to take their place. This results in the gradual merging of particles in space to the correct location.
+ \item The algorithm is general and leaves a large amount of the implementation details for the user to decide. As mentioned before, this algorithm has been used in the past with both laser and sonar range data and a 2D map of an environment, in our case it was used with images from the robot and a 3D model of the environment. 
+ \item When the actor moves, the particles move, and thus they store the probability that the actor has traveled in the path that the particle has taken. Over time, impossible paths will cause incorrect particles to be removed from the current set of guesses, leaving room for better guesses to take their place. This results in the gradual merging of particles in space to the correct location.
 \end{itemize}
 
-\newpage
+%\newpage
 
 
 
@@ -113,21 +114,23 @@ The overall process of having an actor\footnote{An actor is any device that has 
 %=====================================%
   \section{Building the 3D Map}
    \subsection{Overview}
-  Our research team used three dimensional models to serve as maps of the actor's environment for the localization process. These models were fully textured, high-quality scans of a room or series of rooms and hallways. The 3D maps were built using a Matterport 3D imaging camera donated to our research group by Matterport Inc. This camera is attached to the top of a tripod and placed somewhere in an enclosed environment, it then uses an internal motor to rotate 360 degrees and take a scan of the space using both an RGB camera and laser-range sensors. Subsequent scans are merged with the existing model, allowing one to walk the camera around a space and progressively build a larger and more detailed model.
+  Our research team used 3D models as maps of the actor's environment for the localization process. These models were fully textured, high-quality scans of a room or series of rooms and hallways. The maps were built using a Matterport 3D imaging camera donated to our research group by Matterport Inc. This camera is attached to the top of a tripod and placed somewhere in an enclosed environment, it then uses an internal motor to rotate 360 degrees and take a scan of the space using both an RGB camera and laser-range sensors. Subsequent scans are merged with the existing model, allowing one to walk the camera around a space and progressively build a larger and more detailed model.
 
    \begin{figure}[h!]
    \centering
-     \includegraphics[height=1.9in,width=4.9in,angle=0]{../Artifacts/rp1}
+     \includegraphics[width=\textwidth]{../Artifacts/rp1}
    \caption{3D model of the Sprague environment.}
+   \label{fig:map}
   \end{figure}
   
+  % I don't know how useful these subsections are...
   \subsection{Taking the Scans}
- Our team built models of various places on the Harvey Mudd campus, but the main environment that we wished to localize an actor in was the 2nd floor of the Sprague building, where we work. We took 42 scans of this space (Seen in \emph{Figure 1}), a roughly 3500 sqft floor consisting of 7-8 rooms and a large amount of non-static objects, such as chairs, laptops, and people. The Matterport software allows up-to 100 separate scans to form a single model, and the software bundled with the camera automatically merges these scans into one textured mesh. The software also automatically converts the data to a \texttt{Wavefront .obj} file format for viewing on their site. We were then able to download this file to use it in our own 3D model viewers. 
+ Our team built models of various places on the Harvey Mudd campus, but the main environment that we wished to localize an actor in was the 2nd floor of the Sprague building. We took 42 scans of this space (See Figure \ref{fig:map}), a roughly 3500-square-foot floor consisting of 8 rooms. The Matterport software automatically converts the data to a Wavefront object  file format for viewing on their site. We were then able to download this file to use it in our own 3D model viewers. 
 
-  \subsection{Filling In the Gaps}
-  Our model was inevitably left with gaps from places that were obstructed from the view of our camera. To help improve the overall quality of our map we used the Meshlab software. This allowed us to remove disconnected pieces, remove unreferenced vertices, and smoothen out some jagged areas. on top of this, we rendered the background color pink to allow us to single out features on these areas and remove them from the program. 
-  
-  \newpage
+%  \subsection{Filling In the Gaps}
+%  Our model had a few gaps in places that were obstructed from the view of our camera. To improve the overall quality of our map we used the Meshlab software. This allowed us to remove disconnected pieces, remove unreferenced vertices, and smoothen out some jagged areas. on top of this, we rendered the background color pink to allow us to single out features on these areas and remove them from the program. 
+%  
+%  \newpage
 
 
 
@@ -152,29 +155,30 @@ The overall process of having an actor\footnote{An actor is any device that has 
  %==================================================================%
    \section{Creating a Database of Images from the Map}
    \subsection{Overview}
-  Our goal is to use computer vision algorithms that perform comparisons between 2D images, which meant that we had to represent our 3D map in 2D for our feature matching algorithms to work properly. To represent our 3D map as 2D information, we decided to render images from thousands of different perspectives within our map.
+  Our goal is to use computer vision algorithms that perform comparisons between 2D images, which means that we need to represent our three dimensional map in two dimensions for our feature matching algorithms to work. To do this, we render images from thousands of different perspectives within our map.
 
-  \begin{figure}[h!]
+  \begin{figure}
    \centering
-     \includegraphics[height=2.1in,width=5.3in,angle=0]{../Artifacts/RenderImages}
+     \includegraphics[width=\textwidth]{../Artifacts/RenderImages}
    \caption{Turning a 3D model into 2D images.}
+   \label{fig:render}
   \end{figure}
  
  \subsection{Process}
-  There are of course many different ways to decide which subset of points within the map will be chosen to render images from. The method our group used is outlined below.
+The method our group used is outlined below.
 
   \begin{enumerate}
   \item Establish a bounding box around our map.
   \item Define a plane, bounded by the box defined above, that sits above and parallel to the x-y plane of our map at some constant z height.
   \item Define the a grid of a certain density on this plane (e.g. \texttt{[0.2 x 0.2]} grid squares).
-  \item Go to each grid intersection and render images from \texttt{n} perspectives, where \texttt{n} is some number that cleanly divides 360. Our group used \texttt{n = 8}, rendering pictures from an angle of \texttt{[0, 45, 90, ..., 315, 360]} degrees in the x-y plane at each grid intersection.
+  \item Go to each grid intersection and render images from \texttt{n} perspectives, where \texttt{n} is some number that cleanly divides 360. We used \texttt{n = 8}, rendering pictures from angles of 0, 45, 90, $\dots$, 315, 360 degrees.
   \item Name the images according to their location in the map and store them for later use.
   \end{enumerate} 
 
 
-  This process allows us to turn our 3D model into a catalogued database of 2D images from a large amount of places within our model. From here we can use existing computer vision related algorithms (SURF, SIFT, ORB, etc.) to do the keypoint detection and feature description needed to match images with one another.
+  This process allows us to turn our 3D model into a catalogued database of 2D images from a large amount of places within our model. From here we can use existing computer vision related algorithms (SURF, SIFT, ORB, etc.) to detect keypoints and describe features needed to match images with one another.
 
- \newpage
+% \newpage
 
 
 
@@ -213,7 +217,7 @@ The Grayscale image is a highly coarse image that simply splits an image into a 
   \subsection{Storing the Features}
 The precomputed features are stored in a yaml file. OpenCV has built in storage methods, which makes this a simple process. Because each perspective has its own file for storing keypoints|in addition to its own file for grayscale and black and white images|the filename contains the meta information about each description. The program is able to load all features and know their corresponding location and orientation by first looking inside the folder to see what perspectives are available, then load into the map.
 
-\newpage
+%\newpage
 
 
 
@@ -322,8 +326,8 @@ Without the added contant (0.8) in the denominator
 
 1000 is much too high of a value for a single match to contribute to the sum, so adding the extra contstant in the denominator makes it so even the best key point matches only add a value slightly greater than one to our sum. This algorithm possesses a few traits that are beneficial for the accuracy and speed of our program.
 \begin{itemize}
-  \item The value of the \texttt{w} variable increases as the number of keypoint matches increases. This is desired, an image pair with many feature matches has a higher chance of being them being similar images than an image pair with very few  feature matches.
-  \item Keypoint pairs with a high distance (are not very alike) will contribute a small amount to the sum, while keypoints pairs with low distance (are quite similar) will contribute a larger amount to the sum. This will cause images with very similar keypoints to be weighted higher than images with non-similar keypoints.
+  \item The value of the \texttt{w} variable increases as the number of keypoint matches increases. This is desired, an image pair with many feature matches has a higher chance of being them being similar images than an image pair with few  feature matches.
+  \item Keypoint pairs with a high distance (are not very alike) will contribute a small amount to the sum, while keypoints pairs with low distance (are quite similar) will contribute a larger amount to the sum. This will cause images with similar keypoints to be weighted higher than images with non-similar keypoints.
 \end{itemize}
 
 Another formula that does well is the following:

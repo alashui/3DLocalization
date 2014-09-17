@@ -269,10 +269,12 @@ The robot must implement the following functionality to maintain the generality 
 The 3DLocalization program consists of a start-up process and a loop that continues until the program is told to end. During the various localization steps, the program must also communicate with two outside entities. The first is the robot, for the reasons listed in the above section. The second is the database. During the start-up process, we read in the map and feature data from the database. During the main localization loop, we document various aspects of our program by writing data to the database. 
 
 \subsection{Particle Generation}
-\begin{itemize}
-  \item \textbf{Generating a Distribution}
-  \item \textbf{Sampling from the Distribution}
-\end{itemize}
+The MCL algorithm is a kind of particle filter. At any one time during the process, there is a set of active particles that is a subset of all possible particles. There can be anywhere between 200 to 600 active particles at a time, with fewer active particles resulting in a faster program. During each iteration, a distribution of particles is created, from which the next set of active particles are sampled.
+
+\subsubsection{Generating a Distribution}
+The distribution is created such that when the next set of particles are sampled
+
+\subsubsection{Sampling from the Distribution}
 
 \subsection{Weighing the Particles}
 Each particle in our list of active particles contains a weight associated with it that represents the probability that the actor is currently at the particle's location in the map. This weight is determined by comparing the precomputed feature data for the perspective associated with the particle to the feature data computed in real-time from the actor's image feed. The weight assigned to the particle proportionally affects the probability of another particle being sampled from near that perspective in the environment during the next loop iteration of the algorithm.

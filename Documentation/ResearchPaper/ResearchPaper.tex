@@ -237,7 +237,7 @@ The precomputed features are stored in a yaml file. OpenCV has built in storage 
   \section{Implementation}
 
  \subsection{Overview}
- Our implementation of the Monte Carlo Localization algorithm is contained inside of a program called \texttt{3DLocalization} \footnote{See \texttt{https://github.com/jhallard/3DLocalization/Localization}}. This program is written entirely in C++, using various open-source libraries like \texttt{OpenCV}, \texttt{ROS}, and \texttt{Boost} to aid in development. All of the data that was computed by the programs described in sections 3 and 4 of this document is used by this program. \\
+ Our implementation of the Monte Carlo Localization algorithm is contained inside of a program called \texttt{3DLocalization} \footnote{See \texttt{https://github.com/jhallard/3DLocalization/Localization}}. This program is written entirely in C++, using various open-source libraries such as \texttt{OpenCV}, \texttt{ROS}, and \texttt{Boost} to aid in development. All of the data that was computed by the programs described in sections 3 and 4 of this document is used by this program. \\
  Some of the main goals when designing this program are as follows 
  \begin{itemize}
  \item Make the program relatively light-weight as to not redirect computational resources from the main robot-control program.
@@ -249,33 +249,29 @@ The precomputed features are stored in a yaml file. OpenCV has built in storage 
  
 
 
- \subsection{Actor Specifications}
-\begin{itemize}
-\item \textbf{Overview} \\
-One of the main goals for our project was to be able to localize a \emph{general} actor in a \emph{general} environment. With this in mind, we tried to limit the number of requirements we impose on the movement and control of the actor. In summary, the actor must send us data from a camera and let us know its local movement coordinates, as well as listen for its global coordinates from our localization progran. All other control aspects of the actor are up to the user to decide. We have used this program successfully with both the ARDrone quad-copters and the ICreate robots, two very different robots. In our implementation, simple point to point navigation was sufficient, however a future goal is to implement the ability to make smart paths allowing the robot to go through doors and around or over tables.
+\subsection{Actor Specifications}
+One of the main goals for our project was to be able to localize a \emph{general} actor in a \emph{general} environment. With this in mind, we tried to limit the number of requirements we impose on the movement and control of the actor. In summary, the actor must send us data from a camera and let us know its local movement coordinates, as well as listen for its global coordinates from our localization program. All other control aspects of the actor are up to the user to decide. 
+%We have used this program successfully with both the ARDrone quadcopters and the iRobot Creates: two very different robots. In our implementation, simple point to point navigation was sufficient, however a future goal is to implement the ability to make smart paths allowing the robot to go through doors and around or over tables.
 
-\item \textbf{Communication} \\
-The following functionality must be implemented by the robot to work with our program
+The robot must implement the following functionality to maintain the generality of our program.
   \begin{itemize}
-  \item Send two different types of data to our program. First, it must send us images from the robot's current position. The rate at which it publishes these images is not specified, but generally faster is better. Secondly, the robot must send us it's movement commands after it performs a move. These movement commands are relative to it's local coordinate system.
-  \item `Subscribe` to a single data feed from our program. This data feed will tell the robot where we currently think it is in the environment, and how confident we are in our guess.
-  \item The control code for the actor must be developed separately. The user chooses which robot to use, how to move the robot, and how to connect to our program. Our program only cares about localizing a general actor in a general environment.
+  \item Send the 3DLocalization program images from the robot's current position. The rate at which it publishes these images is not specified, but generally faster is better. 
+  \item Send the 3DLocalization program movement commands after it performs a move. These movement commands are relative to the robot's local coordinate system.
+  \item Subscribe to a single data feed from our program. This data feed tells the robot the best guess for its location.
+  \item Navigation algorithms. The user chooses which robot to use, how to move the robot. Our program only attempts to localize a general actor in a general environment.
   \end{itemize} 
-\end{itemize}
 
 
  \subsection{Program Flowchart}
-  Below is a visual overview of our implementation of the MCL algorithm, 3DLocalization.
+  Figure \ref{fig:flowchart} is a visual overview of our implementation of the MCL algorithm, 3DLocalization.
   \begin{figure}[h!]
    \centering
      \includegraphics[width=\textwidth]{../Artifacts/FlowChart}
  \caption{Data and control flow of the 3DLocalization program}
+ \label{fig:flowchart}
 \end{figure}
 
-The 3DLocalization program consists of a start-up process and a loop that continues until the program is told to end. During the various localization steps, are program must also communicate with two outside entities. The first is the robot, for the reasons listed in the above section. The second entity our program must communicate with is our database. During the start-up process, we read in the map and feature data from the database into our program. During the main localization loop, we document various aspects of our program by writing data to the database. 
-
-
-
+The 3DLocalization program consists of a start-up process and a loop that continues until the program is told to end. During the various localization steps, the program must also communicate with two outside entities. The first is the robot, for the reasons listed in the above section. The second is the database. During the start-up process, we read in the map and feature data from the database. During the main localization loop, we document various aspects of our program by writing data to the database. 
 
 \subsection{Particle Generation}
 \begin{itemize}
@@ -284,22 +280,25 @@ The 3DLocalization program consists of a start-up process and a loop that contin
 \end{itemize}
 
 \subsection{Weighing the Particles}
-Each particle in our particle vector contains a weight associated with it that represents the probability that the actor is currently at that particle's location in the real world. This weight is determined by comparing the precomputed feature data for the perspective associated with the particle to the feature data computed in real-time from the actor's image feed. The weight assigned to the particle will proportionally affect the probability of another particle being sampled from near that perspective in the environment during the next loop iteration of the algorithm.
+Each particle in our list of active particles contains a weight associated with it that represents the probability that the actor is currently at the particle's location in the map. This weight is determined by comparing the precomputed feature data for the perspective associated with the particle to the feature data computed in real-time from the actor's image feed. The weight assigned to the particle proportionally affects the probability of another particle being sampled from near that perspective in the environment during the next loop iteration of the algorithm.
 
-Before a particle can be weighed, it must have its image features matched with the features from the actors image. This entails going through the features for both images and seeing which features match best to eachother. To begin, we will define what information is needed to start the feature matching process.
- \\ \\ 
-  \[ \verb. Two vectors of SURF features. \] 
-  \[ \boldsymbol{F_{robot}} \verb., . \boldsymbol{F_{particle}} \verb. where . \boldsymbol{F} = \verb. [. \mathtt{f_{1}} \verb., . \mathtt{f_{2}} \verb-, ... , - \mathtt{f_{n}} \verb. ]. \]
-  \[ \verb. A distance function that compares two features. \]
- \[ f(\mathtt{[f_{pj}, f_{rk}]}) \to \mathtt{distance} \in \mathtt{R^+}\]
+Before a particle can be weighed, it must have its image features matched with the features from the actors image. This entails going through the features for both images and seeing which features match best to each other. To begin, we will define what information is needed to start the feature matching process. 
+
+First, we have two vectors of SURF features, one for the robot ($\boldsymbol{F_r }$) and one for a specific particle ($\boldsymbol{F_p}$). Each vector contains all features detected in its respective image. There must exist a distance function $f$ that determines the similarity between any two features. 
+%  \[ \verb. Two vectors of SURF features. \] 
+%  \[ \boldsymbol{F_{robot}} \verb., . \boldsymbol{F_{particle}} \verb. where . \boldsymbol{F} = \verb. [. \mathtt{f_{1}} \verb., . \mathtt{f_{2}} \verb-, ... , - \mathtt{f_{n}} \verb. ]. \]
+%  \[ \verb. A distance function that compares two features. \]
+ \[ f(\mathtt{[f_{pj}, f_{rk}]}) = \mathtt{distance}\]
 
   % In its current implementation, our algorithm only uses SURF features to do the matching between image pairs. We set up the project to also do matching with SIFT and greyscale features, but these methods didn't seem to help our matching attemps so they are currently disabled.
-   Our group decided to use an \texttt{OpenCV FlannMatcher} object to generate an initial matrix of matched features between the two images. The \texttt{FlannMatcher} object has a built-in function \emph{KnnMatch} that return a matrix of matching pairs. Each row of this matrix is a matching vector consisting of \texttt{n} columns, defines as follows.
+   We use an OpenCV \texttt{FlannMatcher} object to generate an initial matrix of matched features between the two images. The \texttt{FlannMatcher} object has a built-in function \texttt{KnnMatch} that return a matrix of matching pairs. Each row of this matrix $M$ is a matching vector consisting of \texttt{n} columns, defines as follows.
 
- \[ \boldsymbol{m} = \mathtt{ [f_{j}} \verb., . \mathtt{f_{k1}} \verb., . \mathtt{f_{k2}} \verb-, ... ,- \mathtt{f_{kn}} ] \verb. such that . \]
- \[ f(\mathtt{[f_{j}, f_{k1}]}) < f(\mathtt{[f_{j}, f_{x}]}) \verb. . \forall \mathtt{ f_{x}} \in  \boldsymbol{F_r} \verb. . \]
- \[ f(\mathtt{[f_{j}, f_{k2}]}) < f(\mathtt{[f_{j}, f_{x}]}) \verb. . \forall \mathtt{ f_{x}} \in  [\boldsymbol{F_r} - \mathtt{f_{k1}]}  \verb, ... , \]
- \[ f(\mathtt{[f_{j}, f_{kn}]}) < f(\mathtt{[f_{j}, f_{x}]}) \verb. . \forall \mathtt{ f_{x}} \in  [\boldsymbol{F_r} - \mathtt{f_{k1} - \mathtt{f_{k2}} -} \verb,...,- \mathtt{f_{kn-1}}  ]  \verb. . \] 
+ \[ M = \mathtt{ [f_{j}} \verb., . \mathtt{f_{k1}} \verb., . \mathtt{f_{k2}} \verb-, ... ,- \mathtt{f_{kn}} ] \verb. such that . \]
+\begin{align*}
+f(\mathtt{[f_{j}, f_{k1}]}) &< f(\mathtt{[f_{j}, f_{x}]})  \  \forall \mathtt{ f_{x}} \in  \boldsymbol{F_r}  \  
+\\  f(\mathtt{[f_{j}, f_{k2}]}) &< f(\mathtt{[f_{j}, f_{x}]})  \  \forall \mathtt{ f_{x}} \in  [\boldsymbol{F_r} - \mathtt{f_{k1}]}  \dots
+\\ f(\mathtt{[f_{j}, f_{kn}]}) &< f(\mathtt{[f_{j}, f_{x}]})  \  \forall \mathtt{ f_{x}} \in  [\boldsymbol{F_r} - \mathtt{f_{k1} - \mathtt{f_{k2}} -} \dots \mathtt{f_{kn-1}}  ]
+\end{align*}
 
  Thus a matching vector of length \texttt{n} contains a feature and the \texttt{n} features that are most similar to it. The \emph{KnnMatch} function of order \texttt{n} return a matrix with a matching vector of order \texttt{n} for each feature in both the robot and particle feature vectors. For our purposes, we ran the \emph{KnnMatch} function with \texttt{n = 2}. This gave us the two best matches for each feature.
  \[ Flann.KnnMatch(\boldsymbol{F_r} \verb., . \boldsymbol{F_p} \verb., . 2) \to \boldsymbol{M} = \mathtt{ [\boldsymbol{m}_0, \boldsymbol{m}_1, ... , \boldsymbol{m}_n ]} \]
@@ -359,26 +358,14 @@ We can analyze how our program performs for each of the initial objectives.
 Depending on the type of feature matching being performed and the number of particles currently active, our algorithm takes less than one second to determine a guess for the location of the actor. When the number of particles surpass 700, this time begins to noticeably take longer than a second. We consider the algorithm to be working in real time because it usually takes longer for the robot to make its move than the algorithm takes in each iteration.
 
 \subsection{Accuracy}
+The localization efforts tend to be accurate without precision. In most runs, the best guess for the robot was correct (it was in the right room, often looking the right direction), however was within a few meters of the precise location. 
 
 
 \subsection{Versatility}
 Our algorithm is versatile to the extent that a map exists. It works with any robot that communicates with ROS. As long as a map of an environment exists in .obj file format, the program is able to localize a stream of image data to the best of its ability.
 
-\subsection{Ease of Use}%\begin{multicols}{2}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+\subsection{Ease of Use}
+Through a series of well-documented commands, our localization program is fairly easy to use. The most difficult aspect of running the program is setting up the libraries. OpenGL, OpenCV, and ROS are all required.
 
 \section{Issues and Future Work}
 \subsection{Dynamic Environments}
@@ -393,9 +380,8 @@ It is certainly possible to implement a smarter navigation algorithm in which a 
 \subsection{Weighing}
 When each particle's image data is compared with that of the robot, there are many different ways to arrive at a similarity score. Currently we use only the number of feature matches and the ``goodness" of each match. There are, however ways to incorporate algorithms such as RANSAC (Random Sample Consensus) to consider how well the matches align with each other. In our attempts at using this strategy, however, we found it was difficult to find one formula that will consistently weigh pairs of images with different match quantities. In addition, there may be quick image comparison techniques available to relate the black and white and gray scale images.
 
-\section{Conclusions}
-\subsection{What a dumb robot}
-Our robot was quite dumb
+\section{Conclusion}
+We have successfully implemented a 3D Localization tool for a robot using only a camera as sensor data. While there are features that could be added in the future, our current system is a proof of concept.
 
 
 

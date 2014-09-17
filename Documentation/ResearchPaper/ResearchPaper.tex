@@ -205,27 +205,19 @@ The method our group used is outlined below.
 %===== Section 4, Computing Features from the Map ===== %
 %=======================================================%
   \section{Computing Features from the Map}
-After generating a database of images and labeling them according to their perspective in the environment, we had to go through and compute various types of image features from each one. This is done before localization because computing features is a computationally intensive process, and doing so during runtime significantly slows down the localization process. The information catalogued during this stage is loaded during the boot phase of the localization program.
+After generating a database of images and labeling them according to their perspective in the environment, we compute various types of image features for each image. This is done before localization because computing features is a computationally intensive process, and doing so during runtime significantly slows down the localization process. The information catalogued during this stage is loaded during the boot phase of the localization program.
 
   \subsection{Types of Features}
-There are a variety of features that can be used when describing an image. In its current state, the project uses extracted SURF features as well as grayscale and black and white images.
+There are a variety of features that can be used when describing an image. Our algorithm uses SURF features as well as grayscale and black and white images.
 
-SURF (Speeded Up Robust Features) is a feature detection algorithm that detects similar features as SIFT (Scale-Invariant Feature Transform). SURF detects interesting keypoints in an image in a manner that is a bit quicker than some competing algorithms such as SIFT, but it also lacks some nice properties like scale invariance. Using OpenCV, we can detect these points, describe them as features, save these descriptions, and eventually compare these features with ones computed from the robot during the localization process.
+SURF (Speeded Up Robust Features) is a feature detection algorithm similar to SIFT (Scale-Invariant Feature Transform). Using OpenCV, we detect these points, describe their features, and save the descriptions.
 
-The Grayscale image is a highly coarse image that simply splits an image into a grid, then computes the average intensity inside each grid square. From this image, we can compute the black and white ``above below" image. This is created by finding the average intensity of the grayscale, then determining if a square is either higher or lower than this. If a square is higher, it is colored white, otherwise it is colored black.
+The grayscale image is a highly coarse image that simply splits an image into a grid, then computes the average intensity inside each grid square. From this image, we can compute the black and white ``above below" image. This is created by determining if a square is either higher or lower than the average intensity of the grayscale image. If a square is higher it is colored white, otherwise it is colored black. Both the grayscale and the above below images can be represented by small matrices that can be used in quick comparison operations.
 
   \subsection{Storing the Features}
-The precomputed features are stored in a yaml file. OpenCV has built in storage methods, which makes this a simple process. Because each perspective has its own file for storing keypoints|in addition to its own file for grayscale and black and white images|the filename contains the meta information about each description. The program is able to load all features and know their corresponding location and orientation by first looking inside the folder to see what perspectives are available, then load into the map.
+The precomputed features are stored in a yaml file. OpenCV has built in storage method, which makes this a simple process. Because each perspective has its own file for storing keypoints in addition to its own file for grayscale and black and white images|the filename contains the meta information about each description. The program is able to load all features and know their corresponding location and orientation by first looking inside the folder to see what perspectives are available, then load into the map.
 
 %\newpage
-
-
-
-
-
-
-
-
 
 
 
@@ -239,9 +231,9 @@ The precomputed features are stored in a yaml file. OpenCV has built in storage 
 %===== Section 5, MCL Implementation ====% 
 %========================================%
   \section{Implementation}
-
+\newcommand\cpp{C{}\texttt{++}}
  \subsection{Overview}
- Our implementation of the Monte Carlo Localization algorithm is contained inside of a program called \texttt{3DLocalization} \footnote{See \texttt{https://github.com/jhallard/3DLocalization/Localization}}. This program is written entirely in C++, using various open-source libraries such as \texttt{OpenCV}, \texttt{ROS}, and \texttt{Boost} to aid in development. All of the data that was computed by the programs described in sections 3 and 4 of this document is used by this program. \\
+ Our implementation of the Monte Carlo Localization algorithm is contained inside of a program called \texttt{3DLocalization}.\footnote{See \url{https://github.com/jhallard/3DLocalization/Localization} for the 3D localization algorithm and \url{https://github.com/aarich/ROS-Controllers} for sample actor controllers.} This program is written entirely in \cpp, using various open-source libraries such as OpenCV, ROS, and Boost to aid in development. All of the data that was precomputed as described in the previous sections is used by this program.
  Some of the main goals when designing this program are as follows 
  \begin{itemize}
  \item Make the program relatively light-weight as to not redirect computational resources from the main robot-control program.
@@ -249,25 +241,24 @@ The precomputed features are stored in a yaml file. OpenCV has built in storage 
  \item Impose as few restrictions on the characteristics of the actor as possible (e.g. dimensions of freedom, movement timing, wheeled vs airborne).
  \item Make the program robust to environmental changes (e.g. chairs being moved, lights being dimmed).
  \end{itemize}
-  Given the time frame of our research project, completing all of the above goals would be tough. Thus we used them mostly as guidelines for our team to follow as opposed to points marking the finish line of our project.
- 
-
+%  Given the time frame of our research project, completing all of the above goals would be tough. Thus we used them mostly as guidelines for our team to follow as opposed to points marking the finish line of our project.
 
 \subsection{Actor Specifications}
-One of the main goals for our project was to be able to localize a \emph{general} actor in a \emph{general} environment. With this in mind, we tried to limit the number of requirements we impose on the movement and control of the actor. In summary, the actor must send us data from a camera and let us know its local movement coordinates, as well as listen for its global coordinates from our localization program. All other control aspects of the actor are up to the user to decide. 
+One of the main objectives for our project was to be able to localize a \emph{general} actor in a \emph{general} environment. With this in mind, we tried to limit the number of requirements we impose on the movement and control of the actor. 
+%In summary, the actor must publish image data and movement commands, as well as listen for its global coordinates from our localization program. 
 %We have used this program successfully with both the ARDrone quadcopters and the iRobot Creates: two very different robots. In our implementation, simple point to point navigation was sufficient, however a future goal is to implement the ability to make smart paths allowing the robot to go through doors and around or over tables.
-
 The robot must implement the following functionality to maintain the generality of our program.
   \begin{itemize}
-  \item Send the 3DLocalization program images from the robot's current position. The rate at which it publishes these images is not specified, but generally faster is better. 
+  \item Send the 3DLocalization program images from the robot's camera. The rate at which it publishes these images is not specified, but generally faster is better. 
   \item Send the 3DLocalization program movement commands after it performs a move. These movement commands are relative to the robot's local coordinate system.
   \item Subscribe to a single data feed from our program. This data feed tells the robot the best guess for its location.
-  \item Navigation algorithms. The user chooses which robot to use, how to move the robot. Our program only attempts to localize a general actor in a general environment.
-  \end{itemize} 
+  \item Make decisions on movement. The robot must implement some kind of navigation algorithm
+\end{itemize} 
 
 
  \subsection{Program Flowchart}
-  Figure \ref{fig:flowchart} is a visual overview of our implementation of the MCL algorithm, 3DLocalization.
+  Figure \ref{fig:flowchart} is a visual overview of our implementation of the MCL algorithm.
+  
   \begin{figure}[h!]
    \centering
      \includegraphics[width=\textwidth]{../Artifacts/FlowChart}

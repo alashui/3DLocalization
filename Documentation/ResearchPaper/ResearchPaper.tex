@@ -284,7 +284,7 @@ Each particle in our list of active particles contains a weight associated with 
 
 Before a particle can be weighed, it must have its image features matched with the features from the actors image. This entails going through the features for both images and seeing which features match best to each other. To begin, we will define what information is needed to start the feature matching process. 
 
-First, we have two vectors of SURF features, one for the robot ($\boldsymbol{F_r }$) and one for a specific particle ($\boldsymbol{F_p}$). Each vector contains all features detected in its respective image. There must exist a distance function $f$ that determines the similarity between any two features. 
+First, we have two vectors of SURF features, one for the robot ($\boldsymbol{F_r }$) and one for a specific particle ($\boldsymbol{F_p}$). Each vector contains features \verb.f. detected in its respective image. There must exist a distance function $f$ that determines the similarity between any two features. 
 %  \[ \verb. Two vectors of SURF features. \] 
 %  \[ \boldsymbol{F_{robot}} \verb., . \boldsymbol{F_{particle}} \verb. where . \boldsymbol{F} = \verb. [. \mathtt{f_{1}} \verb., . \mathtt{f_{2}} \verb-, ... , - \mathtt{f_{n}} \verb. ]. \]
 %  \[ \verb. A distance function that compares two features. \]
@@ -302,7 +302,7 @@ f(\mathtt{[f_{j}, f_{k1}]}) &< f(\mathtt{[f_{j}, f_{x}]})  \  \forall \mathtt{ f
 
  Thus a matching vector of length \texttt{n} contains a feature and the \texttt{n} features that are most similar to it. The \emph{KnnMatch} function of order \texttt{n} return a matrix with a matching vector of order \texttt{n} for each feature in both the robot and particle feature vectors. For our purposes, we ran the \emph{KnnMatch} function with \texttt{n = 2}. This gave us the two best matches for each feature.
  \[ Flann.KnnMatch(\boldsymbol{F_r} \verb., . \boldsymbol{F_p} \verb., . 2) \to \boldsymbol{M} = \mathtt{ [\boldsymbol{m}_0, \boldsymbol{m}_1, ... , \boldsymbol{m}_n ]} \]
- \[ \verb. Where . \boldsymbol{m_i} = \mathtt{ [f_{j}} \verb., . \mathtt{f_{k1}} \verb., . \mathtt{f_{k2}} ]\]
+ \[ \verb.where . \boldsymbol{m_i} = \mathtt{ [f_{j}} \verb., . \mathtt{f_{k1}} \verb., . \mathtt{f_{k2}} ]\]
 
  The \emph{Flann} function will give us a matrix of feature matches, but these matches still need to be refined. the ratio test\footnote{See Lowe, David G. ``Distinctive Image Features from Scale-Invariant Keypoints." {\it International Journal of Computer Vision} (2004). pg 19-20.  \url{http://www.cs.ubc.ca/~lowe/keypoints/}.} we refine the matrix of top-two matches into a smaller vector of best matches. The ratio test is described below.
 \\ \\

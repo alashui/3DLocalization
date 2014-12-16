@@ -13,7 +13,8 @@
 % \floatstyle{boxed}
 % \restylefloat{figure}
 %==== Insert cool image between title and authors ====%
-\title{Using 3D Models and Computer Vision Algorithms to \\ Implement Monte Carlo Localization}
+% \title{Using 3D Models and Computer Vision Algorithms to \\ Implement Monte Carlo Localization}
+\title{Autonomous Localization Using 3D Models, Particle Filtering, \\ and the Monte Carlo Localization Algorithm}
 \author{ \\[7in]  John Allard, Alex Rich \\ 2014 Summer Computer Science REU, Harvey Mudd College\thanks{Funded By The National Science Foundation and mentored by Professor Zachary Dodds}}
 %\date{July 6th, 2014 \\ }
 
@@ -30,16 +31,9 @@
 
   % ==  Paper Abstract   == %
   \begin{abstract}  
-  Our research group attempts to implement the Monte Carlo Localization algorithm using a 3D model of an environment and a stream of images from a robot in that environment. This entails the use of various computer vision algorithms to find and compare features between the image feed and our 3D model. The objectives of this project are to be able to localize a general actor in any 3D modeled environment quickly and accurately. This paper outlines the process that our research group has undertaken to accomplish this task and an analysis of our resulting program. 
+  Our research group attempts to implement the Monte Carlo Localization algorithm using a 3D model of an environment and a stream of images from a robot in that environment. This entails the use of various computer vision algorithms to find and compare features between the image-feed and our 3D model. The objectives of this project are to be able to localize a general actor in any 3D-modeled environment quickly and accurately. This paper outlines the process that our research group has undertaken to accomplish this task and an analysis of our resulting program. 
   \end{abstract}
   
-
-
-
-
-
-
-
 
 
 
@@ -54,12 +48,10 @@
 %====================================%
   \section{Introduction} 
 
-  \subsection{Project Overview}
-  The Monte Carlo Localization (MCL) algorithm has been used in the past\footnote{ Dieter Fox, et al. Carnegie Mellon University, University of Bonn.} to successfully localize robots using 2D maps of an environment and a stream of range sensor information. Our goal was to build off of these successes and implement a similar algorithm using a 3D map and color images from the robot as sensor data. The end goal of this project was to be able to place a robot anywhere inside of a mapped environment, have our program quickly and reliably localize the robot, then continue to localize the robot as it moves around the environment while accomplishing its programmed goals (fetching coffee, cleaning the floor, etc).
+\subsection{Project Overview}
+The Monte Carlo Localization (MCL) algorithm has been used in the past\footnote{ Dieter Fox, et al. Carnegie Mellon University, University of Bonn.} to successfully localize robots using two dimensional maps of an environment and a stream of range sensor information that measures the distance to the nearest plane in front of the robot. Our goal was to build off of these successes and implement a similar algorithm using fully-textured 3D models of an environment and color images from the robot as sensor data. The end goal of this project was to be able to place a robot anywhere inside of a mapped environment, have our program quickly and reliably localize the robot, then continue to localize the robot as it moves around the environment while accomplishing its programmed goals (fetching coffee, cleaning the floor, etc).
 
-We chose to implement the MCL algorithm using 3D models and a live image-feed from the robot because  this is something robots should be able to do with current technology. 3D models of an environment might be difficult to obtain, but they are constantly getting easier and cheaper to create. Our 3D map making camera was donated by a company called Matterport. 
- 
-We decided to use a camera instead of a range sensor because cameras are cheap, portable, and common and the information present in an image ought to be enough to localize. Localizing by vision is certainly something humans can do.
+We chose to implement the MCL algorithm using 3D models and a live image-feed from the robot because seems to be the general direction in which the field of robotics is heading. 3D models of an environment might be difficult to obtain, but they are constantly getting easier and cheaper to create. Our 3D map making camera was donated by a company called Matterport and was able to model a single floor of a large building in about an hour with little human involvement. We decided to use a camera instead of a range sensor because cameras are cheap, portable, and common and the information present in an image ought to be enough to localize. Localizing by vision is certainly something humans can do.
 
  \subsection{About}
  This project was undertaken by Alex Rich and John Allard during the Summer of 2014 at Harvey Mudd College, under the mentorship of Professor Zach Dodds. Our project was part of the Harvey Mudd Computer Science REU, with funding that originated from the National Science Foundation. The website/blog that organizes everything related to this project (including our code repository, code documentation, and research artifacts) is hosted at \\\url{https://jhallard.github.io/3DLocalization}.
@@ -70,7 +62,7 @@ We decided to use a camera instead of a range sensor because cameras are cheap, 
   \section{Monte Carlo Localization Process Overview}
 %  \emph{This section is for those unfamiliar with the Monte Carlo Localization algorithm.}
 
-The overall process of having an actor\footnote{An actor is any device that has sensors and can move around an environment, e.g. a robot.} localize itself in an environment via the MCL algorithm is comprised of several steps. These steps can be broken into two parts: steps taken before localization, and steps taken during localization.
+The overall process of having an actor\footnote{An actor is any device that has sensors and can move around an environment, e.g. a robot.} localize itself in an environment via the MCL algorithm is comprised of several steps. These steps can be broken into two parts : steps taken before the localization attemp, and steps taken during localization.
 \subsection{Pre-Localization}
  These are the requirements that must be satisfied to begin the MCL algorithm.
   \begin{enumerate}
@@ -81,7 +73,7 @@ The overall process of having an actor\footnote{An actor is any device that has 
 \subsection{During Localization}
   The MCL algorithm iterates through a series of steps to determine the location of an actor. Each step can be implemented in a variety of ways.
   \begin{enumerate}
-  \item An actor is placed somewhere in the environment, and some number of guesses as to where it might be are randomly generated.\footnote{The uniformity of this distribution depends on the user's knowledge of the actor's initial location.} These `guesses' we will call particles, and each particle is a data structure that contains information about its own current perspective in the environment and the sensor data it would expect to read from that perspective.
+  \item An actor is placed somewhere in the environment, and some number of guesses as to where it might be are randomly generated.\footnote{The uniformity of this distribution depends on the user's knowledge of the actor's initial location.} These `guesses' are called particles, and each particle is a data structure that contains information about its own current perspective in the environment (ex [x, y] coordinated) and the sensor data it would expect to read from that perspective (ex. $[d] \in \mathbb{R}$ distance in meters to the nearest plane).
   \item The program compares the current sensor readings from the actor to the expected sensor readings for each particle, and assigns a weight to each particle based on how strongly the readings correspond to one another.
   \item A distribution is created according to the grouping and weighting of particles active in the program. The more heavily weighted a particle is, the higher probability it or one of its close neighbors will be sampled from our distribution during the next step.
   \item A new set of particles are sampled from this distribution, as well as a small amount are sampled from a uniform distribution across the map. After this step the total number of particles in the program is the same as in the last step.
@@ -91,7 +83,7 @@ The overall process of having an actor\footnote{An actor is any device that has 
  The power of this algorithm comes from a few key characteristics. 
 \begin{itemize}
  \item The algorithm is general and leaves a large amount of the implementation details for the user to decide. As mentioned before, this algorithm has been used in the past with both laser and sonar range data and a 2D map of an environment, in our case it was used with images from the robot and a 3D model of the environment. 
- \item When the actor moves, the particles move, and thus they store the probability that the actor has traveled in the path that the particle has taken. Over time, impossible paths will cause incorrect particles to be removed from the current set of guesses, leaving room for better guesses to take their place. This results in the gradual merging of particles in space to the correct location.
+ \item This algorithm takes into account the movement of the actor in the environment in addition to the weighting of the particles with respect to the current perspective. Over time, impossible paths will cause incorrect particles to be removed from the current set of guesses, leaving room for better guesses to take their place. An example of this would be a particle on the outer $x$-boundary of a map, then the actor reporting a movement in the $x$ direction. This would move the particle off of the map, and we would know the particle was an invalid guess. Overall, this results in the gradual merging of particles in space to the correct location.
 \end{itemize}
 
 %\newpage

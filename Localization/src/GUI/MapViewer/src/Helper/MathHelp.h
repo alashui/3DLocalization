@@ -2,7 +2,7 @@
 #define MATHHELP_H_
 
 #include "../Helper/HelperStructures.h"
-#include "../../../Particle/Particle.h"
+#include "../../../../Particle/Particle.h"
 #include "Particles.h"
 #include <IL/il.h>
 #include <GL/glew.h>

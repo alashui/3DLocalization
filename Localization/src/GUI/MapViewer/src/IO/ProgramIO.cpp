@@ -357,6 +357,8 @@ std::vector<Particle> GetParticleList()
 
     particles.clear();
 
+    return std::vector<Particle>();
+
     // --- Open the file of the particle positions -- //
     std::string fn = "../../PyViewer/ParticleLists.txt";
     std::ifstream file(fn.c_str());

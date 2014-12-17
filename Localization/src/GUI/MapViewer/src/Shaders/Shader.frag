@@ -13,7 +13,7 @@ uniform sampler2D texUnit;
 
 in vec3 Normal;
 in vec2 TexCoord;
-out vec4 output;
+out vec4 out1;
 
 void main()
 {
@@ -59,8 +59,8 @@ void main()
     float x = (intensity);//+intensity2+intensity3+intensity4+intensity5);
 
     if(x >= 1.0)
-        x = 1-2*amb;
-    output = (color * x) + 2*amb;
-    //output = vec4(texCount,0.0,0.0,1.0);
+        x = 0.5; //1-2*amb;
+    out1 = (color * x) + 2*amb;
+    //out1 = vec4(texCount,0.0,0.0,1.0);
 
 }

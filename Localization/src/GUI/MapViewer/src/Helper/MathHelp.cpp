@@ -25,10 +25,10 @@ const aiScene* scene = NULL;
 float scaleFactor = 1;
 
 // Shader Names
-char *vertexfile = "../src/Shaders/Shader.vert";
-char *fragmentfile = "../src/Shaders/Shader.frag";
-char *vertexfile1 = "../src/Shaders/Shader1.vert";
-char *fragmentfile1 = "../src/Shaders/Shader1.frag";
+char *vertexfile = "src/Shaders/Shader.vert";
+char *fragmentfile = "src/Shaders/Shader.frag";
+char *vertexfile1 = "src/Shaders/Shader1.vert";
+char *fragmentfile1 = "src/Shaders/Shader1.frag";
 
 std::vector<struct Helper::MyMesh> myMeshes;
 
@@ -63,8 +63,8 @@ std::string generatedImagesDirectory = "../../../../../Documentation/Artifacts/"
 std::string generatedInputDirectory =  "../../../../../Data/InputData/";
 std::string fileExt = ".jpg";
 std::string modelname = "14db49e526f340dfba81c4a2da23c716.obj";
-std::string modelDirectoryName = "2ndFloorSprague/";
-std::string pathToModelDataDirectory = "../../../../../Data/ModelData/";
+std::string modelDirectoryName = "TestFloor/";
+std::string pathToModelDataDirectory = "../../../../Data/ModelData/";
 
 std::vector<MyParticle> particles;
 

@@ -5,6 +5,7 @@
 \usepackage{url}
 \usepackage{float}
 \usepackage{amsmath}
+\usepackage{amsfonts}
 \usepackage[margin=1in]{geometry}
 
 \newcommand{\suchthat}{\;\ifnum\currentgrouptype=16 \middle\fi|\;}
@@ -73,7 +74,7 @@ The overall process of having an actor\footnote{An actor is any device that has 
 \subsection{During Localization}
   The MCL algorithm iterates through a series of steps to determine the location of an actor. Each step can be implemented in a variety of ways.
   \begin{enumerate}
-  \item An actor is placed somewhere in the environment, and some number of guesses as to where it might be are randomly generated.\footnote{The uniformity of this distribution depends on the user's knowledge of the actor's initial location.} These `guesses' are called particles, and each particle is a data structure that contains information about its own current perspective in the environment (ex [x, y] coordinated) and the sensor data it would expect to read from that perspective (ex. $[d] \in \mathbb{R}$ distance in meters to the nearest plane).
+  \item An actor is placed somewhere in the environment, and some number of guesses as to where it might be are randomly generated.\footnote{The uniformity of this distribution depends on the user's knowledge of the actor's initial location.} These `guesses' are called particles, and each particle is a data structure that contains information about its own current perspective in the environment (ex [x, y] coordinated) and the sensor data it would expect to read from that perspective (ex. $[ d ] \in \mathbb{R}$) distance in meters to the nearest plane).
   \item The program compares the current sensor readings from the actor to the expected sensor readings for each particle, and assigns a weight to each particle based on how strongly the readings correspond to one another.
   \item A distribution is created according to the grouping and weighting of particles active in the program. The more heavily weighted a particle is, the higher probability it or one of its close neighbors will be sampled from our distribution during the next step.
   \item A new set of particles are sampled from this distribution, as well as a small amount are sampled from a uniform distribution across the map. After this step the total number of particles in the program is the same as in the last step.
@@ -105,7 +106,7 @@ The overall process of having an actor\footnote{An actor is any device that has 
 %===== Section 2, 3D Map Building ====%
 %=====================================%
   \section{Building the 3D Map}
-   \subsection{Overview}
+   % \subsection{Overview}
   Our research team used 3D models as maps of the actor's environment for the localization process. These models were fully textured, high-quality scans of a room or series of rooms and hallways. The maps were built using a Matterport 3D imaging camera donated to our research group by Matterport Inc. This camera is attached to the top of a tripod and placed somewhere in an enclosed environment, it then uses an internal motor to rotate 360 degrees and take a scan of the space using both an RGB camera and laser-range sensors. Subsequent scans are merged with the existing model, allowing one to walk the camera around a space and progressively build a larger and more detailed model.
 
    \begin{figure}[h!]
@@ -116,29 +117,7 @@ The overall process of having an actor\footnote{An actor is any device that has 
   \end{figure}
   
   % I don't know how useful these subsections are...
-  \subsection{Taking the Scans}
- Our team built models of various places on the Harvey Mudd campus, but the main environment that we wished to localize an actor in was the 2nd floor of the Sprague building. We took 42 scans of this space (See Figure \ref{fig:map}), a roughly 3500-square-foot floor consisting of 8 rooms. The Matterport software automatically converts the data to a Wavefront object  file format for viewing on their site. We were then able to download this file to use it in our own 3D model viewers. 
-
-%  \subsection{Filling In the Gaps}
-%  Our model had a few gaps in places that were obstructed from the view of our camera. To improve the overall quality of our map we used the Meshlab software. This allowed us to remove disconnected pieces, remove unreferenced vertices, and smoothen out some jagged areas. on top of this, we rendered the background color pink to allow us to single out features on these areas and remove them from the program. 
-%  
-%  \newpage
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+ The main environment that we wished to localize an actor in was the 2nd floor of the Sprague building. We took 42 scans of this space (See Figure \ref{fig:map}), a roughly 3500-square-foot floor consisting of 8 rooms. The Matterport software automatically converts the data to a Wavefront object file format for viewing on their site. We were then able to download this file to use it in our own 3D model viewers. Our model had a few gaps in places that were obstructed from the view of our camera. To improve the overall quality of our map we used the Meshlab software. This allowed us to remove disconnected pieces, remove unreferenced vertices, and smoothen out some jagged areas. on top of this, we rendered the background color pink to allow us to single out features on these areas and remove them from the program. 
 
 
 
@@ -147,7 +126,7 @@ The overall process of having an actor\footnote{An actor is any device that has 
  %==================================================================%
    \section{Creating a Database of Images from the Map}
    \subsection{Overview}
-  Our goal is to use computer vision algorithms that perform comparisons between 2D images, which means that we need to represent our three dimensional map in two dimensions for our feature matching algorithms to work. To do this, we render images from thousands of different perspectives within our map.
+  Our goal is to use computer vision algorithms that perform comparisons between 2D images from the actor and different places in our map. This means that we need to represent different perspectives within our three dimensional map in two dimensions for our feature matching algorithms to work. To do this, we reduce our single 3D map to a large number of 2D images from different perspectives within the map. This transformation allows a direct comparison between the 2D images taken in from the actor and the different particle locations in the map.
 
   \begin{figure}
    \centering
@@ -178,21 +157,6 @@ The method our group used is outlined below.
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 %=======================================================%
 %===== Section 4, Computing Features from the Map ===== %
 %=======================================================%
@@ -210,10 +174,6 @@ The grayscale image is a highly coarse image that simply splits an image into a 
 The precomputed features are stored in a yaml file. OpenCV has built in storage method, which makes this a simple process. Because each perspective has its own file for storing keypoints in addition to its own file for grayscale and black and white images|the filename contains the meta information about each description. The program is able to load all features and know their corresponding location and orientation by first looking inside the folder to see what perspectives are available, then load into the map.
 
 %\newpage
-
-
-
-
 
 
 
@@ -328,13 +288,6 @@ The second option is the Weighted Average, which looks at the top $n$ particles 
 
 \subsection{Visualization}
 For the user to see how the localization program is working, various visualization assistants were constructed to accompany the program. A user is able to see what the robot sees, a top-down view of the map showing the location and relative weights of each particle, the Top Match and Weighted Average chosen by the program, and a three dimensional visualizer showing all the particles within the actual map.
-
-
-
-
-
-
-
 
 
 

@@ -11,7 +11,7 @@ layout (std140) uniform Material {
 
 in vec3 Normal;
 in vec4 fragmentColor;
-out vec4 output;
+out vec4 out1;
 
 void main()
 {
@@ -29,6 +29,6 @@ void main()
 
     color = fragmentColor;
     amb = color * 0.4;
-    output = (color * intensity) + amb;//ient;
+    out1 = (color * intensity) + amb;//ient;
 
 }

@@ -41,9 +41,9 @@ int main(int argc, char **argv)
 //  GLUT initialization
     glutInit(&argc, argv);
 
-    glutInitDisplayMode(GLUT_DEPTH|GLUT_DOUBLE|GLUT_RGBA);//|GLUT_MULTISAMPLE );
+    glutInitDisplayMode(GLUT_DEPTH|GLUT_DOUBLE|GLUT_RGBA|GLUT_MULTISAMPLE );
 
-    glutInitContextVersion (3, 3);
+    glutInitContextVersion (3, 0);
     glutInitContextFlags (GLUT_COMPATIBILITY_PROFILE );
 
     glutInitWindowPosition(100,100);
@@ -54,7 +54,7 @@ int main(int argc, char **argv)
         modelDirectoryName = argv[1];
         modelname = argv[2];
     }
-    else
+    else if(argc != 1)
     {
         std::cout << "You need to pass in a file of Input value.\n" << 
         "See /PerspectiveGenerator/ProgramDesign/InputFileFormat.txt for help" << std::endl;

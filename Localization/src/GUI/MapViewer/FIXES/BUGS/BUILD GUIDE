@@ -1,0 +1,18 @@
+Install opencv via the terminal
+sudo apt-get install libopencv-dev
+
+Install Assimp by cloning from github and building and installing frmo ther
+http://assimp.sourceforge.net/main_downloads.html
+git clone git://github.com/assimp/assimp.git assimp
+cd assimp
+make
+sudo make install
+
+Install GLEW libraries.
+
+Now to Install ROS, someitmes I was getting package dependency errors in that case, try
+
+sudo aptitude install ros-indigo-desktop-full
+
+When it asks to do the suggestions, press 'y'. When it finished, repeat this task again and again until there are
+no more options and it says it changed zero things. It will now be installed.
